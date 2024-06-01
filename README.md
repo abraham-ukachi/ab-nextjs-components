@@ -2,26 +2,33 @@
 
 > IMPORTANT: This is a work in progress and subject to major changes until version 1.0.
 
-🚀 This is a lightweight collection of server & client React UI components created by [Abraham UKachi](https://github.com/abraham-ukachi), and optimized for Next.js applications 😎.
+🚀 This is a lightweight collection of server & client React components created by [Abraham Ukachi](https://github.com/abraham-ukachi), and optimized for [Next.js](https://nextjs.org/docs) applications 😎.
 
 
 ## Getting Started
 
 ### Installation
 
+#### npm
+
+```bash
+npm i ab-nextjs-components
+```
+
 #### pnpm
 
 ```bash
-pnpm install @ab-ui/nextjs-components
+pnpm install ab-nextjs-components
 ```
+
+---
 
 ### Types
 
-All the types are located in the `types` folder. 
-A specific type like *`AbButtonProps`* can be imported directly like this:
+All the types are located in the `types` folder. A specific type like *`AbButtonProps`* can be imported directly:
 
 ```ts
-import type { AbButtonProps } from '@ab-ui/nextjs-components';
+import type { AbButtonProps } from 'ab-nextjs-components';
 ```
 
 
