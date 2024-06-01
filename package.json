@@ -1,6 +1,6 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "main": "index.js",
   "types": "types/index.d.ts",
