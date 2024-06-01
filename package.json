@@ -1,0 +1,41 @@
+{
+  "name": "ab-nextjs-components",
+  "version": "0.1.0",
+  "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
+  "main": "index.js",
+  "types": "types/index.d.ts",
+
+  "homepage": "https://github.com/abraham-ukachi/ab-nextjs-components#readme",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abraham-ukachi/ab-nextjs-components.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/abraham-ukachi/ab-nextjs-components/issues"
+  },
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+
+  "keywords": [
+    "react",
+    "nextjs",
+    "server",
+    "client",
+    "components",
+    "abraham",
+    "ukachi",
+    "ab-nextjs-components"
+  ],
+
+  "author": {
+    "name": "Abraham Ukachi",
+    "url": "https://github.com/abraham-ukachi",
+    "email": "abraham.ukachi@laplateforme.io"
+  },
+
+  "license": "MIT"
+}
