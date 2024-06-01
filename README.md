@@ -1,6 +1,36 @@
-`ab-nextjs-components`
+
+
+
+# `ab-nextjs-components`
 
 > IMPORTANT: This is a work in progress and subject to major changes until version 1.0.
+
+
+<p align="center" style="display:flex; justify-content:center; align-items:center; width:100%; height:72px;">
+  <!-- Ab - Logo - Light Mode --> 
+  <a href="https://abraham-ukachi.vercel.app/#gh-light-mode-only" target="_blank">
+    <img src="./.github/ab-logo-light.svg" alt="Ab Logo on Light" width="64" height="64" />
+  </a>
+
+  <!-- Ab - Logo - Dark Mode --> 
+  <a href="https://abraham-ukachi.vercel.app/#gh-dark-mode-only" target="_blank">
+    <img src="./.github/ab-logo-dark.svg" alt="Ab Logo on Dark" width="64" height="64" />
+  </a>
+
+  <span style="opacity:0.2; width:1px; height:48px; border-radius:10px; margin:0 12px; display:block; border:1px solid; transform:rotate(25deg);"></span>
+
+  <!-- Next.js - Logo Name - Light Mode -->
+  <a href="https://nextjs.org/#gh-light-mode-only" target="_blank">
+    <img src="./.github/nextjs-logoname-light.svg" alt="Next.js LogoName on Light" width="192" height="64" />
+  </a>
+
+  <!-- Next.js - Logo Name - Dark Mode -->
+  <a href="https://nextjs.org/#gh-dark-mode-only" target="_blank">
+    <img src="./.github/nextjs-logoname-dark.svg" alt="Next.js LogoName on Dark" width="192" height="64" />
+  </a>
+
+</p>
+
 
 🚀 This is a lightweight collection of server & client React components created by [Abraham Ukachi](https://github.com/abraham-ukachi), and optimized for [Next.js](https://nextjs.org/docs) applications 😎.
 
