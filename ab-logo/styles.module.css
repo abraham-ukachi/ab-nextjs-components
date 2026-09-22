@@ -1,0 +1,30 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+* Plain CSS modules — no Tailwind Tailwind apply (Turbopack-safe).
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+.abLogo {
+  display: block;
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--app-logo-color, #a67c52);
+}
+
+.abLogoContained {
+  display: block;
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+}

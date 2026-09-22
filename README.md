@@ -78,10 +78,11 @@ A list of all the **client components** and their current status:
 
 | No. | Name | File | Status |
 |:----|:-----|:-----|:-------|
-| 1 | *`AbLogo`* | **ab-logo/index.tsx** | Pending |
-| 2 | *`AbIcon`* | **ab-icon/index.tsx** | Pending |
-| 3 | *`AbButton`* | **ab-button/index.tsx** | Pending |
-| 4 | *`AbInput`* | **ab-input/index.tsx** | Pending |
+| 1 | *`AbLogo`* | **ab-logo/index.tsx** | Done |
+| 2 | *`AbIcon`* | **ab-icon/index.tsx** | Done |
+| 3 | *`AbButton`* | **ab-button/index.tsx** | Done |
+| 4 | *`AbInput`* | **ab-input/index.tsx** | Done |
+| 5 | *`AbIconButton`* | **ab-icon-button/index.tsx** | Done |
 
 > NOTE: 
 
@@ -93,9 +94,9 @@ A list of all the **server components** and their current status:
 
 | No. | Name | File | Status |
 |:----|:-----|:-----|:-------|
-| 1 | *`AbLogo`* | **server/ab-logo/index.tsx** | Pending |
-| 2 | *`AbIcon`* | **server/ab-icon/index.tsx** | Pending |
-| 3 | *`AbButton`* | **server/ab-button/index.tsx** | Pending |
+| 1 | *`AbLogo`* | **server/ab-logo/index.tsx** | Done |
+| 2 | *`AbIcon`* | **server/ab-icon/index.tsx** | Done |
+| 3 | *`AbButton`* | **server/ab-button/index.tsx** | Done |
 
 > NOTE: 
 

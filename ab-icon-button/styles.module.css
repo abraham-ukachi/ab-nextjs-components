@@ -1,0 +1,64 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* Plain CSS modules — no Tailwind Tailwind apply (Turbopack-safe).
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+.wrap {
+  display: inline-block;
+  width: fit-content;
+  height: fit-content;
+}
+
+.abIconButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 0.5rem;
+  margin: 0;
+  border: none;
+  border-radius: 9999px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.abIconButton:hover {
+  background-color: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.abIconButton[data-naked='true']:hover {
+  background-color: transparent;
+}
+
+.abIconButton[data-expands='true']:hover {
+  transform: scale(1.06);
+}
+
+.abIconButton[data-shrinks='true']:active {
+  transform: scale(0.94);
+}
+
+.abIconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+}

@@ -35,9 +35,14 @@
   },
   "license": "MIT",
   "peerDependencies": {
+    "clsx": "^2",
     "next": "16.3.4",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "ab-nextjs-theme": "*",
+    "ab-nextjs-icons": "*",
+    "ab-nextjs-hooks": "*",
+    "ab-nextjs-animations": "*"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -48,7 +53,9 @@
     "react": "^19",
     "react-dom": "^19",
     "typescript": "^5",
-    "vitest": "^3"
+    "vitest": "^3",
+    "clsx": "^2.1.1",
+    "ab-nextjs-hooks": "file:../ab-nextjs-hooks"
   },
   "files": [
     "index.ts",
@@ -57,6 +64,7 @@
     "ab-logo",
     "ab-icon",
     "ab-button",
+    "ab-icon-button",
     "ab-input",
     "README.md",
     "LICENSE",
@@ -67,6 +75,28 @@
       "types": "./types/index.d.ts",
       "default": "./index.ts"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./ab-icon": "./ab-icon/index.tsx",
+    "./ab-logo": "./ab-logo/index.tsx",
+    "./ab-button": "./ab-button/index.tsx",
+    "./ab-icon-button": "./ab-icon-button/index.tsx",
+    "./ab-input": "./ab-input/index.tsx",
+    "./server/ab-icon": "./server/ab-icon/index.tsx",
+    "./server/ab-logo": "./server/ab-logo/index.tsx",
+    "./server/ab-button": "./server/ab-button/index.tsx"
+  },
+  "peerDependenciesMeta": {
+    "ab-nextjs-theme": {
+      "optional": true
+    },
+    "ab-nextjs-icons": {
+      "optional": true
+    },
+    "ab-nextjs-hooks": {
+      "optional": true
+    },
+    "ab-nextjs-animations": {
+      "optional": true
+    }
   }
 }
