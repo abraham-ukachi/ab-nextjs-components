@@ -35,6 +35,15 @@
 🚀 This is a lightweight collection of server & client React components created by [Abraham Ukachi](https://github.com/abraham-ukachi), and optimized for [Next.js](https://nextjs.org/docs) applications 😎.
 
 
+
+
+## Tooling (Phase 1)
+
+- Next.js **16.3.4** / React **19** hard peers
+- ESLint 9 flat + Vitest
+- Package ships as TypeScript (`type: module`) with a `supportedComponents` catalog
+- Component ports from LesYeuxDoux land in Phase 2 — catalog stays **Pending** until then
+
 ## Getting Started
 
 ### Installation
