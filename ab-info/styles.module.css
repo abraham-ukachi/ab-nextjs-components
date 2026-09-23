@@ -1,0 +1,87 @@
+.abInfo {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--ab-surface-container-high, #ece6f0);
+  color: var(--ab-on-surface, #1c1b1f);
+}
+
+.abInfoIconWrap {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+}
+
+.abInfoIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.color_primary .abInfoIconWrap {
+  background: color-mix(in srgb, var(--ab-primary, #a67c52) 24%, transparent);
+  color: var(--ab-primary, #a67c52);
+}
+.color_secondary .abInfoIconWrap {
+  background: color-mix(in srgb, #625b71 24%, transparent);
+  color: #625b71;
+}
+.color_tertiary .abInfoIconWrap {
+  background: color-mix(in srgb, #7d5260 24%, transparent);
+  color: #7d5260;
+}
+.color_white .abInfoIconWrap { background: #fff; color: #1c1b1f; }
+.color_black .abInfoIconWrap { background: #1c1b1f; color: #fff; }
+
+.abInfoContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.abInfoTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.abInfoMessage {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+.abInfoAction {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ab-primary, #a67c52);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.abInfoClose {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}

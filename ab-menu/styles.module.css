@@ -1,0 +1,99 @@
+.abMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 12rem;
+  margin: 0;
+  padding: 0.75rem;
+  list-style: none;
+  border-radius: 0.75rem;
+  background: var(--ab-surface-container, #f3edf7);
+  color: var(--ab-on-surface, #1c1b1f);
+  box-shadow: 0 4px 16px color-mix(in srgb, #000 12%, transparent);
+}
+
+.isActive {
+  outline: 2px solid var(--ab-primary, #a67c52);
+}
+
+.abMenuTitle {
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.abMenuList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.abMenuItem {
+  margin: 0;
+  border-radius: 0.5rem;
+}
+
+.abMenuLink,
+.abMenuButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.abMenuLink:hover,
+.abMenuButton:hover {
+  background: color-mix(in srgb, var(--ab-on-surface, #1c1b1f) 8%, transparent);
+}
+
+.abMenuIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.abMenuLabel {
+  flex: 1;
+}
+
+.isSelected .abMenuLink,
+.isSelected .abMenuButton {
+  background: color-mix(in srgb, var(--ab-primary, #a67c52) 16%, transparent);
+  font-weight: 600;
+}
+
+.isDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.isInactive {
+  opacity: 0.65;
+}
+
+.abMenuCancel {
+  margin-top: 0.25rem;
+  padding: 0.625rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--ab-primary, #a67c52);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}

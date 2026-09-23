@@ -1,0 +1,14 @@
+.abName {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: ui-serif, Georgia, serif;
+  letter-spacing: -0.02em;
+  cursor: default;
+  user-select: none;
+}
+.abName[data-type='light'] { font-weight: 300; }
+.abName[data-type='regular'] { font-weight: 400; }
+.abName[data-type='bold'] { font-weight: 700; }
+.abName[data-type='black'] { font-weight: 900; }
+.abNameAb { color: var(--ab-primary, #6750a4); }
+.abNameRest { opacity: 0.85; }

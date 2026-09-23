@@ -1,0 +1,12 @@
+/* AbBalloon — title= Adapt (no hover chrome; native tooltip only) */
+.abBalloon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.abBalloon[data-disabled='true'] {
+  pointer-events: none;
+}

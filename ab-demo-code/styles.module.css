@@ -1,0 +1,41 @@
+.abDemoCode {
+  position: relative;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.abDemoCodeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: color-mix(in srgb, #000 25%, transparent);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+.abDemoCodeCopy {
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: inherit;
+  opacity: 0.8;
+}
+.abDemoCodeCopy:hover { opacity: 1; }
+.abDemoCodePre {
+  margin: 0;
+  padding: 0.85rem 1rem 1rem;
+  overflow: auto;
+  max-height: 24rem;
+}
+.abDemoCodeCode { white-space: pre; }

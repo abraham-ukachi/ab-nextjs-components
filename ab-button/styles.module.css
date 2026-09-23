@@ -1,0 +1,63 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* Plain CSS modules — no Tailwind Tailwind apply (Turbopack-safe).
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+.abButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  height: fit-content;
+  margin: 0;
+  overflow: hidden;
+  font-size: 1rem;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+
+.abButtonRounded {
+  border-radius: 9999px;
+}
+
+.isContained {}
+
+.isDisabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.abButtonIcon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.abButtonSpinnerSlot {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.abButtonSpinner {
+  /* themed via --ab-button-spinner-color when present */
+}
+
+.hidden { display: none !important; }
+.invisible { visibility: hidden; }

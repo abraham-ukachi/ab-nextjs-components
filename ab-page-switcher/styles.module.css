@@ -1,0 +1,37 @@
+.abPageSwitcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.abPageSwitcherBtn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+.abPageSwitcherBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.abPageSwitcherInput {
+  width: 3.5rem;
+  height: 2.25rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.abPageSwitcherMeta {
+  font-size: 0.875rem;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+

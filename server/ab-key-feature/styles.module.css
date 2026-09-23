@@ -1,0 +1,47 @@
+.abKeyFeature {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ab-surface-container, #f3edf7) 85%, transparent);
+}
+.abKeyFeatureIcon {
+  font-size: 2rem;
+  color: var(--ab-primary, #6750a4);
+}
+.abKeyFeatureName {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+.abKeyFeatureTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.abKeyFeatureDesc {
+  margin: 0;
+  font-size: 0.9375rem;
+  opacity: 0.8;
+}
+.abKeyFeatureLink {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  color: var(--ab-primary, #6750a4);
+  font-weight: 600;
+  text-decoration: none;
+}
+.abKeyFeatureWatermark {
+  position: absolute;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  font-size: 5rem;
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+}

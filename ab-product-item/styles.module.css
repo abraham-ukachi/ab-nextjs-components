@@ -1,0 +1,21 @@
+.abProductItem {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.75rem;
+  background: var(--ab-surface-container-low, #f7f2fa);
+}
+.abProductItemMedia {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #ddd;
+}
+.abProductItemImg { object-fit: cover; width: 100%; height: 100%; }
+.abProductItemBody { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1; }
+.abProductItemCode { font-size: 0.7rem; font-family: ui-monospace, monospace; opacity: 0.6; }
+.abProductItemName { margin: 0; font-size: 0.9375rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.abProductItemPrice { font-weight: 700; }

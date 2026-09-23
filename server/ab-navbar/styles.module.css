@@ -1,0 +1,35 @@
+.abNavbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  box-sizing: border-box;
+}
+.abNavbarList {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+}
+.abNavbarLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.7;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.abNavbarLink[data-active='true'] {
+  opacity: 1;
+  background: color-mix(in srgb, var(--ab-primary, #6750a4) 14%, transparent);
+}
+.abNavbarIcon { font-size: 1.15rem; }

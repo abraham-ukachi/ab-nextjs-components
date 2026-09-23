@@ -1,0 +1,47 @@
+.abPagePaginator {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0 auto;
+}
+.abPagePaginatorList {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+  list-style: none;
+  margin: 0;
+  overflow-x: auto;
+}
+.abPagePaginatorItem {
+  display: inline-flex;
+}
+.abPagePaginatorBtn {
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  padding: 0 0.5rem;
+  color: inherit;
+}
+.abPagePaginatorBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.abPagePaginatorBtn[data-active="true"] {
+  border-color: var(--ab-primary, #6750a4);
+  color: var(--ab-primary, #6750a4);
+  font-weight: 700;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+.abPagePaginatorEllipsis {
+  opacity: 0.5;
+  padding: 0 0.25rem;
+}
+

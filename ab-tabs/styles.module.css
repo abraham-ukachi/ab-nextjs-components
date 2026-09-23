@@ -1,0 +1,17 @@
+.abTabs {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+  border-bottom: 2px solid color-mix(in srgb, var(--ab-outline, #79747e) 30%, transparent);
+}
+
+.noDivider {
+  border-bottom: none;
+}

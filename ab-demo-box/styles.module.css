@@ -1,0 +1,13 @@
+.abDemoBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--ab-primary, #6750a4) 10%, transparent), transparent 45%),
+    var(--ab-surface, #fff);
+  overflow: hidden;
+}

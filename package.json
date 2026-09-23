@@ -1,25 +1,22 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.1.2",
-  "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
-  "main": "index.js",
+  "version": "0.1.3",
+  "description": "\ud83d\ude80 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications \ud83d\ude0e.",
+  "type": "module",
+  "main": "index.ts",
   "types": "types/index.d.ts",
-
   "homepage": "https://github.com/abraham-ukachi/ab-nextjs-components#readme",
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abraham-ukachi/ab-nextjs-components.git"
   },
-
   "bugs": {
     "url": "https://github.com/abraham-ukachi/ab-nextjs-components/issues"
   },
-
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --fix",
+    "test": "vitest run"
   },
-
   "keywords": [
     "react",
     "nextjs",
@@ -28,14 +25,155 @@
     "components",
     "abraham",
     "ukachi",
-    "ab-nextjs-components"
+    "ab-nextjs-components",
+    "ab-elements"
   ],
-
   "author": {
     "name": "Abraham Ukachi",
     "url": "https://github.com/abraham-ukachi",
     "email": "abraham.ukachi@laplateforme.io"
   },
-
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "clsx": "^2",
+    "next": "16.3.4",
+    "react": "^19",
+    "react-dom": "^19",
+    "ab-nextjs-theme": "*",
+    "ab-nextjs-icons": "*",
+    "ab-nextjs-hooks": "*",
+    "ab-nextjs-animations": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.3.4",
+    "next": "16.3.4",
+    "react": "^19",
+    "react-dom": "^19",
+    "typescript": "^5",
+    "vitest": "^3",
+    "clsx": "^2.1.1",
+    "ab-nextjs-hooks": "file:../ab-nextjs-hooks"
+  },
+  "files": [
+    "index.ts",
+    "types",
+    "server",
+    "ab-logo",
+    "ab-icon",
+    "ab-button",
+    "ab-icon-button",
+    "ab-input",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "ab-balloon",
+    "ab-avatar",
+    "ab-tab",
+    "ab-tabs",
+    "ab-menu",
+    "ab-collapsible",
+    "ab-color",
+    "ab-info",
+    "ab-like-button",
+    "ab-searchbar",
+    "ab-search-result",
+    "ab-page-paginator",
+    "ab-page-switcher",
+    "ab-progress-chips",
+    "ab-price",
+    "ab-price-tag",
+    "ab-image",
+    "ab-brand",
+    "ab-name",
+    "ab-navbar",
+    "ab-sidebar",
+    "ab-text",
+    "ab-test-hello",
+    "ab-key-feature",
+    "ab-main-headline",
+    "ab-preview",
+    "ab-product",
+    "ab-product-item",
+    "ab-switch-back",
+    "ab-demo-box",
+    "ab-demo-code"
+  ],
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./index.ts"
+    },
+    "./package.json": "./package.json",
+    "./ab-icon": "./ab-icon/index.tsx",
+    "./ab-logo": "./ab-logo/index.tsx",
+    "./ab-button": "./ab-button/index.tsx",
+    "./ab-icon-button": "./ab-icon-button/index.tsx",
+    "./ab-input": "./ab-input/index.tsx",
+    "./server/ab-icon": "./server/ab-icon/index.tsx",
+    "./server/ab-logo": "./server/ab-logo/index.tsx",
+    "./server/ab-button": "./server/ab-button/index.tsx",
+    "./ab-balloon": "./ab-balloon/index.tsx",
+    "./ab-avatar": "./ab-avatar/index.tsx",
+    "./ab-tab": "./ab-tab/index.tsx",
+    "./ab-tabs": "./ab-tabs/index.tsx",
+    "./ab-menu": "./ab-menu/index.tsx",
+    "./ab-collapsible": "./ab-collapsible/index.tsx",
+    "./ab-color": "./ab-color/index.tsx",
+    "./ab-info": "./ab-info/index.tsx",
+    "./ab-like-button": "./ab-like-button/index.tsx",
+    "./server/ab-avatar": "./server/ab-avatar/index.tsx",
+    "./server/ab-badge": "./server/ab-badge/index.tsx",
+    "./ab-searchbar": "./ab-searchbar/index.tsx",
+    "./ab-search-result": "./ab-search-result/index.tsx",
+    "./ab-page-paginator": "./ab-page-paginator/index.tsx",
+    "./ab-page-switcher": "./ab-page-switcher/index.tsx",
+    "./ab-progress-chips": "./ab-progress-chips/index.tsx",
+    "./ab-price": "./ab-price/index.tsx",
+    "./ab-price-tag": "./ab-price-tag/index.tsx",
+    "./ab-image": "./ab-image/index.tsx",
+    "./server/ab-polygon": "./server/ab-polygon/index.tsx",
+    "./server": {
+      "default": "./server/index.ts"
+    },
+    "./ab-brand": "./ab-brand/index.tsx",
+    "./ab-name": "./ab-name/index.tsx",
+    "./ab-navbar": "./ab-navbar/index.tsx",
+    "./ab-sidebar": "./ab-sidebar/index.tsx",
+    "./ab-text": "./ab-text/index.tsx",
+    "./ab-test-hello": "./ab-test-hello/index.tsx",
+    "./ab-key-feature": "./ab-key-feature/index.tsx",
+    "./ab-main-headline": "./ab-main-headline/index.tsx",
+    "./ab-preview": "./ab-preview/index.tsx",
+    "./ab-product": "./ab-product/index.tsx",
+    "./ab-product-item": "./ab-product-item/index.tsx",
+    "./ab-switch-back": "./ab-switch-back/index.tsx",
+    "./ab-demo-box": "./ab-demo-box/index.tsx",
+    "./ab-demo-code": "./ab-demo-code/index.tsx",
+    "./server/ab-brand": "./server/ab-brand/index.tsx",
+    "./server/ab-name": "./server/ab-name/index.tsx",
+    "./server/ab-navbar": "./server/ab-navbar/index.tsx",
+    "./server/ab-sidebar": "./server/ab-sidebar/index.tsx",
+    "./server/ab-nav-link": "./server/ab-nav-link/index.tsx",
+    "./server/ab-text": "./server/ab-text/index.tsx",
+    "./server/ab-test-hello": "./server/ab-test-hello/index.tsx",
+    "./server/ab-key-feature": "./server/ab-key-feature/index.tsx",
+    "./server/ab-switch-back": "./server/ab-switch-back/index.tsx"
+  },
+  "peerDependenciesMeta": {
+    "ab-nextjs-theme": {
+      "optional": true
+    },
+    "ab-nextjs-icons": {
+      "optional": true
+    },
+    "ab-nextjs-hooks": {
+      "optional": true
+    },
+    "ab-nextjs-animations": {
+      "optional": true
+    }
+  }
 }
