@@ -1,5 +1,11 @@
 # Changelog
 
+### Unreleased (chore/upgrade-next-16 — Phase 2 Adapt + Phase 3 Port)
+
+* **Adapt:** **AbBalloon** (`title=` locked) — Input now uses real AbBalloon
+* **Port:** AbAvatar (client + server), AbBadge (server), AbTab, AbTabs, AbMenu, AbCollapsible, AbColor, AbInfo, AbLikeButton
+* Plain CSS modules; LYD brand/nav/i18n stripped; Select/MenuItem skipped (not on Projects)
+
 ### Unreleased (chore/upgrade-next-16 — Phase 2)
 
 * Ported **AbIcon** (client + server) — Material Symbols ligatures

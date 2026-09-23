@@ -1,0 +1,62 @@
+/* AbAvatar — plain CSS (no Tailwind apply) */
+.abAvatar {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  pointer-events: auto;
+}
+
+.abAvatarLink {
+  position: relative;
+  display: inline-flex;
+  text-decoration: none;
+  opacity: 1;
+}
+
+.isActive {
+  opacity: 0.9;
+}
+
+.abAvatarImageWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.abAvatarImage {
+  border-radius: 9999px;
+  object-fit: cover;
+}
+
+.abAvatarIndicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  border: 2px solid var(--ab-surface, #fff);
+  background: #22c55e;
+}
+
+.abAvatarIndicator.isOffline {
+  background: #ef4444;
+}
+
+.abAvatarOffline {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.abAvatarIcon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.abAvatarLabel {
+  font-size: 0.75rem;
+}

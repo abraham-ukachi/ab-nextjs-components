@@ -42,7 +42,7 @@
 - Next.js **16.3.4** / React **19** hard peers
 - ESLint 9 flat + Vitest
 - Package ships as TypeScript (`type: module`) with a `supportedComponents` catalog
-- Component ports from LesYeuxDoux land in Phase 2 — catalog stays **Pending** until then
+- Phase 2 Adapt complete; Phase 3 Port batch in progress
 
 ## Getting Started
 
@@ -78,15 +78,20 @@ A list of all the **client components** and their current status:
 
 | No. | Name | File | Status |
 |:----|:-----|:-----|:-------|
-| 1 | *`AbLogo`* | **ab-logo/index.tsx** | Done |
-| 2 | *`AbIcon`* | **ab-icon/index.tsx** | Done |
+| 1 | *`AbIcon`* | **ab-icon/index.tsx** | Done |
+| 2 | *`AbLogo`* | **ab-logo/index.tsx** | Done |
 | 3 | *`AbButton`* | **ab-button/index.tsx** | Done |
-| 4 | *`AbInput`* | **ab-input/index.tsx** | Done |
-| 5 | *`AbIconButton`* | **ab-icon-button/index.tsx** | Done |
-
-> NOTE: 
-
-
+| 4 | *`AbIconButton`* | **ab-icon-button/index.tsx** | Done |
+| 5 | *`AbInput`* | **ab-input/index.tsx** | Done |
+| 6 | *`AbBalloon`* | **ab-balloon/index.tsx** | Done |
+| 7 | *`AbAvatar`* | **ab-avatar/index.tsx** | Done |
+| 8 | *`AbTab`* | **ab-tab/index.tsx** | Done |
+| 9 | *`AbTabs`* | **ab-tabs/index.tsx** | Done |
+| 10 | *`AbMenu`* | **ab-menu/index.tsx** | Done |
+| 11 | *`AbCollapsible`* | **ab-collapsible/index.tsx** | Done |
+| 12 | *`AbColor`* | **ab-color/index.tsx** | Done |
+| 13 | *`AbInfo`* | **ab-info/index.tsx** | Done |
+| 14 | *`AbLikeButton`* | **ab-like-button/index.tsx** | Done |
 
 ## Server Components
 
@@ -94,12 +99,11 @@ A list of all the **server components** and their current status:
 
 | No. | Name | File | Status |
 |:----|:-----|:-----|:-------|
-| 1 | *`AbLogo`* | **server/ab-logo/index.tsx** | Done |
-| 2 | *`AbIcon`* | **server/ab-icon/index.tsx** | Done |
+| 1 | *`AbIcon`* | **server/ab-icon/index.tsx** | Done |
+| 2 | *`AbLogo`* | **server/ab-logo/index.tsx** | Done |
 | 3 | *`AbButton`* | **server/ab-button/index.tsx** | Done |
-
-> NOTE: 
-
+| 4 | *`AbAvatar`* | **server/ab-avatar/index.tsx** | Done |
+| 5 | *`AbBadge`* | **server/ab-badge/index.tsx** | Done |
 
 
 ## Learn More abElements

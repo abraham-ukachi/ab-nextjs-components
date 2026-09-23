@@ -1,0 +1,39 @@
+/* AbBadge — server, plain CSS */
+.abBadge {
+  position: absolute;
+  display: inline-flex;
+  width: fit-content;
+  height: fit-content;
+  overflow: hidden;
+  border-radius: 9999px;
+  padding: 0.125rem 0.375rem;
+  font-weight: 700;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+.abBadgeValue {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.color_default {
+  background: var(--ab-badge-bg, #e8def8);
+  color: var(--ab-badge-fg, #4a4458);
+}
+
+.color_red {
+  background: #dc2626;
+  color: #fff;
+}
+
+.pos_top_left { top: 0.25rem; left: 0.375rem; }
+.pos_top_right { top: 0.25rem; right: 0.375rem; }
+.pos_bottom_left { bottom: 0.25rem; left: 0.375rem; }
+.pos_bottom_right { bottom: 0.25rem; right: 0.375rem; }
+
+.size_small { font-size: 0.75rem; }
+.size_medium { font-size: 0.875rem; }
+.size_large { font-size: 1rem; }

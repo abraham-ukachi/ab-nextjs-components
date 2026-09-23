@@ -18,18 +18,14 @@ import type {
   FocusEvent,
   KeyboardEvent,
   MouseEvent,
-  ReactElement,
 } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 import { useAbToggle } from 'ab-nextjs-hooks/helpers/useAbToggle';
 import AbIconButton from '../ab-icon-button';
+import AbBalloon from '../ab-balloon';
 import styles from './styles.module.css';
 
-/** Minimal Balloon stub — `title` tooltip until AbBalloon lands. */
-function AbBalloonStub({ title, children }: { title?: string; children: ReactElement }) {
-  return <span title={title}>{children}</span>;
-}
 
 export interface AbInputProps {
   id: string;
@@ -204,7 +200,7 @@ const AbInput = forwardRef<HTMLInputElement, AbInputProps>(function AbInput(prop
         />
 
         {props.isClearable && hasValue ? (
-          <AbBalloonStub title={clearLabel}>
+          <AbBalloon title={clearLabel}>
             <AbIconButton
               icon="cancel"
               className={clsx('ClearButton', styles.abInputClear)}
@@ -217,7 +213,7 @@ const AbInput = forwardRef<HTMLInputElement, AbInputProps>(function AbInput(prop
               onClick={handleClear}
               title={clearLabel}
             />
-          </AbBalloonStub>
+          </AbBalloon>
         ) : null}
 
         {props.hasActionButton && props.actionIcon ? (
@@ -234,7 +230,7 @@ const AbInput = forwardRef<HTMLInputElement, AbInputProps>(function AbInput(prop
         ) : null}
 
         {props.type === 'password' && props.togglePasswordEnabled ? (
-          <AbBalloonStub title={isPasswordVisible ? hidePasswordLabel : showPasswordLabel}>
+          <AbBalloon title={isPasswordVisible ? hidePasswordLabel : showPasswordLabel}>
             <AbIconButton
               className={clsx('TogglePassword', 'icon-button', styles.abInputTogglePassword)}
               icon={isPasswordVisible ? 'visibility_off' : 'visibility'}
@@ -246,7 +242,7 @@ const AbInput = forwardRef<HTMLInputElement, AbInputProps>(function AbInput(prop
               onClick={handlePasswordToggle}
               title={isPasswordVisible ? hidePasswordLabel : showPasswordLabel}
             />
-          </AbBalloonStub>
+          </AbBalloon>
         ) : null}
 
         {props.isLoading ? (

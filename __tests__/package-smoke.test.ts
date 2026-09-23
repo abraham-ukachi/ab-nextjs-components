@@ -11,9 +11,20 @@ const componentFiles = [
   'ab-button/index.tsx',
   'ab-icon-button/index.tsx',
   'ab-input/index.tsx',
+  'ab-balloon/index.tsx',
+  'ab-avatar/index.tsx',
+  'ab-tab/index.tsx',
+  'ab-tabs/index.tsx',
+  'ab-menu/index.tsx',
+  'ab-collapsible/index.tsx',
+  'ab-color/index.tsx',
+  'ab-info/index.tsx',
+  'ab-like-button/index.tsx',
   'server/ab-icon/index.tsx',
   'server/ab-logo/index.tsx',
   'server/ab-button/index.tsx',
+  'server/ab-avatar/index.tsx',
+  'server/ab-badge/index.tsx',
 ]
 
 describe('ab-nextjs-components package smoke', () => {
@@ -30,12 +41,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (8 Done)', async () => {
+  it('exports supportedComponents catalog (19 Done)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(8)
+    expect(mod.supportedComponents).toHaveLength(19)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(5)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(3)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(14)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(5)
   })
 
   it('ships component entry files', () => {
@@ -51,6 +62,17 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-button/styles.module.css',
       'ab-icon-button/styles.module.css',
       'ab-input/styles.module.css',
+      'ab-balloon/styles.module.css',
+      'ab-avatar/styles.module.css',
+      'ab-tab/styles.module.css',
+      'ab-tabs/styles.module.css',
+      'ab-menu/styles.module.css',
+      'ab-collapsible/styles.module.css',
+      'ab-color/styles.module.css',
+      'ab-info/styles.module.css',
+      'ab-like-button/styles.module.css',
+      'server/ab-avatar/styles.module.css',
+      'server/ab-badge/styles.module.css',
     ]
     for (const file of cssFiles) {
       const css = readFileSync(join(root, file), 'utf8')

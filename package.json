@@ -68,7 +68,16 @@
     "ab-input",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "ab-balloon",
+    "ab-avatar",
+    "ab-tab",
+    "ab-tabs",
+    "ab-menu",
+    "ab-collapsible",
+    "ab-color",
+    "ab-info",
+    "ab-like-button"
   ],
   "exports": {
     ".": {
@@ -83,7 +92,18 @@
     "./ab-input": "./ab-input/index.tsx",
     "./server/ab-icon": "./server/ab-icon/index.tsx",
     "./server/ab-logo": "./server/ab-logo/index.tsx",
-    "./server/ab-button": "./server/ab-button/index.tsx"
+    "./server/ab-button": "./server/ab-button/index.tsx",
+    "./ab-balloon": "./ab-balloon/index.tsx",
+    "./ab-avatar": "./ab-avatar/index.tsx",
+    "./ab-tab": "./ab-tab/index.tsx",
+    "./ab-tabs": "./ab-tabs/index.tsx",
+    "./ab-menu": "./ab-menu/index.tsx",
+    "./ab-collapsible": "./ab-collapsible/index.tsx",
+    "./ab-color": "./ab-color/index.tsx",
+    "./ab-info": "./ab-info/index.tsx",
+    "./ab-like-button": "./ab-like-button/index.tsx",
+    "./server/ab-avatar": "./server/ab-avatar/index.tsx",
+    "./server/ab-badge": "./server/ab-badge/index.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {
