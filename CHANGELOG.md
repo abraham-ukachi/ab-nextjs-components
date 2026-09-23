@@ -1,5 +1,10 @@
 ### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
 
+## 0.1.4 — 2026-09-23
+
+- Release from `main` after merge of PR #1 (Next 16.3.4 + Phase 1–5 ports).
+
+
 * **Port (client):** AbBrand, AbName, AbNavbar, AbSidebar, AbText, AbTestHello, AbKeyFeature, AbMainHeadline, AbPreview, AbProduct, AbProductItem, AbSwitchBack, AbDemoBox, AbDemoCode
 * **Port (server):** AbBrand, AbName, AbNavbar, AbSidebar, AbNavLink, AbText, AbTestHello, AbKeyFeature, AbSwitchBack
 * Select/MenuItem skipped — empty on Projects (GitHub-only historically)
