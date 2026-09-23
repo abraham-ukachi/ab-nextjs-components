@@ -1,0 +1,77 @@
+.abSearchbar {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 2.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.625rem;
+  box-sizing: border-box;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ab-surface-container-high, #e6e0e9) 90%, transparent);
+  transition: background 0.3s ease;
+}
+.abSearchbar:focus-within {
+  background: var(--ab-surface-container-high, #e6e0e9);
+}
+.abSearchbarIcon {
+  font-size: 1.25rem;
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+}
+.abSearchbarInput {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  min-width: 0;
+}
+.abSearchbarInput::-webkit-search-decoration,
+.abSearchbarInput::-webkit-search-cancel-button {
+  appearance: none;
+  display: none;
+}
+.abSearchbarDivider {
+  width: 1px;
+  height: 1.25rem;
+  background: color-mix(in srgb, currentColor 20%, transparent);
+  flex-shrink: 0;
+}
+.abSearchbarDropdown,
+.abSearchbarClear {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font: inherit;
+  color: inherit;
+}
+.abSearchbarDropdown:disabled,
+.abSearchbarClear:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.abSearchbarSpinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: abSearchbarSpin 0.7s linear infinite;
+}
+@keyframes abSearchbarSpin {
+  to { transform: rotate(360deg); }
+}
+.isDisabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+

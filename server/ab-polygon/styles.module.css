@@ -1,0 +1,11 @@
+.abPolygon {
+  display: block;
+  line-height: 0;
+  pointer-events: none;
+}
+.abPolygon svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+

@@ -77,7 +77,15 @@
     "ab-collapsible",
     "ab-color",
     "ab-info",
-    "ab-like-button"
+    "ab-like-button",
+    "ab-searchbar",
+    "ab-search-result",
+    "ab-page-paginator",
+    "ab-page-switcher",
+    "ab-progress-chips",
+    "ab-price",
+    "ab-price-tag",
+    "ab-image"
   ],
   "exports": {
     ".": {
@@ -103,7 +111,16 @@
     "./ab-info": "./ab-info/index.tsx",
     "./ab-like-button": "./ab-like-button/index.tsx",
     "./server/ab-avatar": "./server/ab-avatar/index.tsx",
-    "./server/ab-badge": "./server/ab-badge/index.tsx"
+    "./server/ab-badge": "./server/ab-badge/index.tsx",
+    "./ab-searchbar": "./ab-searchbar/index.tsx",
+    "./ab-search-result": "./ab-search-result/index.tsx",
+    "./ab-page-paginator": "./ab-page-paginator/index.tsx",
+    "./ab-page-switcher": "./ab-page-switcher/index.tsx",
+    "./ab-progress-chips": "./ab-progress-chips/index.tsx",
+    "./ab-price": "./ab-price/index.tsx",
+    "./ab-price-tag": "./ab-price-tag/index.tsx",
+    "./ab-image": "./ab-image/index.tsx",
+    "./server/ab-polygon": "./server/ab-polygon/index.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {

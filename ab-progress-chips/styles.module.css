@@ -1,0 +1,43 @@
+.abProgressChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.abProgressChip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  background: color-mix(in srgb, var(--ab-surface-container, #f3edf7) 80%, transparent);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  overflow: hidden;
+}
+.abProgressChip[data-selected="true"] {
+  border-color: var(--ab-primary, #6750a4);
+  background: color-mix(in srgb, var(--ab-primary, #6750a4) 18%, transparent);
+}
+.abProgressChipBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--ab-primary, #6750a4);
+  width: var(--chip-progress, 0%);
+  transition: width 0.2s linear;
+}
+.abProgressChipName {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.abProgressChipCode {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-family: ui-monospace, monospace;
+}
+

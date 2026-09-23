@@ -1,5 +1,12 @@
 # Changelog
 
+### Unreleased (chore/upgrade-next-16 — Phase 4 Port)
+
+* **Port:** AbSearchbar, AbSearchResult, AbPagePaginator, AbPageSwitcher, AbProgressChips, AbPrice, AbPriceTag
+* **Adapt:** AbImage (Dexie / offline / background-removal stripped; next/image + optional fallback)
+* **Port (server):** AbPolygon
+* Catalog 28 Done (22 client / 6 server). Plain CSS modules. Local only — no push.
+
 ### Unreleased (chore/upgrade-next-16 — Phase 2 Adapt + Phase 3 Port)
 
 * **Adapt:** **AbBalloon** (`title=` locked) — Input now uses real AbBalloon

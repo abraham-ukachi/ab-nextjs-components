@@ -1,0 +1,81 @@
+.abPriceTag {
+  display: flex;
+  flex-direction: row;
+  width: 16rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.25rem 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  user-select: none;
+  background: color-mix(in srgb, var(--ab-primary-container, #eaddff) 35%, transparent);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px color-mix(in srgb, #000 12%, transparent);
+}
+.abPriceTagDetails {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.abPriceTagBrandCategory {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: center;
+}
+.abPriceTagBrand {
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  width: fit-content;
+  background: color-mix(in srgb, var(--ab-tertiary-container, #ffd8e4) 80%, transparent);
+}
+.abPriceTagCategory {
+  font-size: 0.875rem;
+  text-transform: lowercase;
+  opacity: 0.85;
+  truncate: true;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.abPriceTagName {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  opacity: 0.9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.abPriceTagPrice {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.abPriceTagIconWrap {
+  display: flex;
+  width: 4rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  opacity: 0.9;
+}
+.abPriceTagIconDivider {
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: color-mix(in srgb, currentColor 25%, transparent);
+}
+.abPriceTagIcon {
+  font-size: 1.75rem;
+}
+

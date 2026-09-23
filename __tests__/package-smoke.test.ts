@@ -25,6 +25,15 @@ const componentFiles = [
   'server/ab-button/index.tsx',
   'server/ab-avatar/index.tsx',
   'server/ab-badge/index.tsx',
+  'ab-searchbar/index.tsx',
+  'ab-search-result/index.tsx',
+  'ab-page-paginator/index.tsx',
+  'ab-page-switcher/index.tsx',
+  'ab-progress-chips/index.tsx',
+  'ab-price/index.tsx',
+  'ab-price-tag/index.tsx',
+  'ab-image/index.tsx',
+  'server/ab-polygon/index.tsx',
 ]
 
 describe('ab-nextjs-components package smoke', () => {
@@ -41,12 +50,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (19 Done)', async () => {
+  it('exports supportedComponents catalog (28 Done)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(19)
+    expect(mod.supportedComponents).toHaveLength(28)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(14)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(5)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(22)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(6)
   })
 
   it('ships component entry files', () => {
@@ -73,7 +82,16 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-like-button/styles.module.css',
       'server/ab-avatar/styles.module.css',
       'server/ab-badge/styles.module.css',
-    ]
+      'ab-searchbar/styles.module.css',
+      'ab-search-result/styles.module.css',
+  'ab-page-paginator/styles.module.css',
+  'ab-page-switcher/styles.module.css',
+  'ab-progress-chips/styles.module.css',
+  'ab-price/styles.module.css',
+  'ab-price-tag/styles.module.css',
+  'ab-image/styles.module.css',
+  'server/ab-polygon/styles.module.css',
+]
     for (const file of cssFiles) {
       const css = readFileSync(join(root, file), 'utf8')
       expect(css.includes('@apply')).toBe(false)

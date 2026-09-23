@@ -13,7 +13,7 @@
 import type { ComponentCatalogEntry } from './types'
 
 /**
- * Catalog — Phase 2 Adapt + Phase 3 Port marked Done.
+ * Catalog — Phase 2 Adapt + Phase 3 Port + Phase 4 Port marked Done.
  */
 const supportedComponents: Array<ComponentCatalogEntry> = [
   // CLIENT
@@ -31,6 +31,14 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbColor', file: 'ab-color/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbInfo', file: 'ab-info/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbLikeButton', file: 'ab-like-button/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbSearchbar', file: 'ab-searchbar/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbSearchResult', file: 'ab-search-result/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbPagePaginator', file: 'ab-page-paginator/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbPageSwitcher', file: 'ab-page-switcher/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbProgressChips', file: 'ab-progress-chips/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbPrice', file: 'ab-price/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbPriceTag', file: 'ab-price-tag/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbImage', file: 'ab-image/index.tsx', kind: 'client', status: 'Done' },
 
   // SERVER
   { name: 'AbIcon', file: 'server/ab-icon/index.tsx', kind: 'server', status: 'Done' },
@@ -38,6 +46,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbButton', file: 'server/ab-button/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbAvatar', file: 'server/ab-avatar/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbBadge', file: 'server/ab-badge/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbPolygon', file: 'server/ab-polygon/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
@@ -59,3 +68,13 @@ export { default as AbCollapsible } from './ab-collapsible'
 export { default as AbColor } from './ab-color'
 export { default as AbInfo } from './ab-info'
 export { default as AbLikeButton } from './ab-like-button'
+export { default as AbSearchbar } from './ab-searchbar'
+export { default as AbSearchResult } from './ab-search-result'
+export { default as AbPagePaginator } from './ab-page-paginator'
+export { default as AbPageSwitcher } from './ab-page-switcher'
+export { default as AbProgressChips } from './ab-progress-chips'
+export { default as AbPrice } from './ab-price'
+export { default as AbPriceTag } from './ab-price-tag'
+export { default as AbImage } from './ab-image'
+export { default as AbPolygon } from './server/ab-polygon'
+

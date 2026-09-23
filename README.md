@@ -42,7 +42,7 @@
 - Next.js **16.3.4** / React **19** hard peers
 - ESLint 9 flat + Vitest
 - Package ships as TypeScript (`type: module`) with a `supportedComponents` catalog
-- Phase 2 Adapt complete; Phase 3 Port batch in progress
+- Phase 2 Adapt complete; Phase 4 Port batch complete (local)
 
 ## Getting Started
 
@@ -92,6 +92,14 @@ A list of all the **client components** and their current status:
 | 12 | *`AbColor`* | **ab-color/index.tsx** | Done |
 | 13 | *`AbInfo`* | **ab-info/index.tsx** | Done |
 | 14 | *`AbLikeButton`* | **ab-like-button/index.tsx** | Done |
+| 15 | *`AbSearchbar`* | **ab-searchbar/index.tsx** | Done |
+| 16 | *`AbSearchResult`* | **ab-search-result/index.tsx** | Done |
+| 17 | *`AbPagePaginator`* | **ab-page-paginator/index.tsx** | Done |
+| 18 | *`AbPageSwitcher`* | **ab-page-switcher/index.tsx** | Done |
+| 19 | *`AbProgressChips`* | **ab-progress-chips/index.tsx** | Done |
+| 20 | *`AbPrice`* | **ab-price/index.tsx** | Done |
+| 21 | *`AbPriceTag`* | **ab-price-tag/index.tsx** | Done |
+| 22 | *`AbImage`* | **ab-image/index.tsx** | Done |
 
 ## Server Components
 
@@ -104,6 +112,7 @@ A list of all the **server components** and their current status:
 | 3 | *`AbButton`* | **server/ab-button/index.tsx** | Done |
 | 4 | *`AbAvatar`* | **server/ab-avatar/index.tsx** | Done |
 | 5 | *`AbBadge`* | **server/ab-badge/index.tsx** | Done |
+| 6 | *`AbPolygon`* | **server/ab-polygon/index.tsx** | Done |
 
 
 ## Learn More abElements
