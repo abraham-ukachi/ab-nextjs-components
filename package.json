@@ -120,7 +120,11 @@
     "./ab-price": "./ab-price/index.tsx",
     "./ab-price-tag": "./ab-price-tag/index.tsx",
     "./ab-image": "./ab-image/index.tsx",
-    "./server/ab-polygon": "./server/ab-polygon/index.tsx"
+    "./server/ab-polygon": "./server/ab-polygon/index.tsx",
+    "./server": {
+      "types": "./server/index.ts",
+      "default": "./server/index.ts"
+    }
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {

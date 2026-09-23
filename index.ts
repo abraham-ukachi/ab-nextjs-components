@@ -14,6 +14,8 @@ import type { ComponentCatalogEntry } from './types'
 
 /**
  * Catalog — Phase 2 Adapt + Phase 3 Port + Phase 4 Port marked Done.
+ * Barrel re-exports use explicit /index.tsx paths so Node/Turbopack ESM
+ * resolution does not hit ERR_UNSUPPORTED_DIR_IMPORT.
  */
 const supportedComponents: Array<ComponentCatalogEntry> = [
   // CLIENT
@@ -54,27 +56,26 @@ const abComponents = { supportedComponents }
 export { supportedComponents }
 export default abComponents
 
-export { default as AbIcon } from './ab-icon'
-export { default as AbLogo } from './ab-logo'
-export { default as AbButton } from './ab-button'
-export { default as AbIconButton } from './ab-icon-button'
-export { default as AbInput } from './ab-input'
-export { default as AbBalloon } from './ab-balloon'
-export { default as AbAvatar } from './ab-avatar'
-export { default as AbTab } from './ab-tab'
-export { default as AbTabs } from './ab-tabs'
-export { default as AbMenu } from './ab-menu'
-export { default as AbCollapsible } from './ab-collapsible'
-export { default as AbColor } from './ab-color'
-export { default as AbInfo } from './ab-info'
-export { default as AbLikeButton } from './ab-like-button'
-export { default as AbSearchbar } from './ab-searchbar'
-export { default as AbSearchResult } from './ab-search-result'
-export { default as AbPagePaginator } from './ab-page-paginator'
-export { default as AbPageSwitcher } from './ab-page-switcher'
-export { default as AbProgressChips } from './ab-progress-chips'
-export { default as AbPrice } from './ab-price'
-export { default as AbPriceTag } from './ab-price-tag'
-export { default as AbImage } from './ab-image'
-export { default as AbPolygon } from './server/ab-polygon'
-
+export { default as AbIcon } from './ab-icon/index.tsx'
+export { default as AbLogo } from './ab-logo/index.tsx'
+export { default as AbButton } from './ab-button/index.tsx'
+export { default as AbIconButton } from './ab-icon-button/index.tsx'
+export { default as AbInput } from './ab-input/index.tsx'
+export { default as AbBalloon } from './ab-balloon/index.tsx'
+export { default as AbAvatar } from './ab-avatar/index.tsx'
+export { default as AbTab } from './ab-tab/index.tsx'
+export { default as AbTabs } from './ab-tabs/index.tsx'
+export { default as AbMenu } from './ab-menu/index.tsx'
+export { default as AbCollapsible } from './ab-collapsible/index.tsx'
+export { default as AbColor } from './ab-color/index.tsx'
+export { default as AbInfo } from './ab-info/index.tsx'
+export { default as AbLikeButton } from './ab-like-button/index.tsx'
+export { default as AbSearchbar } from './ab-searchbar/index.tsx'
+export { default as AbSearchResult } from './ab-search-result/index.tsx'
+export { default as AbPagePaginator } from './ab-page-paginator/index.tsx'
+export { default as AbPageSwitcher } from './ab-page-switcher/index.tsx'
+export { default as AbProgressChips } from './ab-progress-chips/index.tsx'
+export { default as AbPrice } from './ab-price/index.tsx'
+export { default as AbPriceTag } from './ab-price-tag/index.tsx'
+export { default as AbImage } from './ab-image/index.tsx'
+export { default as AbPolygon } from './server/ab-polygon/index.tsx'
