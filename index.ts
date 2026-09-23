@@ -13,9 +13,8 @@
 import type { ComponentCatalogEntry } from './types'
 
 /**
- * Catalog — Phase 2 Adapt + Phase 3 Port + Phase 4 Port marked Done.
- * Barrel re-exports use explicit /index.tsx paths so Node/Turbopack ESM
- * resolution does not hit ERR_UNSUPPORTED_DIR_IMPORT.
+ * Catalog — Phase 2–4 + Skip-override (Phase 5 components) marked Done.
+ * Barrel re-exports use explicit /index.tsx paths (avoid DIR_IMPORT).
  */
 const supportedComponents: Array<ComponentCatalogEntry> = [
   // CLIENT
@@ -41,6 +40,20 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbPrice', file: 'ab-price/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbPriceTag', file: 'ab-price-tag/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbImage', file: 'ab-image/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbBrand', file: 'ab-brand/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbName', file: 'ab-name/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbNavbar', file: 'ab-navbar/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbSidebar', file: 'ab-sidebar/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbText', file: 'ab-text/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbTestHello', file: 'ab-test-hello/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbKeyFeature', file: 'ab-key-feature/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbMainHeadline', file: 'ab-main-headline/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbPreview', file: 'ab-preview/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbProduct', file: 'ab-product/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbProductItem', file: 'ab-product-item/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbSwitchBack', file: 'ab-switch-back/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'client', status: 'Done' },
 
   // SERVER
   { name: 'AbIcon', file: 'server/ab-icon/index.tsx', kind: 'server', status: 'Done' },
@@ -49,6 +62,15 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbAvatar', file: 'server/ab-avatar/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbBadge', file: 'server/ab-badge/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbPolygon', file: 'server/ab-polygon/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbBrand', file: 'server/ab-brand/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbName', file: 'server/ab-name/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbNavbar', file: 'server/ab-navbar/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbSidebar', file: 'server/ab-sidebar/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbNavLink', file: 'server/ab-nav-link/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbText', file: 'server/ab-text/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbTestHello', file: 'server/ab-test-hello/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbKeyFeature', file: 'server/ab-key-feature/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbSwitchBack', file: 'server/ab-switch-back/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
@@ -78,4 +100,18 @@ export { default as AbProgressChips } from './ab-progress-chips/index.tsx'
 export { default as AbPrice } from './ab-price/index.tsx'
 export { default as AbPriceTag } from './ab-price-tag/index.tsx'
 export { default as AbImage } from './ab-image/index.tsx'
+export { default as AbBrand } from './ab-brand/index.tsx'
+export { default as AbName } from './ab-name/index.tsx'
+export { default as AbNavbar } from './ab-navbar/index.tsx'
+export { default as AbSidebar } from './ab-sidebar/index.tsx'
+export { default as AbText } from './ab-text/index.tsx'
+export { default as AbTestHello } from './ab-test-hello/index.tsx'
+export { default as AbKeyFeature } from './ab-key-feature/index.tsx'
+export { default as AbMainHeadline } from './ab-main-headline/index.tsx'
+export { default as AbPreview } from './ab-preview/index.tsx'
+export { default as AbProduct } from './ab-product/index.tsx'
+export { default as AbProductItem } from './ab-product-item/index.tsx'
+export { default as AbSwitchBack } from './ab-switch-back/index.tsx'
+export { default as AbDemoBox } from './ab-demo-box/index.tsx'
+export { default as AbDemoCode } from './ab-demo-code/index.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'

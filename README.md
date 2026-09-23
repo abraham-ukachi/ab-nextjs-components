@@ -42,7 +42,7 @@
 - Next.js **16.3.4** / React **19** hard peers
 - ESLint 9 flat + Vitest
 - Package ships as TypeScript (`type: module`) with a `supportedComponents` catalog
-- Phase 2 Adapt complete; Phase 4 Port batch complete (local)
+- Phase 2 Adapt complete; Phase 4 + Skip-override (Phase 5 components) complete (local)
 
 ## Getting Started
 
@@ -100,6 +100,20 @@ A list of all the **client components** and their current status:
 | 20 | *`AbPrice`* | **ab-price/index.tsx** | Done |
 | 21 | *`AbPriceTag`* | **ab-price-tag/index.tsx** | Done |
 | 22 | *`AbImage`* | **ab-image/index.tsx** | Done |
+| 23 | *`AbBrand`* | **ab-brand/index.tsx** | Done |
+| 24 | *`AbName`* | **ab-name/index.tsx** | Done |
+| 25 | *`AbNavbar`* | **ab-navbar/index.tsx** | Done |
+| 26 | *`AbSidebar`* | **ab-sidebar/index.tsx** | Done |
+| 27 | *`AbText`* | **ab-text/index.tsx** | Done |
+| 28 | *`AbTestHello`* | **ab-test-hello/index.tsx** | Done |
+| 29 | *`AbKeyFeature`* | **ab-key-feature/index.tsx** | Done |
+| 30 | *`AbMainHeadline`* | **ab-main-headline/index.tsx** | Done |
+| 31 | *`AbPreview`* | **ab-preview/index.tsx** | Done |
+| 32 | *`AbProduct`* | **ab-product/index.tsx** | Done |
+| 33 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
+| 34 | *`AbSwitchBack`* | **ab-switch-back/index.tsx** | Done |
+| 35 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
+| 36 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
 
 ## Server Components
 
@@ -113,6 +127,15 @@ A list of all the **server components** and their current status:
 | 4 | *`AbAvatar`* | **server/ab-avatar/index.tsx** | Done |
 | 5 | *`AbBadge`* | **server/ab-badge/index.tsx** | Done |
 | 6 | *`AbPolygon`* | **server/ab-polygon/index.tsx** | Done |
+| 7 | *`AbBrand`* | **server/ab-brand/index.tsx** | Done |
+| 8 | *`AbName`* | **server/ab-name/index.tsx** | Done |
+| 9 | *`AbNavbar`* | **server/ab-navbar/index.tsx** | Done |
+| 10 | *`AbSidebar`* | **server/ab-sidebar/index.tsx** | Done |
+| 11 | *`AbNavLink`* | **server/ab-nav-link/index.tsx** | Done |
+| 12 | *`AbText`* | **server/ab-text/index.tsx** | Done |
+| 13 | *`AbTestHello`* | **server/ab-test-hello/index.tsx** | Done |
+| 14 | *`AbKeyFeature`* | **server/ab-key-feature/index.tsx** | Done |
+| 15 | *`AbSwitchBack`* | **server/ab-switch-back/index.tsx** | Done |
 
 
 ## Learn More abElements

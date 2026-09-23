@@ -1,3 +1,11 @@
+### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
+
+* **Port (client):** AbBrand, AbName, AbNavbar, AbSidebar, AbText, AbTestHello, AbKeyFeature, AbMainHeadline, AbPreview, AbProduct, AbProductItem, AbSwitchBack, AbDemoBox, AbDemoCode
+* **Port (server):** AbBrand, AbName, AbNavbar, AbSidebar, AbNavLink, AbText, AbTestHello, AbKeyFeature, AbSwitchBack
+* Select/MenuItem skipped — empty on Projects (GitHub-only historically)
+* Product/Preview adapted (Dexie/providers/i18n stripped); usable props API kept
+* Catalog **51 Done** (36 client / 15 server). Local only — no push.
+
 # Changelog
 
 ### Unreleased (chore/upgrade-next-16 — Phase 4 Port)

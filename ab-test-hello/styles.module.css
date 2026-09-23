@@ -1,0 +1,25 @@
+.abTestHello {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 1.5rem;
+}
+.abTestHelloTitle {
+  margin: 0;
+  padding: 0.75rem 0 0.25rem;
+  font-size: 1rem;
+}
+.abTestHelloName {
+  font-family: ui-serif, Georgia, serif;
+  font-weight: 700;
+  color: var(--ab-primary, #6750a4);
+}
+.abTestHelloSrc {
+  font-family: ui-monospace, monospace;
+  font-size: 0.875rem;
+  opacity: 0.5;
+}
+.abTestHelloSrc:hover {
+  opacity: 0.9;
+}

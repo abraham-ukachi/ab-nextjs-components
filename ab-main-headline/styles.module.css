@@ -1,0 +1,24 @@
+.abMainHeadline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.abMainHeadlineTitle {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+.abMainHeadlineTitle strong { font-weight: 900; }
+.abMainHeadlineSubtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  opacity: 0.75;
+}
+.abMainHeadlinePeriod {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+}

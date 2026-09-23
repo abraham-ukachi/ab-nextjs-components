@@ -85,7 +85,21 @@
     "ab-progress-chips",
     "ab-price",
     "ab-price-tag",
-    "ab-image"
+    "ab-image",
+    "ab-brand",
+    "ab-name",
+    "ab-navbar",
+    "ab-sidebar",
+    "ab-text",
+    "ab-test-hello",
+    "ab-key-feature",
+    "ab-main-headline",
+    "ab-preview",
+    "ab-product",
+    "ab-product-item",
+    "ab-switch-back",
+    "ab-demo-box",
+    "ab-demo-code"
   ],
   "exports": {
     ".": {
@@ -122,9 +136,31 @@
     "./ab-image": "./ab-image/index.tsx",
     "./server/ab-polygon": "./server/ab-polygon/index.tsx",
     "./server": {
-      "types": "./server/index.ts",
       "default": "./server/index.ts"
-    }
+    },
+    "./ab-brand": "./ab-brand/index.tsx",
+    "./ab-name": "./ab-name/index.tsx",
+    "./ab-navbar": "./ab-navbar/index.tsx",
+    "./ab-sidebar": "./ab-sidebar/index.tsx",
+    "./ab-text": "./ab-text/index.tsx",
+    "./ab-test-hello": "./ab-test-hello/index.tsx",
+    "./ab-key-feature": "./ab-key-feature/index.tsx",
+    "./ab-main-headline": "./ab-main-headline/index.tsx",
+    "./ab-preview": "./ab-preview/index.tsx",
+    "./ab-product": "./ab-product/index.tsx",
+    "./ab-product-item": "./ab-product-item/index.tsx",
+    "./ab-switch-back": "./ab-switch-back/index.tsx",
+    "./ab-demo-box": "./ab-demo-box/index.tsx",
+    "./ab-demo-code": "./ab-demo-code/index.tsx",
+    "./server/ab-brand": "./server/ab-brand/index.tsx",
+    "./server/ab-name": "./server/ab-name/index.tsx",
+    "./server/ab-navbar": "./server/ab-navbar/index.tsx",
+    "./server/ab-sidebar": "./server/ab-sidebar/index.tsx",
+    "./server/ab-nav-link": "./server/ab-nav-link/index.tsx",
+    "./server/ab-text": "./server/ab-text/index.tsx",
+    "./server/ab-test-hello": "./server/ab-test-hello/index.tsx",
+    "./server/ab-key-feature": "./server/ab-key-feature/index.tsx",
+    "./server/ab-switch-back": "./server/ab-switch-back/index.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {
