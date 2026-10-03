@@ -25,8 +25,8 @@ importers:
         specifier: ^19
         version: 19.3.0
       ab-nextjs-hooks:
-        specifier: file:../ab-nextjs-hooks
-        version: file:../ab-nextjs-hooks(next@16.3.4(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        specifier: ^0.1.2
+        version: 0.1.2(next@16.3.4(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1001,8 +1001,8 @@ packages:
   ab-nextjs-fonts@0.2.2:
     resolution: {integrity: sha512-LouVL5p5kYhnqrjNcw6EQhGNQiS1EvQECR67x+6tMR8UMJ4IPS7w2C5U+w/SxChFJprlCb8Hnfv35/tP87iDCg==}
 
-  ab-nextjs-hooks@file:../ab-nextjs-hooks:
-    resolution: {directory: ../ab-nextjs-hooks, type: directory}
+  ab-nextjs-hooks@0.1.2:
+    resolution: {integrity: sha512-UMRNYiCXCN9yZut0xzK3HmZb/3kro1KKPkntMoP3au04cTqJr9SVNZvFuzXFOfaIi9klyXzKBHUlNCxq2eGpzA==}
     peerDependencies:
       next: 16.3.4
       react: ^19
@@ -3117,7 +3117,7 @@ snapshots:
 
   ab-nextjs-fonts@0.2.2: {}
 
-  ab-nextjs-hooks@file:../ab-nextjs-hooks(next@16.3.4(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  ab-nextjs-hooks@0.1.2(next@16.3.4(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       next: 16.3.4(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react: 19.3.0
