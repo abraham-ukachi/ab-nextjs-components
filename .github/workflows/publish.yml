@@ -1,0 +1,86 @@
+name: Publish to npm
+
+# Publishes to npm with Trusted Publishing (GitHub OIDC): no NPM_TOKEN, provenance on.
+# Runs on every push to main, and only publishes when package.json's version is not on npm yet.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-npm
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write # required for npm Trusted Publishing + provenance
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+
+      - name: Check whether this version is already on npm
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          PUBLISHED=$(npm view "$NAME@$VERSION" version 2>/dev/null || true)
+          if [ "$PUBLISHED" = "$VERSION" ]; then
+            echo "$NAME@$VERSION is already on npm, skipping publish."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$NAME@$VERSION is not on npm yet, publishing."
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Use npm with Trusted Publishing support (>= 11.5.1)
+        if: steps.check.outputs.publish == 'true'
+        run: npm install -g npm@^11.5.1 && npm --version
+
+      - name: Install dependencies
+        if: steps.check.outputs.publish == 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: "Guard against file:/link: dependencies"
+        if: steps.check.outputs.publish == 'true'
+        run: node scripts/check-publish-deps.mjs
+
+      - name: Lint
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          pnpm run lint
+          git diff --exit-code || (echo "::error::Lint changed files. Run 'pnpm lint' locally and commit the result." && exit 1)
+
+      - name: Test
+        if: steps.check.outputs.publish == 'true'
+        run: pnpm test
+
+      - name: Build
+        if: steps.check.outputs.publish == 'true'
+        run: pnpm run --if-present build
+
+      - name: Publish to npm
+        if: steps.check.outputs.publish == 'true'
+        run: npm publish --provenance --access public
