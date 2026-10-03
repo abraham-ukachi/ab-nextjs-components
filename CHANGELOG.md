@@ -1,3 +1,8 @@
+## 0.1.5 — 2026-10-03
+
+- Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)
+- `next` peer is now `^16.3.4`; dev dependency on ab-nextjs-hooks comes from the registry
+
 ### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
 
 ## 0.1.4 — 2026-09-23
