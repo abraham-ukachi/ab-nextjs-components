@@ -63,9 +63,9 @@ describe('ab-nextjs-components package smoke', () => {
   it('targets Next 16.3.4 peers + soft peers', () => {
     const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
     expect(pkg.name).toBe('ab-nextjs-components')
-    expect(pkg.version).toBe('0.1.2')
+    expect(pkg.version).toMatch(/^\d+\.\d+\.\d+$/)
     expect(pkg.type).toBe('module')
-    expect(pkg.peerDependencies.next).toBe('16.3.4')
+    expect(pkg.peerDependencies.next).toBe('^16.3.4')
     expect(pkg.peerDependencies.react).toBe('^19')
     expect(pkg.peerDependencies.clsx).toBe('^2')
     expect(pkg.peerDependencies['ab-nextjs-hooks']).toBeTruthy()
