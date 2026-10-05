@@ -31,4 +31,13 @@ describe('contributing fixes (0.1.6)', () => {
     }
     expect(read('ab-logo/ab-logo.svg')).toMatch(/<svg/)
   })
+
+  it('AbNavbar is a <nav data-ab-part="bottomBar">', () => {
+    for (const file of ['ab-navbar/index.tsx', 'server/ab-navbar/index.tsx']) {
+      const src = read(file)
+      expect(src).toMatch(/<nav data-type=\{type\} data-ab-part="bottomBar"/)
+      expect(src).toMatch(/<\/nav>/)
+    }
+  })
+
 })

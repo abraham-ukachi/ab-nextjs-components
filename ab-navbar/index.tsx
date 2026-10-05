@@ -40,7 +40,7 @@ const AbNavbar = ({
 }: AbNavbarProps): ReactElement => {
   const pathname = usePathname() ?? '';
   return (
-    <nav data-type={type} className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
+    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
       <ul className={styles.abNavbarList}>
         {links.map((link) => {
           const active = page ? page === link.value : pathname === link.href || pathname.startsWith(`${link.href}/`);
