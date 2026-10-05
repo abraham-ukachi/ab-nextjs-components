@@ -1,3 +1,7 @@
+## 0.1.7 — 2026-10-05
+
+- **AbNavbar:** root `<nav>` sets `data-ab-part="bottomBar"` (client + server)
+
 ## 0.1.6 — 2026-10-05
 
 - **AbSidebar:** renders `<nav data-ab-part="sidebar">` (was `<aside>`) so aside dialogs/menus never hit the sidebar
