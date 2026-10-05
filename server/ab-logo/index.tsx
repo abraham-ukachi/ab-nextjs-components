@@ -72,7 +72,7 @@ const AbLogo = ({
     );
   }
 
-  // With no `mask`/`src`, leave the mask to `ab-nextjs-theme` (`--app-logo-url` / `.app-logo`).
+  // With no `mask`/`src`, leave the mask to `ab-nextjs-components` chrome (`--app-logo-url` / `.app-logo`).
   // When `mask` or `src` is set, apply it inline (src becomes a CSS mask url).
   const maskValue = mask ?? (src ? `url('${src}') no-repeat 50% 50%` : undefined);
   return (
