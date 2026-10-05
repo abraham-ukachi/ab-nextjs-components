@@ -44,6 +44,15 @@
 - Package ships as TypeScript (`type: module`) with a `supportedComponents` catalog
 - Phase 2 Adapt complete; Phase 4 + Skip-override (Phase 5 components) complete (local)
 
+
+
+### Sidebar, menu & logo (0.1.6)
+
+* `<AbSidebar>` is a **`<nav data-ab-part="sidebar">`** (not `<aside>`). Pair with `ab-nextjs-core@^0.1.4` + `ab-nextjs-hooks@^0.1.4` so aside dialogs target `aside.AbAsideLayout`.
+* `<AbMenu id>` also sets **`data-id`**, so `useAbMenu` can find it.
+* `<AbLogo>` defaults to the Ab logo **shipped in this package** (data URI / `ab-logo/ab-logo.svg`). Pass `src` to override.
+
+
 ## Getting Started
 
 ### Installation
