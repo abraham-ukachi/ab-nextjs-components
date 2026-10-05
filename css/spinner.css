@@ -1,0 +1,28 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+/* ==== SPINNERS ==== */
+
+span.spinner {
+  display: block;
+  position: relative;
+  width: var(--spinner-size, 48px);
+  height: var(--spinner-size, 48px);
+  background-color: var(--spinner-color, var(--on-background-color));
+  opacity: var(--spinner-opacity, inherit);
+  mask: var(--spinner-url, url("../assets/spinners/3-dots-scale.svg")) no-repeat 50% 50%;
+  mask-size: cover;
+}
+
+span.spinner.dots-3 {
+  --spinner-url: url("../assets/spinners/3-dots-scale.svg");
+}
+
+span.spinner.dots-12 {
+  --spinner-url: url("../assets/spinners/12-dots-scale-rotate.svg");
+}
+
+
+/* === END of SPINNERS === */

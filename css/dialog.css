@@ -1,0 +1,248 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+/* Dialogs */
+#dialogs, .Dialogs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding: var(--dialogs-padding, 24px);
+}
+
+
+/* Dialog */
+#dialog, .dialog {
+  width: 100%;
+  position: relative;
+  user-select: none;
+  pointer-events: auto;
+  background: var(--dialog-color-background, var(--background-color));
+  color: var(--dialog-color-on-background, var(--on-background-color));
+  box-sizing: border-box;
+  padding: var(--dialog-padding, 8px 16px);
+  border-radius: var(--dialog-border-radius, 12px);
+
+  /* opacity: 0; */
+  text-align: center;
+  max-width: 512px;
+
+  --fade-in-animation-delay: var(--dialog-animation-delay, 200ms);
+}
+
+/* Dialog Title */
+.dialog-title {
+  margin: 16px 0;
+}
+
+/* Dialog Message */
+.dialog-message, .dialog-msg {
+  opacity: var(--opacity-text-inactive);
+}
+
+/* Dialog Buttons */
+.dialog-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Each Dialog Button */
+a.dialog-button, a[role="button"].dialog-button {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 8px 0;
+  background: var(--dialog-button-background-color, inherit);
+  color: var(--dialog-button-text-color, inherit);
+  font-size: 20px;
+  line-height: 50px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+}
+
+/* Dialog Button with default attribute */
+a.dialog-button[data-default], a[role="button"][data-default].dialog-button {
+  color: var(--dialog-button-color-default, var(--primary-color));
+}
+
+/* Hover on Dialog Button */
+a.dialog-button:hover, a[role="button"].dialog-button:hover {
+  background: var(--dialog-button-color-hover, var(--surface-variant-color));
+}
+
+a.dialog-button:focus, a[role="button"].dialog-button:focus {
+  outline: 3px solid;
+  outline-color: var(--tertiary-color);
+}
+
+
+/* dialog-list */
+ul.dialog-list {
+  width: var(--dialog-list-width, 100%);
+  height: var(--dialog-list-height, auto);
+  max-height: var(--dialog-list-max-height, 300px);
+  overflow: hidden auto;
+  margin: var(--dialog-list-margin, 2rem 0);
+}
+
+
+/* dialog-list-item */
+li.dialog-list-item {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--dialog-list-item-width, 100%);
+  height: var(--dialog-list-item-height, auto);
+  padding: var(--dialog-list-item-padding, 0.75rem 1rem);
+  transform: scale(1);
+  transform-origin: left;
+  opacity: var(--opacity-dialog-list-item, 0.68);
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+
+li.dialog-list-item:hover {
+  opacity: var(--opacity-dialog-list-item-hover, 1);
+}
+
+
+li.dialog-list-item[data-shrinks]:active {
+  transform: scale(0.9);
+} 
+
+
+li.dialog-list-item .checkbox,
+li.dialog-list-item .radio {
+  width: var(--dialog-list-item-checkbox-size, 20px);
+  height: var(--dialog-list-item-checkbox-size, 20px);
+  outline: 2px solid var(--dialog-list-item-checkbox-outline-color, var(--outline-color));
+  margin-right: 1.25rem;
+  outline-offset: 3px;
+}
+
+li.dialog-list-item .checkbox {
+  border-radius: 10%;
+}
+
+li.dialog-list-item .radio {
+  border-radius: 50%;
+}
+
+
+/* [data-selected="true"] dialog list item */
+li.dialog-list-item[data-selected="true"] {
+  font-weight: bold; 
+  opacity: var(--opacity-dialog-list-item-selected, 1);
+}
+
+
+li.dialog-list-item[data-selected="true"] .checkbox,
+li.dialog-list-item[data-selected="true"] .radio {
+  outline-color: var(--dialog-list-item-checkbox-selected-border-color, var(--primary-color));
+  background: var(--dialog-list-item-checkbox-selected-background-color, var(--primary-color));
+}
+
+/* TODO: dialog-list-item-link */
+
+
+
+
+
+
+
+
+
+/* Dialogs */
+#dialogs, .Dialogs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 101;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding: var(--dialogs-padding, 24px);
+}
+
+/* Dialog */
+#dialog, .dialog {
+  width: var(--dialog-width, 80%);
+  position: absolute;
+  user-select: none;
+  pointer-events: auto;
+  background: var(--dialog-color-background, var(--background-color));
+  color: var(--dialog-color-on-background, var(--on-background-color));
+  box-sizing: border-box;
+  padding: var(--dialog-padding, 8px 16px);
+  border-radius: var(--dialog-border-radius, 12px);
+
+  /* opacity: 0; */
+  text-align: center;
+  max-width: var(--dialog-max-width, 320px);
+  
+  --fade-in-animation-delay: var(--dialog-animation-delay, 200ms);
+}
+
+/* Dialog Title */
+.dialog-title {
+  margin: 16px 0;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 30px;
+  letter-spacing: 0.8px;
+  word-spacing: normal;
+}
+
+/* Dialog Message */
+.dialog-message, .dialog-msg {
+  opacity: var(--opacity-text-inactive);
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.20px;
+  word-spacing: 1.5px;
+}
+
+/* Dialog Buttons */
+.dialog-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Each Dialog Button */
+a.dialog-button, a[role="button"].dialog-button {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 8px 0;
+  background: var(--dialog-button-background-color, inherit);
+  color: var(--dialog-button-text-color, inherit);
+  font-size: 20px;
+  line-height: 50px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+}
+
+/* Dialog Button with default attribute */
+a.dialog-button[data-default], a[role="button"][data-default].dialog-button {
+  color: var(--dialog-button-color-default, var(--primary-color));
+}
+
+/* Hover on Dialog Button */
+a.dialog-button:hover, a[role="button"].dialog-button:hover {
+  background: var(--dialog-button-color-hover, var(--surface-variant-color));
+}
+
+a.dialog-button:focus, a[role="button"].dialog-button:focus {
+  outline: 3px solid;
+  outline-color: var(--tertiary-color);
+}
+
+/* === End of Dialog Styles === */

@@ -1,3 +1,8 @@
+## 0.1.8 — 2026-10-05
+
+- **Chrome styles:** dialog, toast, logo (`span.app-logo`), spinner, and empty-state doodle CSS + SVG assets now ship here via `@import "ab-nextjs-components/styles.css"` (import after `ab-nextjs-theme/styles.css`)
+- **AbLogo:** comments corrected — mask fallback `--app-logo-url` is owned by this package’s chrome CSS, not the theme
+
 ## 0.1.7 — 2026-10-05
 
 - **AbNavbar:** root `<nav>` sets `data-ab-part="bottomBar"` (client + server)
