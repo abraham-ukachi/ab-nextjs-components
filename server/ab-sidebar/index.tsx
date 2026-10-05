@@ -40,7 +40,7 @@ const AbSidebar = ({
   brandLabel = 'abElements',
 }: AbSidebarProps): ReactElement => {
   return (
-    <aside data-type={type} className={clsx('AbSidebar', styles.abSidebar, className)} aria-label="Sidebar">
+    <nav data-type={type} data-ab-part="sidebar" className={clsx('AbSidebar', styles.abSidebar, className)} aria-label="Sidebar">
       <Link href={brandHref} className={styles.abSidebarBrand}>
         <span className="material-symbols-rounded" aria-hidden>apps</span>
         <span>{brandLabel}</span>
@@ -60,7 +60,7 @@ const AbSidebar = ({
           );
         })}
       </ul>
-    </aside>
+    </nav>
   );
 };
 

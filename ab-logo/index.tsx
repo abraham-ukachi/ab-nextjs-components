@@ -40,7 +40,7 @@ export type AbLogoType = 'contained' | 'outlined' | 'hollow' | 'naked';
 export interface AbLogoProps {
   type?: AbLogoType;
   className?: string;
-  /** Optional image src (contained). Defaults to ab-nextjs-icons Ab logo. */
+  /** Optional image src (contained). Defaults to the Ab logo shipped in this package (data URI). */
   src?: string;
   /** Optional CSS mask value for outlined/hollow/naked. */
   mask?: string;
@@ -48,7 +48,8 @@ export interface AbLogoProps {
   size?: number | string;
 }
 
-const DEFAULT_SRC = '/ab-nextjs-icons/logos/ab-logo.svg';
+/** Inlined Ab logo shipped with this package (also at `ab-logo/ab-logo.svg`). */
+const DEFAULT_SRC = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xml%3Aspace%3D%22preserve%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23A67C52%22%20d%3D%22m1.8%2020.5%209.3-17v17zM22.2%207.7l-9.3-4.2v17l9.3-4.2-4.7-4.3z%22/%3E%3Cpath%20d%3D%22m12.9%2020.5%209.3-4.2-9.3-8.6z%22%20opacity%3D%22.1%22/%3E%3C/svg%3E';
 
 const AbLogo = ({
   type = 'naked',
@@ -72,7 +73,9 @@ const AbLogo = ({
     );
   }
 
-  const maskValue = mask ?? `url('${DEFAULT_SRC}') no-repeat 50% 50%`;
+  // With no `mask`/`src`, leave the mask to `ab-nextjs-theme` (`--app-logo-url` / `.app-logo`).
+  // When `mask` or `src` is set, apply it inline (src becomes a CSS mask url).
+  const maskValue = mask ?? (src ? `url('${src}') no-repeat 50% 50%` : undefined);
   return (
     <span
       className={clsx('AbLogo', 'app-logo', styles.abLogo, className)}
@@ -81,10 +84,9 @@ const AbLogo = ({
       aria-label={alt}
       style={{
         ...(dim ? { width: dim, height: dim } : {}),
-        WebkitMask: maskValue,
-        mask: maskValue,
-        WebkitMaskSize: 'cover',
-        maskSize: 'cover',
+        ...(maskValue
+          ? { WebkitMask: maskValue, mask: maskValue, WebkitMaskSize: 'cover', maskSize: 'cover' }
+          : {}),
       }}
     />
   );

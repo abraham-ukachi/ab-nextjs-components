@@ -1,3 +1,9 @@
+## 0.1.6 — 2026-10-05
+
+- **AbSidebar:** renders `<nav data-ab-part="sidebar">` (was `<aside>`) so aside dialogs/menus never hit the sidebar
+- **AbMenu:** sets `data-id={id}` (keeps `id`) and `data-id` / `menu-item` on items so `useAbMenu` can open it; cancel is `li[role=close-menu]`
+- **AbLogo:** ships `ab-logo/ab-logo.svg` and defaults `src` to an inlined data URI of that asset; mask types without `src`/`mask` defer to `ab-nextjs-theme` `--app-logo-url`
+
 ## 0.1.5 — 2026-10-03
 
 - Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)

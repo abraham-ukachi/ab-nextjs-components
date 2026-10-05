@@ -60,6 +60,7 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
     <menu
       ref={ref}
       id={id}
+      data-id={id}
       hidden={hidden}
       data-active={isActive ? 'true' : 'false'}
       className={clsx('AbMenu', styles.abMenu, isActive && styles.isActive, className)}
@@ -85,7 +86,7 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
           );
           if (item.href && !item.disabled) {
             return (
-              <li key={item.id} className={itemClass} data-action={item.action}>
+              <li key={item.id} className={clsx('menu-item', itemClass)} data-id={item.id} data-action={item.action}>
                 <Link href={item.href} className={styles.abMenuLink} onClick={item.onClick}>
                   {body}
                 </Link>
@@ -93,7 +94,7 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
             );
           }
           return (
-            <li key={item.id} className={itemClass} data-action={item.action}>
+            <li key={item.id} className={clsx('menu-item', itemClass)} data-id={item.id} data-action={item.action}>
               <button
                 type="button"
                 className={styles.abMenuButton}
@@ -105,12 +106,14 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
             </li>
           );
         })}
+        {isCancelable ? (
+          <li role="close-menu" className={styles.abMenuCancelItem}>
+            <button type="button" className={styles.abMenuCancel} onClick={onCancel}>
+              {cancelLabel}
+            </button>
+          </li>
+        ) : null}
       </ul>
-      {isCancelable ? (
-        <button type="button" className={styles.abMenuCancel} onClick={onCancel}>
-          {cancelLabel}
-        </button>
-      ) : null}
     </menu>
   );
 });
