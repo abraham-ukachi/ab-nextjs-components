@@ -36,7 +36,7 @@ const AbNavbar = ({
   links = [],
 }: AbNavbarProps): ReactElement => {
   return (
-    <nav data-type={type} className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
+    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
       <ul className={styles.abNavbarList}>
         {links.map((link) => {
           const active = page === link.value;
