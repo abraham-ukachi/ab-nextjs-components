@@ -1,0 +1,52 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+/* App Logo of any ASIDE */
+aside > span.app-logo {
+  --app-logo-color: var(--outline-color);
+
+  opacity: var(--opacity-md-icon-disabled);
+
+  --app-logo-size: 50%;
+}
+
+
+
+/* App Logo | SPAN */
+span.app-logo {
+  display: block;
+  position: relative;
+  width: var(--app-logo-size, 32px);
+  height: var(--app-logo-size, 32px);
+  max-width: var(--app-logo-size-max, 512px);
+  max-height: var(--app-logo-size-max, 512px);
+  background-color: var(--app-logo-color, var(--on-background-color));
+  opacity: var(--app-logo-opacity, inherit);
+  mask: var(--app-logo-url, url('../assets/logos/ab-logo.svg')) no-repeat 50% 50%;
+  mask-size: cover;
+}
+
+/* Outlined App Logo | SPAN
+ * NOTE: no outlined logo is shipped; set `--app-logo-outline-url` in your app (falls back to the filled logo) */
+span[data-type="outlined"].app-logo {
+  mask: var(--app-logo-outline-url, var(--app-logo-url, url('../assets/logos/ab-logo.svg'))) no-repeat 50% 50%;
+}
+
+
+/* App Logo in an Nav Link */
+a.nav-link span.app-logo {
+  --app-logo-size: var(--side-bar-logo-size, 48px);
+  --app-logo-color: var(--side-bar-logo-color, var(--primary-color));
+  --app-logo-opacity: inherit;
+}
+
+
+
+/* App Logo in an active Nav Link */
+a.nav-link[data-active="true"] span.app-logo {
+  background-color: var(--app-logo-color-active, var(--primary-color));
+  opacity: inherit;
+}
+

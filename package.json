@@ -16,8 +16,9 @@
   "scripts": {
     "lint": "eslint . --fix",
     "test": "vitest run",
-    "check:publish": "node scripts/check-publish-deps.mjs",
-    "prepublishOnly": "node scripts/check-publish-deps.mjs"
+    "check:publish": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs",
+    "prepublishOnly": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs",
+    "check:css-assets": "node scripts/check-css-assets.mjs"
   },
   "keywords": [
     "react",
@@ -102,7 +103,10 @@
     "ab-switch-back",
     "ab-demo-box",
     "ab-demo-code",
-    "ab-logo/ab-logo.svg"
+    "ab-logo/ab-logo.svg",
+    "styles.css",
+    "css",
+    "assets"
   ],
   "exports": {
     ".": {
@@ -163,7 +167,10 @@
     "./server/ab-text": "./server/ab-text/index.tsx",
     "./server/ab-test-hello": "./server/ab-test-hello/index.tsx",
     "./server/ab-key-feature": "./server/ab-key-feature/index.tsx",
-    "./server/ab-switch-back": "./server/ab-switch-back/index.tsx"
+    "./server/ab-switch-back": "./server/ab-switch-back/index.tsx",
+    "./styles.css": "./styles.css",
+    "./css/*": "./css/*",
+    "./assets/*": "./assets/*"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {

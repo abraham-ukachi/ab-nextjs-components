@@ -1,0 +1,121 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+@media (width >= 460px) {
+  [data-content] > .container[data-empty="true"] .doodle {
+    width: var(--empty-doodle-size-bigger, 256px);
+    height: var(--empty-doodle-size-bigger, 256px);
+  }
+  /* Toasts */
+  #toasts {
+    padding: 3rem;
+  }
+
+
+  /* Toast Emojis */
+  .toast-emoji {
+    width: var(--toast-emoji-size, 32px);
+    height: var(--toast-emoji-size, 32px);
+  }
+
+  .toast-emoji:not([data-emoji-hidden], .success) {
+    transform: scale(1.2);
+  }
+}
+
+@media (width >= 768px) {
+  /* Toast */
+  #toasts .toast {
+    padding: 1rem 1.5rem;
+    border-radius: 48px;
+    font-size: 1.25rem;
+  }
+
+  #toasts .toast-emoji:not([data-emoji-hidden], .success) {
+    transform: scale(1.5);
+  }
+  #dialog, .dialog {
+    max-width: var(--dialog-max-width, 480px);
+  }
+}
+
+@media (width >= 768px) and (width <= 1024px) {
+  /* Dialog */
+  .dialog {
+    text-align: left;
+  }
+
+  /* Divider of Dialog */
+  .dialog span.divider {
+    display: none;
+  }
+
+  /* Dialog Title */
+  .dialog-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  /* Dialog Message */
+  .dialog-message, .dialog-msg {
+    font-size: 20px;
+    line-height: 32px;
+    margin: 12px 0;
+  }
+
+  /* Dialog Buttons */
+  .dialog-buttons {
+    flex-direction: row;
+  }
+}
+
+@media (width >= 1024px) and (width <= 2560px) {
+  /* Dialogs */
+  #dialogs, .Dialogs {
+    padding: var(--dialogs-container-padding, 24px 48px);
+  }
+
+  /* Dialog */
+  .dialog {
+    padding: 12px 24px;
+    text-align: left;
+  }
+
+  /* Divider of Dialog */
+  .dialog span.divider {
+    display: none;
+  }
+
+  /* Dialog Title */
+  .dialog-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  /* Dialog Message */
+  .dialog-message, .dialog-msg {
+    font-size: 20px;
+    line-height: 26px;
+    margin: 12px 0;
+  }
+
+  /* Dialog Buttons */
+  .dialog-buttons {
+    flex-direction: row;
+  }
+
+
+  /* Toasts */
+  #toasts {
+    padding: 5rem;
+  }
+
+  /* Toast Emojis */
+  .toast-emoji {
+    width: var(--toast-emoji-size, 42px);
+    height: var(--toast-emoji-size, 42px);
+  }
+}
+

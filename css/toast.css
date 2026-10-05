@@ -1,0 +1,70 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+/* === Toasts Styles === */
+
+/* All Toasts */
+#toasts,
+main > .Toasts,
+aside > .Toasts {
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* b4: end */
+  pointer-events: none;
+  padding: 3rem 1rem;
+  box-sizing: border-box;
+
+  --fade-in-animation-duration: 700ms;
+}
+
+
+/* Toast */
+.toast {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--on-background-color);
+  color: var(--background-color);
+  padding: 0.5rem 1.25rem;
+  border-radius: 32px;
+  box-sizing: border-box;
+  font-size: 1rem;
+  margin: 0 auto;
+  opacity: var(--opacity-md-active);
+}
+
+
+/* Toast Emojis */
+.toast-emoji {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  margin-right: 0.25rem;
+}
+
+.toast-emoji:not([data-emoji-hidden]) {
+  background-image: var(--toast-emoji-image);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+
+/* Success - Toast Emoji
+ * NOTE: no image is shipped; set `--toast-emoji-success-image` in your app (e.g. a GIF from your `public/` folder) */
+.toast-emoji.success,
+.toast-emoji.st {
+  --toast-emoji-image: var(--toast-emoji-success-image, none);
+}
+
+
+/* ==== End of Toasts Styles === */

@@ -37,6 +37,19 @@
 
 
 
+
+### Component chrome styles
+
+Dialog, toast, logo (`span.app-logo`), spinner, and empty-state doodle CSS (plus their SVG assets) live in this package:
+
+```css
+@import "ab-nextjs-theme/styles.css"; /* tokens */
+@import "ab-nextjs-components/styles.css"; /* chrome */
+```
+
+Shipped assets: `assets/logos/ab-logo.svg`, `assets/spinners/3-dots-scale.svg`, `assets/spinners/12-dots-scale-rotate.svg`.
+
+
 ## Tooling (Phase 1)
 
 - Next.js **16.3.4** / React **19** hard peers

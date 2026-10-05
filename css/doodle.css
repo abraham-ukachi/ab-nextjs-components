@@ -1,0 +1,41 @@
+/*
+ * ab-nextjs-components — chrome styles moved out of ab-nextjs-theme
+ * Copyright (c) 2026 Abraham Ukachi. MIT.
+ */
+
+[data-content] > .container[data-empty="true"] .doodle {
+  width: var(--empty-doodle-size, 200px);
+  height: var(--empty-doodle-size, 200px);
+  background-color: inherit;
+  margin-top: -48px;
+  background-image: var(--empty-doodle-image, none); /* NOTE: no doodle is shipped; set `--empty-doodle-image` in your app */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+
+[data-content] > .container[data-empty="true"] .doodle[data-mask] {
+  background-image: none;
+  background-color: var(--empty-doodle-color, var(--on-background-color));
+  opacity: var(--empty-doodle-opacity, var(--opacity-md-icon-inactive));
+  mask-image: var(--empty-doodle-image, none);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+
+}
+
+
+[data-content] > .container[data-empty="true"] .ddd {
+  width: var(--ddd-size, 200px);
+  height: var(--ddd-size, 200px);
+  background-color: inherit;
+  background-image: var(--ddd-image-url, none); /* NOTE: no 3D image is shipped; set `--ddd-image-url` in your app */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+
+
