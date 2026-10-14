@@ -40,10 +40,12 @@
 // 🅰️ logo + 💦 splash
 import AbLogo from '../ab-logo'
 import AbSplash from '../ab-splash'
+// 📶 progress bar
+import AbLinearProgress from '../ab-linear-progress'
 
 // 🧩 a labelled demo cell
 const Cell = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <figure style={{ margin: 0, display: 'grid', gap: 12, justifyItems: 'start' }}>
+  <figure style={{ margin: 0, display: 'grid', gap: 12, justifyItems: 'start', width: '100%' }}>
     {/* 🏷️ caption */}
     <figcaption style={{ font: '600 13px/1.4 Inter, system-ui, sans-serif', opacity: 0.75 }}>{title}</figcaption>
     {/* 🅰️ the logo */}
@@ -71,3 +73,21 @@ export const LogoDemo = () => (
 
 // 💦 splash (the page sets html[data-ab-splash="on"])
 export const SplashDemo = () => <AbSplash />
+
+// 📶 AbLinearProgress gallery
+export const LinearProgressDemo = () => (
+  <main style={{ maxWidth: 520, margin: '0 auto', padding: '40px 24px', display: 'grid', gap: 22 }}>
+    {/* 🏷️ heading */}
+    <h1 style={{ font: '700 28px/1.2 "ZillaSlab-Bold", "Zilla Slab", Georgia, serif', margin: 0 }}>AbLinearProgress</h1>
+    {/* 📊 determinate */}
+    <Cell title="Determinate · 0 / 25 / 60 / 100"><div style={{ display: 'grid', gap: 10, width: '100%' }}><AbLinearProgress progress={0} /><AbLinearProgress progress={25} /><AbLinearProgress progress={60} /><AbLinearProgress progress={100} /></div></Cell>
+    {/* 🔁 indeterminate */}
+    <Cell title="Indeterminate (LTR)"><div style={{ width: '100%' }}><AbLinearProgress isIndeterminate /></div></Cell>
+    {/* ↔️ RTL */}
+    <Cell title='Determinate 40 · dir="rtl"'><div dir="rtl" style={{ width: '100%' }}><AbLinearProgress progress={40} /></div></Cell>
+    {/* 🎨 color */}
+    <Cell title='color="#6B4F35" · sage accent'><div style={{ display: 'grid', gap: 10, width: '100%' }}><AbLinearProgress progress={70} color="#6B4F35" /><AbLinearProgress progress={45} color="#8A9A5B" /></div></Cell>
+    {/* 📏 thicker */}
+    <Cell title="--ab-linear-progress-height: 8px"><div style={{ width: '100%', ['--ab-linear-progress-height' as string]: '8px' }}><AbLinearProgress progress={50} /></div></Cell>
+  </main>
+)

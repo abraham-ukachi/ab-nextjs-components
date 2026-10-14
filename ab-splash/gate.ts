@@ -80,6 +80,13 @@ export function buildAbSplashRootPathPattern(options: AbSplashGateOptions = {}):
   return `^${localePart}${subPart}\\/?$`;
 }
 
+/*
+ * 💡 Why the gate does its own storage + the CSS does its own fade/failsafe:
+ *    this script runs inline in <head>, BEFORE React hydrates. Hooks (useAbLocalStorage)
+ *    and ab-nextjs-animations can't run there yet, and waiting for them would flash the page.
+ *    So it stays tiny, dependency-free ES5 with its own try-wrapped storage access.
+ */
+
 /**
  * 🚦 Build the inline gate script (runs in <head>, before the first paint).
  * Inject with `<script dangerouslySetInnerHTML={{ __html: script }} />` and allow its hash in the CSP
@@ -185,4 +192,25 @@ export function setAbSplashBackgroundInert(overlay: AbInertNode): () => void {
   }
   // ↩️ restore
   return () => { for (const el of changed) el.inert = false; };
+}
+
+// ⏲️ pending teardown (module-level: survives React StrictMode's dev unmount → remount)
+let abSplashPendingFinish: ReturnType<typeof setTimeout> | undefined
+
+/**
+ * 🔁 Schedule the final teardown (flag off + inert restored) on the next task instead of running it
+ * synchronously in an effect cleanup. StrictMode (dev) unmounts and immediately remounts: the remount
+ * cancels this with `cancelAbSplashFinish()`, so the Splash isn't killed by its own cleanup.
+ */
+export function scheduleAbSplashFinish(finish: () => void, delayMs: number = 0): void {
+  cancelAbSplashFinish() // 🧹 only one pending teardown
+  abSplashPendingFinish = setTimeout(() => { abSplashPendingFinish = undefined; finish() }, delayMs) // ⏲️
+}
+
+/** 🛑 Cancel a pending teardown; returns true when one was pending (i.e. this is a remount). */
+export function cancelAbSplashFinish(): boolean {
+  if (abSplashPendingFinish === undefined) return false // 😴 nothing pending
+  clearTimeout(abSplashPendingFinish) // 🛑 cancel
+  abSplashPendingFinish = undefined // 🧹 reset
+  return true // 🔁 remount
 }

@@ -47,7 +47,7 @@
   align-items: center; /* ↔️ centered */
   justify-content: center; /* ↕️ centered */
   gap: 2.25rem; /* ↕️ brand ↔ bar */
-  background-color: #FFF8F5; /* ☀️ light surface */
+  background-color: #FFF8F3; /* ☀️ light surface (matches the splash mocks) */
   color: #A67C52; /* 🎨 bronze brand */
   transition: opacity 200ms ease; /* 🌫️ fade-out */
   animation: abSplashFailsafe 0s linear 1.2s forwards; /* ⏱️ never longer than 1.2 s, even without hydration */
@@ -55,7 +55,7 @@
 
 /* 🌙 dark */
 :global(html.dark) .abSplash {
-  background-color: #19120C; /* 🌙 dark surface */
+  background-color: #1A1310; /* 🌙 dark surface (matches the splash mocks) */
   color: #FFF8F5; /* 🤍 light brand */
 }
 
@@ -64,9 +64,15 @@
   display: flex;
 }
 
-/* 🔒 no scrolling behind the overlay */
+/* 🔒 no scrolling behind the overlay — with the same 1.2 s failsafe as the overlay itself */
 :global(html[data-ab-splash='on']) {
-  overflow: hidden;
+  overflow: hidden; /* 🔒 lock */
+  animation: abSplashUnlock 0s linear 1.2s forwards; /* ⏱️ unlock even if hydration never happens */
+}
+
+/* ⏱️ failsafe unlock keyframes (overflow animates discretely) */
+@keyframes abSplashUnlock {
+  to { overflow: visible; }
 }
 
 /* 👋 leaving: fade out */

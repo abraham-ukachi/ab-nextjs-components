@@ -17,8 +17,9 @@
     "lint": "eslint . --fix",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p .",
-    "check:publish": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs",
-    "prepublishOnly": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs",
+    "build:csp": "node scripts/build-csp.mjs",
+    "check:publish": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs && node scripts/build-csp.mjs --check",
+    "prepublishOnly": "node scripts/check-publish-deps.mjs && node scripts/check-css-assets.mjs && node scripts/build-csp.mjs --check",
     "check:css-assets": "node scripts/check-css-assets.mjs"
   },
   "keywords": [
@@ -59,7 +60,8 @@
     "typescript": "^5",
     "vitest": "^3",
     "clsx": "^2.1.1",
-    "ab-nextjs-hooks": "^0.1.2"
+    "ab-nextjs-hooks": "^0.1.2",
+    "esbuild": "^0.28.2"
   },
   "files": [
     "index.ts",
@@ -122,7 +124,10 @@
     "./ab-linear-progress": "./ab-linear-progress/index.tsx",
     "./ab-splash": "./ab-splash/index.tsx",
     "./ab-splash/gate": "./ab-splash/gate.ts",
-    "./ab-splash/csp": "./ab-splash/csp.ts",
+    "./ab-splash/csp": {
+      "types": "./ab-splash/csp.d.ts",
+      "default": "./ab-splash/csp.mjs"
+    },
     "./ab-button": "./ab-button/index.tsx",
     "./ab-icon-button": "./ab-icon-button/index.tsx",
     "./ab-input": "./ab-input/index.tsx",

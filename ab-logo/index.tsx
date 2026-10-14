@@ -100,6 +100,7 @@ const AbLogo = ({
   if (type === 'contained') {
     // 🖼️ contained = a real <img>
     mark = (
+      // eslint-disable-next-line @next/next/no-img-element -- 🖼️ the default src is an inline data-URI SVG (nothing for next/image to optimize), and this package must not require next/image's loader config in consumer apps
       <img
         className={clsx(!text && ['AbLogo', 'app-logo', className], styles.abLogoContained, text && styles.abLogo__mark)}
         src={src ?? AB_LOGO_DEFAULT_SRC}

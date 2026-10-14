@@ -37,7 +37,10 @@
 */
 
 // 🧪 vitest
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+// 📄 fs + paths (review tests)
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 // 🚦 gate under test
 import {
   AB_SPLASH_ATTRIBUTE,
@@ -47,6 +50,8 @@ import {
   getAbSplashFadeMs,
   getAbSplashRemainingMs,
   setAbSplashBackgroundInert,
+  scheduleAbSplashFinish,
+  cancelAbSplashFinish,
   type AbInertNode,
 } from '../ab-splash/gate'
 // 🔐 CSP helpers
@@ -175,3 +180,58 @@ describe('AbSplash timing & inert', () => {
     expect([main.inert, header.inert]).toEqual([false, false]) // ✅
   })
 })
+
+describe('AbSplash — James review (P1 compiled CSP, unmount, failsafe, colours)', () => {
+  // 📁 helpers
+  const root = join(import.meta.dirname, '..') // 📁
+  const read = (rel: string) => readFileSync(join(root, rel), 'utf8') // 📖
+
+  it('exports ./ab-splash/csp as compiled .mjs + .d.ts', () => {
+    const pkg = JSON.parse(read('package.json')) // 📦
+    expect(pkg.exports['./ab-splash/csp']).toEqual({ types: './ab-splash/csp.d.ts', default: './ab-splash/csp.mjs' }) // 🗺️
+    expect(read('ab-splash/csp.mjs')).not.toMatch(/from ['"]\.\/gate/) // 📦 gate bundled in, no .ts import
+  })
+
+  it('compiled csp.mjs gives the same hashes as the source', async () => {
+    const mjs = await import('../ab-splash/csp.mjs') // 📦 compiled
+    expect(mjs.AB_SPLASH_GATE_SHA256).toBe(AB_SPLASH_GATE_SHA256) // 🔐 default
+    expect(mjs.buildAbSplashGate(appOptions).sha256).toBe(buildAbSplashGate(appOptions).sha256) // 🔐 app
+  })
+
+  it('unmount cleanup removes data-ab-splash and inert', () => {
+    const src = read('ab-splash/index.tsx') // 📖
+    expect(src).toMatch(/const finish = \(\) => \{ root\.removeAttribute\(AB_SPLASH_ATTRIBUTE\); restoreInert\(\); \}/) // 👋
+    expect(src).toMatch(/return \(\) => \{[\s\S]*scheduleAbSplashFinish\(finish\);[\s\S]*\};\n  \}, \[maxMs\]\)/) // 🧹 deferred in cleanup
+    expect(src).toMatch(/useEffect\(\(\) => \{\s*\/\/[^\n]*\n\s*cancelAbSplashFinish\(\);/) // 🔁 remount cancels it
+  })
+
+  it('overflow lock has the 1.2 s failsafe and surfaces match the mocks', () => {
+    const css = read('ab-splash/styles.module.css') // 🎨
+    expect(css).toMatch(/html\[data-ab-splash='on'\]\) \{[^}]*overflow: hidden;[^}]*animation: abSplashUnlock 0s linear 1\.2s forwards/) // ⏱️
+    expect(css).toContain('#FFF8F3') // ☀️
+    expect(css).toContain('#1A1310') // 🌙
+  })
+})
+
+describe('AbSplash — StrictMode double mount', () => {
+  it('a remount cancels the teardown scheduled by the first cleanup', () => {
+    vi.useFakeTimers() // ⏲️ control time
+    const finish = vi.fn() // 👋 teardown spy
+    scheduleAbSplashFinish(finish) // 🧹 cleanup #1 (StrictMode unmount)
+    expect(cancelAbSplashFinish()).toBe(true) // 🔁 mount #2 cancels it
+    vi.runAllTimers() // ⏩
+    expect(finish).not.toHaveBeenCalled() // ✅ splash survives
+    vi.useRealTimers() // ↩️
+  })
+  it('a real unmount still tears down on the next task', () => {
+    vi.useFakeTimers() // ⏲️
+    const finish = vi.fn() // 👋
+    scheduleAbSplashFinish(finish) // 🧹 real unmount
+    expect(finish).not.toHaveBeenCalled() // ⏳ not synchronous
+    vi.runAllTimers() // ⏩
+    expect(finish).toHaveBeenCalledTimes(1) // ✅ flag removed
+    expect(cancelAbSplashFinish()).toBe(false) // 😴 nothing pending
+    vi.useRealTimers() // ↩️
+  })
+})
+

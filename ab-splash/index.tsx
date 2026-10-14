@@ -53,6 +53,8 @@ import {
   getAbSplashFadeMs,
   getAbSplashRemainingMs,
   setAbSplashBackgroundInert,
+  scheduleAbSplashFinish,
+  cancelAbSplashFinish,
   waitForAbSplashReady,
   type AbInertNode,
 } from './gate';
@@ -80,6 +82,8 @@ export default function AbSplash({ className, wordmark = 'Elements', maxMs }: Ab
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // 🔁 StrictMode remount? cancel the teardown the previous cleanup scheduled (keeps the flag on)
+    cancelAbSplashFinish();
     // 🌳 the <html> element
     const root = document.documentElement;
     // 😴 gate said no → nothing to do
@@ -114,7 +118,8 @@ export default function AbSplash({ className, wordmark = 'Elements', maxMs }: Ab
       alive = false; // 🛟 dead
       cancelAnimationFrame(frame); // 🚫 frame
       if (fadeTimer) clearTimeout(fadeTimer); // 🚫 timer
-      restoreInert(); // 🙉 never leave the page inert
+      restoreInert(); // 🙉 page interactive again right away (a remount re-applies inert)
+      scheduleAbSplashFinish(finish); // 👋 remove data-ab-splash on the next task unless we remount (StrictMode)
     };
   }, [maxMs]);
 

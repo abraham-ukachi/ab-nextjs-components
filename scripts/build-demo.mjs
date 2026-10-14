@@ -41,12 +41,11 @@
 import { mkdirSync, readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { createRequire } from 'node:module'
 
 // 📁 package root
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-// ⚡ esbuild, resolved through vitest (no new dependency)
-const esbuild = createRequire(createRequire(import.meta.url).resolve('vitest/package.json'))('esbuild')
+// ⚡ esbuild (explicit devDependency)
+const esbuild = (await import('esbuild')).default // ⚡ explicit devDependency
 // 📤 output
 const out = join(root, 'demo/out')
 // 🔤 local ab-nextjs-fonts checkout (optional, for Quicksand/Zilla/Inter in screenshots)
@@ -59,7 +58,7 @@ mkdirSync(out, { recursive: true })
 // 📦 bundle an SSR entry rendering both demos
 await esbuild.build({
   stdin: {
-    contents: "import { renderToStaticMarkup } from 'react-dom/server'; import { LogoDemo, SplashDemo } from './demo/ab-logo-splash.demo'; export const logo = renderToStaticMarkup(<LogoDemo />); export const splash = renderToStaticMarkup(<SplashDemo />);",
+    contents: "import { renderToStaticMarkup } from 'react-dom/server'; import { LogoDemo, SplashDemo, LinearProgressDemo } from './demo/ab-logo-splash.demo'; export const logo = renderToStaticMarkup(<LogoDemo />); export const progress = renderToStaticMarkup(<LinearProgressDemo />); export const splash = renderToStaticMarkup(<SplashDemo />);",
     resolveDir: root, // 📁 resolve from root
     loader: 'tsx', // 🧩 TSX
   },
@@ -73,7 +72,7 @@ await esbuild.build({
 })
 
 // 🖨️ HTML + CSS
-const { logo, splash } = await import(pathToFileURL(join(out, 'demo.mjs')).href)
+const { logo, splash, progress } = await import(pathToFileURL(join(out, 'demo.mjs')).href)
 const css = readFileSync(join(out, 'demo.css'), 'utf8')
 
 // 🔤 @font-face rules from the local fonts checkout (absolute file:// urls)
@@ -94,6 +93,7 @@ const page = (name, theme, body, extraHtmlAttr = '', extraCss = '') => {
 // 🌗 light + dark
 for (const theme of ['light', 'dark']) {
   page('logo', theme, logo) // 🅰️ gallery
+  page('linear-progress', theme, progress) // 📶 progress gallery
   // 💦 splash frozen "on" (failsafe animation off so the screenshot can catch it)
   page('splash', theme, `<main><p>Page content behind the splash</p></main>${splash}`, ' data-ab-splash="on"', '.AbSplash{animation:none!important}')
 }
