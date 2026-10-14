@@ -262,8 +262,10 @@ describe('AbCarousel swipe + motion', () => {
   })
   it('reducedMotion="always" flags the region; CSS honours the OS setting too', () => {
     const { container } = render(<Fixture reducedMotion="always" />) // ♿
-    expect(container.querySelector('[data-ab-part="carousel"]')?.getAttribute('data-reduced-motion')).toBe('true') // ✅
-    expect(css).toContain('@media (prefers-reduced-motion: reduce)') // 🎨 first paint already calm
+    const region = container.querySelector('[data-ab-part="carousel"]') // 🎠
+    expect(region?.getAttribute('data-reduced-motion')).toBe('true') // ✅
+    expect(region?.getAttribute('data-ab-reduced-motion')).toBe('true') // ♿ ab-nextjs-animations switch (OS setting is handled there too)
+    expect(css.replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/(transition|animation)[a-z-]*\s*:|@keyframes/) // ✂️ comments stripped // 🎬 no local motion: it all comes from ab-nextjs-animations
     expect(css).toContain("touch-action: pan-y") // 👆 vertical scroll preserved
   })
   it('throws a helpful error when a part is used outside <AbCarousel>', () => {

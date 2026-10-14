@@ -65,16 +65,22 @@ describe('AbFlowDiagram (G38)', () => {
   it('is one accessible image; parts are hidden; unknown edges are skipped', () => {
     const html = renderToStaticMarkup(<AbFlowDiagram alt="Diagram: config and Slot connect to AbProvider." title="Live Playground" caption="ab-nextjs-core" live="live" nodes={nodes} edges={edges} active={false} />) // 🖨️
     expect(html).toMatch(/^<figure role="img" aria-label="Diagram: config and Slot connect to AbProvider\."/) // ♿
-    expect(html.match(/<path class="wire"/g)).toHaveLength(2) // 〰️ 2 valid edges (ghost skipped)
+    expect(html.match(/<path class="wire ab-wire-draw"/g)).toHaveLength(2) // 〰️ 2 valid edges (ghost skipped), draw-on from ab-nextjs-animations
+    expect(html.match(/<path class="pulse ab-wire-pulse"/g)).toHaveLength(2) // ✨ pulse from ab-nextjs-animations
     expect(html).toContain('data-active="false"') // ⏸️
+    expect(html).toContain('data-ab-paused="true"') // ⏸️ package pause switch
+    expect(html).toContain('--ab-wire-index:1') // ⏱️ stagger token
     expect(html.match(/aria-hidden="true"/g)!.length).toBeGreaterThanOrEqual(3) // 🙈 header, wires, nodes
-    expect(html).toContain('--ab-flow-poster:55') // 🖼️ MID 0.45
+    expect(html).toContain('--ab-wire-poster:55') // 🖼️ MID 0.45 (package token)
+    expect(html).not.toContain('--ab-wire-pulse-iterations') // 🔋 default loops left to CSS (3 on phones)
     expect(html).not.toMatch(/<script|onClick|tabindex/i) // 🚫 zero JS, not focusable
   })
-  it('CSS: only dash/opacity/transform motion, paused when inactive, calm when reduced', () => {
-    expect(css).toContain('animation-play-state: paused') // ⏸️
-    expect(css).toContain('@media (prefers-reduced-motion: reduce)') // 🧘
-    expect(css).toContain('animation-iteration-count: 1, 3') // 🔋 mobile
-    expect(css).not.toMatch(/@keyframes[^}]*\b(width|height|top|left|margin)\s*:/) // 📏 CLS 0
+  it('CSS: no local motion (ab-nextjs-animations owns draw / pulse / pause / reduced); phones get 3 loops via token', () => {
+    expect(css.replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/(transition|animation)[a-z-]*\s*:|@keyframes/) // ✂️ comments stripped // 🎬 none here
+    expect(css).toMatch(/@media \(max-width: 639px\) \{\s*\.root \{ --ab-wire-pulse-iterations: 3; \}/) // 🔋 mobile
+  })
+  it('explicit loops win over the phone default', () => {
+    const html = renderToStaticMarkup(<AbFlowDiagram alt="x" nodes={nodes} edges={edges} loops={2} />) // 🖨️
+    expect(html).toContain('--ab-wire-pulse-iterations:2') // 🔁
   })
 })

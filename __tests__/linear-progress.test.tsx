@@ -94,7 +94,8 @@ describe('AbLinearProgress', () => {
 
   // ♿🌙 stylesheet guarantees
   it('ships reduced-motion, dark mode and no Tailwind dependency', () => {
-    expect(css).toMatch(/prefers-reduced-motion:\s*reduce[\s\S]*animation:\s*none/) // ♿ static bar
+    expect(css).toMatch(/prefers-reduced-motion:\s*reduce[\s\S]*width: 100%/) // ♿ static full bar (the package stops the sweep)
+    expect(css.replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/(transition|animation)[a-z-]*\s*:|@keyframes/) // ✂️ comments stripped // 🎬 motion comes from ab-nextjs-animations
     expect(css).toContain(':global(html.dark)') // 🌙 dark
     expect(css).not.toMatch(/@apply|@tailwind/) // 🚫 Tailwind-free
   })
@@ -107,8 +108,8 @@ describe('AbLinearProgress', () => {
 
   // ↔️ RTL sweep
   it('mirrors the indeterminate sweep in RTL (anchor + keyframes), and stops it with reduced motion', () => {
-    expect(css).toMatch(/:global\(\[dir='rtl'\]\) \.abLinearProgress__bar_indeterminate \{[^}]*right: 0[^}]*animation-name: abLinearProgressSweepRtl/) // ⬅️
-    expect(css).toMatch(/@keyframes abLinearProgressSweepRtl \{\s*0% \{ transform: translateX\(100%\); \}/) // 🎞️
-    expect(css).toMatch(/prefers-reduced-motion[\s\S]*:global\(\[dir='rtl'\]\) \.abLinearProgress__bar_indeterminate \{\s*animation: none/) // ♿
+    expect(css).toMatch(/:global\(\[dir='rtl'\]\) \.abLinearProgress__bar_indeterminate \{[^}]*right: 0/) // ⬅️ anchor
+    expect(html({ isIndeterminate: true })).toContain('ab-progress-sweep') // 🔁 sweep (RTL-mirrored + reduced-motion aware) from ab-nextjs-animations
+    expect(html({ progress: 40 })).toContain('ab-motion-transform') // 🎞️ value tween from the package
   })
 })
