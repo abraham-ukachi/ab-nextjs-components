@@ -52,6 +52,8 @@ import { useAbThemeMode, AB_THEME_MODES, type AbThemeMode } from 'ab-nextjs-hook
 import AbIcon from '../ab-icon';
 // 🎨 styles
 import styles from './styles.module.css';
+import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
+import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
 
 // 📦 re-export the mode type for consumers
 export type { AbThemeMode } from 'ab-nextjs-hooks/useAbTheme';
@@ -121,7 +123,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
     return (
       <button
         type="button" // 🧾
-        className={clsx('AbThemeToggle', styles.icon, className)} // 🏷️
+        className={clsx('AbThemeToggle', styles.icon, AB_MOTION.colors, className)} // 🏷️
         style={style} // 🎨
         data-ab-part="theme-toggle" // 🗂️
         data-mode={current} // 🎚️
@@ -169,7 +171,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
             aria-label={labels[mode]} // 🏷️
             title={labels[mode]} // 💬
             tabIndex={checked ? 0 : -1} // ⌨️ roving: one tab stop
-            className={styles.segment} // 🎨
+            className={clsx(styles.segment, AB_MOTION.colors)} // 🎨 + colour fade (ab-nextjs-animations)
             data-ab-part="theme-option" // 🗂️
             data-mode={mode} // 🎚️
             onClick={() => select(mode)} // 🖱️

@@ -86,6 +86,11 @@ import {
 import styles from './styles.module.css';
 // 🔣 AbIcons SVG (G2)
 import AbIcon from '../ab-icon';
+// 🎬 all carousel motion comes from ab-nextjs-animations (>= 0.2.4): direction-aware slide steps + state transitions
+import { getAbSlideStepDirection, AB_SLIDE_STEP_IN_CLASS, AB_SLIDE_STEP_OUT_CLASS, type AbSlideStepDirection } from 'ab-nextjs-animations/slide-step';
+import { AB_MOTION } from 'ab-nextjs-animations/motion';
+import 'ab-nextjs-animations/slide-step/styles.css'; // ➡️⬅️ .ab-slide-step-in / -out
+import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
 
 // 📦 re-export the helpers + types so client callers need one import
 export * from './helpers';
@@ -160,6 +165,10 @@ export interface AbCarouselContextValue {
   reducedMotion: boolean;
   // 🟢 hydrated on the client? (inert / aria-hidden are only applied after hydration → no-JS stays usable)
   hydrated: boolean;
+  // 🧭 direction of the last move ('forward' | 'back'); null until the first move (no entry animation on load)
+  direction: AbSlideStepDirection | null;
+  // ⏮️ the slide that was active before the last move (plays the leave animation); -1 before any move
+  previousIndex: number;
   // 🎯 go to an index
   goTo: (index: number, reason?: AbCarouselChangeReason) => void;
   // ⏭️ next slide
@@ -317,7 +326,12 @@ export function AbCarousel(props: AbCarouselProps) {
   // 📣 live region: announce only after the index changed at least once ("adjust state while rendering")
   const [lastIndex, setLastIndex] = useState(index);
   const [announcing, setAnnouncing] = useState(false);
+  // 🧭 direction + previous slide for the ab-nextjs-animations slide step
+  const [direction, setDirection] = useState<AbSlideStepDirection | null>(null);
+  const [previousIndex, setPreviousIndex] = useState(-1);
   if (lastIndex !== index) {
+    setPreviousIndex(lastIndex); // ⏮️ this one leaves
+    setDirection(getAbSlideStepDirection(lastIndex, index, count, loop)); // 🧭 shortest way round when looping
     setLastIndex(index); // 📍 remember
     setAnnouncing(true); // 📣 from now on, speak
   }
@@ -359,9 +373,9 @@ export function AbCarousel(props: AbCarouselProps) {
 
   // 🧠 context value (memoised)
   const value = useMemo<AbCarouselContextValue>(() => ({
-    index, count, loop, dir, reducedMotion, hydrated, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId,
+    index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId,
     swipe: { enabled: swipe && count > 1, threshold: swipeThreshold, ignore: swipeIgnore },
-  }), [index, count, loop, dir, reducedMotion, hydrated, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, swipe, swipeThreshold, swipeIgnore]);
+  }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, swipe, swipeThreshold, swipeIgnore]);
 
   // 🖼️ render
   return (
@@ -376,6 +390,8 @@ export function AbCarousel(props: AbCarouselProps) {
         data-ab-part="carousel" // 🧩 part hook
         data-dir={dir} // 🌍
         data-reduced-motion={String(reducedMotion)} // ♿ CSS switch
+        data-ab-reduced-motion={String(reducedMotion)} // ♿ ab-nextjs-animations switch (prop OR OS)
+        data-ab-direction={direction ?? undefined} // 🧭 forward / back for .ab-slide-step-*
         data-hydrated={String(hydrated)} // 🟢
         onKeyDown={onKeyDown} // ⌨️
       >
@@ -457,6 +473,8 @@ export function AbCarouselSlide({ className, style, label, children }: AbCarouse
   const active = position === 'active';
   // 🙈 hide inactive slides from AT + focus only once JS runs (no-JS stack stays usable)
   const hide = ctx.hydrated && !active;
+  // 🎬 slide step (only after a real move, so nothing animates on first paint)
+  const step = ctx.direction === null ? undefined : active ? AB_SLIDE_STEP_IN_CLASS : i === ctx.previousIndex ? AB_SLIDE_STEP_OUT_CLASS : undefined;
   // 🖼️ render
   return (
     <div
@@ -466,7 +484,7 @@ export function AbCarouselSlide({ className, style, label, children }: AbCarouse
       aria-label={label ?? ctx.slideLabel(i + 1, ctx.count)} // 🏷️ "3 of 9"
       aria-hidden={hide || undefined} // 🙈
       inert={hide || undefined} // 🚫 no focus / clicks while hidden
-      className={clsx(styles.slide, className)} // 🏷️
+      className={clsx(styles.slide, step, className)} // 🏷️ + 🎬 enter / leave
       style={style} // 🎨
       data-ab-part="slide" // 🧩
       data-position={position} // 📍 CSS offset
@@ -516,7 +534,7 @@ function AbCarouselNavButton({ kind, label, variant, hideAtEdge = false, classNa
   return (
     <button
       type="button" // 🛑 never submits a form
-      className={clsx(styles.nav, className)} // 🏷️
+      className={clsx(styles.nav, AB_MOTION.interactive, AB_MOTION.press, className)} // 🏷️ + 🎨 hover / 🤏 press
       style={style} // 🎨
       aria-label={name} // ♿ icon-only → name it
       title={name} // 💬 tooltip
@@ -584,7 +602,7 @@ export function AbCarouselDots({ label = 'Choose slide', dotLabel = defaultAbCar
             onClick={() => ctx.goTo(i, 'dot')} // 🎯 focus stays on the dot
           >
             {/* 🎨 the visible 8px dot / 24px pill */}
-            <span className={styles.dotMark} aria-hidden="true" />
+            <span className={clsx(styles.dotMark, AB_MOTION.size)} aria-hidden="true" /> {/* 📏 8 → 24px via ab-motion-size */}
           </button>
         );
       })}

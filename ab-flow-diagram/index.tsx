@@ -48,6 +48,9 @@ import clsx from 'clsx';
 import { getAbFlowEdgePath, type AbFlowEdge, type AbFlowNode } from './helpers';
 // 🎨 styles (all motion is CSS: draw-on, pulses, reduced motion, pause)
 import styles from './styles.module.css';
+// 🎬 wire draw-on + pulse come from ab-nextjs-animations (>= 0.2.4); this component only sets its tokens
+import { AB_WIRE_DRAW_CLASS, AB_WIRE_PULSE_CLASS } from 'ab-nextjs-animations/wire';
+import 'ab-nextjs-animations/wire/styles.css'; // 〰️ .ab-wire-draw / .ab-wire-pulse
 
 // 📦 re-export helpers + types
 export * from './helpers';
@@ -76,12 +79,13 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
   const { nodes, edges, alt, title, caption, live = false, active = true, loops = 'infinite', variant = 'full', posterAt = 0.45, duration = 2400, className, style, children } = props;
   // 🗺️ id → node
   const byId = new Map(nodes.map((n) => [n.id, n]));
-  // 🎛️ CSS variables drive all timing
+  // 🎛️ ab-nextjs-animations wire tokens drive all timing
   const vars = {
     ...style, // 🎨
-    '--ab-flow-duration': `${duration}ms`, // ⏱️
-    '--ab-flow-loops': loops === 'infinite' ? 'infinite' : String(loops), // 🔁
-    '--ab-flow-poster': String(100 - Math.min(1, Math.max(0, posterAt)) * 100), // 🖼️ dashoffset at the poster frame
+    '--ab-wire-pulse-duration': `${duration}ms`, // ⏱️
+    // 🔁 explicit loops win; default = infinite on laptop, 3 on phones (set in styles.module.css)
+    ...(loops === 'infinite' ? {} : { '--ab-wire-pulse-iterations': String(loops) }),
+    '--ab-wire-poster': String(100 - Math.min(1, Math.max(0, posterAt)) * 100), // 🖼️ dashoffset at the poster frame
   } as CSSProperties;
 
   return (
@@ -92,6 +96,7 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
       style={vars} // 🎛️
       data-ab-part="flow-diagram" // 🗂️
       data-active={String(active)} // ▶️ / ⏸️
+      data-ab-paused={String(!active)} // ⏸️ ab-nextjs-animations pauses wires on inactive slides
       data-variant={variant} // 📐
     >
       {/* 🏷️ card header (decorative: alt already describes it) */}
@@ -109,11 +114,11 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
           const b = byId.get(e.to); // 🔵
           if (!a || !b) return null; // 🧯 unknown id: skip, don't crash the slide
           const d = getAbFlowEdgePath(a, b, e.curve); // 〰️
-          const delay = { '--ab-flow-i': String(i) } as CSSProperties; // ⏱️ stagger
+          const delay = { '--ab-wire-index': String(i) } as CSSProperties; // ⏱️ stagger (ab-nextjs-animations)
           return (
             <g key={`${e.from}-${e.to}-${i}`} style={delay}>
-              <path className={styles.wire} d={d} pathLength={100} />{/* 🖊️ draws on */}
-              <path className={styles.pulse} d={d} pathLength={100} />{/* ✨ travelling pulse */}
+              <path className={clsx(styles.wire, AB_WIRE_DRAW_CLASS)} d={d} pathLength={100} />{/* 🖊️ draws on */}
+              <path className={clsx(styles.pulse, AB_WIRE_PULSE_CLASS)} d={d} pathLength={100} />{/* ✨ travelling pulse */}
             </g>
           );
         })}

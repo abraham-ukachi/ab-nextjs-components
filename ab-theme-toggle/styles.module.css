@@ -59,7 +59,7 @@
   color: var(--ab-color-on-surface-variant, currentColor); /* 🎨 */
   background: transparent; /* 🫥 */
   cursor: pointer; /* 👆 */
-  transition: background-color 160ms ease, color 160ms ease; /* 🎞️ colour only */
+  --ab-motion-duration: var(--ab-motion-duration-short, 160ms); /* 🎞️ colour fade = .ab-motion-colors (ab-nextjs-animations) */
 }
 [data-size='sm'] .segment,
 .icon[data-size='sm'] {
@@ -86,8 +86,4 @@
   outline-offset: 2px; /* ↔️ */
 }
 
-/* 🧘 reduced motion: no colour fade */
-@media (prefers-reduced-motion: reduce) {
-  .segment,
-  .icon { transition: none; }
-}
+/* 🧘 reduced motion: handled by ab-nextjs-animations (.ab-motion-colors) */

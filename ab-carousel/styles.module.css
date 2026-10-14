@@ -37,9 +37,10 @@
 */
 
 /* 🎛️ Tunables (override on the carousel or any ancestor):
-*   --ab-carousel-duration   slide transition (default 280ms)
-*   --ab-carousel-ease       easing (default cubic-bezier(.2,.8,.2,1))
-*   --ab-carousel-shift      enter / exit offset (default 24px)
+*   --ab-carousel-duration   slide step (default 280ms)  → --ab-slide-step-duration (ab-nextjs-animations)
+*   --ab-carousel-ease       easing (default cubic-bezier(.2,.8,.2,1)) → --ab-slide-step-easing
+*   --ab-carousel-shift      enter / exit offset (default 24px) → --ab-slide-step-distance
+*   🎬 all motion comes from ab-nextjs-animations (slide-step + motion); nothing animates in this file
 *   --ab-carousel-nav-size   prev / next diameter (default 40px; 44px on mobile)
 *   --ab-carousel-dot-color  inactive dot colour
 *   --ab-carousel-accent     active dot + filled button colour (default --ab-primary)
@@ -48,16 +49,17 @@
 /* 🎠 region */
 .carousel {
   position: relative; /* 📌 anchor for the hidden live region */
-  --_duration: var(--ab-carousel-duration, 280ms); /* ⏱️ */
-  --_ease: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
-  --_shift: var(--ab-carousel-shift, 24px); /* ↔️ */
-  --_flip: 1; /* 🌍 LTR */
+  /* 🎛️ tokens handed to ab-nextjs-animations (slide-step + motion) */
+  --ab-slide-step-duration: var(--ab-carousel-duration, 280ms); /* ⏱️ */
+  --ab-slide-step-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
+  --ab-slide-step-distance: var(--ab-carousel-shift, 24px); /* ↔️ */
+  --ab-slide-step-flip: 1; /* 🌍 LTR */
   --_accent: var(--ab-carousel-accent, var(--ab-primary, #a67c52)); /* 🟤 bronze */
 }
 
 /* 🌍 RTL: mirror the slide offsets */
 .carousel[data-dir='rtl'] {
-  --_flip: -1;
+  --ab-slide-step-flip: -1; /* 🌍 slide steps mirror */
 }
 
 /* 🎞️ track: every slide shares one grid cell → height = tallest slide (CLS 0) */
@@ -66,30 +68,13 @@
   touch-action: pan-y; /* 👆 vertical scroll stays native; horizontal moves reach useAbSwipe */
 }
 
-/* 🖼️ slide (inactive by default) */
+/* 🖼️ slide (inactive by default; enter / leave motion = .ab-slide-step-in / -out from ab-nextjs-animations) */
 .slide {
   grid-area: 1 / 1; /* 🧱 stacked */
   min-width: 0; /* 📏 allow long words to wrap */
-  --_side: 0; /* 📍 set per position below */
   opacity: 0; /* 🙈 */
   visibility: hidden; /* 🙈 not focusable, not read (also before hydration) */
   pointer-events: none; /* 🚫 */
-  transform: translateX(calc(var(--_side) * var(--_flip) * var(--_shift))); /* ↔️ */
-  /* 🎬 only transform + opacity animate (no layout properties); visibility flips at the end */
-  transition:
-    opacity var(--_duration) var(--_ease),
-    transform var(--_duration) var(--_ease),
-    visibility 0s linear var(--_duration);
-}
-
-/* ⬅️ slides before the active one sit to the left (LTR) */
-.slide[data-position='before'] {
-  --_side: -1;
-}
-
-/* ➡️ slides after the active one sit to the right (LTR) */
-.slide[data-position='after'] {
-  --_side: 1;
 }
 
 /* ✅ active slide */
@@ -97,29 +82,6 @@
   opacity: 1; /* 👀 */
   visibility: visible; /* 👀 */
   pointer-events: auto; /* 🖱️ */
-  transition-delay: 0s; /* ⚡ become visible immediately */
-}
-
-/* ♿ reduced motion: no shift, short cross-fade (forced via prop OR the OS setting) */
-.carousel[data-reduced-motion='true'] .slide {
-  transform: none;
-  transition:
-    opacity 120ms linear,
-    visibility 0s linear 120ms;
-}
-.carousel[data-reduced-motion='true'] .slide[data-position='active'] {
-  transition-delay: 0s;
-}
-@media (prefers-reduced-motion: reduce) {
-  .slide {
-    transform: none;
-    transition:
-      opacity 120ms linear,
-      visibility 0s linear 120ms;
-  }
-  .slide[data-position='active'] {
-    transition-delay: 0s;
-  }
 }
 
 /* ⏮️⏭️ round prev / next buttons */
@@ -136,14 +98,10 @@
   background: transparent;
   color: var(--ab-on-surface, currentColor);
   cursor: pointer;
-  --ab-carousel-icon-stroke: 1.5;
-  transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  /* 🎨 hover / 🤏 press motion: .ab-motion-interactive + .ab-motion-press (ab-nextjs-animations) */
 }
 .nav:hover {
   background-color: color-mix(in srgb, currentColor 8%, transparent); /* 🌫️ */
-}
-.nav:active {
-  transform: scale(0.94); /* 🤏 */
 }
 .nav[data-variant='filled'] {
   border-color: transparent;
@@ -156,9 +114,6 @@
 .nav[aria-disabled='true'] {
   opacity: 0.4; /* 🚦 edge */
   cursor: not-allowed;
-}
-.nav[aria-disabled='true']:active {
-  transform: none;
 }
 
 /* 🎯 visible focus ring (theme focus-ring token when G18 lands) */
@@ -213,7 +168,7 @@
   height: 8px;
   border-radius: 9999px;
   background: var(--ab-carousel-dot-color, color-mix(in srgb, currentColor 28%, transparent));
-  transition: width 200ms var(--_ease), background-color 200ms ease; /* 🎬 8 → 24px */
+  /* 📏 8 → 24px motion: .ab-motion-size (ab-nextjs-animations) */
 }
 
 /* ✅ active = long bronze pill */
@@ -222,15 +177,7 @@
   background: var(--_accent);
 }
 
-/* ♿ dot width snaps in reduced motion */
-.carousel[data-reduced-motion='true'] .dotMark {
-  transition: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .dotMark {
-    transition: none;
-  }
-}
+/* ♿ reduced motion (OS or reducedMotion prop) is handled by ab-nextjs-animations via data-ab-reduced-motion */
 
 /* 🔢 counter "02 / 09" */
 .counter {
