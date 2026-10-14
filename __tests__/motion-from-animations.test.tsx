@@ -83,6 +83,25 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
     }
   })
 
+  it('global chrome CSS + assets: no motion except the named exceptions', () => {
+    // 🏷️ named exceptions (James review): kept on purpose, documented in the plan
+    const EXCEPTIONS: Record<string, RegExp> = {
+      // 📋 consumer-rendered markup (no component renders li.dialog-list-item), so no package class can be added without breaking apps
+      'css/dialog.css': /^\s*transition: all 0\.2s ease-in-out;$/m,
+    }
+    for (const f of files.filter((x) => x.startsWith('css/') && x.endsWith('.css'))) {
+      const css = read(f).replace(/\/\*[\s\S]*?\*\//g, '') // ✂️ comments
+      const motion = css.match(/^.*(?:^|[\s;{])(transition|animation)(-[a-z-]+)?\s*:.*$|@keyframes/gm) ?? [] // 🔍 declarations only (package tokens like --fade-in-animation-delay are fine)
+      if (EXCEPTIONS[f]) {
+        expect(motion, f).toHaveLength(1) // ☝️ only the named one
+        expect(motion[0], f).toMatch(EXCEPTIONS[f]) // ✅
+      } else expect(motion, f).toEqual([]) // 🚫
+    }
+    // 🌀 spinner SVGs animate themselves (inline <style> @keyframes, used as CSS masks by css/spinner.css): the only animated assets
+    const animatedSvgs = files.filter((f) => f.endsWith('.svg') && /<animate|@keyframes|animation\s*:/.test(read(f))).sort() // 🔍
+    expect(animatedSvgs).toEqual(['assets/spinners/12-dots-scale-rotate.svg', 'assets/spinners/3-dots-scale.svg']) // 🏷️ named exception
+  })
+
   it('each animated component imports the package stylesheet it uses', () => {
     const uses: Record<string, string[]> = {
       'ab-carousel/index.tsx': ['slide-step', 'motion'], // 🎠
@@ -105,10 +124,16 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
     for (const m of ['slide-step', 'motion', 'wire', 'spin', 'progress-sweep']) expect(read(`node_modules/ab-nextjs-animations/${m}/styles.css`)).toContain('prefers-reduced-motion: reduce') // ♿
   })
 
-  it('peer ranges: animations >= 0.2.4 and icons >= 0.2.3 are required (not optional)', () => {
+  it('peer + dev ranges are carets on the Welcome releases (James P0); animations + icons are required', () => {
     const pkg = JSON.parse(read('package.json')) // 📦
-    expect(pkg.peerDependencies['ab-nextjs-animations']).toBe('>=0.2.4') // 🎬
-    expect(pkg.peerDependencies['ab-nextjs-icons']).toBe('>=0.2.3') // 🔣
+    const want = { 'ab-nextjs-hooks': '^0.1.6', 'ab-nextjs-theme': '^0.3.1', 'ab-nextjs-animations': '^0.2.4', 'ab-nextjs-icons': '^0.2.3' } // 🎯
+    for (const [name, range] of Object.entries(want)) {
+      expect(pkg.peerDependencies[name], name).toBe(range) // 🤝 peer
+      expect(pkg.devDependencies[name], name).toBe(range) // 🧪 dev (same caret)
+    }
+    // 🚫 never commit local links
+    for (const range of [...Object.values(pkg.dependencies ?? {}), ...Object.values(pkg.devDependencies), ...Object.values(pkg.peerDependencies)] as string[]) expect(range).not.toMatch(/^(file|link|workspace|portal):/) // 🔗
+    expect(read('pnpm-workspace.yaml')).not.toContain('minimumReleaseAgeExclude') // 🧹 P1
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-animations']).toBeUndefined() // 🚫 optional
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-icons']).toBeUndefined() // 🚫 optional
   })
