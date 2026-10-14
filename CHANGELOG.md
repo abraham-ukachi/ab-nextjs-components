@@ -1,7 +1,15 @@
-## Unreleased (planned 0.1.10, Welcome v6, not bumped; needs ab-nextjs-hooks >= 0.1.6)
+## Unreleased (planned 0.1.10, Welcome v6, not bumped; needs ab-nextjs-hooks >= 0.1.6, ab-nextjs-icons >= 0.2.3)
 
 * **AbCarousel (G31):** new subpath `ab-nextjs-components/ab-carousel` (+ server-safe `ab-carousel/helpers`). Compound parts `AbCarousel`, `AbCarouselTrack`, `AbCarouselSlide`, `AbCarouselPrev`, `AbCarouselNext`, `AbCarouselDots`, `AbCarouselCounter` + `useAbCarousel()`. APG carousel semantics (`aria-roledescription` carousel/slide, "n of total" labels, polite live region, inactive slides `inert` + `aria-hidden` after hydration), RTL-aware ←/→ + Home/End scoped to the region, swipe via `useAbSwipe`, reduced motion via `useAbReducedMotion` + CSS, controlled / uncontrolled, i18n labels on every control, `AB_CAROUSEL_NOSCRIPT_CSS` for the no-JS stack
 * **AbIconButton (G6):** `aria-label` + `title` now sit on the interactive element (never the wrapper span); new `label` prop (falls back to `title`); the `href` variant is named and no longer has `role="button"`; the ligature glyph is `aria-hidden`; disabled links leave the tab order; loading sets `aria-busy`
+* **AbButton (G22):** `startIcon` / `endIcon`, `badge` + `badgeTone` (e.g. "Coming soon"), `disabledReason` (screen-reader text, wired via `aria-describedby`), `focusableWhenDisabled`; with a badge / reason the button uses `aria-disabled` (stays focusable, clicks guarded) instead of native `disabled`; disabled links render as `span role="link" aria-disabled`; links no longer get `role="button"`; server twin matches
+* **AbThemeToggle (G34, new, `ab-nextjs-components/ab-theme-toggle`):** light / dark / system radiogroup (roving focus, RTL arrows, icon-only variant, i18n labels), driven by `useAbThemeMode()`; `getNextAbThemeMode` helper
+* **AbChip / AbPill (G36, new, server components):** `ab-chip`, `ab-pill`
+* **AbInstallSnippet (G35, new):** pnpm / npm / yarn / bun tabs (APG tablist), choice shared via `useAbLocalStorage`, copy button with polite status, `data-ab-swipe-ignore`; `getAbInstallCommand` helper
+* **AbLocaleSwitcher (G7, new):** menu button + `menuitemradio`, typeahead, `onSelect` or `getHref` (+ `hrefLang`)
+* **AbIcon (G2, new, `ab-nextjs-components/ab-icon`):** AbIcons as inline SVG; client twin resolves `svg` prop → `registerAbIcons` registry → Material Symbols font (never imports the full map); server twin renders any icon; weights 100–700 map to the icons package stroke table; 8 built-ins (arrows, theme, language, copy / check) imported per icon from `ab-nextjs-icons/ab-icons/icons/*` (needs icons >= 0.2.3)
+* **AbCarousel:** prev / next arrows now render through AbIcon (weight 300); `--ab-carousel-icon-stroke` removed (unreleased)
+* **AbFlowDiagram (G38, new, server component):** `figure role="img"` scenes, CSS-only draw + pulse, paused while inactive, 3 loops on mobile, reduced motion shows the poster frame; `getAbFlowEdgePath` helper
 * Dev: `happy-dom` + `@testing-library/react` for DOM tests
 
 ## 0.1.9 — 2026-10-14
