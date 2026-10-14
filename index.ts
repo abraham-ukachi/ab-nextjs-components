@@ -110,6 +110,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbChip', file: 'ab-chip/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 Welcome v6 (AbPill)
   { name: 'AbPill', file: 'ab-pill/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 Welcome v6 (AbInstallSnippet)
+  { name: 'AbInstallSnippet', file: 'ab-install-snippet/index.tsx', kind: 'client', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }

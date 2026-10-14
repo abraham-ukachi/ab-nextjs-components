@@ -111,6 +111,7 @@
     "ab-splash",
     "ab-linear-progress",
     "ab-carousel",
+    "ab-install-snippet",
     "ab-pill",
     "ab-chip",
     "ab-theme-toggle",
@@ -134,6 +135,8 @@
     "./ab-theme-toggle": "./ab-theme-toggle/index.tsx",
     "./ab-chip": "./ab-chip/index.tsx",
     "./ab-pill": "./ab-pill/index.tsx",
+    "./ab-install-snippet": "./ab-install-snippet/index.tsx",
+    "./ab-install-snippet/helpers": "./ab-install-snippet/helpers.ts",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",

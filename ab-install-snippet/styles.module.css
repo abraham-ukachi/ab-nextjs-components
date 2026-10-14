@@ -1,0 +1,104 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbInstallSnippet - Styles
+* @file: ab-install-snippet/styles.module.css
+* @type: CSS module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 📦 box */
+.root {
+  display: grid; /* 📐 */
+  gap: 0.5rem; /* 🧱 */
+  padding: 0.75rem; /* 🧱 */
+  border-radius: 0.875rem; /* 🔲 */
+  border: 1px solid var(--ab-color-outline-variant, rgb(0 0 0 / 0.12)); /* 🖊️ */
+  background: var(--ab-color-surface-container, transparent); /* 🎨 */
+  max-width: 100%; /* 📏 */
+}
+
+/* 🗂️ tabs row */
+.tabs {
+  display: flex; /* 📐 */
+  gap: 0.25rem; /* 🧱 */
+}
+
+/* 🔘 tab */
+.tab {
+  min-height: 28px; /* 📏 ≥ 24px target */
+  padding: 0.25rem 0.625rem; /* 🧱 */
+  border: 0; /* 🧹 */
+  border-radius: 9999px; /* 💊 */
+  background: transparent; /* 🫥 */
+  color: var(--ab-color-on-surface-variant, currentColor); /* 🎨 */
+  font: inherit; /* 🔤 */
+  font-size: 0.8125rem; /* 🔡 */
+  cursor: pointer; /* 👆 */
+}
+.tab[aria-selected='true'] {
+  color: var(--ab-color-bronze-text, #8A6440); /* ♿ AA small text */
+  background: color-mix(in srgb, var(--ab-color-bronze, #A67C52) 12%, transparent); /* 🎨 */
+  font-weight: 600; /* 💪 */
+}
+.tab:focus-visible {
+  outline: 2px solid var(--ab-focus-ring, var(--ab-color-primary, #A67C52)); /* 💍 */
+  outline-offset: 2px; /* ↔️ */
+}
+
+/* 🧾 command row */
+.panel {
+  display: flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  gap: 0.5rem; /* 🧱 */
+  min-width: 0; /* 🚫 overflow */
+}
+.prompt {
+  opacity: 0.5; /* 🌫️ */
+  font-family: var(--ab-font-mono, ui-monospace, monospace); /* 🔤 */
+}
+.code {
+  flex: 1; /* ↔️ */
+  overflow-x: auto; /* 📜 long commands scroll */
+  white-space: nowrap; /* 🚫 wrap */
+  font-family: var(--ab-font-mono, ui-monospace, monospace); /* 🔤 */
+  font-size: 0.875rem; /* 🔡 */
+}
+.copy {
+  flex: none; /* 🚫 squash */
+}
+
+/* 🙈 visually hidden */
+.srOnly {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; /* 📏 */
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; /* ✂️ */
+}
