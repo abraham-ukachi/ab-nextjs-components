@@ -1,0 +1,8 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AbSplash gate — CSP hash > hash snapshot (update deliberately when the script changes) 1`] = `
+{
+  "app": "'sha256-N+7/ByTyTjzf7DNGHGjnTMEp9NDuUqv/ow6C2AP1HEI='",
+  "default": "'sha256-3PrCYqTdwnAzN2z9jdpQSl7d0vOuRS2nru+Ek4mdh4g='",
+}
+`;

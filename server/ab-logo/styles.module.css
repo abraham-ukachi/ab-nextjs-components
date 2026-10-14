@@ -4,7 +4,31 @@
 * ab-nextjs-components
 * ~~~~~~~~~~~~ 
 * Copyright (c) 2026 Abraham Ukachi. The abElements Project.
-* Plain CSS modules — no Tailwind Tailwind apply (Turbopack-safe).
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+
+*
+* @project: ab-nextjs-components
+* @name: AbLogo - Component Stylesheet (plain CSS, Tailwind-independent)
+* @file: server/ab-logo/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 /*
@@ -13,18 +37,62 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
+/* 🅰️ masked mark (naked / outlined / hollow) */
 .abLogo {
-  display: block;
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: var(--app-logo-color, #a67c52);
+  display: block; /* 🧱 block box */
+  position: relative; /* 📌 positioning context */
+  width: 1.5rem; /* ↔️ default size */
+  height: 1.5rem; /* ↕️ default size */
+  /* 🎨 bronze by default; `--app-logo-color` (chrome) or `--ab-logo-color` (prop) override */
+  background-color: var(--app-logo-color, var(--ab-logo-color, #A67C52));
+  /* 🎭 the shipped Ab mark as mask → no brown square without chrome CSS ✅ */
+  -webkit-mask: var(--app-logo-url, url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xml%3Aspace%3D%22preserve%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23A67C52%22%20d%3D%22m1.8%2020.5%209.3-17v17zM22.2%207.7l-9.3-4.2v17l9.3-4.2-4.7-4.3z%22/%3E%3Cpath%20d%3D%22m12.9%2020.5%209.3-4.2-9.3-8.6z%22%20opacity%3D%22.1%22/%3E%3C/svg%3E")) no-repeat 50% 50%;
+  mask: var(--app-logo-url, url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xml%3Aspace%3D%22preserve%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23A67C52%22%20d%3D%22m1.8%2020.5%209.3-17v17zM22.2%207.7l-9.3-4.2v17l9.3-4.2-4.7-4.3z%22/%3E%3Cpath%20d%3D%22m12.9%2020.5%209.3-4.2-9.3-8.6z%22%20opacity%3D%22.1%22/%3E%3C/svg%3E")) no-repeat 50% 50%;
+  -webkit-mask-size: contain; /* 📐 keep proportions */
+  mask-size: contain; /* 📐 keep proportions */
 }
 
+/* 🌙 dark: light mark on dark surfaces */
+:global(html.dark) .abLogo:not(.abLogo__mark) {
+  background-color: var(--app-logo-color, var(--ab-logo-color, #FFF8F5));
+}
+
+/* 🖼️ contained mark (a real <img>) */
 .abLogoContained {
-  display: block;
-  position: relative;
-  width: 1.5rem;
-  height: 1.5rem;
-  object-fit: contain;
+  display: block; /* 🧱 block box */
+  position: relative; /* 📌 positioning context */
+  width: 1.5rem; /* ↔️ default size */
+  height: 1.5rem; /* ↕️ default size */
+  object-fit: contain; /* 📐 keep proportions */
+}
+
+/* 🔤 lockup = mark + wordmark */
+.abLogo__lockup {
+  display: inline-flex; /* ➡️ one row */
+  align-items: center; /* ↕️ centered */
+  gap: 0.28em; /* ↔️ gap scales with the text */
+  font-size: 2rem; /* 📏 default lockup size (override with `size`) */
+  line-height: 1; /* 📐 tight */
+  color: var(--ab-logo-color, #A67C52); /* 🎨 bronze */
+}
+
+/* 🌙 dark lockup */
+:global(html.dark) .abLogo__lockup {
+  color: var(--ab-logo-color, #FFF8F5);
+}
+
+/* 🅰️ the mark inside a lockup follows the text size & color */
+.abLogo__mark {
+  width: 1.15em; /* ↔️ ≈ cap height + descender, as in the splash mock */
+  height: 1.15em; /* ↕️ square */
+  flex: none; /* 🚫 never shrink */
+  background-color: currentColor; /* 🎨 same as the wordmark */
+}
+
+/* 🔤 the wordmark — Quicksand Bold (font files ship with ab-nextjs-fonts/quicksand/styles.css) */
+.abLogo__wordmark {
+  font-family: 'Quicksand-Bold', 'Quicksand', ui-rounded, system-ui, sans-serif; /* 🔤 */
+  font-weight: 700; /* 💪 bold */
+  letter-spacing: 0.01em; /* ↔️ as in the mock */
+  white-space: nowrap; /* 🚫 no wrap */
 }

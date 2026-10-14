@@ -18,6 +18,15 @@
 - Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)
 - `next` peer is now `^16.3.4`; dev dependency on ab-nextjs-hooks comes from the registry
 
+### Unreleased (planned 0.1.9)
+
+* **AbLogo:** `wordmark` prop (`true` → "Elements", or any string) renders a mark + Quicksand Bold lockup (`font-quicksand-bold` from ab-nextjs-fonts); `color` prop (`--ab-logo-color`); light / dark (`html.dark`)
+* **AbLogo fix:** `naked` with no `src` now masks with the shipped Ab mark (via `--app-logo-url` fallback) instead of a bronze square when the chrome CSS isn't loaded
+* **AbSplash (new, `ab-nextjs-components/ab-splash`):** brand overlay + `abSplashGateScript` / `buildAbSplashGateScript({ locales, defaultLocale })`; root-path RegExp built from locales minus the default and JSON-injected; skips `navigator.webdriver` / bot UAs; standalone via `matchMedia` OR `navigator.standalone`; each storage get/set in its own try (failed get = seen); `data-ab-splash` set last; page behind is `inert` while shown; track `min(18rem, 28vw)`
+* **CSP:** `ab-nextjs-components/ab-splash/csp` → `getAbSplashGateSha256(script)`, `buildAbSplashGate(options)`, `AB_SPLASH_GATE_SHA256`
+* **AbLinearProgress (new here, `ab-nextjs-components/ab-linear-progress`):** determinate / indeterminate, `color`, reduced motion, dark, RTL sweep, empty `aria-label` dropped; shipped CSS module. AbSplash uses it, so **no `ab-nextjs-core` peer is needed**
+* **Tooling:** `typecheck` script, `types/css.d.ts`, vitest automatic JSX, `scripts/build-demo.mjs`
+
 ### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
 
 ## 0.1.4 — 2026-09-23

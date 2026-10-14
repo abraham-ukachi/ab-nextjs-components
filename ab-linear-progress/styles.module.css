@@ -1,0 +1,121 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AB Linear Progress - Component Stylesheet (plain CSS, Tailwind-independent)
+* @file: ab-linear-progress/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* ===== 📊 AB LINEAR PROGRESS ===== */
+
+/* 🧱 track */
+.abLinearProgress {
+  /* 🎨 default bronze color (light) */
+  --_ab-lp-color: var(--ab-linear-progress-color, #A67C52);
+  /* 📏 default height, overridable */
+  --_ab-lp-height: var(--ab-linear-progress-height, 4px);
+  position: relative; /* 📌 anchor for the bar */
+  display: block; /* 🧱 full-width block */
+  width: 100%; /* ↔️ fill the parent */
+  height: var(--_ab-lp-height); /* ↕️ thin bar */
+  overflow: hidden; /* ✂️ clip the sweeping bar */
+  border-radius: 9999px; /* 💊 pill */
+  /* 🌫️ faint track tinted by the bar color */
+  background-color: color-mix(in srgb, var(--_ab-lp-color) 18%, transparent);
+}
+
+/* 🙈 honor the hidden attribute even if display is set */
+.abLinearProgress[hidden] {
+  display: none;
+}
+
+/* 🌙 dark mode: lighter bronze on dark surfaces */
+:global(html.dark) .abLinearProgress {
+  --_ab-lp-color: var(--ab-linear-progress-color, #C9A27A);
+  background-color: color-mix(in srgb, var(--_ab-lp-color) 22%, transparent);
+}
+
+/* 🟫 bar */
+.abLinearProgress__bar {
+  position: absolute; /* 📌 sits on the track */
+  inset: 0; /* 📐 full size, scaled via transform */
+  border-radius: inherit; /* 💊 same pill */
+  background-color: var(--_ab-lp-color); /* 🎨 bar color */
+  transform-origin: left center; /* ⬅️ grow from the start */
+  transition: transform 240ms ease-out; /* 🎞️ smooth value changes */
+}
+
+/* ↔️ RTL: grow from the right */
+:global([dir='rtl']) .abLinearProgress__bar {
+  transform-origin: right center;
+}
+
+/* 🔁 indeterminate: a 40% segment sweeping across */
+.abLinearProgress__bar_indeterminate {
+  right: auto; /* 🔓 free the right edge */
+  width: 40%; /* 📏 segment width */
+  animation: abLinearProgressSweep 1.4s ease-in-out infinite; /* 🔁 loop */
+}
+
+/* 🎞️ sweep keyframes */
+@keyframes abLinearProgressSweep {
+  0% { transform: translateX(-100%); } /* ⬅️ off-screen left */
+  100% { transform: translateX(250%); } /* ➡️ off-screen right */
+}
+
+/* ↔️ RTL indeterminate: anchor on the right and sweep right → left (mirrored keyframes) */
+:global([dir='rtl']) .abLinearProgress__bar_indeterminate {
+  left: auto; /* 🔓 free the left edge */
+  right: 0; /* 📌 start on the right */
+  animation-name: abLinearProgressSweepRtl; /* ⬅️ mirrored sweep */
+}
+
+/* 🎞️ mirrored sweep keyframes (RTL) */
+@keyframes abLinearProgressSweepRtl {
+  0% { transform: translateX(100%); } /* ➡️ off-screen right */
+  100% { transform: translateX(-250%); } /* ⬅️ off-screen left */
+}
+
+/* ♿ reduced motion: no animation, static bar */
+@media (prefers-reduced-motion: reduce) {
+  .abLinearProgress__bar {
+    transition: none; /* 🚫 no value tween */
+  }
+  .abLinearProgress__bar_indeterminate,
+  :global([dir='rtl']) .abLinearProgress__bar_indeterminate {
+    animation: none; /* 🚫 no sweep (LTR + RTL) */
+    width: 100%; /* 🟫 full static bar */
+    opacity: 0.55; /* 🌫️ softened so it reads as "busy", not "done" */
+    transform: none; /* 📐 in place */
+  }
+}
