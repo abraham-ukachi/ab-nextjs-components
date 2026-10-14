@@ -1,4 +1,17 @@
-## Unreleased (planned 0.1.10, Welcome v6, not bumped; needs ab-nextjs-hooks >= 0.1.6, ab-nextjs-icons >= 0.2.3)
+## Unreleased (planned 0.1.10, Welcome v6, not bumped; needs ab-nextjs-hooks >= 0.1.6, ab-nextjs-icons >= 0.2.3, ab-nextjs-animations >= 0.2.4)
+
+* **Motion comes from ab-nextjs-animations (>= 0.2.4, now a required peer):** no component CSS declares its own `transition`, `animation` or `@keyframes` any more. Each component imports the package stylesheet it needs:
+  * AbCarousel: `slide-step` (direction-aware enter / leave via `data-ab-direction`) + `motion` (buttons, dots)
+  * AbFlowDiagram: `wire` (`--ab-wire-*` tokens; `data-ab-paused`; 3 loops on phones unless `loops` is set)
+  * AbThemeToggle, AbSearchbar, AbSplash fade: `motion` colours
+  * AbIconButton: `motion` (`expands` → `ab-motion-lift`, `shrinks` → `ab-motion-press`)
+  * AbProgressChips: `motion` size
+  * AbLinearProgress: `motion` transform + `progress-sweep`
+  * AbCollapsible, AbBrand: `motion` transform
+  * AbLikeButton / AbSearchbar spinners: `spin`
+  * Reduced motion (OS, or `reducedMotion="always"` via `data-ab-reduced-motion`) is handled by the package
+* **AbCarousel:** context gains `direction` + `previousIndex`; `--ab-carousel-duration` / `-ease` / `-shift` map onto `--ab-slide-step-*`; the old positional slide offsets are gone
+* **Peers:** `ab-nextjs-icons` (`>=0.2.3`) and `ab-nextjs-animations` (`>=0.2.4`) are no longer optional
 
 * **AbCarousel (G31):** new subpath `ab-nextjs-components/ab-carousel` (+ server-safe `ab-carousel/helpers`). Compound parts `AbCarousel`, `AbCarouselTrack`, `AbCarouselSlide`, `AbCarouselPrev`, `AbCarouselNext`, `AbCarouselDots`, `AbCarouselCounter` + `useAbCarousel()`. APG carousel semantics (`aria-roledescription` carousel/slide, "n of total" labels, polite live region, inactive slides `inert` + `aria-hidden` after hydration), RTL-aware ←/→ + Home/End scoped to the region, swipe via `useAbSwipe`, reduced motion via `useAbReducedMotion` + CSS, controlled / uncontrolled, i18n labels on every control, `AB_CAROUSEL_NOSCRIPT_CSS` for the no-JS stack
 * **AbIconButton (G6):** `aria-label` + `title` now sit on the interactive element (never the wrapper span); new `label` prop (falls back to `title`); the `href` variant is named and no longer has `role="button"`; the ligature glyph is `aria-hidden`; disabled links leave the tab order; loading sets `aria-busy`
