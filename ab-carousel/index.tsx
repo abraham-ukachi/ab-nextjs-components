@@ -84,6 +84,8 @@ import {
 } from './helpers';
 // 🎨 package-shipped CSS module
 import styles from './styles.module.css';
+// 🔣 AbIcons SVG (G2)
+import AbIcon from '../ab-icon';
 
 // 📦 re-export the helpers + types so client callers need one import
 export * from './helpers';
@@ -493,16 +495,9 @@ export interface AbCarouselNavProps {
   children?: ReactNode;
 }
 
-// ➡️ AbIcons arrow geometry (arrow_back / arrow_forward, outlined, stroke follows --ab-carousel-icon-stroke)
+// ➡️ AbIcons arrow (G2): weight 300 = stroke 1.5, mirrored in RTL via .navIcon
 function AbCarouselArrow({ kind }: { kind: 'prev' | 'next' }) {
-  // 🧭 path data copied from ab-nextjs-icons ab-icons/outlined/arrow_{back,forward}.svg
-  const head = kind === 'prev' ? 'M11 6 L5 12 L11 18' : 'M13 6 L19 12 L13 18';
-  return (
-    <svg className={styles.navIcon} viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true" focusable="false">
-      <path d="M5 12 H19" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={head} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
+  return <AbIcon className={styles.navIcon} name={kind === 'prev' ? 'arrow_back' : 'arrow_forward'} size={20} weight={300} />; // 🔣 decorative (button is named)
 }
 
 // 🔘 shared prev / next implementation

@@ -170,7 +170,7 @@
 
 /* ➡️ the arrow icon (mirrors in RTL) */
 .navIcon {
-  stroke-width: var(--ab-carousel-icon-stroke, 1.5);
+  flex: none; /* 🚫 squash (stroke comes from AbIcon weight 300 = 1.5) */
 }
 .carousel[data-dir='rtl'] .navIcon {
   transform: scaleX(-1); /* 🌍 */

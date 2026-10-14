@@ -47,12 +47,18 @@ import type { CSSProperties, ReactElement } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🧮 shared helpers (NO icon map import: client bundles stay small)
-import { getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
+import { getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, registerAbIcons, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
+// 🗂️ the 8 glyphs components draw themselves (per-icon modules, not the map)
+import { AB_ICON_BUILTINS } from './builtin';
 // 🎨 styles
 import styles from './styles.module.css';
 
 // 📦 helpers for consumers (registerAbIcons, types)
 export * from './helpers';
+export { AB_ICON_BUILTINS } from './builtin';
+
+// 🗂️ register built-ins at module scope (same on server render + hydration → no mismatch)
+registerAbIcons(AB_ICON_BUILTINS);
 
 // ⚙️ props
 export interface AbIconProps {
