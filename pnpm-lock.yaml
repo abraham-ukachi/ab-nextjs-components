@@ -8,12 +8,9 @@ importers:
 
   .:
     dependencies:
-      ab-nextjs-animations:
-        specifier: '*'
-        version: 0.2.0
       ab-nextjs-theme:
         specifier: '*'
-        version: 0.2.7
+        version: 0.2.7(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
     devDependencies:
       '@testing-library/react':
         specifier: ^16.3.3
@@ -24,6 +21,9 @@ importers:
       '@types/react':
         specifier: ^19
         version: 19.3.0
+      ab-nextjs-animations:
+        specifier: ^0.2.3
+        version: 0.2.3(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       ab-nextjs-hooks:
         specifier: ^0.1.2
         version: 0.1.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1036,8 +1036,33 @@ packages:
   '@vitest/utils@3.2.7':
     resolution: {integrity: sha512-x6BDOd7dyo3PFLY3I9/HJ25X/6OurhGXk2/B9gOZNPF7XDVjeBK4k01lQE5uvDpbuheErh91qYuE1E2OEjK3Rw==}
 
-  ab-nextjs-animations@0.2.0:
-    resolution: {integrity: sha512-g2CjOKwyI7RrVU9HbdV9gMpzRFaoKczDWkXQQ9eetLAiqBOvolRUQnjT8gO+kvGBZFji+HYPYnSSD4LnTKEscA==}
+  ab-nextjs-animations@0.2.2:
+    resolution: {integrity: sha512-E4Zp4iH7xBEirzf3JwzkD3erz6hJYkP22acUd5YJR0PXsAQ2sNMkRIjPMq547TkaCkptiehOw+bXTKqeTtZILQ==}
+    peerDependencies:
+      next: ^16.3.4
+      react: ^19
+      react-dom: ^19
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
+  ab-nextjs-animations@0.2.3:
+    resolution: {integrity: sha512-EByg1TYavjNL30cfvpafdc4TNdRxasjlXexE2WV/yoeH38pUrYBaLKXOmPZ4+S5LNdv9USaeuMUKz5Q9JAVJWA==}
+    peerDependencies:
+      next: ^16.3.4
+      react: ^19
+      react-dom: ^19
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   ab-nextjs-fonts@0.2.2:
     resolution: {integrity: sha512-LouVL5p5kYhnqrjNcw6EQhGNQiS1EvQECR67x+6tMR8UMJ4IPS7w2C5U+w/SxChFJprlCb8Hnfv35/tP87iDCg==}
@@ -3255,7 +3280,17 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 2.0.0
 
-  ab-nextjs-animations@0.2.0: {}
+  ab-nextjs-animations@0.2.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    optionalDependencies:
+      next: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+
+  ab-nextjs-animations@0.2.3(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    optionalDependencies:
+      next: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
   ab-nextjs-fonts@0.2.2: {}
 
@@ -3277,11 +3312,15 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
 
-  ab-nextjs-theme@0.2.7:
+  ab-nextjs-theme@0.2.7(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
-      ab-nextjs-animations: 0.2.0
+      ab-nextjs-animations: 0.2.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       ab-nextjs-fonts: 0.2.2
       ab-nextjs-icons: 0.1.2
+    transitivePeerDependencies:
+      - next
+      - react
+      - react-dom
 
   acorn-jsx@5.3.2(acorn@8.18.0):
     dependencies:

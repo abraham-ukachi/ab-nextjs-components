@@ -1,7 +1,7 @@
 {
   "name": "ab-nextjs-components",
   "version": "0.1.9",
-  "description": "\ud83d\ude80 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications \ud83d\ude0e.",
+  "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "type": "module",
   "main": "index.ts",
   "types": "types/index.d.ts",
@@ -40,19 +40,24 @@
   },
   "license": "MIT",
   "peerDependencies": {
+    "ab-nextjs-animations": ">=0.2.4",
+    "ab-nextjs-hooks": "*",
+    "ab-nextjs-icons": ">=0.2.3",
+    "ab-nextjs-theme": "*",
     "clsx": "^2",
     "next": "^16.3.4",
     "react": "^19",
-    "react-dom": "^19",
-    "ab-nextjs-theme": "*",
-    "ab-nextjs-icons": "*",
-    "ab-nextjs-hooks": "*",
-    "ab-nextjs-animations": "*"
+    "react-dom": "^19"
   },
   "devDependencies": {
     "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
+    "ab-nextjs-animations": "^0.2.3",
+    "ab-nextjs-hooks": "^0.1.2",
+    "ab-nextjs-icons": "^0.2.2",
+    "clsx": "^2.1.1",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.3.4",
     "happy-dom": "^20.14.6",
@@ -60,11 +65,7 @@
     "react": "^19",
     "react-dom": "^19",
     "typescript": "^5",
-    "vitest": "^3",
-    "clsx": "^2.1.1",
-    "ab-nextjs-hooks": "^0.1.2",
-    "ab-nextjs-icons": "^0.2.2",
-    "esbuild": "^0.28.2"
+    "vitest": "^3"
   },
   "files": [
     "index.ts",
@@ -208,13 +209,7 @@
     "ab-nextjs-theme": {
       "optional": true
     },
-    "ab-nextjs-icons": {
-      "optional": true
-    },
     "ab-nextjs-hooks": {
-      "optional": true
-    },
-    "ab-nextjs-animations": {
       "optional": true
     }
   }
