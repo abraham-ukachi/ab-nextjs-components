@@ -17,6 +17,8 @@ export default abComponents;
 
 export { default as AbIcon } from '../ab-icon/index.tsx';
 export { default as AbLogo } from '../ab-logo/index.tsx';
+// 📶 progress bar (ported from core)
+export { default as AbLinearProgress } from '../ab-linear-progress/index.tsx';
 export { default as AbButton } from '../ab-button/index.tsx';
 export { default as AbIconButton } from '../ab-icon-button/index.tsx';
 export { default as AbInput } from '../ab-input/index.tsx';

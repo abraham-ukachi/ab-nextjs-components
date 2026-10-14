@@ -20,6 +20,10 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   // CLIENT
   { name: 'AbIcon', file: 'ab-icon/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbLogo', file: 'ab-logo/index.tsx', kind: 'client', status: 'Done' },
+  // 📶 AbLinearProgress (ported from core; used by AbSplash)
+  { name: 'AbLinearProgress', file: 'ab-linear-progress/index.tsx', kind: 'client', status: 'Done' },
+  // 💦 AbSplash: subpath-only (`ab-nextjs-components/ab-splash`)
+  { name: 'AbSplash', file: 'ab-splash/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbButton', file: 'ab-button/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbIconButton', file: 'ab-icon-button/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbInput', file: 'ab-input/index.tsx', kind: 'client', status: 'Done' },
@@ -80,6 +84,8 @@ export default abComponents
 
 export { default as AbIcon } from './ab-icon/index.tsx'
 export { default as AbLogo } from './ab-logo/index.tsx'
+// 📶 progress bar
+export { default as AbLinearProgress } from './ab-linear-progress/index.tsx'
 export { default as AbButton } from './ab-button/index.tsx'
 export { default as AbIconButton } from './ab-icon-button/index.tsx'
 export { default as AbInput } from './ab-input/index.tsx'

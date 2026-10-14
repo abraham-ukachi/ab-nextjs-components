@@ -1,0 +1,106 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+
+*
+* @project: ab-nextjs-components
+* @name: AbSplash - Component Stylesheet (plain CSS, Tailwind-independent)
+* @file: ab-splash/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 💦 overlay: hidden by default (JS off = no Splash 🙈) */
+.abSplash {
+  display: none; /* 🙈 off unless the gate turned it on */
+  position: fixed; /* 📌 cover the viewport */
+  inset: 0; /* 📐 edge to edge */
+  z-index: 1000; /* 🔝 above everything */
+  flex-direction: column; /* ⬇️ brand above progress */
+  align-items: center; /* ↔️ centered */
+  justify-content: center; /* ↕️ centered */
+  gap: 2.25rem; /* ↕️ brand ↔ bar */
+  background-color: #FFF8F3; /* ☀️ light surface (matches the splash mocks) */
+  color: #A67C52; /* 🎨 bronze brand */
+  transition: opacity 200ms ease; /* 🌫️ fade-out */
+  animation: abSplashFailsafe 0s linear 1.2s forwards; /* ⏱️ never longer than 1.2 s, even without hydration */
+}
+
+/* 🌙 dark */
+:global(html.dark) .abSplash {
+  background-color: #1A1310; /* 🌙 dark surface (matches the splash mocks) */
+  color: #FFF8F5; /* 🤍 light brand */
+}
+
+/* 🚦 gate said "on" (or leaving) */
+:global(html[data-ab-splash]) .abSplash {
+  display: flex;
+}
+
+/* 🔒 no scrolling behind the overlay — with the same 1.2 s failsafe as the overlay itself */
+:global(html[data-ab-splash='on']) {
+  overflow: hidden; /* 🔒 lock */
+  animation: abSplashUnlock 0s linear 1.2s forwards; /* ⏱️ unlock even if hydration never happens */
+}
+
+/* ⏱️ failsafe unlock keyframes (overflow animates discretely) */
+@keyframes abSplashUnlock {
+  to { overflow: visible; }
+}
+
+/* 👋 leaving: fade out */
+:global(html[data-ab-splash='leaving']) .abSplash {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 🅰️ brand lockup size */
+.abSplash__brand {
+  font-size: clamp(2.5rem, 6vw, 3.25rem); /* 📏 as in the mock */
+  color: inherit; /* 🎨 follow light/dark */
+  --ab-logo-color: currentColor; /* 🎨 mark + wordmark follow the overlay color */
+}
+
+/* 📶 progress track */
+.abSplash__progress {
+  width: min(18rem, 28vw); /* ↔️ mobile + laptop, as in the mock */
+  --ab-linear-progress-height: 0.375rem; /* ↕️ 6 px */
+  --ab-linear-progress-color: #A67C52; /* 🎨 bronze bar in both themes */
+}
+
+/* ♿ reduced motion: no fade */
+@media (prefers-reduced-motion: reduce) {
+  .abSplash { transition: none; }
+}
+
+/* ⏱️ failsafe keyframes */
+@keyframes abSplashFailsafe {
+  to { visibility: hidden; pointer-events: none; }
+}
