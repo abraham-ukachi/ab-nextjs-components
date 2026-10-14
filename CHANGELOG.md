@@ -31,6 +31,12 @@
 - Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)
 - `next` peer is now `^16.3.4`; dev dependency on ab-nextjs-hooks comes from the registry
 
+### Unreleased (planned 0.1.10, Welcome v6, not bumped; needs ab-nextjs-hooks >= 0.1.6)
+
+* **AbCarousel (G31):** new subpath `ab-nextjs-components/ab-carousel` (+ server-safe `ab-carousel/helpers`). Compound parts `AbCarousel`, `AbCarouselTrack`, `AbCarouselSlide`, `AbCarouselPrev`, `AbCarouselNext`, `AbCarouselDots`, `AbCarouselCounter` + `useAbCarousel()`. APG carousel semantics (`aria-roledescription` carousel/slide, "n of total" labels, polite live region, inactive slides `inert` + `aria-hidden` after hydration), RTL-aware ←/→ + Home/End scoped to the region, swipe via `useAbSwipe`, reduced motion via `useAbReducedMotion` + CSS, controlled / uncontrolled, i18n labels on every control, `AB_CAROUSEL_NOSCRIPT_CSS` for the no-JS stack
+* **AbIconButton (G6):** `aria-label` + `title` now sit on the interactive element (never the wrapper span); new `label` prop (falls back to `title`); the `href` variant is named and no longer has `role="button"`; the ligature glyph is `aria-hidden`; disabled links leave the tab order; loading sets `aria-busy`
+* Dev: `happy-dom` + `@testing-library/react` for DOM tests
+
 ### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
 
 ## 0.1.4 — 2026-09-23
