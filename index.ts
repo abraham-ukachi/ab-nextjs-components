@@ -112,6 +112,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbPill', file: 'ab-pill/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 Welcome v6 (AbInstallSnippet)
   { name: 'AbInstallSnippet', file: 'ab-install-snippet/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 Welcome v6 (AbLocaleSwitcher)
+  { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
