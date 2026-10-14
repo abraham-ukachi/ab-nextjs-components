@@ -22,42 +22,97 @@
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
-
 *
 * @project: ab-nextjs-components
-* @name: AbIcon - Client
+* @name: AbIcon - Client (G2)
 * @file: ab-icon/index.tsx
+* @type: Component (client) — AbIcons SVG, no icon font
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*
+* Example usage:
+*   1+|> <AbIcon name="arrow_back" /> // 🙈 decorative
+*    -|> <AbIcon name="github" label="GitHub" svg={github} /> // 🖼️ named image
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
 'use client';
 
-import type { ReactElement } from 'react';
+// ⚛️ types
+import type { CSSProperties, ReactElement } from 'react';
+// 🧵 classes
 import clsx from 'clsx';
+// 🧮 shared helpers (NO icon map import: client bundles stay small)
+import { getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
+// 🎨 styles
 import styles from './styles.module.css';
 
+// 📦 helpers for consumers (registerAbIcons, types)
+export * from './helpers';
+
+// ⚙️ props
 export interface AbIconProps {
-  name: string;
-  className?: string;
-  filled?: boolean;
-  size?: number | string;
-  title?: string;
+  name: string; // 🗂️ AbIcons name (snake_case); Material ligature fallback if unknown
+  variant?: AbIconVariant; // 🎚️ outlined (default) | filled
+  filled?: boolean; // 🕰️ legacy alias for variant="filled"
+  weight?: AbIconWeight | number; // 📏 100–700 (outlined), default 200
+  size?: number | string; // 📐 default 24px
+  label?: string; // ♿ NEW: accessible name; omitted = decorative (aria-hidden)
+  title?: string; // 💬 legacy tooltip + name
+  svg?: AbIconSvgData; // 🧾 NEW: explicit markup (tree-shaken per-icon import)
+  className?: string; // 🏷️
+  style?: CSSProperties; // 🎨
 }
 
-/** Material Symbols ligature icon (client). */
-const AbIcon = ({ name, className, filled = false, size, title }: AbIconProps): ReactElement => {
+/** 🔣 AbIcons SVG icon (client): `svg` prop → registry → Material ligature fallback. */
+const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
+  // 🔍 resolve markup without the full map
+  const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), variant ?? (filled ? 'filled' : 'outlined'));
+  // 🎚️ legacy `filled` → variant
+  const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
+  // 🏷️ accessible name: `label` (new) or `title` (legacy)
+  const name_ = label ?? title;
+  // 🎨 size + weight as CSS variables (weight overrides SVG stroke-width via CSS)
+  const vars = { ...style, '--ab-icon-size': toAbIconSize(size), '--ab-icon-stroke': String(getAbIconStroke(weight)) } as CSSProperties;
+  // ♿ labelled = image, else decorative
+  const a11y = name_ ? { role: 'img' as const, 'aria-label': name_ } : { 'aria-hidden': true as const };
+
+  // ✅ AbIcons SVG
+  if (markup) {
+    return (
+      <span
+        className={clsx('AbIcon', styles.abIcon, className)} // 🏷️
+        style={vars} // 🎨
+        data-variant={v} // 🎚️
+        data-icon={name} // 🗂️
+        title={title} // 💬 legacy tooltip only
+        {...a11y} // ♿
+        // 🔒 trusted, package-generated static markup (never user input)
+        dangerouslySetInnerHTML={{ __html: markup }}
+      />
+    );
+  }
+
+  // 🕰️ fallback: Material Symbols ligature (pre-G2 behaviour) for names not in AbIcons
   return (
     <span
-      className={clsx('material-symbols-rounded', 'icon', styles.abIcon, className)}
-      style={size != null ? { fontSize: typeof size === 'number' ? `${size}px` : size } : undefined}
-      title={title}
-      aria-hidden={title ? undefined : true}
-      role={title ? 'img' : undefined}
-      data-filled={filled ? 'true' : 'false'}
+      className={clsx('material-symbols-rounded', 'icon', styles.abIconFont, className)} // 🏷️
+      style={{ ...style, fontSize: toAbIconSize(size) }} // 📏
+      data-filled={v === 'filled' ? 'true' : 'false'} // 🎚️
+      data-icon={name} // 🗂️
+      data-ab-icon-fallback="font" // 🔎 easy to audit
+      title={title} // 💬
+      {...a11y} // ♿
     >
       {name}
     </span>
   );
 };
 
+// 📦 exports
 export default AbIcon;
 export { AbIcon };
