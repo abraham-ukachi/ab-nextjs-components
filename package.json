@@ -111,6 +111,7 @@
     "ab-splash",
     "ab-linear-progress",
     "ab-carousel",
+    "ab-theme-toggle",
     "ab-logo/ab-logo.svg",
     "styles.css",
     "css",
@@ -128,6 +129,7 @@
     "./ab-splash": "./ab-splash/index.tsx",
     "./ab-carousel": "./ab-carousel/index.tsx",
     "./ab-carousel/helpers": "./ab-carousel/helpers.ts",
+    "./ab-theme-toggle": "./ab-theme-toggle/index.tsx",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",

@@ -104,6 +104,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbTestHello', file: 'server/ab-test-hello/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbKeyFeature', file: 'server/ab-key-feature/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbSwitchBack', file: 'server/ab-switch-back/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 Welcome v6 (AbThemeToggle)
+  { name: 'AbThemeToggle', file: 'ab-theme-toggle/index.tsx', kind: 'client', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }

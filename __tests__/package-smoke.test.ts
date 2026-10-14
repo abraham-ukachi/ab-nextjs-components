@@ -42,6 +42,7 @@ const componentFiles = [
   'ab-icon-button/index.tsx',
   'ab-carousel/index.tsx',
   'ab-carousel/helpers.ts',
+  'ab-theme-toggle/index.tsx',
   'ab-input/index.tsx',
   'ab-balloon/index.tsx',
   'ab-avatar/index.tsx',
@@ -105,11 +106,11 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (54 Done)', async () => {
+  it('exports supportedComponents catalog (55 Done)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(54)
+    expect(mod.supportedComponents).toHaveLength(55)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(39)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(40)
     expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(15)
   })
 
@@ -126,6 +127,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-button/styles.module.css',
       'ab-icon-button/styles.module.css',
       'ab-carousel/styles.module.css',
+      'ab-theme-toggle/styles.module.css',
       'ab-input/styles.module.css',
       'ab-balloon/styles.module.css',
       'ab-avatar/styles.module.css',
