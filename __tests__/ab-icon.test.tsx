@@ -57,8 +57,10 @@ const dot = { outlined: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" 
 
 describe('AbIcon client (G2)', () => {
   it('never imports the full icon map (client bundle budget)', () => {
-    const src = readFileSync(join(root, 'ab-icon/index.tsx'), 'utf8') + readFileSync(join(root, 'ab-icon/helpers.ts'), 'utf8') // 📄
-    expect(src).not.toMatch(/^import[^\n]*from ['"]ab-nextjs-icons/m) // 🚫 378 KB map stays out (real imports only)
+    const src = ['ab-icon/index.tsx', 'ab-icon/helpers.ts', 'ab-icon/builtin.ts'].map((f) => readFileSync(join(root, f), 'utf8')).join('\n') // 📄
+    const icons = [...src.matchAll(/^import[^\n]*from ['"](ab-nextjs-icons[^'"]*)['"]/gm)].map((m) => m[1]) // 🔍 real imports
+    expect(icons.length).toBeGreaterThan(0) // 🗂️ built-ins come from per-icon modules
+    for (const spec of icons) expect(spec).toMatch(/^ab-nextjs-icons\/ab-icons\/icons\/[a-z0-9_]+$/) // 🚫 never the map / root
   })
   it('renders an svg prop, decorative by default, named with label', () => {
     const off = renderToStaticMarkup(<AbIcon name="dot" svg={dot} />) // 🙈
@@ -81,6 +83,11 @@ describe('AbIcon client (G2)', () => {
   })
   it('stroke table matches ab-nextjs-icons exactly', () => {
     expect(AB_ICON_WEIGHT_STROKE).toEqual(abIconWeightStroke) // 🔒 no drift
+  })
+  it('built-ins render as SVG with no registration by the app', () => {
+    for (const name of ['arrow_back', 'arrow_forward', 'light_mode', 'dark_mode', 'computer', 'language', 'content_copy', 'check']) {
+      expect(renderToStaticMarkup(<AbIcon name={name} />), name).toContain('<svg') // ✅ no font fallback
+    }
   })
   it('snaps weights to the nearest stroke', () => {
     expect(getAbIconStroke()).toBe(1.25) // 🧭 200
