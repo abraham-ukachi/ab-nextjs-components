@@ -42,6 +42,7 @@ const componentFiles = [
   'ab-icon-button/index.tsx',
   'ab-carousel/index.tsx',
   'ab-carousel/helpers.ts',
+  'ab-flow-diagram/index.tsx',
   'ab-locale-switcher/index.tsx',
   'ab-install-snippet/index.tsx',
   'ab-pill/index.tsx',
@@ -110,12 +111,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (59 Done)', async () => {
+  it('exports supportedComponents catalog (60 Done)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(59)
+    expect(mod.supportedComponents).toHaveLength(60)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
     expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(42)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(17)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(18)
   })
 
   it('ships component entry files', () => {
@@ -131,6 +132,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-button/styles.module.css',
       'ab-icon-button/styles.module.css',
       'ab-carousel/styles.module.css',
+      'ab-flow-diagram/styles.module.css',
       'ab-locale-switcher/styles.module.css',
       'ab-install-snippet/styles.module.css',
       'ab-chip/styles.module.css',

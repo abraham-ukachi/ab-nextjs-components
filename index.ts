@@ -114,6 +114,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbInstallSnippet', file: 'ab-install-snippet/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbLocaleSwitcher)
   { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 Welcome v6 (AbFlowDiagram)
+  { name: 'AbFlowDiagram', file: 'ab-flow-diagram/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }

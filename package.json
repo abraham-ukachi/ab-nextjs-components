@@ -112,6 +112,7 @@
     "ab-splash",
     "ab-linear-progress",
     "ab-carousel",
+    "ab-flow-diagram",
     "ab-locale-switcher",
     "ab-install-snippet",
     "ab-pill",
@@ -140,6 +141,8 @@
     "./ab-install-snippet": "./ab-install-snippet/index.tsx",
     "./ab-install-snippet/helpers": "./ab-install-snippet/helpers.ts",
     "./ab-locale-switcher": "./ab-locale-switcher/index.tsx",
+    "./ab-flow-diagram": "./ab-flow-diagram/index.tsx",
+    "./ab-flow-diagram/helpers": "./ab-flow-diagram/helpers.ts",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",
