@@ -1,3 +1,16 @@
+## 0.1.9 — 2026-10-14
+
+- **AbLogo:** `wordmark` prop (`true` → "Elements", or any string) renders a mark + Quicksand Bold lockup (`font-quicksand-bold` from ab-nextjs-fonts); `color` prop (`--ab-logo-color`); light / dark (`html.dark`)
+- **AbLogo fix:** `naked` with no `src` now masks with the shipped Ab mark (via `--app-logo-url` fallback) instead of a bronze square when the chrome CSS isn't loaded
+- **AbSplash (new, `ab-nextjs-components/ab-splash`):** brand overlay + `abSplashGateScript` / `buildAbSplashGateScript({ locales, defaultLocale })`; root-path RegExp built from locales minus the default and JSON-injected; skips `navigator.webdriver` / bot UAs; standalone via `matchMedia` OR `navigator.standalone`; each storage get/set in its own try (failed get = seen); `data-ab-splash` set last; page behind is `inert` while shown; track `min(18rem, 28vw)`
+- **CSP:** `ab-nextjs-components/ab-splash/csp` → `getAbSplashGateSha256(script)`, `buildAbSplashGate(options)`, `AB_SPLASH_GATE_SHA256`
+- **AbLinearProgress (new here, `ab-nextjs-components/ab-linear-progress`):** ported from the reviewed core work — determinate / indeterminate, `color`, reduced motion, dark, RTL sweep, empty `aria-label` dropped; shipped CSS module. AbSplash uses it, so **no `ab-nextjs-core` peer is needed**
+- **CSP (P1):** `ab-nextjs-components/ab-splash/csp` now ships compiled `csp.mjs` + `csp.d.ts` (Node-loadable from `next.config.*`); `build:csp` script, `check:publish` / `prepublishOnly` fail when it's stale
+- **AbSplash:** unmount removes `data-ab-splash` + `inert`; scroll lock gets the same 1.2 s CSS failsafe; surfaces `#FFF8F3` / `#1A1310` (mocks)
+- **Tooling:** `esbuild ^0.28.2` is now an explicit devDependency (direct in `pnpm-lock.yaml`; frozen install verified)
+- **AbSplash:** StrictMode-safe teardown (`scheduleAbSplashFinish` / `cancelAbSplashFinish`); overflow failsafe verified in Chromium + WebKit
+- **Tooling:** `typecheck` script, `types/css.d.ts`, vitest automatic JSX, `scripts/build-demo.mjs`
+
 ## 0.1.8 — 2026-10-05
 
 - **Chrome styles:** dialog, toast, logo (`span.app-logo`), spinner, and empty-state doodle CSS + SVG assets now ship here via `@import "ab-nextjs-components/styles.css"` (import after `ab-nextjs-theme/styles.css`)
@@ -17,19 +30,6 @@
 
 - Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)
 - `next` peer is now `^16.3.4`; dev dependency on ab-nextjs-hooks comes from the registry
-
-### Unreleased (planned 0.1.9)
-
-* **AbLogo:** `wordmark` prop (`true` → "Elements", or any string) renders a mark + Quicksand Bold lockup (`font-quicksand-bold` from ab-nextjs-fonts); `color` prop (`--ab-logo-color`); light / dark (`html.dark`)
-* **AbLogo fix:** `naked` with no `src` now masks with the shipped Ab mark (via `--app-logo-url` fallback) instead of a bronze square when the chrome CSS isn't loaded
-* **AbSplash (new, `ab-nextjs-components/ab-splash`):** brand overlay + `abSplashGateScript` / `buildAbSplashGateScript({ locales, defaultLocale })`; root-path RegExp built from locales minus the default and JSON-injected; skips `navigator.webdriver` / bot UAs; standalone via `matchMedia` OR `navigator.standalone`; each storage get/set in its own try (failed get = seen); `data-ab-splash` set last; page behind is `inert` while shown; track `min(18rem, 28vw)`
-* **CSP:** `ab-nextjs-components/ab-splash/csp` → `getAbSplashGateSha256(script)`, `buildAbSplashGate(options)`, `AB_SPLASH_GATE_SHA256`
-* **AbLinearProgress (new here, `ab-nextjs-components/ab-linear-progress`):** ported from the reviewed core work — determinate / indeterminate, `color`, reduced motion, dark, RTL sweep, empty `aria-label` dropped; shipped CSS module. AbSplash uses it, so **no `ab-nextjs-core` peer is needed**
-* **CSP (P1):** `ab-nextjs-components/ab-splash/csp` now ships compiled `csp.mjs` + `csp.d.ts` (Node-loadable from `next.config.*`); `build:csp` script, `check:publish` / `prepublishOnly` fail when it's stale
-* **AbSplash:** unmount removes `data-ab-splash` + `inert`; scroll lock gets the same 1.2 s CSS failsafe; surfaces `#FFF8F3` / `#1A1310` (mocks)
-* **Tooling:** `esbuild ^0.28.2` is now an explicit devDependency (direct in `pnpm-lock.yaml`; frozen install verified)
-* **AbSplash:** StrictMode-safe teardown (`scheduleAbSplashFinish` / `cancelAbSplashFinish`); overflow failsafe verified in Chromium + WebKit
-* **Tooling:** `typecheck` script, `types/css.d.ts`, vitest automatic JSX, `scripts/build-demo.mjs`
 
 ### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
 
