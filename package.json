@@ -63,6 +63,7 @@
     "vitest": "^3",
     "clsx": "^2.1.1",
     "ab-nextjs-hooks": "^0.1.2",
+    "ab-nextjs-icons": "^0.2.2",
     "esbuild": "^0.28.2"
   },
   "files": [

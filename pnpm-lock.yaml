@@ -11,9 +11,6 @@ importers:
       ab-nextjs-animations:
         specifier: '*'
         version: 0.2.0
-      ab-nextjs-icons:
-        specifier: '*'
-        version: 0.1.2
       ab-nextjs-theme:
         specifier: '*'
         version: 0.2.7
@@ -30,6 +27,9 @@ importers:
       ab-nextjs-hooks:
         specifier: ^0.1.2
         version: 0.1.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      ab-nextjs-icons:
+        specifier: ^0.2.2
+        version: 0.2.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1051,6 +1051,20 @@ packages:
 
   ab-nextjs-icons@0.1.2:
     resolution: {integrity: sha512-LJOWG3tgUr5z6A2lJ5D84inf7o2sES0OcMrAaP2rd332PUMOPJlLPsmfVkeX5pvwKPl6yze3fj74yxMZXTcrYg==}
+
+  ab-nextjs-icons@0.2.2:
+    resolution: {integrity: sha512-abmE3XfwZ9pjxAftAcRqmInFsQHkuOfEyjDHKcMUtRC678sCHH1O/mNJ//7/TotpuG6XlCNs1IWg3ypfh9ZBoA==}
+    peerDependencies:
+      next: ^16.3.4
+      react: ^19.0.0
+      react-dom: ^19.0.0
+    peerDependenciesMeta:
+      next:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   ab-nextjs-theme@0.2.7:
     resolution: {integrity: sha512-gZX86PEGwXfCjrrgcwwY+Ars0L5YBctQqYY9wVV0Bv9WNd0McaOGhXWFNioxuifzKakmanwq74jd08d0tTLALA==}
@@ -3254,6 +3268,14 @@ snapshots:
   ab-nextjs-icons@0.1.2:
     dependencies:
       material-symbols: 0.29.3
+
+  ab-nextjs-icons@0.2.2(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    dependencies:
+      material-symbols: 0.29.3
+    optionalDependencies:
+      next: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
   ab-nextjs-theme@0.2.7:
     dependencies:
