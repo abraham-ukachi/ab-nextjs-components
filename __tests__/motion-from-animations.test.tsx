@@ -133,7 +133,12 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
     }
     // 🚫 never commit local links
     for (const range of [...Object.values(pkg.dependencies ?? {}), ...Object.values(pkg.devDependencies), ...Object.values(pkg.peerDependencies)] as string[]) expect(range).not.toMatch(/^(file|link|workspace|portal):/) // 🔗
-    expect(read('pnpm-workspace.yaml')).not.toContain('minimumReleaseAgeExclude') // 🧹 P1
+    // 🧹 P1: no stale excludes. ⏳ The only allowed exemption is pnpm 11's 1-day minimumReleaseAge for
+    //    OUR OWN brand-new Welcome releases, as exact versions (remove the block once they are a day old)
+    const ws = read('pnpm-workspace.yaml') // 📄
+    const excluded = [...ws.matchAll(/^\s+-\s+(\S+)\s*$/gm)].map((m) => m[1]) // 📋 list entries
+    const welcome = ['ab-nextjs-fonts@0.2.5', 'ab-nextjs-theme@0.3.1', 'ab-nextjs-icons@0.2.3', 'ab-nextjs-hooks@0.1.6', 'ab-nextjs-animations@0.2.4'] // 🎯
+    if (ws.includes('minimumReleaseAgeExclude')) for (const e of excluded) expect(welcome, e).toContain(e) // 🚫 anything else (e.g. animations@0.2.3, third-party) fails
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-animations']).toBeUndefined() // 🚫 optional
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-icons']).toBeUndefined() // 🚫 optional
   })
