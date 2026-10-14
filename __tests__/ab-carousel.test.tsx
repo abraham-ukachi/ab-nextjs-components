@@ -79,7 +79,7 @@ afterEach(() => cleanup())
 // ⏭️ custom control using the hook (like the Welcome "Skip" link → last slide)
 function Skip() {
   const { goTo, count } = useAbCarousel() // 🪝
-  return <button type="button" onClick={() => goTo(count - 1, 'api')}>Skip</button>
+  return <button type="button" onClick={() => goTo(count - 1, 'skip')}>Skip</button>
 }
 
 // 🧪 a 3-slide fixture with every part
@@ -191,10 +191,12 @@ describe('AbCarousel (uncontrolled)', () => {
     expect(document.getElementById(dot3.getAttribute('aria-controls')!)).toBe(slides(container)[2]) // 🔗
   })
 
-  it('custom controls via useAbCarousel (Skip → last slide)', () => {
-    const { container, getByText } = render(<Fixture />) // 🖼️
+  it('custom controls via useAbCarousel (Skip → last slide, reason "skip")', () => {
+    const onIndexChange = vi.fn() // 📣
+    const { container, getByText } = render(<Fixture onIndexChange={onIndexChange} />) // 🖼️
     fireEvent.click(getByText('Skip')) // ⏭️⏭️
     expect(activeTitle(container)).toBe('Get started') // ✅
+    expect(onIndexChange).toHaveBeenCalledWith(2, { reason: 'skip', from: 0 }) // 🎯 app focuses the s09 h1 on this
   })
 
   it('loops when asked', () => {

@@ -47,7 +47,8 @@ export type AbCarouselDir = 'ltr' | 'rtl'
 export type AbCarouselKeyAction = 'next' | 'prev' | 'first' | 'last'
 
 // 📣 why the index changed (handy for analytics, URL sync and focus decisions)
-export type AbCarouselChangeReason = 'next' | 'prev' | 'dot' | 'key' | 'swipe' | 'api'
+// ⏭️ 'skip' = Welcome Skip → LAST slide (God, §8 Q3); apps move focus to that slide's h1 on it
+export type AbCarouselChangeReason = 'next' | 'prev' | 'dot' | 'key' | 'swipe' | 'skip' | 'api'
 
 // 📍 where a slide sits relative to the active one (drives the CSS enter / exit offset)
 export type AbCarouselSlidePosition = 'before' | 'active' | 'after'
