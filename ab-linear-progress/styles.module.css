@@ -72,7 +72,8 @@
   border-radius: inherit; /* 💊 same pill */
   background-color: var(--_ab-lp-color); /* 🎨 bar color */
   transform-origin: left center; /* ⬅️ grow from the start */
-  transition: transform 240ms ease-out; /* 🎞️ smooth value changes */
+  --ab-motion-duration: 240ms; /* 🎞️ value tween = .ab-motion-transform (ab-nextjs-animations) */
+  --ab-motion-easing: ease-out;
 }
 
 /* ↔️ RTL: grow from the right */
@@ -80,42 +81,25 @@
   transform-origin: right center;
 }
 
-/* 🔁 indeterminate: a 40% segment sweeping across */
+/* 🔁 indeterminate: a 40% segment; the sweep itself = .ab-progress-sweep (ab-nextjs-animations, RTL-mirrored) */
 .abLinearProgress__bar_indeterminate {
   right: auto; /* 🔓 free the right edge */
   width: 40%; /* 📏 segment width */
-  animation: abLinearProgressSweep 1.4s ease-in-out infinite; /* 🔁 loop */
 }
 
-/* 🎞️ sweep keyframes */
-@keyframes abLinearProgressSweep {
-  0% { transform: translateX(-100%); } /* ⬅️ off-screen left */
-  100% { transform: translateX(250%); } /* ➡️ off-screen right */
-}
-
-/* ↔️ RTL indeterminate: anchor on the right and sweep right → left (mirrored keyframes) */
+/* ↔️ RTL indeterminate: anchor on the right (the package mirrors the sweep) */
 :global([dir='rtl']) .abLinearProgress__bar_indeterminate {
   left: auto; /* 🔓 free the left edge */
   right: 0; /* 📌 start on the right */
-  animation-name: abLinearProgressSweepRtl; /* ⬅️ mirrored sweep */
 }
 
-/* 🎞️ mirrored sweep keyframes (RTL) */
-@keyframes abLinearProgressSweepRtl {
-  0% { transform: translateX(100%); } /* ➡️ off-screen right */
-  100% { transform: translateX(-250%); } /* ⬅️ off-screen left */
-}
-
-/* ♿ reduced motion: no animation, static bar */
+/* ♿ reduced motion: the package stops the sweep + tween; this only lays the static bar out across the track */
 @media (prefers-reduced-motion: reduce) {
-  .abLinearProgress__bar {
-    transition: none; /* 🚫 no value tween */
-  }
   .abLinearProgress__bar_indeterminate,
   :global([dir='rtl']) .abLinearProgress__bar_indeterminate {
-    animation: none; /* 🚫 no sweep (LTR + RTL) */
+    left: 0; /* 📌 */
+    right: 0; /* 📌 */
     width: 100%; /* 🟫 full static bar */
-    opacity: 0.55; /* 🌫️ softened so it reads as "busy", not "done" */
-    transform: none; /* 📐 in place */
   }
 }
+

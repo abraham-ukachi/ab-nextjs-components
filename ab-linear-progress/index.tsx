@@ -42,6 +42,10 @@ import type { CSSProperties, ReactElement } from 'react';
 import clsx from 'clsx';
 // 🎨 package-shipped CSS module (no Tailwind scanning of node_modules needed)
 import styles from './styles.module.css';
+import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
+import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
+import { AB_PROGRESS_SWEEP_CLASS } from 'ab-nextjs-animations/progress-sweep'; // 🔁 indeterminate sweep (ab-nextjs-animations >= 0.2.4)
+import 'ab-nextjs-animations/progress-sweep/styles.css'; // 🔁 .ab-progress-sweep
 
 // 📐 public props of <AbLinearProgress />
 export interface AbLinearProgressProps {
@@ -113,7 +117,7 @@ const AbLinearProgress = ({
       {/* 🟫 the moving / filling bar */}
       <div
         // 🏷️ bar class (indeterminate gets the sweep class)
-        className={clsx(styles.abLinearProgress__bar, isIndeterminate && styles.abLinearProgress__bar_indeterminate)}
+        className={clsx(styles.abLinearProgress__bar, isIndeterminate ? [styles.abLinearProgress__bar_indeterminate, AB_PROGRESS_SWEEP_CLASS] : AB_MOTION.transform)} // 🎬 sweep / value tween from ab-nextjs-animations
         // 📐 determinate width via transform (GPU friendly) — none in indeterminate
         style={isIndeterminate ? undefined : { transform: `scaleX(${value / 100})` }}
       />

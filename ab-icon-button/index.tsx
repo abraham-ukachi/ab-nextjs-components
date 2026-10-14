@@ -49,6 +49,8 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 // 🎨 package-shipped CSS module
 import styles from './styles.module.css';
+import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
+import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
 
 // ⚙️ public props
 export interface AbIconButtonProps {
@@ -112,7 +114,7 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
   // 💬 tooltip: explicit title wins, else reuse the name so sighted mouse users see it too
   const tooltip = title ?? label;
   // 🏷️ classes
-  const classNames = clsx('AbIconButton', 'icon-button', styles.abIconButton, className);
+  const classNames = clsx('AbIconButton', 'icon-button', styles.abIconButton, AB_MOTION.interactive, expands && AB_MOTION.lift, shrinks && AB_MOTION.press, className); // 🎬 hover lift / press from ab-nextjs-animations
   // 🔣 the glyph is decoration: the ligature text ("arrow_back") must never be read aloud
   const glyph = <span className={clsx('material-symbols-rounded', 'icon')} aria-hidden="true">{icon}</span>;
 
