@@ -86,7 +86,7 @@ export const LinearProgressDemo = () => (
     {/* ↔️ RTL */}
     <Cell title='Determinate 40 · dir="rtl"'><div dir="rtl" style={{ width: '100%' }}><AbLinearProgress progress={40} /></div></Cell>
     {/* 🎨 color */}
-    <Cell title='color="#6B4F35" · sage accent'><div style={{ display: 'grid', gap: 10, width: '100%' }}><AbLinearProgress progress={70} color="#6B4F35" /><AbLinearProgress progress={45} color="#8A9A5B" /></div></Cell>
+    <Cell title='color · dark pane #6B4F35 (light) / lighter #D9B48C (dark) · sage accent'><div style={{ display: 'grid', gap: 10, width: '100%' }}><AbLinearProgress progress={70} color="var(--demo-accent, #6B4F35)" /* 🎨 demo page sets a lighter accent in dark mode */ /><AbLinearProgress progress={45} color="#8A9A5B" /></div></Cell>
     {/* 📏 thicker */}
     <Cell title="--ab-linear-progress-height: 8px"><div style={{ width: '100%', ['--ab-linear-progress-height' as string]: '8px' }}><AbLinearProgress progress={50} /></div></Cell>
   </main>

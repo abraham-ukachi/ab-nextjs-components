@@ -83,11 +83,11 @@ const fonts = [
   face('Inter', 'inter/Inter-VariableFont_slnt,wght.ttf'), // 🔤 body
 ].join('')
 
-// 📄 page writer
+// 📄 page writer (🎨 --demo-accent: dark pane #6B4F35 on light, lighter bronze #D9B48C on dark so the bar stays visible)
 const page = (name, theme, body, extraHtmlAttr = '', extraCss = '') => {
   const bg = theme === 'dark' ? '#19120C' : '#FFF8F5' // 🎨 surface
   const fg = theme === 'dark' ? '#FFF8F5' : '#19120C' // 🎨 text
-  writeFileSync(join(out, `${name}-${theme}.html`), `<!doctype html><html class="${theme}"${extraHtmlAttr}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${fonts}${css}body{margin:0;background:${bg};color:${fg};font-family:Inter,system-ui,sans-serif}${extraCss}</style></head><body>${body}</body></html>`)
+  writeFileSync(join(out, `${name}-${theme}.html`), `<!doctype html><html class="${theme}"${extraHtmlAttr}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${fonts}${css}body{margin:0;background:${bg};color:${fg};font-family:Inter,system-ui,sans-serif}html{--demo-accent:#6B4F35}html.dark{--demo-accent:#D9B48C}${extraCss}</style></head><body>${body}</body></html>`)
 }
 
 // 🌗 light + dark
