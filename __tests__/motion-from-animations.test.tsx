@@ -133,16 +133,7 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
     }
     // 🚫 never commit local links
     for (const range of [...Object.values(pkg.dependencies ?? {}), ...Object.values(pkg.devDependencies), ...Object.values(pkg.peerDependencies)] as string[]) expect(range).not.toMatch(/^(file|link|workspace|portal):/) // 🔗
-    // 🧹 P1: no stale excludes. ⏳ The only allowed exemption is pnpm 11's 1-day minimumReleaseAge for
-    //    OUR OWN brand-new Welcome releases, as exact versions (remove the block once they are a day old)
-    const ws = read('pnpm-workspace.yaml') // 📄
-    // 🔍 only the list under the `minimumReleaseAgeExclude:` key (stops at the next top-level key)
-    const block = /^minimumReleaseAgeExclude:[^\n]*\n((?:[ \t]+[^\n]*\n?|[ \t]*#[^\n]*\n?|[ \t]*\n)*)/m.exec(ws)?.[1] ?? '' // 📋
-    const excluded = [...block.matchAll(/^[ \t]+-[ \t]+['"]?([^'"\s#]+)['"]?/gm)].map((m) => m[1]) // 📋 list entries
-    const welcome = ['ab-nextjs-fonts@0.2.5', 'ab-nextjs-theme@0.3.1', 'ab-nextjs-icons@0.2.3', 'ab-nextjs-hooks@0.1.6', 'ab-nextjs-animations@0.2.4'] // 🎯
-    for (const e of excluded) expect(welcome, e).toContain(e) // 🚫 anything else (e.g. animations@0.2.3, third-party) fails
-    // ⏰ expiry: a day after the last of them (icons 0.2.3, 13:41:59 Paris) the exclude must be GONE
-    if (Date.now() > Date.parse('2026-10-15T11:45:00Z')) expect(ws, 'drop minimumReleaseAgeExclude (Welcome releases are > 1 day old)').not.toContain('minimumReleaseAgeExclude') // 🧹 13:45 Paris
+    expect(read('pnpm-workspace.yaml')).not.toContain('minimumReleaseAgeExclude') // 🧹 P1: no release-age excludes (the Welcome exemption expired 2026-10-15 13:45 Paris)
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-animations']).toBeUndefined() // 🚫 optional
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-icons']).toBeUndefined() // 🚫 optional
   })
