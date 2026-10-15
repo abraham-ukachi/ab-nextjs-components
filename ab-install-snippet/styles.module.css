@@ -53,21 +53,31 @@
   gap: 0.25rem; /* 🧱 */
 }
 
-/* 🔘 tab */
+/* 🔘 tab
+ * ♿ 0.1.12: every state is an explicit text/background pair from the live
+ * Material palette, so it is ≥ 4.5:1 in light AND dark (tested in
+ * __tests__/ab-install-snippet-contrast.test.ts). Fallbacks are the light
+ * bronze palette, for apps that don't load the theme 🎨 */
 .tab {
   min-height: 28px; /* 📏 ≥ 24px target */
   padding: 0.25rem 0.625rem; /* 🧱 */
   border: 0; /* 🧹 */
   border-radius: 9999px; /* 💊 */
-  background: transparent; /* 🫥 */
-  color: var(--ab-color-on-surface-variant, currentColor); /* 🎨 */
+  background: var(--ab-color-surface-container, var(--md-sys-color-surface-container, rgb(252 235 226))); /* 🫥 inactive = card surface */
+  color: var(--ab-color-on-surface-variant, var(--md-sys-color-on-surface-variant, rgb(80 69 58))); /* 🎨 inactive label */
   font: inherit; /* 🔤 */
   font-size: 0.8125rem; /* 🔡 */
   cursor: pointer; /* 👆 */
 }
-.tab[aria-selected='true'] {
-  color: var(--ab-color-bronze-text, #8A6440); /* ♿ AA small text */
-  background: color-mix(in srgb, var(--ab-color-bronze, #A67C52) 12%, transparent); /* 🎨 */
+/* 🖱️ hover (inactive): 8% on-surface state layer + full on-surface label */
+.tab:hover {
+  background: color-mix(in srgb, var(--ab-color-on-surface, var(--md-sys-color-on-surface, rgb(34 26 21))) 8%, var(--ab-color-surface-container, var(--md-sys-color-surface-container, rgb(252 235 226))));
+  color: var(--ab-color-on-surface, var(--md-sys-color-on-surface, rgb(34 26 21)));
+}
+/* ✅ active (and active + hover): solid bronze container + its on-colour */
+.tab[aria-selected='true'], .tab[aria-selected='true']:hover {
+  background: var(--md-sys-color-primary-container, rgb(255 220 189)); /* 🥉 */
+  color: var(--md-sys-color-on-primary-container, rgb(44 22 0)); /* ♿ */
   font-weight: 600; /* 💪 */
 }
 .tab:focus-visible {
