@@ -1,3 +1,10 @@
+## 0.1.12 — 2026-10-16
+
+* ♿ **AbInstallSnippet tabs pass AA in every state.** Each state now paints an explicit text/background pair from the live palette instead of a transparent tab and a 12% bronze tint: inactive `on-surface-variant` on `surface-container` (8.04:1 light / 9.67:1 dark), hover `on-surface` on an 8% `on-surface` state layer (12.63:1 / 10.39:1), active and active + hover `on-primary-container` on `primary-container` (13.28:1 / 7.22:1). Fallbacks are the light bronze palette, so it also passes without the theme
+* 🥉 **New `AbButton type="filled"`** (client + server): solid bronze `--md-sys-color-primary` with `on-primary` label and icon. Sets `data-type="filled"`, styled with hover / focus / disabled by `ab-nextjs-theme@^0.3.3`; a `.isFilled` fallback paints the rest state on older themes. `AbButtonType` gains `'filled'`
+* ⬆️ **`ab-nextjs-theme ^0.3.3`** (peer + dev, was `^0.3.1`) for the filled hover / focus / disabled states and the button icon-colour fix. The `.isFilled` fallback stays for apps still on an older theme
+* Tests: contrast computed from the theme palette (light + dark, every state, plus the no-theme fallbacks); filled type on client + server twins. Checked in WebKit (ratios above; filled 6.47:1 light / 7.74:1 dark)
+
 ## 0.1.11 — 2026-10-15
 
 * 🐛 **AbFlowDiagram: nodes no longer cover the header in small boxes.** At 390px wide the Live Playground's top node ("core") sat under the "Live Playground" header. With a header (title, live dot or caption) the root now gets `data-ab-header="true"`, and nodes + wires live in a stage that starts below the header band: `--ab-flow-diagram-inset-top` (default `2.75rem`, tunable). Node `x` / `y` stay 0–100 but now map onto that stage, and the wires share the same box so they still meet the nodes. Without a header the stage is the full card (unchanged)
