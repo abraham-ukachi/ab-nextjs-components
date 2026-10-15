@@ -73,6 +73,13 @@ export interface AbFlowDiagramProps {
   children?: ReactNode; // 🧩 optional extra overlay (decorative)
 }
 
+// ✂️ 0–100 (same clamp as the wires, so a node and its wire end always agree)
+const pct = (v: number): number => Math.min(100, Math.max(0, v));
+
+/** 📍 node position + proportional anchor (CSS keeps every node inside the stage, see styles.module.css) */
+const nodeStyle = (n: AbFlowNode): CSSProperties =>
+  ({ left: `${pct(n.x)}%`, top: `${pct(n.y)}%`, '--ab-flow-node-x': String(pct(n.x)), '--ab-flow-node-y': String(pct(n.y)) }) as CSSProperties;
+
 /** 🎨 Live Playground scene: SVG wires + HTML nodes, CSS-only motion, one accessible image. */
 export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
   // 🧩 props
@@ -88,6 +95,9 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
     '--ab-wire-poster': String(100 - Math.min(1, Math.max(0, posterAt)) * 100), // 🖼️ dashoffset at the poster frame
   } as CSSProperties;
 
+  // 🏷️ is there a header row? (drives the header-safe stage inset in CSS)
+  const hasHeader = Boolean(title || live || caption);
+
   return (
     <figure
       role="img" // ♿ the whole scene is ONE image
@@ -98,9 +108,10 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
       data-active={String(active)} // ▶️ / ⏸️
       data-ab-paused={String(!active)} // ⏸️ ab-nextjs-animations pauses wires on inactive slides
       data-variant={variant} // 📐
+      data-ab-header={String(hasHeader)} // 🏷️ header-safe stage: nodes + wires start below the header
     >
       {/* 🏷️ card header (decorative: alt already describes it) */}
-      {title || live || caption ? (
+      {hasHeader ? (
         <div className={styles.header} aria-hidden="true">
           {title ? <span className={styles.title}>{title}</span> : null}
           {live ? <span className={styles.live}><span className={styles.liveDot} />{typeof live === 'string' ? live : null}</span> : null}
@@ -126,7 +137,7 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
       {/* 🔵 nodes layer (HTML: crisp text, real fonts) */}
       <div className={styles.nodes} aria-hidden="true">
         {nodes.map((n) => (
-          <span key={n.id} className={styles.node} data-tone={n.tone ?? 'node'} style={{ left: `${n.x}%`, top: `${n.y}%` }}>
+          <span key={n.id} className={styles.node} data-tone={n.tone ?? 'node'} style={nodeStyle(n)}>
             {n.icon ? <span className={styles.nodeIcon}>{n.icon}</span> : null}
             <span>{n.label}</span>
           </span>
