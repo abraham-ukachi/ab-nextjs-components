@@ -1,3 +1,9 @@
+## Unreleased (planned 0.1.11)
+
+* 🐛 **AbFlowDiagram: nodes no longer cover the header in small boxes.** At 390px wide the Live Playground's top node ("core") sat under the "Live Playground" header. With a header (title, live dot or caption) the root now gets `data-ab-header="true"`, and nodes + wires live in a stage that starts below the header band: `--ab-flow-diagram-inset-top` (default `2.75rem`, tunable). Node `x` / `y` stay 0–100 but now map onto that stage, and the wires share the same box so they still meet the nodes. Without a header the stage is the full card (unchanged)
+* 📏 **AbFlowDiagram nodes scale with the card:** `container-type: inline-size` on the root; node text, padding, radius and the hub glow use clamped `cqi` sizes (13px on a 760px card, 11px at 390px)
+* Tests: header flag, stage insets shared by nodes + wires, 390px geometry, clamped scaling. Checked in WebKit at 390px: "core" top 9px → 53px (header ends at 33px); no node overlaps the header or is clipped at 390 / 760px
+
 ## 0.1.10 — 2026-10-14
 
 * **Motion comes from ab-nextjs-animations (>= 0.2.4, now a required peer):** no component CSS declares its own `transition`, `animation` or `@keyframes` any more. Each component imports the package stylesheet it needs:
