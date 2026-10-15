@@ -50,6 +50,7 @@
   container-type: inline-size; /* 📦 nodes scale with the card width (cqi units below) */
   /* 🎛️ stage insets (tunable): where nodes + wires may sit. Top is 0 unless a header renders (below) */
   --ab-flow-diagram-stage-top: 0px;
+  --ab-flow-diagram-stage-x: var(--ab-flow-diagram-inset-x, 0.5rem); /* ↔️ side margin: nodes never touch the card edge */
 }
 /* 🏷️ header-safe stage: with a title / live dot / caption, nodes + wires start BELOW the header band, so a
  *    node near the top (e.g. "core" at 390px) can't cover the header. Override with --ab-flow-diagram-inset-top */
@@ -86,8 +87,8 @@
 /* 〰️ wires layer */
 .wires {
   position: absolute; /* 📌 */
-  inset: var(--ab-flow-diagram-stage-top) 0 0; /* 📐 the stage (below the header when there is one) */
-  width: 100%; /* ↔️ */
+  inset: var(--ab-flow-diagram-stage-top) var(--ab-flow-diagram-stage-x) 0; /* 📐 the stage (below the header, inside the side margins) */
+  width: calc(100% - 2 * var(--ab-flow-diagram-stage-x)); /* ↔️ same box as .nodes */
   height: calc(100% - var(--ab-flow-diagram-stage-top)); /* ↕️ same box as .nodes, so wires meet the nodes */
   overflow: visible; /* 🚫 clip */
 }
@@ -109,10 +110,17 @@
 }
 
 /* 🔵 nodes layer */
-.nodes { position: absolute; inset: var(--ab-flow-diagram-stage-top) 0 0; } /* 📐 same stage as .wires */
+.nodes { position: absolute; inset: var(--ab-flow-diagram-stage-top) var(--ab-flow-diagram-stage-x) 0; } /* 📐 same stage as .wires */
 .node {
   position: absolute; /* 📌 x/y */
-  transform: translate(-50%, -50%); /* 🎯 centre on the point */
+  /* 🎯 orbit that scales with the box: each node is anchored at the SAME fraction of its own box as its
+   *    position in the stage (x = 8 → 8% of the pill sits left of the point, x = 92 → 92%). So the outer edge
+   *    of the orbit pulls in by exactly the node's width: a side node can never cross the card edge, at any
+   *    box size, and the wire end (the point) is always inside the pill. x = y = 50 is the old centring. */
+  transform: translate(calc(var(--ab-flow-node-x, 50) * -1%), calc(var(--ab-flow-node-y, 50) * -1%));
+  max-width: 100%; /* 📏 an over-long label can't be wider than the stage… */
+  overflow: hidden; /* ✂️ …it ellipsises instead */
+  text-overflow: ellipsis; /* … */
   display: inline-flex; /* 📐 */
   align-items: center; /* ↕️ */
   gap: 0.375rem; /* 🧱 */

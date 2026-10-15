@@ -73,6 +73,13 @@ export interface AbFlowDiagramProps {
   children?: ReactNode; // 🧩 optional extra overlay (decorative)
 }
 
+// ✂️ 0–100 (same clamp as the wires, so a node and its wire end always agree)
+const pct = (v: number): number => Math.min(100, Math.max(0, v));
+
+/** 📍 node position + proportional anchor (CSS keeps every node inside the stage, see styles.module.css) */
+const nodeStyle = (n: AbFlowNode): CSSProperties =>
+  ({ left: `${pct(n.x)}%`, top: `${pct(n.y)}%`, '--ab-flow-node-x': String(pct(n.x)), '--ab-flow-node-y': String(pct(n.y)) }) as CSSProperties;
+
 /** 🎨 Live Playground scene: SVG wires + HTML nodes, CSS-only motion, one accessible image. */
 export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
   // 🧩 props
@@ -130,7 +137,7 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
       {/* 🔵 nodes layer (HTML: crisp text, real fonts) */}
       <div className={styles.nodes} aria-hidden="true">
         {nodes.map((n) => (
-          <span key={n.id} className={styles.node} data-tone={n.tone ?? 'node'} style={{ left: `${n.x}%`, top: `${n.y}%` }}>
+          <span key={n.id} className={styles.node} data-tone={n.tone ?? 'node'} style={nodeStyle(n)}>
             {n.icon ? <span className={styles.nodeIcon}>{n.icon}</span> : null}
             <span>{n.label}</span>
           </span>
