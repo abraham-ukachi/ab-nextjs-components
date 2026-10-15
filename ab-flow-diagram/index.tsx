@@ -88,6 +88,9 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
     '--ab-wire-poster': String(100 - Math.min(1, Math.max(0, posterAt)) * 100), // 🖼️ dashoffset at the poster frame
   } as CSSProperties;
 
+  // 🏷️ is there a header row? (drives the header-safe stage inset in CSS)
+  const hasHeader = Boolean(title || live || caption);
+
   return (
     <figure
       role="img" // ♿ the whole scene is ONE image
@@ -98,9 +101,10 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
       data-active={String(active)} // ▶️ / ⏸️
       data-ab-paused={String(!active)} // ⏸️ ab-nextjs-animations pauses wires on inactive slides
       data-variant={variant} // 📐
+      data-ab-header={String(hasHeader)} // 🏷️ header-safe stage: nodes + wires start below the header
     >
       {/* 🏷️ card header (decorative: alt already describes it) */}
-      {title || live || caption ? (
+      {hasHeader ? (
         <div className={styles.header} aria-hidden="true">
           {title ? <span className={styles.title}>{title}</span> : null}
           {live ? <span className={styles.live}><span className={styles.liveDot} />{typeof live === 'string' ? live : null}</span> : null}
