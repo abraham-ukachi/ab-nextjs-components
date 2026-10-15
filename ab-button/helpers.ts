@@ -37,7 +37,9 @@
 */
 
 // 🎨 visual types shared by the client + server twins
-export type AbButtonType = 'contained' | 'outlined' | 'text';
+// 🥉 'filled' (0.1.12): solid bronze, painted by ab-nextjs-theme ≥ 0.3.3's
+//    `button[data-type="filled"]` rule (fallback in styles.module.css → .isFilled)
+export type AbButtonType = 'contained' | 'filled' | 'outlined' | 'text';
 // 🎨 colour roles
 export type AbButtonColor = 'primary' | 'secondary' | 'tertiary' | 'white' | 'black';
 // 🏷️ badge tones (G22): neutral grey or bronze accent

@@ -94,7 +94,7 @@ const AbButton = ({
   const srReason = getAbButtonSrReason({ disabled, disabledReason });
 
   // 🏷️ classes
-  const classNames = clsx('AbButton', styles.abButton, className, rounded && styles.abButtonRounded, mode === 'native' && styles.isDisabled);
+  const classNames = clsx('AbButton', styles.abButton, className, rounded && styles.abButtonRounded, type === 'filled' && styles.isFilled /* 🥉 */, mode === 'native' && styles.isDisabled);
 
   // 🗂️ data attributes
   const dataAttrs = {

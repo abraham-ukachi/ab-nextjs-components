@@ -63,7 +63,7 @@ export type { AbButtonBadgeTone, AbButtonColor, AbButtonType, AbButtonDisabledMo
 // ⚙️ props
 export interface AbButtonProps {
   id?: string; // 🆔
-  type?: AbButtonType; // 🎨 contained / outlined / text
+  type?: AbButtonType; // 🎨 contained / filled 🥉 / outlined / text
   htmlType?: 'button' | 'submit' | 'reset'; // 🧾
   className?: string; // 🏷️
   spinnerClassName?: string; // ⏳ spinner class
@@ -140,6 +140,7 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     className, // 🏷️
     rounded && styles.abButtonRounded, // 💊
     type === 'contained' && styles.isContained, // 🎨
+    type === 'filled' && styles.isFilled, // 🥉 solid bronze (theme ≥ 0.3.3 paints it, this is the fallback)
     mode === 'native' && styles.isDisabled, // 🚫
   );
 
