@@ -1,3 +1,32 @@
+## 0.1.10 — 2026-10-14
+
+* **Motion comes from ab-nextjs-animations (>= 0.2.4, now a required peer):** no component CSS declares its own `transition`, `animation` or `@keyframes` any more. Each component imports the package stylesheet it needs:
+  * AbCarousel: `slide-step` (direction-aware enter / leave via `data-ab-direction`) + `motion` (buttons, dots)
+  * AbFlowDiagram: `wire` (`--ab-wire-*` tokens; `data-ab-paused`; 3 loops on phones unless `loops` is set)
+  * AbThemeToggle, AbSearchbar, AbSplash fade: `motion` colours
+  * AbIconButton: `motion` (`expands` → `ab-motion-lift`, `shrinks` → `ab-motion-press`)
+  * AbProgressChips: `motion` size
+  * AbLinearProgress: `motion` transform + `progress-sweep`
+  * AbCollapsible, AbBrand: `motion` transform
+  * AbLikeButton / AbSearchbar spinners: `spin`
+  * Reduced motion (OS, or `reducedMotion="always"` via `data-ab-reduced-motion`) is handled by the package
+* **AbCarousel:** context gains `direction` + `previousIndex`; `--ab-carousel-duration` / `-ease` / `-shift` map onto `--ab-slide-step-*`; the old positional slide offsets are gone
+* **Peers:** `ab-nextjs-icons` and `ab-nextjs-animations` are no longer optional. All four Welcome peers (and devDependencies) use caret ranges: `ab-nextjs-hooks ^0.1.6`, `ab-nextjs-theme ^0.3.1`, `ab-nextjs-icons ^0.2.3`, `ab-nextjs-animations ^0.2.4`
+* **Motion exceptions (named, test-guarded):** the dialog list-item transition (`css/dialog.css`) and the self-animating spinner SVGs stay local
+* **Lockfile:** refreshed against the published hooks 0.1.6, theme 0.3.1, icons 0.2.3 and animations 0.2.4 (`pnpm install --frozen-lockfile` verified on a fresh `node_modules`). `pnpm-workspace.yaml` exempts exactly the five Welcome releases (fonts 0.2.5 included) from pnpm 11's 1-day `minimumReleaseAge`, and that block should be removed once they are a day old
+
+* **AbCarousel (G31):** new subpath `ab-nextjs-components/ab-carousel` (+ server-safe `ab-carousel/helpers`). Compound parts `AbCarousel`, `AbCarouselTrack`, `AbCarouselSlide`, `AbCarouselPrev`, `AbCarouselNext`, `AbCarouselDots`, `AbCarouselCounter` + `useAbCarousel()`. APG carousel semantics (`aria-roledescription` carousel/slide, "n of total" labels, polite live region, inactive slides `inert` + `aria-hidden` after hydration), RTL-aware ←/→ + Home/End scoped to the region, swipe via `useAbSwipe`, reduced motion via `useAbReducedMotion` + CSS, controlled / uncontrolled, i18n labels on every control, `AB_CAROUSEL_NOSCRIPT_CSS` for the no-JS stack
+* **AbIconButton (G6):** `aria-label` + `title` now sit on the interactive element (never the wrapper span); new `label` prop (falls back to `title`); the `href` variant is named and no longer has `role="button"`; the ligature glyph is `aria-hidden`; disabled links leave the tab order; loading sets `aria-busy`
+* **AbButton (G22):** `startIcon` / `endIcon`, `badge` + `badgeTone` (e.g. "Coming soon"), `disabledReason` (visually hidden text appended to the accessible name), `focusableWhenDisabled`; with a badge / reason the button uses `aria-disabled` (stays focusable, clicks guarded) instead of native `disabled`; disabled links render as `span role="link" aria-disabled`; links no longer get `role="button"`; server twin matches
+* **AbThemeToggle (G34, new, `ab-nextjs-components/ab-theme-toggle`):** light / dark / system radiogroup (roving focus, RTL arrows, icon-only variant, i18n labels), driven by `useAbThemeMode()`; `getNextAbThemeMode` helper
+* **AbChip / AbPill (G36, new, server components):** `ab-chip`, `ab-pill`
+* **AbInstallSnippet (G35, new):** pnpm / npm / yarn / bun tabs (APG tablist), choice shared via `useAbLocalStorage`, copy button with polite status, `data-ab-swipe-ignore`; `getAbInstallCommand` helper
+* **AbLocaleSwitcher (G7, new):** menu button + `menuitemradio`, typeahead, `onSelect` or `getHref` (+ `hrefLang`)
+* **AbIcon (G2, new, `ab-nextjs-components/ab-icon`):** AbIcons as inline SVG; client twin resolves `svg` prop → `registerAbIcons` registry → Material Symbols font (never imports the full map); server twin renders any icon; weights 100–700 map to the icons package stroke table; 8 built-ins (arrows, theme, language, copy / check) imported per icon from `ab-nextjs-icons/ab-icons/icons/*` (needs icons >= 0.2.3)
+* **AbCarousel:** prev / next arrows now render through AbIcon (weight 300); `--ab-carousel-icon-stroke` removed (unreleased)
+* **AbFlowDiagram (G38, new, server component):** `figure role="img"` scenes, CSS-only draw + pulse, paused while inactive, 3 loops on mobile, reduced motion shows the poster frame; `getAbFlowEdgePath` helper
+* Dev: `happy-dom` + `@testing-library/react` for DOM tests
+
 ## 0.1.9 — 2026-10-14
 
 - **AbLogo:** `wordmark` prop (`true` → "Elements", or any string) renders a mark + Quicksand Bold lockup (`font-quicksand-bold` from ab-nextjs-fonts); `color` prop (`--ab-logo-color`); light / dark (`html.dark`)

@@ -1,7 +1,7 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.1.9",
-  "description": "\ud83d\ude80 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications \ud83d\ude0e.",
+  "version": "0.1.10",
+  "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "type": "module",
   "main": "index.ts",
   "types": "types/index.d.ts",
@@ -40,28 +40,33 @@
   },
   "license": "MIT",
   "peerDependencies": {
+    "ab-nextjs-animations": "^0.2.4",
+    "ab-nextjs-hooks": "^0.1.6",
+    "ab-nextjs-icons": "^0.2.3",
+    "ab-nextjs-theme": "^0.3.1",
     "clsx": "^2",
     "next": "^16.3.4",
     "react": "^19",
-    "react-dom": "^19",
-    "ab-nextjs-theme": "*",
-    "ab-nextjs-icons": "*",
-    "ab-nextjs-hooks": "*",
-    "ab-nextjs-animations": "*"
+    "react-dom": "^19"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
+    "ab-nextjs-animations": "^0.2.4",
+    "ab-nextjs-hooks": "^0.1.6",
+    "ab-nextjs-icons": "^0.2.3",
+    "ab-nextjs-theme": "^0.3.1",
+    "clsx": "^2.1.1",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.3.4",
+    "happy-dom": "^20.14.6",
     "next": "16.3.4",
     "react": "^19",
     "react-dom": "^19",
     "typescript": "^5",
-    "vitest": "^3",
-    "clsx": "^2.1.1",
-    "ab-nextjs-hooks": "^0.1.2",
-    "esbuild": "^0.28.2"
+    "vitest": "^3"
   },
   "files": [
     "index.ts",
@@ -108,6 +113,13 @@
     "ab-demo-code",
     "ab-splash",
     "ab-linear-progress",
+    "ab-carousel",
+    "ab-flow-diagram",
+    "ab-locale-switcher",
+    "ab-install-snippet",
+    "ab-pill",
+    "ab-chip",
+    "ab-theme-toggle",
     "ab-logo/ab-logo.svg",
     "styles.css",
     "css",
@@ -123,6 +135,16 @@
     "./ab-logo": "./ab-logo/index.tsx",
     "./ab-linear-progress": "./ab-linear-progress/index.tsx",
     "./ab-splash": "./ab-splash/index.tsx",
+    "./ab-carousel": "./ab-carousel/index.tsx",
+    "./ab-carousel/helpers": "./ab-carousel/helpers.ts",
+    "./ab-theme-toggle": "./ab-theme-toggle/index.tsx",
+    "./ab-chip": "./ab-chip/index.tsx",
+    "./ab-pill": "./ab-pill/index.tsx",
+    "./ab-install-snippet": "./ab-install-snippet/index.tsx",
+    "./ab-install-snippet/helpers": "./ab-install-snippet/helpers.ts",
+    "./ab-locale-switcher": "./ab-locale-switcher/index.tsx",
+    "./ab-flow-diagram": "./ab-flow-diagram/index.tsx",
+    "./ab-flow-diagram/helpers": "./ab-flow-diagram/helpers.ts",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",
@@ -188,13 +210,7 @@
     "ab-nextjs-theme": {
       "optional": true
     },
-    "ab-nextjs-icons": {
-      "optional": true
-    },
     "ab-nextjs-hooks": {
-      "optional": true
-    },
-    "ab-nextjs-animations": {
       "optional": true
     }
   }

@@ -1,0 +1,206 @@
+/*
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbCarousel - Component Stylesheet (plain CSS, Tailwind-independent)
+* @file: ab-carousel/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 🎛️ Tunables (override on the carousel or any ancestor):
+*   --ab-carousel-duration   slide step (default 280ms)  → --ab-slide-step-duration (ab-nextjs-animations)
+*   --ab-carousel-ease       easing (default cubic-bezier(.2,.8,.2,1)) → --ab-slide-step-easing
+*   --ab-carousel-shift      enter / exit offset (default 24px) → --ab-slide-step-distance
+*   🎬 all motion comes from ab-nextjs-animations (slide-step + motion); nothing animates in this file
+*   --ab-carousel-nav-size   prev / next diameter (default 40px; 44px on mobile)
+*   --ab-carousel-dot-color  inactive dot colour
+*   --ab-carousel-accent     active dot + filled button colour (default --ab-primary)
+*/
+
+/* 🎠 region */
+.carousel {
+  position: relative; /* 📌 anchor for the hidden live region */
+  /* 🎛️ tokens handed to ab-nextjs-animations (slide-step + motion) */
+  --ab-slide-step-duration: var(--ab-carousel-duration, 280ms); /* ⏱️ */
+  --ab-slide-step-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
+  --ab-slide-step-distance: var(--ab-carousel-shift, 24px); /* ↔️ */
+  --ab-slide-step-flip: 1; /* 🌍 LTR */
+  --_accent: var(--ab-carousel-accent, var(--ab-primary, #a67c52)); /* 🟤 bronze */
+}
+
+/* 🌍 RTL: mirror the slide offsets */
+.carousel[data-dir='rtl'] {
+  --ab-slide-step-flip: -1; /* 🌍 slide steps mirror */
+}
+
+/* 🎞️ track: every slide shares one grid cell → height = tallest slide (CLS 0) */
+.track {
+  display: grid; /* 🧱 */
+  touch-action: pan-y; /* 👆 vertical scroll stays native; horizontal moves reach useAbSwipe */
+}
+
+/* 🖼️ slide (inactive by default; enter / leave motion = .ab-slide-step-in / -out from ab-nextjs-animations) */
+.slide {
+  grid-area: 1 / 1; /* 🧱 stacked */
+  min-width: 0; /* 📏 allow long words to wrap */
+  opacity: 0; /* 🙈 */
+  visibility: hidden; /* 🙈 not focusable, not read (also before hydration) */
+  pointer-events: none; /* 🚫 */
+}
+
+/* ✅ active slide */
+.slide[data-position='active'] {
+  opacity: 1; /* 👀 */
+  visibility: visible; /* 👀 */
+  pointer-events: auto; /* 🖱️ */
+}
+
+/* ⏮️⏭️ round prev / next buttons */
+.nav {
+  display: inline-flex; /* 🎯 center the icon */
+  align-items: center;
+  justify-content: center;
+  width: var(--ab-carousel-nav-size, 40px); /* 📏 ≥ 40 on laptop */
+  height: var(--ab-carousel-nav-size, 40px);
+  padding: 0;
+  margin: 0;
+  border-radius: 9999px; /* ⚪ */
+  border: 1px solid var(--ab-outline, color-mix(in srgb, currentColor 24%, transparent)); /* 🖊️ */
+  background: transparent;
+  color: var(--ab-on-surface, currentColor);
+  cursor: pointer;
+  /* 🎨 hover / 🤏 press motion: .ab-motion-interactive + .ab-motion-press (ab-nextjs-animations) */
+}
+.nav:hover {
+  background-color: color-mix(in srgb, currentColor 8%, transparent); /* 🌫️ */
+}
+.nav[data-variant='filled'] {
+  border-color: transparent;
+  background: var(--_accent); /* 🟤 primary-filled next */
+  color: var(--ab-on-primary, #fff);
+}
+.nav[data-variant='filled']:hover {
+  background: color-mix(in srgb, var(--_accent) 88%, #000);
+}
+.nav[aria-disabled='true'] {
+  opacity: 0.4; /* 🚦 edge */
+  cursor: not-allowed;
+}
+
+/* 🎯 visible focus ring (theme focus-ring token when G18 lands) */
+.nav:focus-visible,
+.dot:focus-visible {
+  outline: 2px solid var(--ab-focus-ring, var(--_accent));
+  outline-offset: 2px;
+}
+
+/* ➡️ the arrow icon (mirrors in RTL) */
+.navIcon {
+  flex: none; /* 🚫 squash (stroke comes from AbIcon weight 300 = 1.5) */
+}
+.carousel[data-dir='rtl'] .navIcon {
+  transform: scaleX(-1); /* 🌍 */
+}
+
+/* 📱 mobile: 44×44 targets (brief §5) */
+@media (max-width: 639px) {
+  .nav {
+    width: var(--ab-carousel-nav-size, 44px);
+    height: var(--ab-carousel-nav-size, 44px);
+  }
+}
+
+/* 🔘 dots row */
+.dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* 🔘 one dot = a 24×24 button (WCAG 2.5.8) holding an 8px mark */
+.dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 4px;
+  margin: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ⚪ the visible mark */
+.dotMark {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--ab-carousel-dot-color, color-mix(in srgb, currentColor 28%, transparent));
+  /* 📏 8 → 24px motion: .ab-motion-size (ab-nextjs-animations) */
+}
+
+/* ✅ active = long bronze pill */
+.dot[data-active='true'] .dotMark {
+  width: 24px;
+  background: var(--_accent);
+}
+
+/* ♿ reduced motion (OS or reducedMotion prop) is handled by ab-nextjs-animations via data-ab-reduced-motion */
+
+/* 🔢 counter "02 / 09" */
+.counter {
+  font-family: var(--ab-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--ab-on-surface-variant, color-mix(in srgb, currentColor 64%, transparent));
+}
+.counter b {
+  font-weight: 700;
+  color: var(--ab-on-surface, currentColor);
+}
+
+/* 🙈 visually hidden but announced */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

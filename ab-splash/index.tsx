@@ -60,6 +60,8 @@ import {
 } from './gate';
 // 🎨 package-shipped styles
 import styles from './styles.module.css';
+import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 fade-out transition (ab-nextjs-animations >= 0.2.4)
+import 'ab-nextjs-animations/motion/styles.css'; // 🌫️ .ab-motion-colors (covers opacity)
 
 // 📦 re-export the gate so `import { abSplashGateScript } from 'ab-nextjs-components/ab-splash'` works
 export * from './gate';
@@ -125,7 +127,7 @@ export default function AbSplash({ className, wordmark = 'Elements', maxMs }: Ab
 
   return (
     // 💦 the overlay (decorative → hidden from assistive tech)
-    <div ref={ref} className={clsx('AbSplash', styles.abSplash, className)} aria-hidden="true">
+    <div ref={ref} className={clsx('AbSplash', styles.abSplash, AB_MOTION.colors, className)} aria-hidden="true">
       {/* 🅰️ mark + wordmark */}
       <AbLogo wordmark={wordmark} alt="" className={styles.abSplash__brand} />
       {/* 📶 progress */}

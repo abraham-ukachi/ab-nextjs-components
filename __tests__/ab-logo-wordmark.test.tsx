@@ -96,6 +96,7 @@ describe('AbSplash render', () => {
   it('styles: mobile track width and reduced motion', () => {
     const css = read('ab-splash/styles.module.css') // 🎨
     expect(css).toContain('width: min(18rem, 28vw)') // ↔️
-    expect(css).toMatch(/prefers-reduced-motion: reduce/) // ♿
+    expect(css).not.toMatch(/transition:/) // 🌫️ fade-out = .ab-motion-colors from ab-nextjs-animations (off under reduced motion there)
+    expect(read('ab-splash/index.tsx')).toContain('AB_MOTION.colors') // 🎬
   })
 })
