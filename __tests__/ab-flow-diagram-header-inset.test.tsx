@@ -73,17 +73,18 @@ describe('AbFlowDiagram: header-safe stage (0.1.11) 🏷️', () => {
   })
 
   it('nodes and wires share the same stage box, so wires still meet the nodes', () => {
-    expect(rule('.nodes')).toMatch(/inset:\s*var\(--ab-flow-diagram-stage-top\) 0 0/) // 🔵
+    expect(rule('.nodes')).toMatch(/inset:\s*var\(--ab-flow-diagram-stage-top\) var\(--ab-flow-diagram-stage-x\) 0/) // 🔵
     const wires = rule('.wires') // 〰️ (viewBox 0–100 is stretched with preserveAspectRatio="none")
-    expect(wires).toMatch(/inset:\s*var\(--ab-flow-diagram-stage-top\) 0 0/)
-    expect(wires).toMatch(/height:\s*calc\(100% - var\(--ab-flow-diagram-stage-top\)\)/)
+    expect(wires).toMatch(/inset:\s*var\(--ab-flow-diagram-stage-top\) var\(--ab-flow-diagram-stage-x\) 0/)
+    expect(wires).toMatch(/height:\s*calc\(100% - var\(--ab-flow-diagram-stage-top\)\)/) // ↕️ (side margins: see the orbit test)
   })
 
   it('a node at the top of the stage clears the header (390px card geometry)', () => {
     // 📐 390px viewport → 360px card → 760/600 ratio → ~284px tall; header row ends at ~33px (0.875rem + one row)
-    const headerBottom = 33, stageTop = 2.75 * 16, nodeHalf = 11 // 📏 px (11px text + padding ≈ 22px tall)
+    const headerBottom = 33, stageTop = 2.75 * 16, nodeH = 22 // 📏 px (11px text + padding ≈ 22px tall)
     const stageHeight = (360 * 600) / 760 - stageTop
-    const coreTop = stageTop + (nodes[0].y / 100) * stageHeight - nodeHalf // 🔵 top edge of the "core" pill
+    const y = nodes[0].y / 100 // 🎯 the pill is anchored at y% of its own height (proportional anchor)
+    const coreTop = stageTop + y * stageHeight - y * nodeH // 🔵 top edge of the "core" pill
     expect(coreTop).toBeGreaterThan(headerBottom) // ✅ was 9px (under the header) before the stage inset
   })
 
