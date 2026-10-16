@@ -5,68 +5,104 @@
 * ~~~~~~~~~~~~ 
 * Copyright (c) 2026 Abraham Ukachi. The abElements Project.
 *
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
 * @project: ab-nextjs-components
-* @name: AbSidebar - Client (port of lyd-sidebar; providers stripped)
+* @name: AbSidebar - Client (G40)
 * @file: ab-sidebar/index.tsx
+* @type: Client Component
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*
+* Example usage:
+*   <AbSidebar
+*     activeHref="/docs/components"
+*     sections={[{ id: 'docs', label: 'Docs', items: [{ href: '/docs/components', icon: 'widgets', label: 'Components' }] }]}
+*   />
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
 'use client';
 
-import type { ReactElement } from 'react';
-import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
+// ⚛️ React
+import { useState, type ReactElement } from 'react';
+// 🧭 current route (fallback when `activeHref` is omitted)
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+// 🔣 client AbIcon (built-in chevrons are always registered)
+import AbIcon from '../ab-icon';
+// 🖼️ shared view
+import { AbSidebarView, isAbSidebarActive, type AbSidebarBaseProps } from './view';
+// 🎨 styles
 import styles from './styles.module.css';
 
-export type AbSidebarLink = {
-  href: string;
-  icon: string;
-  value: string;
-  label: string;
-};
+// 📦 re-export the shared types
+export type { AbSidebarItem, AbSidebarSection, AbSidebarLink, AbSidebarLabels } from './view';
+export { isAbSidebarActive, toAbSidebarSections } from './view';
 
-export interface AbSidebarProps {
-  className?: string;
-  type?: 'customer' | 'admin';
-  page?: string;
-  links?: AbSidebarLink[];
-  brandHref?: string;
-  brandLabel?: string;
+/** ⚙️ Client props: the shared ones + collapse control. */
+export interface AbSidebarProps extends AbSidebarBaseProps {
+  defaultCollapsed?: boolean; // 🚪 uncontrolled start
+  onCollapsedChange?: (collapsed: boolean) => void; // 🔔
+  collapsible?: boolean; // 🔘 show the collapse button (default true when sections are given)
 }
 
-const AbSidebar = ({
-  className,
-  type = 'customer',
-  page,
-  links = [],
-  brandHref = '/',
-  brandLabel = 'abElements',
-}: AbSidebarProps): ReactElement => {
+/**
+ * 🧭 AbSidebar (client, G40): sections, filled icon on the active item, aria-current, an icon rail with balloon
+ * tooltips, and a collapse button (aria-expanded + aria-controls; hidden when JS is off).
+ */
+const AbSidebar = (props: AbSidebarProps): ReactElement => {
+  const { collapsed: controlled, defaultCollapsed = false, onCollapsedChange, collapsible, activeHref, page, labels, id = 'ab-sidebar-list' } = props;
+  // 🧭 route
   const pathname = usePathname() ?? '';
-  return (
-    <nav data-type={type} data-ab-part="sidebar" className={clsx('AbSidebar', styles.abSidebar, className)} aria-label="Sidebar">
-      <Link href={brandHref} className={styles.abSidebarBrand}>
-        <span className="material-symbols-rounded" aria-hidden>apps</span>
-        <span>{brandLabel}</span>
-      </Link>
-      <ul className={styles.abSidebarList}>
-        {links.map((link) => {
-          const active = page ? page === link.value : pathname === link.href || pathname.startsWith(`${link.href}/`);
-          return (
-            <li key={link.value}>
-              <Link href={link.href} data-active={active ? 'true' : 'false'} className={styles.abSidebarLink}>
-                <span className={clsx('material-symbols-rounded', styles.abSidebarIcon)} aria-hidden>
-                  {link.icon}
-                </span>
-                <span>{link.label}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
+  // 🚪 controlled or not
+  const [inner, setInner] = useState(defaultCollapsed);
+  const collapsed = controlled ?? inner;
+  const setCollapsed = (next: boolean) => {
+    if (controlled === undefined) setInner(next); // 🧠 uncontrolled
+    onCollapsedChange?.(next); // 🔔
+  };
+  // 🎯 legacy `page` wins, then activeHref, then the pathname
+  const active = (href: string, value?: string) => (page ? page === value : isAbSidebarActive(href, activeHref ?? pathname));
+  // 🔘 the toggle
+  const showToggle = collapsible ?? !!props.sections?.length;
+  const toggleLabel = collapsed ? labels?.expand ?? 'Expand sidebar' : labels?.collapse ?? 'Collapse sidebar';
+  const toggle = showToggle ? (
+    <button
+      type="button"
+      className={styles.abSidebarToggle} // 🙈 hidden under (scripting: none)
+      data-ab-part="collapse"
+      aria-expanded={!collapsed} // ♿
+      aria-controls={id} // ♿
+      aria-label={toggleLabel} // 🏷️
+      onClick={() => setCollapsed(!collapsed)}
+    >
+      <AbIcon name={collapsed ? 'chevron_right' : 'chevron_left'} size={20} />
+    </button>
+  ) : undefined;
+
+  return <AbSidebarView props={{ ...props, collapsed }} Icon={AbIcon} active={active} toggle={toggle} />;
 };
 
+// 📦 exports
 export default AbSidebar;
 export { AbSidebar };
