@@ -1,3 +1,8 @@
 allowBuilds:
   esbuild: true
   unrs-resolver: true
+# 🛡️ pnpm 11 minimumReleaseAge (1 day): exempt ONLY our own ab-nextjs-theme@0.3.3 (published
+#    2026-10-16T00:03:31Z with trusted publishing + provenance), so the frozen lockfile resolves today.
+# TODO(next release): remove this block. It expires 2026-10-17 02:03:31 Paris, and a test enforces it.
+minimumReleaseAgeExclude:
+  - ab-nextjs-theme@0.3.3
