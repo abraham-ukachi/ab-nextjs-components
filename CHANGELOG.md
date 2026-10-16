@@ -1,3 +1,18 @@
+## 0.1.13 — 2026-10-16
+
+* 🔗 **`AbLinkProvider` (new, `ab-nextjs-components/ab-link`)**: every component link now renders through `AbLink`, so an app can inject a locale-aware `Link` once. `useAbLink`, `AbLink`, `AbLinkComponent` and `AbLinkProps` are exported. It's the only `next/link` import (test-guarded)
+* 💥 **AbIcon (G2): no Material Symbols font fallback.** Unknown names render an empty, sized box (`data-ab-icon-fallback="missing"`) and warn once in development. 7 more built-ins: `chevron_left`, `chevron_right`, `menu`, `more_vert`, `search`, `close`, `expand_more`. AbMenu icons are AbIcons now (filled when selected)
+* 🧭 **AbSidebar v2 (G40)**: sections, `activeHref`, filled active icon, `aria-current`, badges, one child level, a 72px rail with balloon tooltips, and a collapse button (`aria-expanded`, `aria-controls`, hidden without JS). Client and server twins share `ab-sidebar/view`. Legacy `links` / `page` / `brandLabel` still work
+* 📱 **AbNavbar v2 (G41)**: link and button items, filled active icon, `aria-current`, safe-area padding. The server twin takes link items only
+* 🧱 **AbAppBar (new, G43)**: brand, search, nav, actions, sticky with a hairline, and a "More" overflow `AbMenu` below 1180px (Escape and outside click close it, focus goes back to the trigger). The nav stays inline without JS
+* 🔎 **AbSearchTrigger + AbKbd (new, G44)**: ⌘K vs Ctrl K, `aria-keyshortcuts="Meta+K Control+K"`, `onOpen` or an `href` fallback, `comingSoon` with `aria-disabled`. The hotkey is a local listener because `useAbHotkey` (G48) is not in hooks 0.1.7
+* 🃏 **AbCard + AbPackageCard (new, G45)**: one link per card, `ab-motion-interactive` timing, a 2px hover lift on laptop and up with a real pointer, and no lift under reduced motion
+* 📑 **AbToc (new, G46)**: plain `#id` anchors, `aria-current="location"`, and an optional `onNavigate` (for `scrollToAbSection`)
+* 🎈 **AbBalloon a11y**: `role="tooltip"`, `aria-describedby` on the trigger, shows on focus, a 300ms hover delay (`AB_BALLOON_HOVER_DELAY`), Escape dismisses, `popIn` skipped under reduced motion. Without JS, CSS shows it on focus or hover. New `placement` and `delay` props
+* 🚫 **JS-off fallbacks**: AbInstallSnippet hides copy (the command shows the pnpm default). AbLocaleSwitcher with `getHref` renders a `<details>` list of `hreflang` links
+* 🧪 The release-age guard moved to `__tests__/release-age.test.ts`: excludes must be our own exact `ab-nextjs-*` versions and fail once expired
+* Peers unchanged (`theme ^0.3.3`, `icons ^0.2.3`, `hooks ^0.1.6`). The docs shell reads theme 0.3.4 tokens with fallbacks; the bump to `theme ^0.3.4` / `icons ^0.2.4` / `hooks ^0.1.7` waits for those releases
+
 ## 0.1.12 — 2026-10-16
 
 * ♿ **AbInstallSnippet tabs pass AA in every state.** Each state now paints an explicit text/background pair from the live palette instead of a transparent tab and a 12% bronze tint: inactive `on-surface-variant` on `surface-container` (8.04:1 light / 9.67:1 dark), hover `on-surface` on an 8% `on-surface` state layer (12.63:1 / 10.39:1), active and active + hover `on-primary-container` on `primary-container` (13.28:1 / 7.22:1). Fallbacks are the light bronze palette, so it also passes without the theme
