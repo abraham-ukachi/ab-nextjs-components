@@ -13,7 +13,7 @@
 'use client';
 
 import type { ReactElement, ReactNode } from 'react';
-import Link from 'next/link';
+import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import Image from 'next/image';
 import clsx from 'clsx';
 import styles from './styles.module.css';

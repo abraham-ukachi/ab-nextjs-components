@@ -41,7 +41,7 @@
 
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 import { useState } from 'react';
-import Link from 'next/link';
+import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import clsx from 'clsx';
 import styles from './styles.module.css';
 import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
