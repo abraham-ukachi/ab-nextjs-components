@@ -43,7 +43,7 @@
 'use client';
 
 // ⚛️ React
-import { createContext, useContext, type ComponentProps, type ComponentType, type ReactElement, type ReactNode } from 'react';
+import { createContext, createElement, useContext, type ComponentProps, type ComponentType, type ReactElement, type ReactNode } from 'react';
 // 🔗 the default link (the ONLY next/link import in the package, see __tests__/ab-link.test.tsx)
 import NextLink from 'next/link';
 
@@ -81,8 +81,9 @@ export function useAbLink(): AbLinkComponent {
  * it's a client component, so it reads the provider from the client tree above it.
  */
 export function AbLink(props: AbLinkProps): ReactElement {
-  const Link = useAbLink(); // 🔌
-  return <Link {...props} />; // ➡️ same props, same ref (React 19 ref-as-prop)
+  // 🔌 the context value is a stable component reference (not created during render), so createElement
+  //    keeps the react-hooks/static-components rule happy without changing behaviour
+  return createElement(useAbLink(), props); // ➡️ same props, same ref (React 19 ref-as-prop)
 }
 
 // 📦 exports
