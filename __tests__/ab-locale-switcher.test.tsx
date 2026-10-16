@@ -43,6 +43,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 // 🖼️ DOM helpers
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 // 🌍 under test
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import AbLocaleSwitcher, { getAbTypeaheadIndex } from '../ab-locale-switcher'
 
 // 🌍 fixture locales (endonyms)
@@ -96,5 +98,18 @@ describe('AbLocaleSwitcher (G7)', () => {
     const { container } = render(<AbLocaleSwitcher label="Language" current="en" locales={locales} getHref={(c) => (c === 'en' ? '/' : `/${c}`)} />)
     const links = Array.from(container.querySelectorAll('a[role="menuitemradio"]')) // 🔗
     expect(links.map((a) => [a.getAttribute('href'), a.getAttribute('hreflang')])).toEqual([['/', 'en'], ['/fr', 'fr'], ['/es', 'es'], ['/ru', 'ru']]) // ✅
+  })
+  it('JS off (0.1.13): a <details> list of hreflang links, shown only under (scripting: none)', () => {
+    const { container } = render(<AbLocaleSwitcher label="Language" current="fr" locales={locales} getHref={(c) => `/${c}`} />)
+    const d = container.querySelector('details[data-ab-part="locale-switcher-nojs"]')! // 🚫 JS
+    expect(d).not.toBeNull()
+    const a = Array.from(d.querySelectorAll('a')) // 🔗
+    expect(a.map((x) => x.getAttribute('hreflang'))).toEqual(['en', 'fr', 'es', 'ru']) // 🌍
+    expect(d.querySelector('[aria-current="true"]')?.getAttribute('hreflang')).toBe('fr') // ✅
+    const css = readFileSync(join(__dirname, '..', 'ab-locale-switcher/styles.module.css'), 'utf8') // 📄
+    expect(css).toMatch(/@media \(scripting: none\) \{[\s\S]*?\.noJs \{ display: block; \}/) // 👁️
+    // 🔘 callback-only switchers have no fallback (nothing to link to)
+    cleanup()
+    expect(render(<AbLocaleSwitcher label="L" current="en" locales={locales} onSelect={() => {}} />).container.querySelector('details')).toBeNull()
   })
 })
