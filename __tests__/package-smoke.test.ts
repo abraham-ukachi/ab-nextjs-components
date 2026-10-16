@@ -174,8 +174,6 @@ describe('ab-nextjs-components package smoke', () => {
   'ab-demo-code/styles.module.css',
   'server/ab-brand/styles.module.css',
   'server/ab-name/styles.module.css',
-  'server/ab-navbar/styles.module.css',
-  'server/ab-sidebar/styles.module.css',
   'server/ab-nav-link/styles.module.css',
   'server/ab-text/styles.module.css',
   'server/ab-test-hello/styles.module.css',

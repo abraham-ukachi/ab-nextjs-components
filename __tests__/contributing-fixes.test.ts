@@ -7,9 +7,10 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 
 describe('contributing fixes (0.1.6)', () => {
   it('AbSidebar is a <nav data-ab-part="sidebar"> (not <aside>)', () => {
-    for (const file of ['ab-sidebar/index.tsx', 'server/ab-sidebar/index.tsx']) {
+    // 🖼️ 0.1.13: both twins render the shared view (rail = data-ab-part="rail")
+    for (const file of ['ab-sidebar/view.tsx']) {
       const src = read(file)
-      expect(src).toMatch(/<nav data-type=\{type\} data-ab-part="sidebar"/)
+      expect(src).toMatch(/<nav[\s\S]*?data-ab-part=\{collapsed \? 'rail' : 'sidebar'\}/)
       expect(src).not.toMatch(/<aside\b/)
       expect(src).toMatch(/<\/nav>/)
     }
@@ -33,7 +34,7 @@ describe('contributing fixes (0.1.6)', () => {
   })
 
   it('AbNavbar is a <nav data-ab-part="bottomBar">', () => {
-    for (const file of ['ab-navbar/index.tsx', 'server/ab-navbar/index.tsx']) {
+    for (const file of ['ab-navbar/view.tsx']) { // 🖼️ 0.1.13: shared by both twins
       const src = read(file)
       expect(src).toMatch(/<nav data-type=\{type\} data-ab-part="bottomBar"/)
       expect(src).toMatch(/<\/nav>/)
