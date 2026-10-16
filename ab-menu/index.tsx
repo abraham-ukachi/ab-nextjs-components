@@ -16,6 +16,7 @@ import type { ReactElement } from 'react';
 import { forwardRef } from 'react';
 import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import clsx from 'clsx';
+import AbIcon from '../ab-icon'; // 🔣 G2
 import styles from './styles.module.css';
 
 export interface AbMenuItemData {
@@ -71,9 +72,8 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
           const body = (
             <>
               {item.icon ? (
-                <span className={clsx('material-symbols-rounded', styles.abMenuIcon)} aria-hidden>
-                  {item.icon}
-                </span>
+                // 🔣 0.1.13 (G2): AbIcon (filled when selected), no Material Symbols font
+                <AbIcon name={item.icon} variant={item.selected ? 'filled' : 'outlined'} size={20} className={styles.abMenuIcon} />
               ) : null}
               <span className={styles.abMenuLabel}>{item.label}</span>
             </>
@@ -87,7 +87,7 @@ const AbMenu = forwardRef<HTMLMenuElement, AbMenuProps>(function AbMenu(
           if (item.href && !item.disabled) {
             return (
               <li key={item.id} className={clsx('menu-item', itemClass)} data-id={item.id} data-action={item.action}>
-                <Link href={item.href} className={styles.abMenuLink} onClick={item.onClick}>
+                <Link href={item.href} className={styles.abMenuLink} onClick={item.onClick} aria-current={item.selected ? 'page' : undefined}>
                   {body}
                 </Link>
               </li>
