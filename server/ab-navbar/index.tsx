@@ -5,60 +5,57 @@
 * ~~~~~~~~~~~~ 
 * Copyright (c) 2026 Abraham Ukachi. The abElements Project.
 *
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
 * @project: ab-nextjs-components
-* @name: AbNavbar - Server (port of lyd-navbar)
+* @name: AbNavbar - Server (G41)
 * @file: server/ab-navbar/index.tsx
+* @type: Server Component
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+// ⚛️ React
 import type { ReactElement } from 'react';
-import Link from '../../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
-import clsx from 'clsx';
-import styles from './styles.module.css';
+// 🔣 server AbIcon
+import AbIcon from '../ab-icon';
+// 🖼️ shared view
+import { AbNavbarView, isAbNavbarActive, type AbNavbarBaseProps, type AbNavbarLinkItem } from '../../ab-navbar/view';
 
-export type AbNavbarLink = {
-  href: string;
-  icon: string;
-  value: string;
-  label: string;
+// 📦 shared types
+export type { AbNavbarLinkItem, AbNavbarLink } from '../../ab-navbar/view';
+
+/** ⚙️ Server props: link items only (buttons need a client `onSelect`). */
+export type AbNavbarProps = AbNavbarBaseProps<AbNavbarLinkItem>;
+
+/** 📱 AbNavbar (server, G41): same markup as the client twin; active from `activeHref` / legacy `page`. */
+const AbNavbar = (props: AbNavbarProps): ReactElement => {
+  const { page, activeHref } = props;
+  const active = (href: string, value?: string) => (page ? page === value : isAbNavbarActive(href, activeHref)); // 🎯
+  return <AbNavbarView props={props} Icon={AbIcon} active={active} />;
 };
 
-export interface AbNavbarProps {
-  className?: string;
-  type?: 'customer' | 'admin';
-  page?: string;
-  links?: AbNavbarLink[];
-}
-
-const AbNavbar = ({
-  className,
-  type = 'customer',
-  page,
-  links = [],
-}: AbNavbarProps): ReactElement => {
-  return (
-    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
-      <ul className={styles.abNavbarList}>
-        {links.map((link) => {
-          const active = page === link.value;
-          return (
-            <li key={link.value}>
-              <Link
-                href={link.href}
-                data-active={active ? 'true' : 'false'}
-                className={styles.abNavbarLink}
-              >
-                <span className={clsx('material-symbols-rounded', styles.abNavbarIcon)} aria-hidden>
-                  {link.icon}
-                </span>
-                <span>{link.label}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
-};
-
+// 📦 exports
 export default AbNavbar;
 export { AbNavbar };
