@@ -43,6 +43,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 // 🖼️ DOM helpers
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 // 📦 under test
+import { renderToStaticMarkup } from 'react-dom/server'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import AbInstallSnippet, { getAbInstallCommand } from '../ab-install-snippet'
 
 // 🏷️ labels
@@ -95,5 +98,11 @@ describe('AbInstallSnippet (G35)', () => {
     fireEvent.click(getAllByRole('tab')[3]) // 🥟 bun in the first
     expect(getAllByRole('tabpanel')[1].textContent).toContain('bun add b') // 🔁 second follows
     expect(container.querySelectorAll('[data-ab-swipe-ignore]')).toHaveLength(2) // 👆 carousel won't swipe here
+  })
+  it('JS off (0.1.13): server HTML shows the pnpm command and CSS hides copy', () => {
+    const html = renderToStaticMarkup(<AbInstallSnippet pkg="ab-nextjs-core" labels={labels} storageKey="ab-pm" />) // 🖨️
+    expect(html).toContain('pnpm add ab-nextjs-core') // 🌱 default
+    const css = readFileSync(join(__dirname, '..', 'ab-install-snippet/styles.module.css'), 'utf8') // 📄
+    expect(css).toMatch(/@media \(scripting: none\) \{\s*\.copy \{ display: none; \}/) // 🙈
   })
 })
