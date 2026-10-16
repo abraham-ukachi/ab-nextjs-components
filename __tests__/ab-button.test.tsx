@@ -121,3 +121,22 @@ describe('AbButton (server twin)', () => {
     expect(html).toContain('Coming soon') // 🏷️
   })
 })
+
+// 🥉 0.1.12: type="filled" (solid bronze, painted by theme ≥ 0.3.3)
+describe('AbButton type="filled" 🥉', () => {
+  it('client: data-type="filled" (the theme hook) + the .isFilled fallback class', () => {
+    const { getByRole } = render(<AbButton type="filled" label="Get started" />)
+    const btn = getByRole('button', { name: 'Get started' })
+    expect(btn.getAttribute('data-type')).toBe('filled') // 🎯 matches button[data-type="filled"]
+    expect(btn.className).toMatch(/isFilled/) // 🎨 fallback for theme < 0.3.3
+  })
+  it('server twin renders the same hook', () => {
+    const html = renderToStaticMarkup(<ServerAbButton type="filled" label="Get started" />)
+    expect(html).toContain('data-type="filled"') // 🎯
+    expect(html).toMatch(/isFilled/) // 🎨
+  })
+  it('other types do not get the filled class', () => {
+    const { getByRole } = render(<AbButton type="contained" label="Plain" />)
+    expect(getByRole('button', { name: 'Plain' }).className).not.toMatch(/isFilled/) // 🚫
+  })
+})

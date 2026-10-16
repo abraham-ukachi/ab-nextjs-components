@@ -66,6 +66,14 @@ Shipped assets: `assets/logos/ab-logo.svg`, `assets/spinners/3-dots-scale.svg`, 
 * `<AbLogo>` defaults to the Ab logo **shipped in this package** (data URI / `ab-logo/ab-logo.svg`). Pass `src` to override.
 
 
+### Buttons & install snippet (0.1.12)
+
+* `<AbButton type="filled">` 🥉 is a solid bronze button (`--md-sys-color-primary` background, `--md-sys-color-on-primary` label and icon). It sets `data-type="filled"`, which **`ab-nextjs-theme@^0.3.3`** styles with hover, focus and disabled states. On older themes a built-in fallback still paints the solid bronze rest state.
+  ```tsx
+  <AbButton type="filled" label="Get started" />
+  ```
+* `<AbInstallSnippet>` tabs are **≥ 4.5:1** (WCAG AA) in light and dark, active, inactive and hover: inactive = on-surface-variant on surface-container, hover = on-surface on an 8% state layer, active = on-primary-container on primary-container.
+
 ## Getting Started
 
 ### Installation

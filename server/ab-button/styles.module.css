@@ -62,6 +62,17 @@
 
 .isContained {}
 
+/* 🥉 Filled (0.1.12): solid bronze fallback for apps on ab-nextjs-theme < 0.3.3.
+ * Theme ≥ 0.3.3 ships `button[data-type="filled"]` (higher specificity), which
+ * adds the hover / focus / disabled state layers on top of this 🎨 */
+.isFilled {
+  --material-icon-color: var(--ab-button-text-color, var(--md-sys-color-on-primary, #fff)); /* 🎨 icon = label */
+
+  background: var(--ab-button-background-color, var(--md-sys-color-primary, rgb(133 83 24)));
+  color: var(--ab-button-text-color, var(--md-sys-color-on-primary, #fff));
+  font-weight: bold;
+}
+
 .isDisabled {
   pointer-events: none;
   opacity: 0.6;
