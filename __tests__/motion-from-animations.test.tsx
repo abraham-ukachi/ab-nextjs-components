@@ -123,28 +123,7 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
   it('the package stylesheets the components import exist in the linked ab-nextjs-animations (>= 0.2.4)', () => {
     for (const m of ['slide-step', 'motion', 'wire', 'spin', 'progress-sweep']) expect(read(`node_modules/ab-nextjs-animations/${m}/styles.css`)).toContain('prefers-reduced-motion: reduce') // ♿
   })
-
-  it('peer + dev ranges are carets on the Welcome releases (James P0); animations + icons are required', () => {
-    const pkg = JSON.parse(read('package.json')) // 📦
-    const want = { 'ab-nextjs-hooks': '^0.1.6', 'ab-nextjs-theme': '^0.3.3', 'ab-nextjs-animations': '^0.2.4', 'ab-nextjs-icons': '^0.2.3' } // 🎯
-    for (const [name, range] of Object.entries(want)) {
-      expect(pkg.peerDependencies[name], name).toBe(range) // 🤝 peer
-      expect(pkg.devDependencies[name], name).toBe(range) // 🧪 dev (same caret)
-    }
-    // 🚫 never commit local links
-    for (const range of [...Object.values(pkg.dependencies ?? {}), ...Object.values(pkg.devDependencies), ...Object.values(pkg.peerDependencies)] as string[]) expect(range).not.toMatch(/^(file|link|workspace|portal):/) // 🔗
-    // 🧹 P1: no stale excludes. ⏳ The only allowed exemption is pnpm 11's 1-day minimumReleaseAge for
-    //    OUR OWN brand-new ab-nextjs-theme@0.3.3, as an exact version (remove the block once it is a day old)
-    const ws = read('pnpm-workspace.yaml') // 📄
-    // 🔍 only the list under the `minimumReleaseAgeExclude:` key (stops at the next top-level key)
-    const block = /^minimumReleaseAgeExclude:[^\n]*\n((?:[ \t]+[^\n]*\n?|[ \t]*#[^\n]*\n?|[ \t]*\n)*)/m.exec(ws)?.[1] ?? '' // 📋
-    const excluded = [...block.matchAll(/^[ \t]+-[ \t]+['"]?([^'"\s#]+)['"]?/gm)].map((m) => m[1]) // 📋 list entries
-    for (const e of excluded) expect(['ab-nextjs-theme@0.3.3'], e).toContain(e) // 🚫 anything else (third-party, ranges, other versions) fails
-    // ⏰ expiry: registry publish time 2026-10-16T00:03:31.633Z + 24h → the exclude must be GONE (02:03:31 Paris, 17 Oct)
-    if (Date.now() > Date.parse('2026-10-17T00:03:31.633Z')) expect(ws, 'drop minimumReleaseAgeExclude (theme 0.3.3 is > 1 day old)').not.toContain('minimumReleaseAgeExclude') // 🧹
-    expect(pkg.peerDependenciesMeta?.['ab-nextjs-animations']).toBeUndefined() // 🚫 optional
-    expect(pkg.peerDependenciesMeta?.['ab-nextjs-icons']).toBeUndefined() // 🚫 optional
-  })
+  // 📦 peer ranges + the minimumReleaseAge guard moved to __tests__/release-age.test.ts (0.1.13)
 })
 
 describe('AbCarousel: direction-aware slide steps ➡️⬅️', () => {
