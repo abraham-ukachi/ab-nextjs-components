@@ -43,13 +43,13 @@ import clsx from 'clsx';
 // 🗺️ full icon map: fine here, server components ship no JS to the browser
 import { getAbIconSvg } from 'ab-nextjs-icons/ab-icons';
 // 🧮 shared helpers (same rules as the client twin)
-import { getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from '../../ab-icon/helpers';
+import { warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from '../../ab-icon/helpers';
 // 🎨 styles (server copy)
 import styles from './styles.module.css';
 
 // ⚙️ props
 export interface AbIconProps {
-  name: string; // 🗂️ AbIcons name (snake_case); Material ligature fallback if unknown
+  name: string; // 🗂️ AbIcons name (snake_case); AbIcons name (registered / svg / map); unknown = empty box + dev warning (0.1.13)
   variant?: AbIconVariant; // 🎚️ outlined (default) | filled
   filled?: boolean; // 🕰️ legacy alias for variant="filled"
   weight?: AbIconWeight | number; // 📏 100–700 (outlined), default 200
@@ -61,7 +61,7 @@ export interface AbIconProps {
   style?: CSSProperties; // 🎨
 }
 
-/** 🔣 AbIcons SVG icon (server / RSC): `svg` prop → registry → full AbIcons map → Material ligature. */
+/** 🔣 AbIcons SVG icon (server / RSC): `svg` prop → registry → full AbIcons map → empty box + dev warning (no font, 0.1.13). */
 const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
   // 🎚️ variant for lookup
   const want: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
@@ -92,19 +92,18 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
     );
   }
 
-  // 🕰️ fallback: Material Symbols ligature (pre-G2 behaviour) for names not in AbIcons
+  // ⚠️ 0.1.13 (G2): no Material Symbols font fallback. An unknown name renders an empty, sized box (layout
+  //    stays stable) and warns once in development, so missing registrations show up in the console.
+  warnAbIconMissing(name);
   return (
     <span
-      className={clsx('material-symbols-rounded', 'icon', styles.abIconFont, className)} // 🏷️
-      style={{ ...style, fontSize: toAbIconSize(size) }} // 📏
-      data-filled={v === 'filled' ? 'true' : 'false'} // 🎚️
+      className={clsx('AbIcon', styles.abIcon, className)} // 🏷️ same box as a real icon
+      style={vars} // 📐 same size
       data-icon={name} // 🗂️
-      data-ab-icon-fallback="font" // 🔎 easy to audit
+      data-ab-icon-fallback="missing" // 🔎 easy to audit (no font class)
       title={title} // 💬
       {...a11y} // ♿
-    >
-      {name}
-    </span>
+    />
   );
 };
 

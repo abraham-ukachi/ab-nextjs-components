@@ -100,3 +100,19 @@ export function toAbIconSize(size: number | string | undefined): string {
   if (size == null) return '24px'; // 🧭 default 24
   return typeof size === 'number' ? `${size}px` : size; // 📏
 }
+
+
+// 🔕 names we already warned about (one warning per name per page load)
+const warned = new Set<string>()
+
+/**
+ * ⚠️ 0.1.13 (G2): warns once in development when a name isn't an AbIcon (registered, explicit `svg`, or in
+ * the map). There is no Material Symbols font fallback any more, so the icon renders as an empty box.
+ * Register it with `registerAbIcons({ name: icon })` from `ab-nextjs-icons/ab-icons/icons/<name>`.
+ */
+export function warnAbIconMissing(name: string): void {
+  if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') return // 🤫 silent in prod
+  if (warned.has(name)) return // 🔕 once
+  warned.add(name) // 📝
+  console.warn(`[AbIcon] "${name}" is not a registered AbIcon. Register it: registerAbIcons({ ${name} }) from 'ab-nextjs-icons/ab-icons/icons/${name}'. (No Material Symbols font fallback since ab-nextjs-components 0.1.13.)`) // ⚠️
+}
