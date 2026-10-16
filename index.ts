@@ -116,6 +116,20 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbFlowDiagram)
   { name: 'AbFlowDiagram', file: 'ab-flow-diagram/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbLink)
+  { name: 'AbLink', file: 'ab-link/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbKbd) — server-safe, no hooks
+  { name: 'AbKbd', file: 'ab-kbd/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbSearchTrigger)
+  { name: 'AbSearchTrigger', file: 'ab-search-trigger/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbAppBar)
+  { name: 'AbAppBar', file: 'ab-app-bar/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbCard) — server-safe, no hooks
+  { name: 'AbCard', file: 'ab-card/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbPackageCard) — server-safe, no hooks
+  { name: 'AbPackageCard', file: 'ab-package-card/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbToc) — server-safe, no hooks
+  { name: 'AbToc', file: 'ab-toc/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
