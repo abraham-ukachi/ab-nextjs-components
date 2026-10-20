@@ -107,6 +107,17 @@ export function getAbDrawerHost(scope: AbDrawerScope, from?: Element | null): HT
 // ♿ everything that can take focus inside the panel
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
 
+// 📍 hosts with a drawer layer, ref-counted: `data-ab-drawer-host` stays while ANY drawer still uses the box.
+// CSS (`:where([data-ab-drawer-host])`, zero specificity) gives a static host `position: relative`; no inline
+// styles are written. A core rule on its layout boxes could replace this later.
+const hostCount = new WeakMap<HTMLElement, number>();
+const holdHost = (host: HTMLElement) => { const n = (hostCount.get(host) ?? 0) + 1; hostCount.set(host, n); host.setAttribute('data-ab-drawer-host', ''); };
+const releaseHost = (host: HTMLElement) => {
+  const n = (hostCount.get(host) ?? 1) - 1;
+  if (n > 0) { hostCount.set(host, n); return; }
+  hostCount.delete(host); host.removeAttribute('data-ab-drawer-host'); // 🧹 last one out
+};
+
 // 🥞 open drawers, newest last: only the top one answers Escape / Tab (a drawer opened from a drawer)
 const openStack: symbol[] = [];
 /** 🥞 is `token` the topmost open drawer? */
@@ -151,13 +162,19 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     el.setAttribute('data-ab-drawer-layer', scope);
     el.className = clsx('AbDrawerLayer', styles.abDrawerLayer);
     if (host === document.body) el.setAttribute('data-host', 'body'); // 📌 no layout: cover the viewport
-    let restore: string | null = null; // 📍 only touch `position` if the host was static
-    if (host !== document.body && getComputedStyle(host).position === 'static') { restore = host.style.position; host.style.position = 'relative'; }
     host.appendChild(el);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 🌀 the layer is external DOM that only exists after mount (SSR keeps the in-flow fallback); one extra render on hydration is the point
     setLayer(el);
-    return () => { el.remove(); if (restore !== null) host.style.position = restore; setLayer(null); }; // 🧹
+    return () => { el.remove(); setLayer(null); }; // 🧹
   }, [scope]);
+
+  // 📍 hold the host (position context) while the panel is in the DOM (open or sliding out)
+  useEffect(() => {
+    const host = layer?.parentElement;
+    if (!present || !host || host === document.body) return; // 📌 body layer is fixed: no context needed
+    holdHost(host);
+    return () => releaseHost(host);
+  }, [present, layer]);
 
   // 🧮 derived during render (React's "adjust state on prop change"): open mounts at once, close starts the slide out
   if (open && !present) setPresent(true);

@@ -197,4 +197,27 @@ describe('AbDrawer 🗄️', () => {
     fireEvent.keyDown(document, { key: 'Escape' }); flush()
     expect(names()).toEqual([]) // ⎋ then the next
   })
+
+  it('ref-counts the host attribute (two drawers, one scope) and never writes host.style', () => {
+    function Two({ a, b }: { a: boolean; b: boolean }) {
+      return (
+        <div className="AbAppLayout">
+          <main data-ab-part="main">
+            <AbDrawer open={a} onClose={() => {}} scope="main" aria-label="A" />
+            <AbDrawer open={b} onClose={() => {}} scope="main" aria-label="B" />
+          </main>
+        </div>
+      )
+    }
+    const { rerender } = render(<Two a b />); flush()
+    const main = document.querySelector<HTMLElement>('[data-ab-part="main"]')!
+    expect(main.hasAttribute('data-ab-drawer-host')).toBe(true) // 📍
+    rerender(<Two a={false} b />); flush()
+    expect(main.hasAttribute('data-ab-drawer-host')).toBe(true) // 🔢 B still holds it
+    rerender(<Two a={false} b={false} />); flush()
+    expect(main.hasAttribute('data-ab-drawer-host')).toBe(false) // 🧹 last one out
+    expect(main.getAttribute('style')).toBeNull() // 🙅 no inline position
+    expect(read('ab-drawer/styles.module.css')).toContain(':where([data-ab-drawer-host]:has(> .abDrawerLayer)) { position: relative; }') // 🎨
+    expect(read('ab-drawer/index.tsx')).not.toMatch(/host\.style/) // 🙅
+  })
 })

@@ -120,3 +120,8 @@
 @media (scripting: enabled) {
   .abDrawerFallback { display: none; }
 }
+
+/* 📍 the scope box (.AbAppLayout / main / aside pane) is the layer's containing block while a drawer uses it.
+   :where() = zero specificity, so a host that is already positioned (fixed / absolute aside) keeps its own.
+   The local class inside :has() keeps CSS-modules "pure" mode happy. (A core rule could own this later.) */
+:where([data-ab-drawer-host]:has(> .abDrawerLayer)) { position: relative; }
