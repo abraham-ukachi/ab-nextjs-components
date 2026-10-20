@@ -49,11 +49,11 @@ afterEach(cleanup)
 const versions = [{ value: 'v0.2.x', href: '/docs' }, { value: 'v0.1.x', href: '/v0.1/docs' }]
 
 describe('AbVersionSwitcher (P9) 🏷️', () => {
-  it('shows "Docs v0.2.x ▾"; opens the menu with the current version selected; Escape closes + refocuses', () => {
+  it('shows "v0.2.x ▾" (no Docs prefix by default, God 01:27); opens the menu with the current version selected; Escape closes + refocuses', () => {
     const { container } = render(<AbVersionSwitcher version="v0.2.x" versions={versions} />)
     const btn = container.querySelector('button[aria-haspopup="menu"]') as HTMLButtonElement
-    expect(btn.textContent).toContain('Docs'); expect(btn.querySelector('b')?.textContent).toBe('v0.2.x') // 💪
-    expect(btn.getAttribute('aria-label')).toBe('Docs v0.2.x') // ♿ WCAG 2.5.3: the name contains the visible text
+    expect(btn.textContent).not.toContain('Docs'); expect(btn.querySelector('b')?.textContent).toBe('v0.2.x') // 💪
+    expect(btn.getAttribute('aria-label')).toBe('v0.2.x') // ♿ WCAG 2.5.3: the name contains the visible text
     expect(btn.getAttribute('aria-label')).toBe(btn.textContent?.replace(/\s+/g, ' ').trim())
     const menu = document.getElementById(btn.getAttribute('aria-controls')!)!
     expect(menu.hidden).toBe(true)

@@ -30,7 +30,7 @@
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 *
 * Example usage:
-*   1+|> <AbVersionSwitcher label="Docs" version="v0.2.x" versions={[{ value: "v0.2.x", href: "/docs" }, { value: "v0.1.x", href: "/v0.1/docs" }]} />
+*   1+|> <AbVersionSwitcher version="v0.2.x" versions={[{ value: "v0.2.x", href: "/" }, { value: "v0.1.x", href: "/v0.1" }]} />
 */
 
 /*
@@ -62,7 +62,7 @@ export interface AbVersionOption {
 
 /** ⚙️ props */
 export interface AbVersionSwitcherProps {
-  label?: string; // 🏷️ default "Docs"
+  label?: string; // 🏷️ text before the version; default none (0.2.0, God 01:27: the app IS the docs, so no "Docs" prefix)
   version: string; // ✅ current version (shown bold), e.g. 'v0.2.x'
   versions?: readonly AbVersionOption[]; // 📋 the choices (none / one = a static label, no menu)
   onSelect?: (value: string) => void; // 📣 button items
@@ -75,12 +75,12 @@ export interface AbVersionSwitcherProps {
  * card background, 16px `expand_more`; opens an AbMenu below it (Escape / outside click close, focus returns).
  * JS off: with `href`s it's a native `<details>` list of links.
  */
-const AbVersionSwitcher = ({ label = 'Docs', version, versions = [], onSelect, menuLabel, className }: AbVersionSwitcherProps): ReactElement => {
+const AbVersionSwitcher = ({ label = '', version, versions = [], onSelect, menuLabel, className }: AbVersionSwitcherProps): ReactElement => {
   const [open, setOpen] = useState(false); // 🚪
   const menuId = `ab-version-menu-${useId().replace(/:/g, '')}`; // 🆔
   const wrap = useRef<HTMLDivElement>(null); // 📍
   const btn = useRef<HTMLButtonElement>(null); // 📍
-  const name = menuLabel ?? `${label} ${version}`; // ♿ WCAG 2.5.3 label-in-name (James)
+  const name = menuLabel ?? (label ? `${label} ${version}` : version); // ♿ WCAG 2.5.3 label-in-name (James)
   const hasMenu = versions.length > 1; // 📋
 
   // ⎋ Escape + outside click close it
@@ -96,7 +96,7 @@ const AbVersionSwitcher = ({ label = 'Docs', version, versions = [], onSelect, m
   // 🧱 the visible face (same for button, static label and no-JS summary)
   const face = (
     <>
-      <span>{label}</span> <b className={styles.abVersionValue}>{version}</b>
+      {label && <><span>{label}</span> </>}<b className={styles.abVersionValue}>{version}</b>
       {hasMenu && <AbIcon name="expand_more" size={16} className={styles.abVersionIcon} />}
     </>
   );

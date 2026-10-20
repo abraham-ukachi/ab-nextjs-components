@@ -33,8 +33,8 @@
 *   <AbAppBar
 *     brand={<AbBrand />}
 *     search={<AbSearchTrigger onOpen={openSearch} />}
-*     nav={[{ href: '/docs', label: 'Docs' }, { href: '/components', label: 'Components' }]}
-*     activeHref="/docs"
+*     nav={[{ href: '/packages', label: 'Packages' }, { href: '/guides', label: 'Guides' }]}
+*     activeHref="/packages"
 *     actions={<AbThemeToggle />}
 *   />
 */
@@ -98,7 +98,8 @@ export interface AbAppBarProps {
    *  (40px circle, label for screen readers only). Default `'pill'` with `density="compact"`, else `'icon'` (unchanged). */
   compactSearch?: 'pill' | 'icon';
   /** 🔗 0.1.15 (God 00:37): shown INSTEAD of `search` below 768px (both rendered, CSS picks: no hydration flip), e.g.
-   *  `<AbSearchTrigger size="sm" href="/docs" label="Search" />`: a plain link, no ⌘K cap and no hotkey (no `onOpen`).
+   *  `<AbSearchTrigger size="sm" label="Search" onOpen={openSearchDrawer} hotkey={false} />`: a button that opens
+   *  AbSearchDrawer, with no ⌘K cap and no hotkey (God 01:27: there is no /docs page; `href` still makes a plain link).
    *  In a compact bar it is the mock's 114px pill (`--ab-app-bar-compact-search-width`).
    *  ⚠️ Both slots are rendered: a hotkey trigger (with `onOpen`) passed to BOTH `search` and `searchCompact` registers ⌘K
    *  twice (one press opens twice). Give only one of them `onOpen`, or pass `hotkey={false}` to the other. */
