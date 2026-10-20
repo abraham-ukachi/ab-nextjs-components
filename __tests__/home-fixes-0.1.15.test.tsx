@@ -79,7 +79,7 @@ describe('AbLocaleSwitcher presentation="inline" 🧩', () => {
   })
   it('CSS: 48px rows, --tint active, motion-free', () => {
     const s = css('ab-locale-switcher/styles.module.css') // 🎨
-    expect(s).toMatch(/\.inlineItem \{[^}]*min-block-size: 48px/) // 👆
+    expect(s).toMatch(/\.inlineItem \{[^}]*block-size: 48px; min-block-size: 44px;/) // 👆 John: exactly 48, ≥ 44 hit area
     expect(s).toMatch(/\.inlineItem\[data-active='true'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text, #88603d\)/) // 🎯
   })
 })
@@ -138,5 +138,15 @@ describe('inline language list: check mark ✓', () => {
     const s = css('ab-locale-switcher/styles.module.css')
     expect(s).toMatch(/\.inlineCheck \{[^}]*color: var\(--ab-locale-check-color, #8b6340\)/) // 🥉
     expect(s).toMatch(/:global\(\.dark\) \.inlineCheck, :global\(\[data-theme='dark'\]\) \.inlineCheck \{ color: var\(--ab-locale-check-color, var\(--ab-color-accent, #c29a6f\)\); \}/) // 🌙
+  })
+})
+
+// 📏 John 00:20 #2: rows exactly 48px, 8px apart
+describe('inline language list: row rhythm 📏', () => {
+  it('48px rows (44px floor), 20px line box, 8px list gap, bare <li>', () => {
+    const s = css('ab-locale-switcher/styles.module.css')
+    expect(s).toMatch(/\.inlineList \{ display: grid; gap: 8px;/) // ↕️
+    expect(s).toMatch(/\.inlineList > li \{ display: block; margin: 0; padding: 0; line-height: 0; \}/) // 🧹
+    expect(s).toMatch(/font-size: 16px; line-height: 20px;/) // 🔤
   })
 })

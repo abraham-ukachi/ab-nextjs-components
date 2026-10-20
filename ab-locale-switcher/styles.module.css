@@ -141,11 +141,12 @@
  * Rows match AbDrawerList / the Home drawer: 48px, 12px padding, radius 8, --tint + --accent-text + 650 when active. */
 .inline { display: grid; gap: 4px; } /* 📐 */
 .inlineLabel { padding: 14px 12px 6px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ab-color-faint, #807062); } /* 🏷️ = sidebar group label */
-.inlineList { display: grid; gap: 1px; margin: 0; padding: 0; list-style: none; } /* 📜 */
+.inlineList { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; } /* 📜 John: 8px between rows */
+.inlineList > li { display: block; margin: 0; padding: 0; line-height: 0; } /* 🧹 no inherited li spacing / line box: the row is the box */
 .inlineItem {
-  display: flex; align-items: center; gap: 12px; box-sizing: border-box; inline-size: 100%; min-block-size: 48px; /* 👆 touch target */
+  display: flex; align-items: center; gap: 12px; box-sizing: border-box; inline-size: 100%; block-size: 48px; min-block-size: 44px; /* 👆 John: exactly 48px (≥ 44px hit area) */
   padding: 8px 12px; border: 0; border-radius: var(--ab-radius-row, 8px); background: none; /* 🧹 */
-  font: inherit; font-size: 16px; text-align: start; color: var(--ab-color-text, #211a16); text-decoration: none; cursor: pointer; /* 🔤 */
+  font: inherit; font-size: 16px; line-height: 20px; text-align: start; color: var(--ab-color-text, #211a16); text-decoration: none; cursor: pointer; /* 🔤 */
 }
 .inlineItem:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } /* 🖱️ */
 .inlineItem[data-active='true'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); font-weight: 650; } /* 🎯 */
