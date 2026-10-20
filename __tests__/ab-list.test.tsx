@@ -84,5 +84,6 @@ describe('AbList + AbListItem (P13) 📋', () => {
     expect(css).toMatch(/min-height: 44px;/) // 👆
     expect(css).toMatch(/\.abListMeta \{[^}]*font-size: 12px; line-height: 1\.4;/) // 📏 58.5px rows like the mock, whatever the font
     expect(css).toMatch(/outline-offset: -2px;/) // ♿ inset
+    expect(css).toMatch(/\.abListMedia > \*, \.abListMedia svg \{ width: 18px; height: 18px; \}/) // 🔣 raw svg too
   })
 })

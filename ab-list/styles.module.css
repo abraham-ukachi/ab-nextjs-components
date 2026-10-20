@@ -71,7 +71,7 @@ a.abListRow:focus-visible { outline: 2px solid var(--ab-list-ring); outline-offs
 .abListItem:first-child a.abListRow:focus-visible { border-radius: calc(var(--ab-list-radius) - 1px) calc(var(--ab-list-radius) - 1px) 0 0; } /* ⭕ */
 .abListItem:last-child a.abListRow:focus-visible { border-radius: 0 0 calc(var(--ab-list-radius) - 1px) calc(var(--ab-list-radius) - 1px); } /* ⭕ */
 .abListMedia { flex: none; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 8px; background: var(--ab-list-tile); color: var(--ab-list-accent-text); } /* 🖼️ */
-.abListMedia > * { width: 18px; height: 18px; } /* 🔣 18px icon */
+.abListMedia > *, .abListMedia svg { width: 18px; height: 18px; } /* 🔣 18px icon (an AbIcon, or a raw <svg> at any depth) */
 .abListBadge { flex: none; display: flex; align-items: center; justify-content: center; width: 64px; height: 22px; border-radius: 6px; font-size: 11px; font-weight: 700; background: var(--ab-list-tint); color: var(--ab-list-accent-text); } /* 🏷️ Improved */
 .abListBadge[data-tone='primary'] { background: var(--ab-list-btn); color: var(--ab-list-btn-text); } /* 🏷️ New */
 .abListText { flex: 1; min-width: 0; } /* 📐 */
