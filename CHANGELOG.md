@@ -1,5 +1,7 @@
 ## 0.1.14 (Unreleased)
 
+* 🎯 **AbThemeToggle icon shows the target (John, 20:57):** `variant="icon"` + `appearance="thumb"` now shows the mode a click switches to (moon in light, sun in dark). New `iconShows?: 'current' | 'target'` (default `target` for thumb, `current` otherwise, so fill is unchanged) and `labels.switchTo` for names like "Switch to dark theme". Segmented toggles are unchanged.
+* 🌿 **Sage chip AA (John):** the `tone="sage"` fallback text is now #566a58 (theme 0.3.5 value), ≥ 4.5:1 on the unchanged tint. Tested.
 * 🏠 **Home fidelity components (spec §5, approved by God 2026-10-20):**
   * `AbList` + `AbListItem` (P13): bordered row lists with a media tile or badge, title, meta and chevron. A row with `href` is a single link.
   * `AbBreadcrumbs` (P2): the tablet main bar crumb.
