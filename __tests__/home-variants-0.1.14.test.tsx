@@ -51,6 +51,7 @@ import AbAppBar from '../ab-app-bar'
 import AbSidebar from '../ab-sidebar'
 import ServerAbSidebar from '../server/ab-sidebar'
 import AbPackageCard from '../ab-package-card'
+import AbInstallSnippet from '../ab-install-snippet'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -184,5 +185,27 @@ describe('P10 AbPackageCard preview · title · descriptionLines · chips + arro
       /width: 30px; height: 30px; border-radius: var\(--ab-radius-row, 8px\)/, /font-size: 14px; font-weight: 800; line-height: 1\.2;/, /font: 400 11px\/1\.3 var\(--ab-font-code/,
       /font-size: 12\.5px; line-height: 1\.45; color: var\(--ab-color-muted, #6b5b50\); min-height: 36px;/, /\.home \{ padding: 8px 8px 10px; border-radius: 13px; \}/, /\.homePreview \{ height: 44px; \}/,
       /translateY\(-1px\)/]) expect(c).toMatch(re)
+  })
+})
+
+// 💻 P12
+describe('P12 AbInstallSnippet variant="terminal" 💻', () => {
+  const labels = { group: 'Install', copy: 'Copy command', copied: 'Copied' }
+  it('copy button sits in the tab row but OUTSIDE the tablist; the package is highlighted; command text intact', () => {
+    const { container } = render(<AbInstallSnippet pkg="ab-nextjs-core" labels={labels} variant="terminal" />)
+    const root = container.querySelector('[data-ab-part="install-snippet"]')!
+    expect(root.getAttribute('data-variant')).toBe('terminal')
+    const list = root.querySelector('[role="tablist"]')!
+    expect(list.querySelectorAll(':scope > :not([role="tab"])')).toHaveLength(0) // ♿ only tabs inside
+    const copy = root.querySelector('button[aria-label="Copy command"]')!
+    expect(copy.closest('[role="tabpanel"]')).toBeNull(); expect(list.parentElement!.contains(copy)).toBe(true) // 📋 head row
+    expect(root.querySelector('code')!.textContent).toBe('pnpm add ab-nextjs-core') // 📋 one string
+    expect(root.querySelector('code span')!.textContent).toBe('ab-nextjs-core') // 🖍️
+  })
+  it('CSS: radius 12, tab row 6 8 0 10 + hairline, tabs 12/600 underline #c29a6f, pre 14 16 16 13.5/1.4, $ #8e7a69, pkg #e7c8a5, scrolls', () => {
+    const c = css('ab-install-snippet/styles.module.css')
+    for (const re of [/border-radius: var\(--ab-radius-code, 12px\)/, /padding: 6px 8px 0 10px;/, /border-bottom: 1px solid rgb\(255 232 210 \/ 0\.08\)/,
+      /padding: 6px 8px 8px;/, /font-size: 12px; font-weight: 600; line-height: 1\.2; color: rgb\(237 224 212 \/ 0\.55\)/, /color: #e7c8a5; box-shadow: inset 0 -2px 0 #c29a6f/,
+      /padding: 14px 16px 16px;[^}]*overflow-x: auto;/, /color: #8e7a69/, /\.termPkg \{ color: #e7c8a5; \}/, /font-size: 13\.5px; line-height: 1\.4; white-space: pre;/]) expect(c).toMatch(re)
   })
 })

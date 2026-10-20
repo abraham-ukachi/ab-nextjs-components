@@ -126,3 +126,36 @@
 @media (scripting: none) {
   .copy { display: none; } /* 🙈 */
 }
+
+/* ===== 💻 0.1.14 (P12, Home spec §4 install block): variant="terminal" (dark in both themes) ===== */
+.root.terminal {
+  display: block; gap: 0; padding: 0; overflow: hidden; /* 🧹 no outer card */
+  border: 1px solid rgb(255 232 210 / 0.06); border-radius: var(--ab-radius-code, 12px); /* 🔲 */
+  background: var(--ab-color-code, #231a14); color: var(--ab-color-code-text, #ede0d4); /* 💻 dark: #110b07 / #e8dacc */
+  box-shadow: 0 10px 30px rgb(33 26 22 / 0.14); /* 🌗 */
+}
+.termHead {
+  display: flex; align-items: center; padding: 6px 8px 0 10px; /* 📦 tabs · grow · copy */
+  border-bottom: 1px solid rgb(255 232 210 / 0.08); /* ➖ */
+}
+.terminal .tabs { gap: 2px; } /* 🗂️ */
+.terminal .tab, .terminal .tab:hover {
+  min-height: 0; padding: 6px 8px 8px; border-radius: 0; background: none; /* 🧹 no pills */
+  font-size: 12px; font-weight: 600; line-height: 1.2; color: rgb(237 224 212 / 0.55); /* 🔤 */
+}
+.terminal .tab:hover { color: rgb(237 224 212 / 0.8); } /* 🖱️ */
+.terminal .tab[aria-selected='true'], .terminal .tab[aria-selected='true']:hover {
+  background: none; color: #e7c8a5; box-shadow: inset 0 -2px 0 #c29a6f; /* ✅ underline */
+}
+.terminal .tab:focus-visible { outline-color: #c29a6f; outline-offset: -2px; } /* ♿ inside the block */
+.termGrow { flex: 1; } /* ↔️ */
+.terminal .copy { margin: 0 0 2px; color: rgb(237 224 212 / 0.7); } /* 📋 always visible */
+.terminal .copy svg { width: 16px; height: 16px; }
+.terminal .panel { display: block; padding: 14px 16px 16px; border-radius: 0; background: none; color: inherit; overflow-x: auto; } /* 📜 scrolls, never clips */
+.terminal .prompt { opacity: 1; color: #8e7a69; margin-inline-end: 0.6em; font-size: 13.5px; } /* 💲 */
+.terminal .code { display: inline; overflow: visible; font-size: 13.5px; line-height: 1.4; white-space: pre; } /* ⌨️ Roboto Mono 13.5/1.4 */
+.termPkg { color: #e7c8a5; } /* 📦 */
+@media (max-width: 767px) {
+  .terminal .panel { padding: 12px 14px 13px; } /* 📱 */
+  .terminal .prompt, .terminal .code { font-size: 13px; }
+}
