@@ -46,6 +46,9 @@ import { join } from 'node:path'
 import AbLocaleSwitcher from '../ab-locale-switcher'
 import AbAppBar from '../ab-app-bar'
 import AbSearchTrigger from '../ab-search-trigger'
+import AbSidebar from '../ab-sidebar'
+import ServerAbSidebar from '../server/ab-sidebar'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -106,5 +109,21 @@ describe('AbAppBar compactSearch + AbSearchTrigger compactLabel 🔎', () => {
     expect(block).toMatch(/border-radius: var\(--ab-radius-pill, 999px\); font-size: 13px;/)
     expect(block).toMatch(/\[data-ab-part='search-label-compact'\] \{ display: inline; \}/)
     expect(block).toMatch(/\[data-ab-part='key-gap'\] \{ display: none; \}/)
+  })
+})
+
+// 🏷️ 2. the tablet sidebar logo row (core ≥ 0.2.1 decides where it shows)
+describe('AbSidebar logo row 🏷️', () => {
+  const sections = [{ id: 's', items: [{ href: '/', label: 'Home' }] }]
+  it('client + server render data-ab-part="sidebar-logo" before the header, only when `logo` is set', () => {
+    for (const S of [AbSidebar, ServerAbSidebar]) {
+      const html = renderToStaticMarkup(<S sections={sections} logo={<img alt="Elements" src="/l.svg" />} header={<b>v</b>} />) // 🖼️
+      expect(html).toMatch(/data-ab-part="sidebar-logo"><img alt="Elements"/) // 🏷️
+      expect(html.indexOf('sidebar-logo')).toBeLessThan(html.indexOf('<b>v</b>')) // ⬆️ above the header
+      expect(renderToStaticMarkup(<S sections={sections} />)).not.toContain('sidebar-logo') // 🫥 opt-in
+    }
+  })
+  it('CSS: 60px (--ab-header-height) row, 0 20px', () => {
+    expect(css('ab-sidebar/styles.module.css')).toMatch(/\.abSidebarLogo \{ flex: none; display: flex; align-items: center; box-sizing: border-box; height: var\(--ab-header-height, 60px\); padding: 0 20px; \}/) // 📏
   })
 })

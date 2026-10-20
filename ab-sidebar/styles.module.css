@@ -187,3 +187,8 @@
 .abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarHeader { padding: 12px 0 6px; justify-content: center; } /* 🚪 rail */
 .abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarSections { padding-inline: 8px; }
 .abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarLink { width: 40px; height: 40px; } /* 👆 */
+
+/* 🏷️ 0.1.15 (God 00:08): the tablet logo row, mock 06 `.sb-logo` = 60px, 0 20px, centred, never shrinks.
+ *    Height follows core's --ab-header-height (60px at tablet) so it lines up with the main bar. */
+.abSidebarLogo { flex: none; display: flex; align-items: center; box-sizing: border-box; height: var(--ab-header-height, 60px); padding: 0 20px; }
+.abSidebar[data-collapsed='true'] .abSidebarLogo { justify-content: center; padding: 0; } /* 🚪 rail: centred */
