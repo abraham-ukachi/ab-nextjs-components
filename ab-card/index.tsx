@@ -61,17 +61,18 @@ export interface AbCardProps {
   headingLevel?: 2 | 3 | 4; // ♿ default 3
   className?: string; // 🏷️
   as?: 'article' | 'div' | 'li'; // 🧱 default article
+  id?: string; // 🆔 0.1.13: e.g. an in-page anchor target
 }
 
 /**
  * 🃏 AbCard (G45): ONE link (the title) stretched over the card, so screen readers hear one link, not a
  * nested block of them. Hover lift is 2px, laptop and up only, and none under prefers-reduced-motion.
  */
-const AbCard = ({ title, href, description, eyebrow, media, footer, headingLevel = 3, className, as = 'article' }: AbCardProps): ReactElement => {
+const AbCard = ({ title, href, description, eyebrow, media, footer, headingLevel = 3, className, as = 'article', id }: AbCardProps): ReactElement => {
   const H = `h${headingLevel}` as unknown as ComponentType<{ className?: string; children?: ReactNode }>; // ♿
   const Root = as as unknown as ComponentType<Record<string, unknown>>; // 🧱
   return (
-    <Root className={clsx('AbCard', styles.abCard, 'ab-motion-interactive', className)} data-ab-part="card" data-linked={href ? 'true' : 'false'}>
+    <Root id={id} className={clsx('AbCard', styles.abCard, 'ab-motion-interactive', className)} data-ab-part="card" data-linked={href ? 'true' : 'false'}>
       {media && <div className={styles.abCardMedia} aria-hidden="true">{media}</div>}
       {eyebrow && <p className={styles.abCardEyebrow}>{eyebrow}</p>}
       <H className={styles.abCardTitle}>

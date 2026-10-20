@@ -36,6 +36,6 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; } /* 📦 */
-.abPackageCardVersion { font-family: var(--ab-font-code, ui-monospace, monospace); opacity: 0.8; } /* 🏷️ */
+.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; min-width: 0; } /* 📦 0.1.13: never wraps mid-name (ab-nextjs-/core); ellipsis + title in tight grids */
+.abPackageCardVersion { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); opacity: 0.8; } /* 🏷️ */
 .abPackageCardTag { padding: 0 8px; border-radius: 999px; line-height: 20px; background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🏷️ */

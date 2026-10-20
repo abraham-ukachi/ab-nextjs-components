@@ -53,6 +53,8 @@ export interface AbPackageCardProps {
   description?: ReactNode; // 📝
   version?: string; // 🏷️ e.g. "0.1.7"
   icon?: ReactNode; // 🔣 e.g. <AbIcon name="webhook" />
+  media?: ReactNode; // 🖼️ 0.1.13 (Joseph #14): any media (logo, image); wins over `icon`
+  id?: string; // 🆔 0.1.13: anchor target
   badge?: ReactNode; // 🔴 e.g. "New"
   tags?: string[]; // 🏷️ e.g. ['client', 'server']
   headingLevel?: 2 | 3 | 4; // ♿
@@ -60,13 +62,14 @@ export interface AbPackageCardProps {
 }
 
 /** 📦 AbPackageCard (G45): a package tile on AbCard (one link, 2px lift on laptop+, none when reduced). */
-const AbPackageCard = ({ name, href, description, version, icon, badge, tags, headingLevel, className }: AbPackageCardProps): ReactElement => (
+const AbPackageCard = ({ name, href, description, version, icon, media, id, badge, tags, headingLevel, className }: AbPackageCardProps): ReactElement => (
   <AbCard
+    id={id}
     className={className}
     href={href}
     headingLevel={headingLevel}
-    media={icon}
-    title={<span className={styles.abPackageCardName}>{name}</span>}
+    media={media ?? icon}
+    title={<span className={styles.abPackageCardName} title={name}>{name}</span>}
     eyebrow={badge}
     description={description}
     footer={(version || tags?.length) ? (
