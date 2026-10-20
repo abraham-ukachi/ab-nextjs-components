@@ -4,6 +4,13 @@ allowBuilds:
 # 🛡️ pnpm 11 minimumReleaseAge (1 day) stays ON. Strict mode: pnpm fails instead of quietly adding
 #    exclude entries by itself (pnpm 11.28+), so every exemption is a reviewed, test-guarded line.
 minimumReleaseAgeStrict: true
-# ⏳ D33 (scoped, expiring exemptions): NONE right now. When a sibling ab-nextjs-* release is < 24h old,
-#    add ONE exact `name@version` here, its expiry in __tests__/release-age.test.ts ALLOWED_EXCLUDES
-#    (registry publish time + 24h), and a TODO to remove it. The expired theme@0.3.3 entry is gone.
+# ⏳ D33 (scoped, expiring exemptions): our own brand-new releases in the lockfile, one exact version
+#    each. Expiries live in __tests__/release-age.test.ts ALLOWED_EXCLUDES (publish time + 24h, UTC);
+#    the suite fails after them.
+minimumReleaseAgeExclude:
+  # TODO(remove after 2026-10-21T17:15:19Z): ab-nextjs-icons 0.2.4 published 2026-10-20T17:15:19Z
+  - ab-nextjs-icons@0.2.4
+  # TODO(remove after 2026-10-21T17:25:03Z): ab-nextjs-theme 0.3.4 published 2026-10-20T17:25:03Z
+  - ab-nextjs-theme@0.3.4
+  # TODO(remove after 2026-10-21T17:28:56Z): ab-nextjs-hooks 0.1.7 published 2026-10-20T17:28:56Z
+  - ab-nextjs-hooks@0.1.7

@@ -49,14 +49,13 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 
 /**
  * 🎯 the sibling ranges this release builds on (carets, peer == dev).
- * ⏳ BLOCKED until publish: 0.1.13 wants theme ^0.3.4, icons ^0.2.4, hooks ^0.1.7 — bump these together
- *    with package.json (see the release notes in CHANGELOG.md).
+ * ✅ 0.1.13: theme ^0.3.4, icons ^0.2.4 and hooks ^0.1.7 are on npm (2026-10-20).
  */
 const WANT: Record<string, string> = {
-  'ab-nextjs-hooks': '^0.1.6',
-  'ab-nextjs-theme': '^0.3.3',
+  'ab-nextjs-hooks': '^0.1.7',
+  'ab-nextjs-theme': '^0.3.4',
   'ab-nextjs-animations': '^0.2.4',
-  'ab-nextjs-icons': '^0.2.3',
+  'ab-nextjs-icons': '^0.2.4',
 }
 
 /**
@@ -65,8 +64,9 @@ const WANT: Record<string, string> = {
  * so nobody forgets to remove it.
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
-  // ⏳ empty: no sibling is < 24h old. Template (one exact version, publish time + 24h, UTC):
-  // 'ab-nextjs-theme@0.3.4': '2026-10-XXT00:00:00.000Z', // ⏰ TODO(remove after expiry)
+  'ab-nextjs-icons@0.2.4': '2026-10-21T17:15:19.993Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:15:19.993Z
+  'ab-nextjs-theme@0.3.4': '2026-10-21T17:25:03.924Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:25:03.924Z
+  'ab-nextjs-hooks@0.1.7': '2026-10-21T17:28:56.662Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:28:56.662Z
 }
 
 // 📋 the list under `minimumReleaseAgeExclude:` (stops at the next top-level key)
@@ -96,6 +96,7 @@ describe('release age + sibling ranges 📦', () => {
     const excludes = readExcludes(read('pnpm-workspace.yaml')) // 📋
     for (const e of excludes) {
       expect(e, e).toMatch(/^ab-nextjs-[a-z-]+@\d+\.\d+\.\d+$/) // 🎯 ours, exact
+      expect(read('pnpm-lock.yaml'), `${e} is not in the lockfile: drop it`).toContain(`${e}:`) // 🔒 only what we resolve
       expect(Object.keys(ALLOWED_EXCLUDES), e).toContain(e) // 🚫 unlisted
       expect(Date.now(), `${e} is over a day old: remove it from pnpm-workspace.yaml`).toBeLessThan(Date.parse(ALLOWED_EXCLUDES[e])) // ⏰
     }

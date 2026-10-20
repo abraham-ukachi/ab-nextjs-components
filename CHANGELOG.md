@@ -24,7 +24,8 @@
 * 🛡️ **Release age:** the expired `ab-nextjs-theme@0.3.3` exclude is gone, `.npmrc` no longer sets `minimumReleaseAge` (pnpm 11 ignores it there), and `minimumReleaseAgeStrict: true` is on. Tests guard all three; the per-entry expiry allowlist stays ready for scoped D33 exemptions
 * 📝 Every code file carries the full house header with `@authors`; the npm author email is abrahamukachi@gmail.com
 * 🧪 The release-age guard moved to `__tests__/release-age.test.ts`: excludes must be our own exact `ab-nextjs-*` versions and fail once expired
-* Peers unchanged (`theme ^0.3.3`, `icons ^0.2.3`, `hooks ^0.1.6`). The docs shell reads theme 0.3.4 tokens with fallbacks; the bump to `theme ^0.3.4` / `icons ^0.2.4` / `hooks ^0.1.7` waits for those releases
+* ⬆️ Peers + dev: `ab-nextjs-theme ^0.3.4`, `ab-nextjs-icons ^0.2.4` (the filled `search` tab icon), `ab-nextjs-hooks ^0.1.7`
+* ⏳ **D33:** exact `minimumReleaseAgeExclude` pins for the three siblings in the lockfile that are < 24h old: `ab-nextjs-icons@0.2.4`, `ab-nextjs-theme@0.3.4`, `ab-nextjs-hooks@0.1.7`, each until publish + 24h (2026-10-21 17:15 / 17:25 / 17:28 UTC). `release-age.test.ts` fails after that and rejects pins that aren't in the lockfile
 
 ## 0.1.12 — 2026-10-16
 
