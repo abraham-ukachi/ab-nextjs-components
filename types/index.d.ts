@@ -85,6 +85,9 @@ export { default as AbDrawerList } from '../ab-drawer-list/index.tsx';
 export type { AbDrawerListItem, AbDrawerListProps } from '../ab-drawer-list/index.tsx';
 export { default as AbConfirmDrawer } from '../ab-confirm-drawer/index.tsx';
 export type { AbConfirmDrawerProps } from '../ab-confirm-drawer/index.tsx';
+// 🏷️ 0.1.14 (P9): AbVersionSwitcher
+export { default as AbVersionSwitcher } from '../ab-version-switcher/index.tsx';
+export type { AbVersionOption, AbVersionSwitcherProps } from '../ab-version-switcher/index.tsx';
 // 🍞 0.1.14 (P2): AbBreadcrumbs
 export { default as AbBreadcrumbs } from '../ab-breadcrumbs/index.tsx';
 export type { AbBreadcrumbItem, AbBreadcrumbsProps } from '../ab-breadcrumbs/index.tsx';
