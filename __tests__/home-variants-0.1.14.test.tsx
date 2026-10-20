@@ -46,6 +46,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import AbSearchTrigger from '../ab-search-trigger'
+import AbThemeToggle from '../ab-theme-toggle'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -75,5 +76,23 @@ describe('P6 AbSearchTrigger variant="field" · size="sm" 🔎', () => {
     expect(s).toMatch(/gap: 8px; padding: 0 6px 0 10px;/); expect(s).toMatch(/border-radius: var\(--ab-radius-button, 10px\);/)
     expect(s).toMatch(/font-size: 13\.5px;/); expect(s).toMatch(/height: 34px;/); expect(s).toMatch(/gap: 6px; padding: 0 6px 0 10px;/)
     expect(s).toMatch(/min-width: 20px; height: 20px; padding: 0 5px; margin-left: 2px;/); expect(s).toMatch(/border-bottom-width: 2px; border-radius: var\(--ab-radius-kbd, 5px\);/)
+  })
+})
+
+// 🌗 P7
+describe('P7 AbThemeToggle appearance="thumb" 🌗', () => {
+  const labels = { group: 'Theme', light: 'Light', dark: 'Dark', system: 'System' }
+  it('two radios, data-appearance, the active glyph is filled', () => {
+    const { container } = render(<AbThemeToggle labels={labels} modes={['light', 'dark']} value="light" appearance="thumb" />)
+    const g = container.querySelector('[role="radiogroup"]')!
+    expect(g.getAttribute('data-appearance')).toBe('thumb'); expect(g.querySelectorAll('[role="radio"]')).toHaveLength(2)
+    const on = g.querySelector('[aria-checked="true"]')!, off = g.querySelector('[aria-checked="false"]')!
+    expect(on.innerHTML).toMatch(/filled|_fill1|FILL/i); expect(off.innerHTML).not.toMatch(/data-variant="filled"/)
+  })
+  it('CSS: padding 3, gap 2, --card2 pill, 28px segments, thumb bg/shadow, accent text', () => {
+    const s = css('ab-theme-toggle/styles.module.css')
+    expect(s).toMatch(/\.group\[data-appearance='thumb'\] \{\s*gap: 2px; padding: 3px;/); expect(s).toMatch(/background: var\(--ab-color-card2, #fbf3ec\)/)
+    expect(s).toMatch(/\.segment \{ width: 28px; height: 28px; color: var\(--ab-color-faint/)
+    expect(s).toMatch(/background: var\(--ab-color-thumb, #fff\); color: var\(--ab-color-accent-text/); expect(s).toMatch(/box-shadow: var\(--ab-shadow-thumb/)
   })
 })

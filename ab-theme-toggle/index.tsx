@@ -76,6 +76,7 @@ export interface AbThemeToggleProps {
   defaultMode?: AbThemeMode; // 🌱 before hydration (default 'light')
   icons?: Partial<Record<AbThemeMode, ReactNode>>; // 🖼️ override glyphs
   size?: 'sm' | 'md'; // 📏 sm = 32px, md = 40px segments (hit area ≥ 24px either way)
+  appearance?: 'fill' | 'thumb'; // 🌗 0.1.14 (P7): 'thumb' = the Home pill (28px segments, raised card thumb, filled active glyph). Default 'fill'
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
 }
@@ -100,7 +101,8 @@ export function getNextAbThemeMode(modes: readonly AbThemeMode[], current: AbThe
 
 export function AbThemeToggle(props: AbThemeToggleProps) {
   // 🧩 props
-  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, defaultMode = 'light', icons, size = 'md', className, style } = props;
+  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, defaultMode = 'light', icons, size = 'md', appearance = 'fill', className, style } = props;
+  const thumb = appearance === 'thumb'; // 🌗 P7
   // 🌗 engine: persists + applies to <html>
   const engine = useAbThemeMode(defaultMode);
   // 🎛️ controlled or engine-driven
@@ -115,7 +117,9 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
   };
 
   // 🖼️ glyph for a mode (decorative: the label names it)
-  const glyph = (mode: AbThemeMode) => icons?.[mode] ?? <AbIcon name={DEFAULT_ICON_NAMES[mode]} size={20} />;
+  //    P7 thumb: 17px (segments) / 22px (mobile icon), filled while active (spec §2 icons)
+  const glyph = (mode: AbThemeMode, active = false) =>
+    icons?.[mode] ?? <AbIcon name={DEFAULT_ICON_NAMES[mode]} size={thumb ? (variant === 'icon' ? 22 : 17) : 20} variant={thumb && active ? 'filled' : undefined} />;
 
   // 🔘 single cycling button variant
   if (variant === 'icon') {
@@ -128,6 +132,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
         data-ab-part="theme-toggle" // 🗂️
         data-mode={current} // 🎚️
         data-size={size} // 📏
+        data-appearance={thumb ? 'thumb' : undefined} // 🌗 P7
         aria-label={`${labels.group}: ${labels[current]}`} // ♿ "Theme: Dark"
         title={`${labels.group}: ${labels[current]}`} // 💬
         onClick={() => select(next)} // 🔁
@@ -157,6 +162,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
       data-ab-part="theme-toggle" // 🗂️
       data-mode={current} // 🎚️
       data-size={size} // 📏
+      data-appearance={thumb ? 'thumb' : undefined} // 🌗 P7
       onKeyDown={onKeyDown} // ⌨️
     >
       {modes.map((mode, i) => {
@@ -176,7 +182,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
             data-mode={mode} // 🎚️
             onClick={() => select(mode)} // 🖱️
           >
-            <span aria-hidden="true">{glyph(mode)}</span>
+            <span aria-hidden="true">{glyph(mode, checked)}</span>
           </button>
         );
       })}
