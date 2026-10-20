@@ -148,11 +148,11 @@
 /* ===== 🏠 0.1.14 (P8/P9, Home spec §4 sidebar) ===== */
 .abSidebar[data-density='compact'] { max-width: none; gap: 0; padding: 0; } /* 📏 the pane sets the width (248 / 260 / 288) */
 .abSidebar[data-density='compact'] .abSidebarHeader { min-height: 0; padding: 12px 10px 6px 16px; } /* 🏷️ version switcher + collapse */
-.abSidebar[data-density='compact'] .abSidebarSections { gap: 0; padding: 4px 10px 16px; box-sizing: border-box; } /* 📦 mock nav */
-.abSidebar[data-density='compact'] .abSidebarSection { gap: 0; }
+.abSidebar[data-density='compact'] .abSidebarSections { gap: 1px; padding: 4px 10px 16px; box-sizing: border-box; } /* 📦 mock nav: 1px between every row and label */
+.abSidebar[data-density='compact'] .abSidebarSection { gap: 1px; }
 .abSidebar[data-density='compact'] .abSidebarList { gap: 1px; }
 .abSidebar[data-density='compact'] .abSidebarHeading {
-  padding: 14px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0.06em; /* 🔤 */
+  padding: 14px 10px 6px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; /* 🔤 35px label row, like the mock */
   color: var(--ab-color-faint, #807062); opacity: 1; /* 🎨 AA faint */
 }
 .abSidebar[data-density='compact'] .abSidebarLink {
