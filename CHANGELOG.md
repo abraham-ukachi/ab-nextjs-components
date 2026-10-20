@@ -12,6 +12,15 @@
 * 📝 **AbAppBar `searchCompact` docs:** a hotkey trigger passed to both `search` and `searchCompact` registers ⌘K twice; give only one `onOpen` (or `hotkey={false}` on the other).
 * ✂️ **AbAppBar compact pill:** a longer (translated) label ends in an ellipsis inside the 114px pill.
 
+## 0.2.0 (Unreleased, proposed)
+
+- ✨ AbDrawer: `tier`, `swipe`, `snapPoints`/`defaultSnap`/`fullOnly`/`onSnapChange`, `handleLabels`, `centerIn="main"`, `initialFocus` selector, `returnFocus`, `closeIcon`, `headerStart` (all additive)
+- ✨ Gesture kit: `AB_SWIPE`, `resolveAbSheetRelease`, `resolveAbSideRelease`, `isInAbEdgeZone`, `createAbVelocityTracker`, `useAbEdgeSwipe`
+- ✨ New: AbSettingsDrawer, AbNavDrawer, AbTocDrawer, AbSearchDrawer (combobox/listbox, recents, grouped results), AbMobileHeader
+- 🔥 Docs removed from examples; AbVersionSwitcher `label` defaults to ''
+- 🐛 Initial focus no longer scrolls the layer; returnFocus takes the first visible match
+- Folds in the unreleased 0.1.15
+
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 
 * ⬆️ **Peer + dev range:** `ab-nextjs-theme` **^0.3.5** (was ^0.3.4), for the Home tokens. It has a D33 release-age pin that expires 2026-10-21T20:40:07Z. Components doesn't depend on `ab-nextjs-core`, so no core range changed.
