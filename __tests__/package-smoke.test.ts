@@ -58,6 +58,7 @@ const componentFiles = [
   'ab-drawer/use-ab-drawer.ts',
   'ab-drawer-list/index.tsx',
   'ab-confirm-drawer/index.tsx',
+  'ab-list/index.tsx',
   'ab-sidebar/view.tsx',
   'ab-navbar/view.tsx',
   'ab-theme-toggle/index.tsx',
@@ -124,12 +125,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (70 Done: 0.1.13 adds 7, 0.1.14 adds 3)', async () => {
+  it('exports supportedComponents catalog (71 Done: 0.1.13 adds 7, 0.1.14 adds 4)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(70)
+    expect(mod.supportedComponents).toHaveLength(71)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
     expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(48)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(22)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(23)
   })
 
   it('ships component entry files', () => {
@@ -158,6 +159,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-drawer/styles.module.css',
       'ab-drawer-list/styles.module.css',
       'ab-confirm-drawer/styles.module.css',
+      'ab-list/styles.module.css',
       'ab-theme-toggle/styles.module.css',
       'ab-input/styles.module.css',
       'ab-balloon/styles.module.css',

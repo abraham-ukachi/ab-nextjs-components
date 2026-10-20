@@ -117,6 +117,7 @@
     "ab-drawer",
     "ab-drawer-list",
     "ab-confirm-drawer",
+    "ab-list",
     "ab-flow-diagram",
     "ab-locale-switcher",
     "ab-install-snippet",
@@ -160,6 +161,7 @@
     "./ab-drawer/use-ab-drawer": "./ab-drawer/use-ab-drawer.ts",
     "./ab-drawer-list": "./ab-drawer-list/index.tsx",
     "./ab-confirm-drawer": "./ab-confirm-drawer/index.tsx",
+    "./ab-list": "./ab-list/index.tsx",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",
