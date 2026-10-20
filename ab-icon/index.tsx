@@ -43,11 +43,11 @@
 'use client';
 
 // ⚛️ types
-import type { CSSProperties, ReactElement } from 'react';
+import { useId, type CSSProperties, type ReactElement } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🧮 shared helpers (NO icon map import: client bundles stay small)
-import { warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, registerAbIcons, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
+import { scopeAbIconIds, warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, registerAbIcons, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
 // 🗂️ the 8 glyphs components draw themselves (per-icon modules, not the map)
 import { AB_ICON_BUILTINS } from './builtin';
 // 🎨 styles
@@ -79,6 +79,8 @@ export interface AbIconProps {
 const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
   // 🔍 resolve markup without the full map
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), variant ?? (filled ? 'filled' : 'outlined'));
+  // 🆔 one id per rendered instance (Joseph: a hidden twin's mask broke the active Home)
+  const uid = useId();
   // 🎚️ legacy `filled` → variant
   const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
   // 🏷️ accessible name: `label` (new) or `title` (legacy)
@@ -99,7 +101,7 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
         title={title} // 💬 legacy tooltip only
         {...a11y} // ♿
         // 🔒 trusted, package-generated static markup (never user input)
-        dangerouslySetInnerHTML={{ __html: markup }}
+        dangerouslySetInnerHTML={{ __html: scopeAbIconIds(markup, uid) }}
       />
     );
   }

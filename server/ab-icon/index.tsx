@@ -37,13 +37,13 @@
 */
 
 // ⚛️ types
-import type { CSSProperties, ReactElement } from 'react';
+import { useId, type CSSProperties, type ReactElement } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🗺️ full icon map: fine here, server components ship no JS to the browser
 import { getAbIconSvg } from 'ab-nextjs-icons/ab-icons';
 // 🧮 shared helpers (same rules as the client twin)
-import { warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from '../../ab-icon/helpers';
+import { scopeAbIconIds, warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from '../../ab-icon/helpers';
 // 🎨 styles (server copy)
 import styles from './styles.module.css';
 
@@ -67,6 +67,8 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
   const want: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
   // 🔍 explicit → registered → whole map (weight is applied by CSS, so ask for the raw markup)
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), want) ?? getAbIconSvg(name, want);
+  // 🆔 one id per rendered instance (Joseph: a hidden twin's mask broke the active Home)
+  const uid = useId();
   // 🎚️ legacy `filled` → variant
   const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
   // 🏷️ accessible name: `label` (new) or `title` (legacy)
@@ -87,7 +89,7 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
         title={title} // 💬 legacy tooltip only
         {...a11y} // ♿
         // 🔒 trusted, package-generated static markup (never user input)
-        dangerouslySetInnerHTML={{ __html: markup }}
+        dangerouslySetInnerHTML={{ __html: scopeAbIconIds(markup, uid) }}
       />
     );
   }

@@ -116,3 +116,24 @@ export function warnAbIconMissing(name: string): void {
   warned.add(name) // 📝
   console.warn(`[AbIcon] "${name}" is not a registered AbIcon. Register it: registerAbIcons({ ${name} }) from 'ab-nextjs-icons/ab-icons/icons/${name}'. (Falling back to the Material Symbols font ligature.)`) // ⚠️
 }
+
+/**
+ * 🆔 0.1.13 (Joseph): scopeAbIconIds — suffix every `id` in the markup, plus the `url(#…)` / `href="#…"`
+ * refs that point at it, so two filled Homes on one page (bottom bar + sidebar) never share a mask.
+ * Same rules as ab-nextjs-icons 0.2.4 `scopeAbIconSvgIds` (copied: importing it is fine, but the client
+ * bundle rule above says no icon-package imports here). `AbIcon` calls it with React `useId()`.
+ */
+export function scopeAbIconIds(markup: string, scope: string): string {
+  const ids = Array.from(markup.matchAll(/\sid="([^"]+)"/g), (m) => m[1]); // 🔎 declared ids
+  if (ids.length === 0) return markup; // 🙅 most outlined icons
+  const suffix = `-${scope.replace(/[^A-Za-z0-9_-]/g, '') || 'x'}`; // 🧼 `:r1:` / `«r1»` → `-r1`
+  let out = markup;
+  for (const id of new Set(ids)) {
+    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // 🛡️ regex-escape
+    out = out
+      .replace(new RegExp(`(\\sid=")${esc}(")`, 'g'), `$1${id}${suffix}$2`) // 🆔
+      .replace(new RegExp(`url\\(#${esc}\\)`, 'g'), `url(#${id}${suffix})`) // 🎭
+      .replace(new RegExp(`(href=")#${esc}(")`, 'g'), `$1#${id}${suffix}$2`); // 🔗
+  }
+  return out; // ✅
+}
