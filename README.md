@@ -96,6 +96,25 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   registerAbIcons({ code })
   ```
 
+### Drawers (0.1.14, unreleased) 🗄️
+
+A drawer belongs to a **region**: the whole app, the main pane or the aside pane. It slides in from that region's edge, is clipped by it, and **never scrolls the document**.
+
+* **`<AbDrawer>`** (`ab-nextjs-components/ab-drawer`): `open`, `onClose`, `scope="app" | "main" | "aside"` (default `app`), `side="bottom" | "top" | "left" | "right" | "start" | "end"` (default `bottom`; `start` / `end` follow `dir`), `title` (or `aria-labelledby` / `aria-label`), `footer`, `size` (`--ab-drawer-size`), `modal` (default `true`), `closeLabel`, `noJsFallback` (default `true`).
+  * It portals into a layer inside the core layout box (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`). Without a layout it covers the viewport from `<body>`.
+  * `role="dialog"`, `aria-modal`, and the label goes on the panel. Focus moves in and is trapped. Escape, a scrim click or the ✕ close it, and focus goes back to the opener. While it's open the rest of its scope is `inert`.
+  * It slides for 240ms, the same as the panes, using `ab-nextjs-animations` motion. With reduced motion it appears without the slide.
+  * Without JS (D41) the content renders in flow as a labelled `<section>`, so nothing is hidden behind JavaScript.
+* **`useAbDrawer(scope?)`** (also on the root barrel) returns `{ open, show, close, toggle, setOpen, id, triggerProps, drawerProps }`:
+  ```tsx
+  import { AbDrawerList, useAbDrawer } from 'ab-nextjs-components'
+  const d = useAbDrawer('app')
+  <button {...d.triggerProps}>Language</button>
+  <AbDrawerList {...d.drawerProps} side="bottom" title="Language" items={[{ value: 'en', label: 'English', lang: 'en' }]} value={locale} onSelect={setLocale} />
+  ```
+* **Presets.** `<AbDrawerList>` is one selectable list: `items={[{ value, label, description?, icon?, href?, lang?, disabled? }]}`, `value`, `onSelect`, `closeOnSelect`, with the current item marked `aria-current`. `<AbConfirmDrawer>` takes `message`, `confirmLabel`, `cancelLabel`, `onConfirm`, `onCancel`, `tone="danger"` and `busy`. Escape, the scrim and ✕ count as cancel.
+* **G56:** `<AbLocaleSwitcher presentation="drawer" | "auto">` and `<AbAppBar presentation="drawer" | "auto">` (the More menu) open as an app-scope bottom `AbDrawerList`. `auto` opens a drawer below 768px and a menu above. The default stays `menu`.
+
 ## Getting Started
 
 ### Installation

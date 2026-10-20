@@ -1,3 +1,12 @@
+## 0.1.14 (Unreleased)
+
+* 🗄️ **AbDrawer + `useAbDrawer` (new, G53, D38).** The drawer is scoped to `app`, `main` or `aside`. It renders into a layer inside that layout box and never scrolls the document. Sides are `top`, `bottom`, `left` and `right`, plus logical `start` and `end`.
+  * Accessibility: `role="dialog"`, `aria-modal`, a labelled panel, a focus trap that restores focus to the opener, Escape and scrim close, and the rest of the scope is `inert`.
+  * It uses the 240ms `ab-nextjs-animations` slide, which reduced motion turns off.
+  * Without JS it renders as an in-flow `<section>` (D41).
+* 📋 **`AbDrawerList` + `AbConfirmDrawer` presets (new, D38/D40).**
+* 🌍 **`presentation="menu" | "drawer" | "auto"` (G56)** on `AbLocaleSwitcher` and on the `AbAppBar` More menu. The drawer is an app-scope bottom sheet, and `auto` uses it below 768px. The default stays `menu`.
+
 ## 0.1.13 — 2026-10-16
 
 * 🔗 **`AbLinkProvider` (new, `ab-nextjs-components/ab-link`)**: every component link now renders through `AbLink`, so an app can inject a locale-aware `Link` once. `useAbLink`, `AbLink`, `AbLinkComponent` and `AbLinkProps` are exported. It's the only `next/link` import (test-guarded)
