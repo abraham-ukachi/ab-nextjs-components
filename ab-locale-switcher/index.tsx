@@ -49,6 +49,9 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import clsx from 'clsx';
 // 🔣 globe glyph
 import AbIcon from '../ab-icon';
+// 🗄️ 0.1.14 (G56): drawer presentation
+import AbDrawerList from '../ab-drawer-list';
+import type { AbDrawerScope } from '../ab-drawer';
 // 🎨 styles
 import styles from './styles.module.css';
 
@@ -59,6 +62,12 @@ export interface AbLocaleOption {
 }
 
 // ⚙️ props
+/** 🗄️ how a picker opens (G56): popover menu, drawer, or drawer on mobile only */
+export type AbPresentation = 'menu' | 'drawer' | 'auto';
+/** 📱 resolve `auto` at open time (no hydration flip: the server always renders the closed trigger) */
+export const resolveAbPresentation = (p: AbPresentation = 'menu'): 'menu' | 'drawer' =>
+  p === 'auto' ? (typeof window !== 'undefined' && window.matchMedia?.('(max-width: 767.98px)').matches ? 'drawer' : 'menu') : p;
+
 export interface AbLocaleSwitcherProps {
   locales: readonly AbLocaleOption[]; // 🌍 choices
   current: string; // ✅ active locale code
@@ -70,6 +79,10 @@ export interface AbLocaleSwitcherProps {
   icon?: ReactNode; // 🖼️ override the globe
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
+  /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above */
+  presentation?: AbPresentation;
+  drawerScope?: AbDrawerScope; // 🗺️ default 'app'
+  drawerSide?: 'top' | 'bottom' | 'start' | 'end'; // 🧭 default 'bottom'
 }
 
 /**
@@ -87,7 +100,9 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
 
 export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
   // 🧩 props
-  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style } = props;
+  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  // 🗄️ how this open happens (decided on click)
+  const [mode, setMode] = useState<'menu' | 'drawer'>(presentation === 'drawer' ? 'drawer' : 'menu');
   // 🚪 open?
   const [open, setOpen] = useState(false);
   // 🆔 ids
@@ -110,22 +125,22 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
 
   // 🎯 on open, focus the checked item (after paint)
   useEffect(() => {
-    if (!open) return; // 💤
+    if (!open || mode !== 'menu') return; // 💤 (the drawer manages its own focus)
     const id = requestAnimationFrame(() => focusItem(activeIndex)); // ⏭️
     return () => cancelAnimationFrame(id); // 🧹
-  }, [open, activeIndex]);
+  }, [open, mode, activeIndex]);
 
   // 🖱️ click outside closes (no focus steal)
   useEffect(() => {
-    if (!open) return; // 💤
+    if (!open || mode !== 'menu') return; // 💤 (the drawer portals outside rootRef: it has its own scrim)
     const onDown = (e: PointerEvent) => { if (!rootRef.current?.contains(e.target as Node)) close(false); }; // 🚪
     document.addEventListener('pointerdown', onDown); // 👂
     return () => document.removeEventListener('pointerdown', onDown); // 🧹
-  }, [open, close]);
+  }, [open, mode, close]);
 
   // ⌨️ trigger: ArrowDown/Up/Enter/Space open the menu
   const onTriggerKey = (e: KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); setOpen(true); } // ⬇️
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); setMode(resolveAbPresentation(presentation)); setOpen(true); } // ⬇️
   };
 
   // ⌨️ menu keys
@@ -158,12 +173,12 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
         id={`${base}-trigger`} // 🆔
         type="button" // 🧾
         className={clsx(styles.trigger, variant === 'menu' && styles.withText)} // 🎨
-        aria-haspopup="menu" // ♿
+        aria-haspopup={mode === 'drawer' ? 'dialog' : 'menu'} // ♿
         aria-expanded={open} // ♿
-        aria-controls={`${base}-menu`} // 🔗
+        aria-controls={mode === 'drawer' ? `${base}-drawer` : `${base}-menu`} // 🔗
         aria-label={variant === 'icon' ? `${label}: ${active?.label ?? current}` : undefined} // 🏷️ "Language: Français"
         title={label} // 💬
-        onClick={() => setOpen((o) => !o)} // 🖱️
+        onClick={() => { if (!open) setMode(resolveAbPresentation(presentation)); setOpen((o) => !o); }} // 🖱️ (`auto` picks menu / drawer now)
         onKeyDown={onTriggerKey} // ⌨️
       >
         <span aria-hidden="true">{icon ?? <AbIcon name="language" size={20} />}</span>
@@ -174,7 +189,7 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
         id={`${base}-menu`} // 🆔
         role="menu" // ♿
         aria-labelledby={`${base}-trigger`} // 🔗
-        hidden={!open} // 🙈
+        hidden={!open || mode !== 'menu'} // 🙈
         className={styles.menu} // 🎨
         onKeyDown={onMenuKey} // ⌨️
       >
@@ -205,6 +220,21 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
           );
         })}
       </ul>
+      {/* 🗄️ 0.1.14 (G56): drawer presentation. No in-flow fallback here: the <details> below already is one */}
+      {presentation !== 'menu' ? (
+        <AbDrawerList
+          id={`${base}-drawer`}
+          open={open && mode === 'drawer'}
+          onClose={() => setOpen(false)} // 🚪 the drawer puts focus back on the trigger
+          scope={drawerScope}
+          side={drawerSide}
+          title={label}
+          noJsFallback={false}
+          value={current}
+          items={locales.map((l) => ({ value: l.code, label: l.label, lang: l.code, href: getHref?.(l.code) }))}
+          onSelect={(code) => onSelect?.(code)}
+        />
+      ) : null}
       {/* 🚫 JS off (0.1.13, gap-review): a native <details> list of hreflang links replaces the menu.
           Only rendered with getHref (a callback can't run without JS). CSS shows it under (scripting: none). */}
       {getHref ? (
