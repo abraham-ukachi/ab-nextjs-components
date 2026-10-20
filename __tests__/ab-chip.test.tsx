@@ -60,3 +60,21 @@ describe('AbChip / AbPill (G36)', () => {
     expect(html).toContain('data-tone="sage"') // 🌿
   })
 })
+
+// 🏠 0.1.14 (P16): the Home chips (version, count, New, beta)
+import { readFileSync as readCss } from 'node:fs'
+import { join as joinPath } from 'node:path'
+describe('AbChip 0.1.14: size="sm" · shape="rounded" · mono · tone (P16) 🏷️', () => {
+  it('emits the data hooks only when asked', () => {
+    const html = renderToStaticMarkup(<AbChip size="sm" shape="rounded" mono tone="sage">beta</AbChip>)
+    expect(html).toContain('data-size="sm"'); expect(html).toContain('data-shape="rounded"'); expect(html).toContain('data-mono="true"'); expect(html).toContain('data-tone="sage"')
+    expect(renderToStaticMarkup(<AbChip>x</AbChip>)).not.toMatch(/data-(size|shape|tone|mono)=/) // 🫥 legacy
+  })
+  it('CSS: 20px, padding 0 7, radius 6, 11/600, tint/accent-text, sage', () => {
+    const css = readCss(joinPath(__dirname, '..', 'ab-chip/styles.module.css'), 'utf8')
+    expect(css).toMatch(/height: var\(--ab-chip-height, 20px\)/); expect(css).toMatch(/padding: 0 var\(--ab-chip-padding-inline, 7px\)/)
+    expect(css).toMatch(/border-radius: var\(--ab-radius-chip, 6px\)/); expect(css).toMatch(/font-size: 11px; font-weight: 600; line-height: 1;/)
+    expect(css).toMatch(/\[data-tone='accent'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text/)
+    expect(css).toMatch(/\[data-tone='sage'\] \{ background: rgb\(119 141 121 \/ 0\.12\); color: var\(--ab-color-sage-accent, #778d79\)/)
+  })
+})

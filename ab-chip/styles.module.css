@@ -85,3 +85,14 @@
   width: 1em; /* 📏 */
   height: 1em; /* 📏 */
 }
+
+/* ===== 🏠 0.1.14 (P16, Home spec §2/§4): size="sm" · shape="rounded" · mono · tone ===== */
+.chip[data-size='sm'] {
+  height: var(--ab-chip-height, 20px); box-sizing: border-box; /* 📏 */
+  padding: 0 var(--ab-chip-padding-inline, 7px); gap: 4px; /* 📦 */
+  border: 0; font-size: 11px; font-weight: 600; line-height: 1; /* 🔤 mock .chip */
+}
+.chip[data-shape='rounded'] { border-radius: var(--ab-radius-chip, 6px); } /* 🔷 */
+.chip[data-mono='true'] { font-family: var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); } /* ⌨️ */
+.chip[data-tone='accent'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); border-color: transparent; } /* 🥉 */
+.chip[data-tone='sage'] { background: rgb(119 141 121 / 0.12); color: var(--ab-color-sage-accent, #778d79); border-color: transparent; } /* 🌿 beta */

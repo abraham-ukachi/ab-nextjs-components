@@ -48,6 +48,8 @@ import styles from './styles.module.css';
 
 // 🎨 dot colours
 export type AbChipDot = 'sage' | 'bronze';
+// 🎨 0.1.14 (P16): Home chip tones · 'accent' = --tint bg + --accent-text · 'sage' = the `beta` chip
+export type AbChipTone = 'neutral' | 'accent' | 'sage';
 
 // ⚙️ props
 export interface AbChipProps {
@@ -57,14 +59,24 @@ export interface AbChipProps {
   as?: 'span' | 'li'; // 🧱 'li' inside a <ul> for lists of chips
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
+  size?: 'md' | 'sm'; // 📏 0.1.14 (P16): 'sm' = the 20px Home chip (version, count, New)
+  shape?: 'pill' | 'rounded'; // 🔷 0.1.14: 'rounded' = 6px radius (default pill)
+  mono?: boolean; // ⌨️ 0.1.14: Roboto Mono 11/600 (versions, package names)
+  tone?: AbChipTone; // 🎨 0.1.14 (default 'neutral' = the legacy outline chip)
 }
 
 /** 🏷️ Static chip: plain text, never interactive (use AbButton for actions). */
-export function AbChip({ children, dot, icon, as: Tag = 'span', className, style }: AbChipProps): ReactElement {
-  const tone = dot === true ? 'bronze' : dot || undefined; // 🎨 resolve dot colour
+export function AbChip({ children, dot, icon, as: Tag = 'span', className, style, size = 'md', shape = 'pill', mono = false, tone = 'neutral' }: AbChipProps): ReactElement {
+  const dotTone = dot === true ? 'bronze' : dot || undefined; // 🎨 resolve dot colour
   return (
-    <Tag className={clsx('AbChip', styles.chip, className)} style={style} data-ab-part="chip">
-      {tone ? <span className={styles.dot} data-tone={tone} aria-hidden="true" /> : null /* 🟢 decorative */}
+    <Tag
+      className={clsx('AbChip', styles.chip, mono && styles.mono, className)} style={style} data-ab-part="chip"
+      data-size={size === 'sm' ? 'sm' : undefined} // 📏 P16
+      data-shape={shape === 'rounded' ? 'rounded' : undefined} // 🔷
+      data-tone={tone === 'neutral' ? undefined : tone} // 🎨
+      data-mono={mono ? 'true' : undefined} // ⌨️
+    >
+      {dotTone ? <span className={styles.dot} data-tone={dotTone} aria-hidden="true" /> : null /* 🟢 decorative */}
       {icon ? <span className={styles.icon} aria-hidden="true">{icon}</span> : null /* 🖼️ decorative */}
       <span>{children}</span>
     </Tag>
