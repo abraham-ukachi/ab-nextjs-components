@@ -210,3 +210,16 @@ describe("God's header on every code file 📝", () => {
     })
   }
 })
+
+// 🧪 WebKit findings (2026-10-20, 390 / 768 / 1280): the bar is exactly 64px, the closed More menu and the
+//    install snippet never widen the page
+describe('WebKit layout guards 📏', () => {
+  it('AbAppBar has no block padding and a 64px min height', () => {
+    const css = read('ab-app-bar/styles.module.css')
+    expect(css).toMatch(/min-height: var\(--ab-app-bar-height, 64px\)/) // 📏
+    expect(css).toMatch(/\.abAppBarMenu\[hidden\] \{ display: none; \}/) // 🙈
+  })
+  it('AbInstallSnippet keeps its border inside 100%', () => {
+    expect(read('ab-install-snippet/styles.module.css')).toMatch(/\.root \{[^}]*box-sizing: border-box/) // 📦
+  })
+})
