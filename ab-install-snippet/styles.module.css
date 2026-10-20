@@ -45,6 +45,9 @@
   border: 1px solid var(--ab-color-outline-variant, rgb(0 0 0 / 0.12)); /* 🖊️ */
   background: var(--ab-color-surface-container, transparent); /* 🎨 */
   max-width: 100%; /* 📏 */
+  min-width: 0; /* 🚫 overflow in narrow columns (0.1.13) */
+  box-sizing: border-box; /* 📦 the 1px border stays inside 100% */
+  grid-template-columns: minmax(0, 1fr); /* 🚫 the nowrap command can't widen the card */
 }
 
 /* 🗂️ tabs row */
