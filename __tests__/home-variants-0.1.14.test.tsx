@@ -225,7 +225,7 @@ describe('P14 AbToc footer slot 📑', () => {
   })
   it('CSS: heading 11/700/.06em faint mb 10, links 13 padding 6 0 6 14, active 650 accent-text + accent rail, sep mt 18 mb 12, footer 12.5 + 15px icons', () => {
     const c = css('ab-toc/styles.module.css')
-    for (const re of [/margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0\.06em;/, /\.abToc \{ font-size: 13px; \}/, /padding: 6px 0 6px 14px;/,
+    for (const re of [/margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0\.06em;/, /line-height: 18px;/, /font-size: 12\.5px; line-height: 17px;/, /\.abToc \{ font-size: 13px; \}/, /padding: 6px 0 6px 14px;/,
       /border-inline-start-color: var\(--ab-color-accent[^;]*; color: var\(--ab-color-accent-text[^;]*; font-weight: 650;/, /margin: 18px 0 12px;/, /font-size: 12\.5px;/, /width: 15px; height: 15px;/]) expect(c).toMatch(re)
   })
 })

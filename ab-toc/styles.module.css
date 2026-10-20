@@ -38,7 +38,7 @@
 
 /* 📑 0.1.14 (P14 + token move): the Home TOC (spec §4), on the theme 0.3.5 tokens, M3 fallbacks kept */
 .abToc { font-size: 13px; } /* 📑 */
-.abTocTitle { margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ab-color-faint, var(--ab-color-on-surface-variant, inherit)); } /* 🏷️ "ON THIS PAGE" */
+.abTocTitle { margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ab-color-faint, var(--ab-color-on-surface-variant, inherit)); } /* 🏷️ "ON THIS PAGE" */
 .abTocList { list-style: none; margin: 0; padding: 0; border-inline-start: 1px solid var(--ab-color-div, rgb(0 0 0 / 0.12)); } /* ➖ rail */
 .abTocList > li[data-level='3'] { padding-inline-start: 12px; } /* 📏 */
 .abTocList > li[data-level='4'] { padding-inline-start: 24px; } /* 📏 */
@@ -46,6 +46,7 @@
   display: block; /* 📐 */
   margin-inline-start: -1px; /* ➖ sit on the rail */
   padding: 6px 0 6px 14px; /* 📦 mock */
+  line-height: 18px; /* 📏 30px rows (WebKit-measured against the mock) */
   border-inline-start: 2px solid transparent; /* ➖ */
   color: var(--ab-color-muted, var(--ab-color-on-surface-variant, inherit)); /* 🖋️ */
   text-decoration: none; /* 🚫 */
@@ -57,7 +58,7 @@
 .abTocSep { height: 1px; margin: 18px 0 12px; border: 0; background: var(--ab-color-div, rgb(0 0 0 / 0.12)); } /* ➖ */
 .abTocFooter > a, .abTocFooter > p > a, .abTocFooter > ul > li > a {
   display: flex; align-items: center; gap: 8px; padding: 5px 0; /* 📐 */
-  font-size: 12.5px; color: var(--ab-color-muted, inherit); text-decoration: none; /* 🔤 */
+  font-size: 12.5px; line-height: 17px; color: var(--ab-color-muted, inherit); text-decoration: none; /* 🔤 27px rows */
 }
 .abTocFooter a:hover { color: var(--ab-color-accent-text, inherit); } /* 🖱️ */
 .abTocFooter a:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; border-radius: 4px; } /* ♿ */
