@@ -45,7 +45,7 @@
 'use client';
 
 // ⚛️ React
-import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactElement, type ReactNode } from 'react';
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactElement, type ReactNode } from 'react';
 // 🌀 portal into the scope's drawer layer
 import { createPortal } from 'react-dom';
 // 🧵 classes
@@ -57,10 +57,15 @@ import { AB_MOTION } from 'ab-nextjs-animations/motion';
 import 'ab-nextjs-animations/motion/styles.css';
 // 🎛️ the controller hook + scope type
 import { useAbDrawer, type AbDrawerScope, type UseAbDrawer } from './use-ab-drawer';
+// 🤏 drawers v2: the pure swipe / snap rules
+import { AB_SWIPE, createAbVelocityTracker, resolveAbSheetRelease, resolveAbSideRelease, type AbSheetSnap } from './gestures';
 
 // 📦 re-exports: one import for the whole drawer API
 export { useAbDrawer };
-export type { AbDrawerScope, UseAbDrawer };
+export type { AbDrawerScope, UseAbDrawer, AbSheetSnap };
+
+/** 🥞 drawers v2 stacking tiers (spec z-order): aside (right) < nav (left) < sheet (bottom). Unset = the old single level. */
+export type AbDrawerTier = 'aside' | 'nav' | 'sheet';
 
 /** 🧭 where it slides in from. `start` / `end` follow the writing direction (RTL-aware). */
 export type AbDrawerSide = 'top' | 'bottom' | 'left' | 'right' | 'start' | 'end';
@@ -81,7 +86,17 @@ export interface AbDrawerProps {
   modal?: boolean; // 🔒 trap focus + make the rest of the scope inert (default `true`)
   closeLabel?: string; // 🌍 default "Close"
   noJsFallback?: boolean; // 🧩 D41: without JS, render the content in flow (default `true`)
-  initialFocus?: 'first' | 'panel'; // 🎯 on open: the first control (default) or the panel itself (no ring on the ✕; Tab then enters)
+  initialFocus?: 'first' | 'panel' | (string & {}); // 🎯 on open: the first control (default), the panel itself, or (0.2.0) a CSS selector inside the panel, e.g. `[role=radio][aria-checked=true]`
+  // 🆕 0.2.0 drawers v2 (John, God 01:22): all opt-in, the defaults keep the old drawer
+  tier?: AbDrawerTier; // 🥞 stacking tier: 'aside' (z 60) < 'nav' (61) < 'sheet' (62)
+  swipe?: boolean; // 🤏 side drawers: swipe the sheet back toward its edge to close (30% of the width or ≥ 0.5px/ms)
+  snapPoints?: boolean; // 🧲 bottom only, below 768px: snaps at 70% (S1) and full height (S2) with a handle; gestures per the spec
+  defaultSnap?: AbSheetSnap; // 🧲 where it opens (default 'partial'; e.g. 'full' for a search sheet)
+  onSnapChange?: (snap: AbSheetSnap) => void; // 🔔
+  handleLabels?: { expand: string; collapse: string }; // ♿ the handle button (default "Expand" / "Collapse")
+  centerIn?: 'main'; // 💻 bottom only, 768px and up: centred in the main pane, min(640px, main width) wide, ≤ 70% tall
+  returnFocus?: string; // ↩️ selector focused on close when there was no focusable opener (an edge swipe), e.g. the header logo link
+  closeIcon?: ReactNode; // ✕ the close glyph (default a text ✕)
   className?: string; // 🏷️
 }
 
@@ -143,6 +158,7 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
  */
 const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, initialFocus = 'first', className } = props;
+  const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon } = props; // 🆕 0.2.0
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔 SSR-stable
   const dialogId = id ?? `ab-drawer-${auto}`; // 🆔
   const titleId = `${dialogId}-title`; // 🏷️
@@ -201,14 +217,18 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   // ♿ focus in on open, back to the opener on close
   useEffect(() => {
     if (!open || !present || !panel.current) return;
-    const first = initialFocus === 'panel' ? null : panel.current.querySelector<HTMLElement>(FOCUSABLE); // 🎯 first control, else the panel
+    const pick = initialFocus === 'panel' ? null : initialFocus === 'first' ? FOCUSABLE : initialFocus; // 🎯 0.2.0: or a selector
+    const first = pick ? panel.current.querySelector<HTMLElement>(pick) ?? (pick !== FOCUSABLE ? panel.current.querySelector<HTMLElement>(FOCUSABLE) : null) : null; // 🎯 that, else the first control, else the panel
+    first?.scrollIntoView?.({ block: 'nearest' }); // 👀 e.g. the checked language in view
     (first ?? panel.current).focus({ preventScroll: true });
     return () => {
-      const back = opener.current as HTMLElement | null; // ↩️
+      const had = opener.current as HTMLElement | null; // ↩️
+      const usable = had && had !== document.body && had.isConnected ? had : null; // 🤏 a swipe has no opener
+      const back = usable ?? (returnFocus ? document.querySelector<HTMLElement>(returnFocus) : null); // ↩️ 0.2.0 fallback
       // ⏭️ a microtask later: the inert cleanup below runs after this one, and an inert opener can't take focus
       queueMicrotask(() => { if (back && back.isConnected && typeof back.focus === 'function') back.focus({ preventScroll: true }); });
     };
-  }, [open, present, layer, initialFocus]); // 🎯 initialFocus is static in practice
+  }, [open, present, layer, initialFocus, returnFocus]); // 🎯 static in practice
 
   // 🔒 the rest of the scope is inert while open (modal only); we only undo what we set
   useEffect(() => {
@@ -227,6 +247,116 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     openStack.push(token);
     return () => { const i = openStack.lastIndexOf(token); if (i >= 0) openStack.splice(i, 1); };
   }, [open, token]);
+
+  // 🧲 0.2.0: snap state (bottom + snapPoints, below 768px) and the laptop centring (centerIn="main", 768px and up)
+  const [mobile, setMobile] = useState(false); // 📱 below 768px?
+  const [snap, setSnapState] = useState<AbSheetSnap>(defaultSnap); // 🧲 S1 / S2
+  const [returned, setReturned] = useState(false); // ✌️ came back to S1 from S2 with a gentle drag
+  const [geo, setGeo] = useState<Record<string, string>>({}); // 📐 measured CSS vars (px)
+  const snapping = snapPoints && side === 'bottom' && mobile; // 🧲 live?
+  const centring = centerIn === 'main' && side === 'bottom' && !mobile; // 💻 live?
+  const setSnap = useCallback((next: AbSheetSnap) => { setSnapState(next); onSnapChange?.(next); }, [onSnapChange]);
+  // 🔁 every open starts at defaultSnap (derived during render, like `present`)
+  const [lastOpen, setLastOpen] = useState(open);
+  if (open !== lastOpen) { setLastOpen(open); if (open) { setSnapState(defaultSnap); setReturned(false); } }
+  // 📱 follow the 768px breakpoint (the same edge core uses)
+  useEffect(() => {
+    if (!(snapPoints || centerIn) || typeof window.matchMedia !== 'function') return;
+    const mq = window.matchMedia('(max-width: 767px)'); // 📱
+    const on = () => setMobile(mq.matches);
+    on(); mq.addEventListener?.('change', on);
+    return () => mq.removeEventListener?.('change', on);
+  }, [snapPoints, centerIn]);
+  // 📐 measure: S1 offset (100% − 70% of the app) and the main pane box inside the host
+  useEffect(() => {
+    const host = layer?.parentElement;
+    if (!present || !host || !(snapping || centring)) return;
+    const measure = () => {
+      const hb = host === document.body ? { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight } : host.getBoundingClientRect(); // 📏
+      const next: Record<string, string> = { '--ab-drawer-host-h': `${hb.height}px` };
+      if (snapping) {
+        const ph = panel.current?.getBoundingClientRect().height ?? hb.height; // 📏 the full-height sheet
+        next['--ab-drawer-partial-offset'] = `${Math.max(0, ph - 0.7 * hb.height)}px`; // 🧲 S1 = 70% of the app visible
+      }
+      if (centring) {
+        const main = host.querySelector<HTMLElement>('[data-ab-part="main"]')?.getBoundingClientRect(); // 📄 the main pane
+        next['--ab-drawer-main-left'] = `${main ? main.left - hb.left : 0}px`;
+        next['--ab-drawer-main-width'] = `${main ? main.width : hb.width}px`;
+      }
+      setGeo((g) => (JSON.stringify(g) === JSON.stringify(next) ? g : next)); // 🧮 no loop
+    };
+    measure();
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null; // 👀 resizes
+    ro?.observe(host); if (panel.current) ro?.observe(panel.current);
+    return () => ro?.disconnect();
+  }, [present, layer, snapping, centring]);
+
+  // 🤏 0.2.0 drags: side sheets swipe toward their edge to close; the snap sheet follows the finger and resolves
+  const drag = useRef<{ x: number; y: number; t: number; axis: 0 | 1 | 2; v: ReturnType<typeof createAbVelocityTracker>; el?: Element; id?: number } | null>(null); // 0 = undecided, 1 = ours, 2 = not ours
+  const edgeSign = side === 'left' || side === 'start' ? -1 : side === 'right' || side === 'end' ? 1 : 0; // ⬅️ / ➡️ the closing direction
+  const setDragTransform = (value: string | null) => {
+    const el = panel.current; if (!el) return;
+    el.toggleAttribute('data-dragging', value != null); // 🫳 CSS drops the transition while the finger leads
+    if (value != null) el.style.removeProperty('--ab-motion-duration'); // 🧹 last release's speed must not beat the 0ms drag rule
+    if (value == null) el.style.removeProperty('transform'); else el.style.setProperty('transform', value);
+  };
+  const onDragStart = (e: { clientX: number; clientY: number; timeStamp: number }, from: 'grip' | 'body') => {
+    if (!(swipe && edgeSign !== 0) && !snapping) return; // 🙅 nothing to drag
+    if (from === 'body' && snapping && (panel.current?.querySelector('[data-ab-part="drawer-body"]')?.scrollTop ?? 0) > 0) return; // 📜 content not at the top: let it scroll
+    const v = createAbVelocityTracker(); v.add(snapping && edgeSign === 0 ? e.clientY : e.clientX, e.timeStamp);
+    drag.current = { x: e.clientX, y: e.clientY, t: e.timeStamp, axis: 0, v };
+  };
+  const onDragMove = (e: { clientX: number; clientY: number; timeStamp: number; preventDefault?: () => void; cancelable?: boolean }) => {
+    const d = drag.current; if (!d || d.axis === 2) return;
+    const dx = e.clientX - d.x; const dy = e.clientY - d.y; // ↔️ ↕️
+    const vertical = edgeSign === 0; // 🧲 the bottom sheet moves on y
+    if (d.axis === 0) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < AB_SWIPE.slop) return; // 🫳 still a tap
+      const mine = vertical ? Math.abs(dy) > Math.abs(dx) : Math.abs(dx) > Math.abs(dy); // 🧭 our axis?
+      d.axis = mine ? 1 : 2; if (!mine) return;
+      if (d.el && d.id != null) d.el.setPointerCapture?.(d.id); // 📌 captured only once it IS a drag (taps on links still click)
+    }
+    if (e.cancelable) e.preventDefault?.(); // 🚫 no page scroll while we lead
+    d.v.add(vertical ? e.clientY : e.clientX, e.timeStamp); // ⚡
+    if (vertical) {
+      const base = snap === 'full' ? 0 : parseFloat(geo['--ab-drawer-partial-offset'] ?? '0'); // 🧲 where it rests
+      setDragTransform(`translateY(${Math.max(0, base + dy)}px)`); // ⬇️⬆️ follow (never above S2)
+    } else {
+      const along = dx * edgeSign; // ↔️ + = toward the edge
+      setDragTransform(`translateX(${Math.max(0, along) * edgeSign}px)`); // ↔️ follow, never past open
+    }
+  };
+  const onDragEnd = (e: { clientX: number; clientY: number; timeStamp: number }) => {
+    const d = drag.current; drag.current = null;
+    if (!d || d.axis !== 1) { setDragTransform(null); return; }
+    const vertical = edgeSign === 0;
+    const vel = d.v.velocity(); // ⚡ px/ms
+    setDragTransform(null); // 🛬 hand back to CSS (the attribute transition carries on)
+    if (!vertical) {
+      const dist = (e.clientX - d.x) * edgeSign; // ↔️ toward the edge
+      if (resolveAbSideRelease({ distance: dist, velocity: vel * edgeSign, width: panel.current?.offsetWidth ?? 320 })) close.current(); // ✅
+      return;
+    }
+    const hostH = parseFloat(geo['--ab-drawer-host-h'] ?? '0') || window.innerHeight; // 📏
+    const ph = panel.current?.offsetHeight || hostH; // 📏 S2 height
+    const to = resolveAbSheetRelease({ from: snap, dy: e.clientY - d.y, velocity: vel, partialHeight: 0.7 * hostH, fullHeight: ph, returned }); // 🧲
+    // ⏱️ carry the release speed: the remaining distance at that speed, between 120 and 240ms
+    const ms = Math.abs(vel) > 0.05 ? Math.round(Math.min(AB_DRAWER_DURATION, Math.max(120, (0.3 * hostH) / Math.abs(vel)))) : AB_DRAWER_DURATION;
+    panel.current?.style.setProperty('--ab-motion-duration', `${ms}ms`); // 🎞️ the ab-nextjs-animations token
+    if (to === 'closed') { close.current(); return; }
+    setReturned(snap === 'full' && to === 'partial'); // ✌️ remember the gentle return
+    if (to !== snap) setSnap(to);
+  };
+  // 🖐️ pointer handlers (touch / pen / mouse). The grip kind rides on `data-ab-grip`, so these are plain handlers
+  //    (never called during render); the pointer is captured only once the press becomes a drag
+  const onGripDown = (e: ReactPointerEvent) => {
+    if (e.button !== 0) return;
+    onDragStart(e, (e.currentTarget as Element).getAttribute('data-ab-grip') === 'body' ? 'body' : 'grip');
+    if (drag.current) { drag.current.el = e.currentTarget as Element; drag.current.id = e.pointerId; } // 📌 for the capture
+  };
+  const onGripMove = (e: ReactPointerEvent) => onDragMove(e);
+  const onGripUp = (e: ReactPointerEvent) => onDragEnd(e);
+  const gripProps = { onPointerDown: onGripDown, onPointerMove: onGripMove, onPointerUp: onGripUp, onPointerCancel: onGripUp }; // 🖐️
 
   // ⎋ Escape closes (skips events an inner menu already handled); Tab stays inside (modal). Topmost drawer only
   const onKeyDown = useCallback((e: KeyboardEvent) => {
@@ -250,7 +380,9 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const heading = title == null ? null : typeof title === 'string' || typeof title === 'number'
     ? <h2 id={titleId} className={styles.abDrawerTitle}>{title}</h2>
     : <div id={props['aria-labelledby'] ? undefined : titleId} className={styles.abDrawerTitle}>{title}</div>;
-  const sizeVar = size ? ({ '--ab-drawer-size': size } as CSSProperties) : undefined; // 📏
+  const sizeVar = (size || snapping || centring ? { ...(size ? { '--ab-drawer-size': size } : {}), ...(snapping || centring ? geo : {}) } : undefined) as CSSProperties | undefined; // 📏 + 🧲 measured vars
+  const grip = snapping || (swipe && edgeSign !== 0); // 🤏 drags on
+  const handle = snapPoints && side === 'bottom'; // ➖ the handle strip
 
   // 🧩 D41: before hydration (and with no JS at all) the content is an in-flow section
   if (!layer) {
@@ -270,7 +402,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   return (
     <div ref={anchor} className={styles.abDrawerAnchor} data-ab-part="drawer-anchor">
       {present && createPortal(
-        <div className={styles.abDrawerFrame} data-state={shown ? 'open' : 'closed'} data-side={side} data-scope={scope}>
+        <div className={styles.abDrawerFrame} data-state={shown ? 'open' : 'closed'} data-side={side} data-scope={scope} data-tier={tier}>
           {/* 🌫️ scrim: a click closes (pointer only; keyboard users have Escape and the close button) */}
           <div className={clsx(styles.abDrawerScrim, AB_MOTION.colors)} data-ab-part="drawer-scrim" aria-hidden="true" onClick={() => close.current()} />
           <div
@@ -284,15 +416,23 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
             className={clsx('AbDrawer', styles.abDrawer, AB_MOTION.transform, className)}
             data-ab-part="drawer"
             data-side={side}
+            data-snap={snapping ? snap : undefined} // 🧲 0.2.0: CSS places S1 / S2
+            data-center={centring ? 'main' : undefined} // 💻 0.2.0: centred in the main pane
+            data-swipe={grip ? 'true' : undefined} // 🤏 touch-action hooks
             style={sizeVar}
+            {...(swipe && edgeSign !== 0 ? { ...gripProps, 'data-ab-grip': 'body' } : {})}
           >
-            <div className={styles.abDrawerHeader}>
+            {handle && (snapping ? (
+              // ➖ 0.2.0: the handle (40×4 bar in a 24px strip, 44px touch zone): a button that toggles S1 / S2
+              <button type="button" className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-expanded={snap === 'full'} aria-label={snap === 'full' ? handleLabels?.collapse ?? 'Collapse' : handleLabels?.expand ?? 'Expand'} onClick={() => { setReturned(false); setSnap(snap === 'full' ? 'partial' : 'full'); }} data-ab-grip="grip" {...gripProps} />
+            ) : <div className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-hidden="true" />)}
+            <div className={styles.abDrawerHeader} {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})}>
               {heading}
               <button type="button" className={styles.abDrawerClose} data-ab-part="drawer-close" aria-label={closeLabel} onClick={() => close.current()}>
-                <span aria-hidden="true">✕</span>
+                {closeIcon ?? <span aria-hidden="true">✕</span>}
               </button>
             </div>
-            <div className={styles.abDrawerBody} data-ab-part="drawer-body">{children}</div>
+            <div className={styles.abDrawerBody} data-ab-part="drawer-body" {...(snapping ? { ...gripProps, 'data-ab-grip': 'body' } : {})}>{children}</div>
             {footer != null && <div className={styles.abDrawerFooter} data-ab-part="drawer-footer">{footer}</div>}
           </div>
         </div>,
