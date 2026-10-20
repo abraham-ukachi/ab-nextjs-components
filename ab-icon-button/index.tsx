@@ -90,6 +90,10 @@ export interface AbIconButtonProps {
   title?: string;
   // 🧾 button type
   type?: 'button' | 'submit' | 'reset';
+  // ♿ 0.1.14: disclosure state for menus / drawers / the TOC toggle (button variant)
+  'aria-expanded'?: boolean;
+  // ♿ 0.1.14: id of the element this button opens
+  'aria-controls'?: string;
 }
 
 const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function AbIconButton(props, ref) {
@@ -112,6 +116,8 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
     title, // 💬
     type = 'button', // 🧾
     iconFilled, // ⬛
+    'aria-expanded': ariaExpanded, // ♿ 0.1.14
+    'aria-controls': ariaControls, // ♿ 0.1.14
   } = props;
 
   // ♿ G6: one accessible name for both variants, ON the interactive element (not the wrapper span)
@@ -158,6 +164,8 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
         aria-label={name} // ♿ accessible name
         title={tooltip} // 💬 tooltip on the button itself
         aria-busy={isLoading || undefined} // ⏳ announce loading
+        aria-expanded={ariaExpanded} // ♿ open / closed (omitted when undefined)
+        aria-controls={ariaControls} // ♿ what it opens
         data-active={String(active)} // ✅
         data-naked={String(naked)} // 🫥
         data-expands={String(expands)} // 🔍
