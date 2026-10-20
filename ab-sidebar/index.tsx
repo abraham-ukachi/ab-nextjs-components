@@ -66,6 +66,7 @@ export interface AbSidebarProps extends AbSidebarBaseProps {
   defaultCollapsed?: boolean; // 🚪 uncontrolled start
   onCollapsedChange?: (collapsed: boolean) => void; // 🔔
   collapsible?: boolean; // 🔘 show the collapse button (default true when sections are given)
+  collapseButtonVariant?: 'plain' | 'outlined'; // ⏪ 0.1.14 (P9): 'outlined' = 32×32 bordered `<<` / `>>` (default 'plain' chevron)
 }
 
 /**
@@ -73,7 +74,8 @@ export interface AbSidebarProps extends AbSidebarBaseProps {
  * tooltips, and a collapse button (aria-expanded + aria-controls; hidden when JS is off).
  */
 const AbSidebar = (props: AbSidebarProps): ReactElement => {
-  const { collapsed: controlled, defaultCollapsed = false, onCollapsedChange, collapsible, activeHref, page, labels, id = 'ab-sidebar-list' } = props;
+  const { collapsed: controlled, defaultCollapsed = false, onCollapsedChange, collapsible, collapseButtonVariant = 'plain', activeHref, page, labels, id = 'ab-sidebar-list' } = props;
+  const outlined = collapseButtonVariant === 'outlined'; // ⏪ P9
   // 🧭 route
   const appLocales = useAbLocales(); // 🌍 from AbLinkProvider
   const pathname = stripAbLocalePrefix(usePathname() ?? '', props.locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
@@ -94,12 +96,13 @@ const AbSidebar = (props: AbSidebarProps): ReactElement => {
       type="button"
       className={styles.abSidebarToggle} // 🙈 hidden under (scripting: none)
       data-ab-part="collapse"
+      data-variant={outlined ? 'outlined' : undefined} // ⏪ P9
       aria-expanded={!collapsed} // ♿
       aria-controls={id} // ♿
       aria-label={toggleLabel} // 🏷️
       onClick={() => setCollapsed(!collapsed)}
     >
-      <AbIcon name={collapsed ? 'chevron_right' : 'chevron_left'} size={20} />
+      <AbIcon name={outlined ? (collapsed ? 'keyboard_double_arrow_right' : 'keyboard_double_arrow_left') : collapsed ? 'chevron_right' : 'chevron_left'} size={outlined ? 18 : 20} />
     </button>
   ) : undefined;
 

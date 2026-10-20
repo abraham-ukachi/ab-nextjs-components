@@ -63,6 +63,7 @@ export interface AbSidebarSection {
   id: string; // 🆔
   label?: string; // 🏷️ heading (omit for an unlabelled group)
   items: AbSidebarItem[]; // 🔗
+  itemSize?: 'md' | 'sm'; // 📏 0.1.14 (P8): 'sm' = 30px rows + 16px icons (the Home PACKAGES group)
 }
 
 /** 🕰️ Legacy (≤ 0.1.12) link shape; still accepted via `links`. */
@@ -93,6 +94,10 @@ export interface AbSidebarBaseProps {
   header?: ReactNode; // 🏷️ top slot (brand, workspace switcher…)
   labels?: AbSidebarLabels; // 🌍
   locales?: readonly string[]; // 🌍 0.1.13: stripped from the pathname (default: AbLinkProvider's)
+  // 🏠 0.1.14 (P8, Home spec §4 sidebar)
+  density?: 'comfortable' | 'compact'; // 📏 'compact' = 32px rows, 13.5/500, 18px icons, 11px group labels
+  activeShape?: 'pill' | 'rounded'; // 🔷 'rounded' = 8px-radius --tint row (default 'pill')
+  badgeVariant?: 'chip' | 'text'; // 🏷️ 'text' = plain mono 10.5 --faint meta (e.g. a version), no chip
   // 🕰️ legacy API (≤ 0.1.12)
   type?: 'customer' | 'admin';
   page?: string;
@@ -121,13 +126,14 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
   active: (href: string, legacyValue?: string) => boolean;
   toggle?: ReactNode;
 }): ReactElement {
-  const { className, id = 'ab-sidebar-list', sections, collapsed = false, header, labels, type = 'customer', links, brandHref = '/', brandLabel = 'abElements' } = props;
+  const { className, id = 'ab-sidebar-list', sections, collapsed = false, header, labels, type = 'customer', links, brandHref = '/', brandLabel = 'abElements', density = 'comfortable', activeShape = 'pill', badgeVariant = 'chip' } = props;
+  const compact = density === 'compact'; // 📏 P8
   const groups = toAbSidebarSections(sections, links); // 🗂️
   // 🕰️ legacy value lookup (page === link.value)
   const valueOf = (href: string) => links?.find((l) => l.href === href)?.value;
 
   // 🔗 one item (+ children)
-  const renderItem = (item: AbSidebarItem, depth: number): ReactElement => {
+  const renderItem = (item: AbSidebarItem, depth: number, small = false): ReactElement => {
     const on = active(item.href, valueOf(item.href)); // 🎯
     const text = item.labelText ?? (typeof item.label === 'string' ? item.label : undefined); // ♿ plain name
     const link = (
@@ -137,10 +143,11 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
         data-ab-part="item"
         data-active={on ? 'true' : 'false'}
         data-depth={depth}
+        data-size={small ? 'sm' : undefined} // 📏 P8
         aria-current={on ? 'page' : undefined} // ♿
         aria-label={collapsed ? text : undefined} // ♿ rail: the label is visually hidden
       >
-        {item.icon && <Icon name={item.icon} variant={on ? 'filled' : 'outlined'} size={20} className={styles.abSidebarIcon} />}
+        {item.icon && <Icon name={item.icon} variant={on ? 'filled' : 'outlined'} size={compact ? (small ? 16 : 18) : 20} className={styles.abSidebarIcon} />}
         <span className={styles.abSidebarLabel}>{item.label}</span>
         {item.badge != null && <span className={styles.abSidebarBadge} data-ab-part="badge">{item.badge}</span>}
       </Link>
@@ -162,6 +169,9 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
       data-ab-part={collapsed ? 'rail' : 'sidebar'} // 🧩
       data-collapsed={collapsed ? 'true' : 'false'} // 🚪
       className={clsx('AbSidebar', styles.abSidebar, className)} // 🏷️
+      data-density={compact ? 'compact' : undefined} // 📏 P8
+      data-active-shape={activeShape === 'rounded' ? 'rounded' : undefined} // 🔷 P8
+      data-badge={badgeVariant === 'text' ? 'text' : undefined} // 🏷️ P8
       aria-label={labels?.nav ?? 'Sidebar'} // ♿
     >
       {/* 🏷️ header slot, or the legacy brand link */}
@@ -173,7 +183,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
         {groups.map((g) => (
           <section key={g.id} className={styles.abSidebarSection} data-ab-part="section" aria-labelledby={g.label ? `${id}-${g.id}` : undefined}>
             {g.label && <h2 id={`${id}-${g.id}`} className={styles.abSidebarHeading}>{g.label}</h2>}
-            <ul className={styles.abSidebarList}>{g.items.map((it) => renderItem(it, 0))}</ul>
+            <ul className={styles.abSidebarList}>{g.items.map((it) => renderItem(it, 0, g.itemSize === 'sm'))}</ul>
           </section>
         ))}
       </div>

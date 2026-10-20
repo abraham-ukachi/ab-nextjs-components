@@ -48,6 +48,8 @@ import { join } from 'node:path'
 import AbSearchTrigger from '../ab-search-trigger'
 import AbThemeToggle from '../ab-theme-toggle'
 import AbAppBar from '../ab-app-bar'
+import AbSidebar from '../ab-sidebar'
+import ServerAbSidebar from '../server/ab-sidebar'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -125,5 +127,36 @@ describe('P4/P5/P19 AbAppBar density="compact" · divider · moreMenu={false} �
     expect(c).toMatch(/\.abAppBarDivider \{ flex: none; width: 1px; height: 20px; background: var\(--ab-color-div/)
     expect(c).toMatch(/gap: 2px; padding-inline: max\(16px, env\(safe-area-inset-left, 0px\)\) max\(8px/)
     expect(c).toMatch(/:global\(\.AbSearchTrigger\):not\(\[data-size='sm'\]\) \{ width: 40px;/) // 📱 the sm pill keeps its label
+  })
+})
+
+// 🧭 P8 / P9
+describe('P8/P9 AbSidebar density="compact" · activeShape="rounded" · badgeVariant="text" · outlined collapse 🧭', () => {
+  const sections = [
+    { id: 'top', items: [{ href: '/', icon: 'home', label: 'Home' }] },
+    { id: 'pk', label: 'Packages', itemSize: 'sm' as const, items: [{ href: '/fonts', icon: 'match_case', label: 'Fonts', badge: 'v0.2.x' }] },
+  ]
+  it('client: data hooks, 18 / 16px icons, outlined ⏪ toggle with double arrows', () => {
+    const { container } = render(<AbSidebar sections={sections} activeHref="/" density="compact" activeShape="rounded" badgeVariant="text" collapseButtonVariant="outlined" />)
+    const nav = container.querySelector('nav')!
+    expect(nav.getAttribute('data-density')).toBe('compact'); expect(nav.getAttribute('data-active-shape')).toBe('rounded'); expect(nav.getAttribute('data-badge')).toBe('text')
+    expect(container.querySelector('[data-size="sm"]')?.textContent).toContain('Fonts') // 📏 packages rows
+    const t = container.querySelector('[data-ab-part="collapse"]')!
+    expect(t.getAttribute('data-variant')).toBe('outlined'); expect(t.getAttribute('aria-expanded')).toBe('true')
+    expect(t.querySelector('svg')).not.toBeNull() // ⏪ the builtin double arrow resolves
+    expect(container.querySelector('[data-active="true"] svg')?.getAttribute('width') ?? '18').toBe('18')
+  })
+  it('server twin renders the same hooks', () => {
+    const html = renderToStaticMarkup(<ServerAbSidebar sections={sections} activeHref="/" density="compact" activeShape="rounded" badgeVariant="text" />)
+    expect(html).toContain('data-density="compact"'); expect(html).toContain('data-size="sm"')
+  })
+  it('CSS: rows 32 / 30, padding 0 10, gap 10, 13.5/500, tint 650 radius 8, group 11/700/.06em, mono 10.5 meta, 32px outlined toggle', () => {
+    const c = css('ab-sidebar/styles.module.css')
+    expect(c).toMatch(/gap: 10px; min-height: 0; height: 32px; padding: 0 10px;/); expect(c).toMatch(/\[data-size='sm'\] \{ height: 30px; \}/)
+    expect(c).toMatch(/font-size: 13\.5px; font-weight: 500;/)
+    expect(c).toMatch(/background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text, #88603d\); font-weight: 650;/)
+    expect(c).toMatch(/padding: 14px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0\.06em;/)
+    expect(c).toMatch(/font: 500 10\.5px var\(--ab-font-code/); expect(c).toMatch(/padding: 12px 10px 6px 16px;/); expect(c).toMatch(/padding: 4px 10px 16px;/)
+    expect(c).toMatch(/\.abSidebarToggle\[data-variant='outlined'\] \{\s*width: 32px; height: 32px;/)
   })
 })
