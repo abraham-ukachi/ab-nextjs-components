@@ -80,7 +80,7 @@ const AbVersionSwitcher = ({ label = '', version, versions = [], onSelect, menuL
   const menuId = `ab-version-menu-${useId().replace(/:/g, '')}`; // 🆔
   const wrap = useRef<HTMLDivElement>(null); // 📍
   const btn = useRef<HTMLButtonElement>(null); // 📍
-  const name = menuLabel ?? (label ? `${label} ${version}` : version); // ♿ WCAG 2.5.3 label-in-name (James)
+  const name = menuLabel ?? (label ? `${label} ${version}` : `Version ${version}`); // ♿ WCAG 2.5.3 label-in-name (James); no label → "Version v0.2.x" (James P2, still contains the visible text)
   const hasMenu = versions.length > 1; // 📋
 
   // ⎋ Escape + outside click close it
