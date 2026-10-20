@@ -263,3 +263,27 @@ describe('existing components on the Home tokens 🎨', () => {
     })
   }
 })
+
+// 🎯 John 20:57: the mobile (thumb icon) toggle shows the TARGET mode
+describe('AbThemeToggle icon shows the target mode 🎯', () => {
+  const L = { group: 'Theme', light: 'Light', dark: 'Dark', system: 'System', switchTo: { dark: 'Switch to dark theme', light: 'Switch to light theme' } }
+  it('thumb: moon + "Switch to dark theme" in light, sun + "Switch to light theme" in dark', () => {
+    const a = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="light" variant="icon" appearance="thumb" />)
+    const b1 = a.getByRole('button')
+    expect(b1.getAttribute('aria-label')).toBe('Switch to dark theme') // ♿
+    expect(b1.getAttribute('data-shows')).toBe('target') // 🎯
+    expect(b1.innerHTML).toContain('dark_mode') // 🌙
+    a.unmount()
+    const b = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="dark" variant="icon" appearance="thumb" />)
+    const b2 = b.getByRole('button')
+    expect(b2.getAttribute('aria-label')).toBe('Switch to light theme') // ♿
+    expect(b2.innerHTML).toContain('light_mode') // 🌞
+  })
+  it('fill appearance keeps showing the current mode unless iconShows="target"', () => {
+    const a = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="light" variant="icon" />)
+    expect(a.getByRole('button').getAttribute('aria-label')).toBe('Theme: Light') // ✅ unchanged
+    a.unmount()
+    const b = render(<AbThemeToggle labels={{ group: 'Theme', light: 'Light', dark: 'Dark', system: 'System' }} modes={['light', 'dark']} value="light" variant="icon" iconShows="target" />)
+    expect(b.getByRole('button').getAttribute('aria-label')).toBe('Theme: Dark') // 🔙 fallback name
+  })
+})
