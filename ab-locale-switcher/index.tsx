@@ -51,6 +51,7 @@ import clsx from 'clsx';
 import AbIcon from '../ab-icon';
 // 🗄️ 0.1.14 (G56): drawer presentation
 import AbDrawerList from '../ab-drawer-list';
+import AbBottomDrawer from '../ab-bottom-drawer';
 import type { AbDrawerScope } from '../ab-drawer';
 // 🎨 styles
 import styles from './styles.module.css';
@@ -228,6 +229,7 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
           onClose={() => setOpen(false)} // 🚪 the drawer puts focus back on the trigger
           scope={drawerScope}
           side={drawerSide}
+          as={drawerSide === 'bottom' ? AbBottomDrawer : undefined} // 📱 the mobile bottom drawer look
           title={label}
           noJsFallback={false}
           value={current}

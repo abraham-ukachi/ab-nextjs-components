@@ -49,6 +49,7 @@ import type { ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 // 🗄️ the drawer
 import AbDrawer, { type AbDrawerProps } from '../ab-drawer';
+import type { ComponentType } from 'react';
 // 🔗 links go through AbLinkProvider (locale-aware apps)
 import Link from '../ab-link';
 // 🎨 styles
@@ -67,6 +68,7 @@ export interface AbDrawerListItem {
 
 /** ⚙️ props: every AbDrawer prop, plus the list */
 export interface AbDrawerListProps extends Omit<AbDrawerProps, 'children'> {
+  as?: ComponentType<AbDrawerProps>; // 🧱 the drawer to render in (default AbDrawer; e.g. AbBottomDrawer)
   items: AbDrawerListItem[]; // 📋
   value?: string | null; // 🎯 the selected item (`aria-current="true"` + a check mark)
   onSelect?: (value: string) => void; // 🔔
@@ -79,10 +81,10 @@ export interface AbDrawerListProps extends Omit<AbDrawerProps, 'children'> {
  * language picker is `<AbDrawerList scope="app" side="bottom" />`. Items are buttons (or links with
  * `href`), the selected one carries `aria-current="true"`. No-JS: the links still work in the fallback.
  */
-const AbDrawerList = ({ items, value, onSelect, closeOnSelect = true, listLabel, onClose, className, ...drawer }: AbDrawerListProps): ReactElement => {
+const AbDrawerList = ({ as: Drawer = AbDrawer, items, value, onSelect, closeOnSelect = true, listLabel, onClose, className, ...drawer }: AbDrawerListProps): ReactElement => {
   const pick = (v: string) => { onSelect?.(v); if (closeOnSelect) onClose(); }; // 🔔 then 🚪
   return (
-    <AbDrawer {...drawer} onClose={onClose} className={clsx('AbDrawerList', className)}>
+    <Drawer {...drawer} onClose={onClose} className={clsx('AbDrawerList', className)}>
       <ul className={styles.abDrawerList} aria-label={listLabel} data-ab-part="drawer-list">
         {items.map((it) => {
           const on = it.value === value; // 🎯
@@ -107,7 +109,7 @@ const AbDrawerList = ({ items, value, onSelect, closeOnSelect = true, listLabel,
           );
         })}
       </ul>
-    </AbDrawer>
+    </Drawer>
   );
 };
 

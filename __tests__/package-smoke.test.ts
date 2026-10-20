@@ -58,6 +58,7 @@ const componentFiles = [
   'ab-drawer/use-ab-drawer.ts',
   'ab-drawer-list/index.tsx',
   'ab-confirm-drawer/index.tsx',
+  'ab-bottom-drawer/index.tsx',
   'ab-version-switcher/index.tsx',
   'ab-breadcrumbs/index.tsx',
   'ab-list/index.tsx',
@@ -127,11 +128,11 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (73 Done: 0.1.13 adds 7, 0.1.14 adds 6)', async () => {
+  it('exports supportedComponents catalog (74 Done: 0.1.13 adds 7, 0.1.14 adds 7)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(73)
+    expect(mod.supportedComponents).toHaveLength(74)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(49)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(50)
     expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(24)
   })
 
@@ -161,6 +162,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-drawer/styles.module.css',
       'ab-drawer-list/styles.module.css',
       'ab-confirm-drawer/styles.module.css',
+      'ab-bottom-drawer/styles.module.css',
       'ab-version-switcher/styles.module.css',
       'ab-breadcrumbs/styles.module.css',
       'ab-list/styles.module.css',

@@ -61,6 +61,7 @@ import AbIcon from '../ab-icon';
 import AbMenu from '../ab-menu';
 // 🗄️ 0.1.14 (G56): the More menu can open as a drawer
 import AbDrawerList from '../ab-drawer-list';
+import AbBottomDrawer from '../ab-bottom-drawer';
 import { resolveAbPresentation, type AbPresentation } from '../ab-locale-switcher';
 // 🎨 styles
 import styles from './styles.module.css';
@@ -182,6 +183,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
                 onClose={() => setOpen(false)} // 🚪 focus goes back to More
                 scope="app"
                 side="bottom"
+                as={AbBottomDrawer} // 📱
                 title={labels?.more ?? 'More'}
                 noJsFallback={false} // 🚫 JS off: the nav already scrolls inline
                 value={nav.find((n) => isActive(n.href, current))?.href}
