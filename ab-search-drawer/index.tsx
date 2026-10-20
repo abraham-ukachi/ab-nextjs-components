@@ -185,7 +185,9 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       if (!flat.length) return; e.preventDefault();
       const n = e.key === 'ArrowDown' ? (active + 1) % flat.length : (active - 1 + flat.length) % flat.length; // 🔁 wraps across groups
-      setActive(n); document.getElementById(optId(n))?.scrollIntoView?.({ block: 'nearest' });
+      setActive(n);
+      const el = document.getElementById(optId(n)); const box = list.current; // 👀 keep it in view, scrolling only the results
+      if (el && box) { const b = box.getBoundingClientRect(); const r = el.getBoundingClientRect(); if (r.bottom > b.bottom) box.scrollTop += r.bottom - b.bottom; else if (r.top < b.top) box.scrollTop -= b.top - r.top; }
     } else if (e.key === 'Enter') {
       e.preventDefault(); if (query.trim()) saveRecent(query); // 🕘
       const i = active >= 0 ? active : 0; if (flat[i]) document.getElementById(optId(i))?.click(); // 🔗 the active, else the first

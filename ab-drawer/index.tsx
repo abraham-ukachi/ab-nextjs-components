@@ -224,7 +224,10 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     if (!open || !present || !panel.current) return;
     const pick = initialFocus === 'panel' ? null : initialFocus === 'first' ? FOCUSABLE : initialFocus; // 🎯 0.2.0: or a selector
     const first = pick ? panel.current.querySelector<HTMLElement>(pick) ?? (pick !== FOCUSABLE ? panel.current.querySelector<HTMLElement>(FOCUSABLE) : null) : null; // 🎯 that, else the first control, else the panel
-    first?.scrollIntoView?.({ block: 'nearest' }); // 👀 e.g. the checked language in view
+    // 👀 e.g. the checked language in view: scroll ONLY the drawer body (scrollIntoView would also scroll the clipped
+    //    layer and undo the 70% snap offset, WebKit e2e 2026-10-21)
+    const body = panel.current.querySelector<HTMLElement>('[data-ab-part="drawer-body"]');
+    if (first && body && body.contains(first)) { const b = body.getBoundingClientRect(); const r = first.getBoundingClientRect(); if (r.bottom > b.bottom) body.scrollTop += r.bottom - b.bottom; else if (r.top < b.top) body.scrollTop -= b.top - r.top; }
     (first ?? panel.current).focus({ preventScroll: true });
     return () => {
       const had = opener.current as HTMLElement | null; // ↩️

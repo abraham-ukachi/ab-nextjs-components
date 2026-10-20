@@ -47,6 +47,7 @@
   inset: 0; /* 📐 the whole scope */
   z-index: 60; /* ⬆️ above the panes and the aside sheet (30) */
   overflow: hidden; /* ✂️ a sliding panel never leaks out */
+  overflow: clip; /* ✂️ 0.2.0: clip, so nothing (focus, scrollIntoView) can scroll the layer itself */
   pointer-events: none; /* 🖱️ idle layer = transparent to clicks */
   contain: layout paint; /* 🚀 */
 }

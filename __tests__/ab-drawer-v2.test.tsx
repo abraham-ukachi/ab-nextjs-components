@@ -166,3 +166,13 @@ describe('AbDrawer 0.2.0: fullOnly (the search sheet) 🔎', () => {
     expect(onClose).toHaveBeenCalled()
   })
 })
+
+describe('AbDrawer 0.2.0: initial focus never scrolls the layer 👀', () => {
+  it('no scrollIntoView (it scrolled the clipped layer and undid the 70% offset in WebKit)', () => {
+    const src = readFileSync(join(__dirname, '..', 'ab-drawer', 'index.tsx'), 'utf8')
+    expect(src).not.toMatch(/\.scrollIntoView\?*\.?\(/) // 🚫
+    const spy = vi.fn(); Element.prototype.scrollIntoView = spy
+    stubMedia(true); mount({ snapPoints: true, initialFocus: '#checked' })
+    expect(document.activeElement?.id).toBe('checked'); expect(spy).not.toHaveBeenCalled()
+  })
+})
