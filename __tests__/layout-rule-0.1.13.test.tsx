@@ -104,6 +104,14 @@ describe('AbSidebar item keys (James nit) 🔑', () => {
 })
 
 describe('AbToc follows the main scroller (D35/G55) 📜', () => {
+  it('getAbMainScroller ships: `ab-nextjs-components/ab-toc` export + files, and the root barrel (Joseph)', async () => {
+    const pkg = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../package.json'), 'utf8'))
+    expect(pkg.exports['./ab-toc']).toBe('./ab-toc/index.tsx') // 🚪 subpath
+    expect(pkg.files).toContain('ab-toc') // 📦 packed
+    const root = await import('../index') // 🌳 root barrel
+    expect(typeof root.getAbMainScroller).toBe('function')
+    expect(root.AB_MAIN_SCROLLER_SELECTOR).toBe('[data-ab-part="main-content"]')
+  })
   it('no component calls getAbMainScroller during render (James nit: effects / handlers only)', () => {
     const base = join(dirname(fileURLToPath(import.meta.url)), '..')
     const walk = (d: string): string[] => readdirSync(d).flatMap((f) => { const p = join(d, f); return f === 'node_modules' || f === '__tests__' ? [] : statSync(p).isDirectory() ? walk(p) : /\.tsx?$/.test(f) ? [p] : [] })
