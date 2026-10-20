@@ -94,6 +94,8 @@ export interface AbIconButtonProps {
   'aria-expanded'?: boolean;
   // ♿ 0.1.14: id of the element this button opens
   'aria-controls'?: string;
+  // 📏 0.1.14: glyph size in px (default: AbIcon's 24), e.g. 16 for the terminal copy button
+  iconSize?: number;
 }
 
 const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function AbIconButton(props, ref) {
@@ -118,6 +120,7 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
     iconFilled, // ⬛
     'aria-expanded': ariaExpanded, // ♿ 0.1.14
     'aria-controls': ariaControls, // ♿ 0.1.14
+    iconSize, // 📏 0.1.14
   } = props;
 
   // ♿ G6: one accessible name for both variants, ON the interactive element (not the wrapper span)
@@ -127,7 +130,7 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
   // 🏷️ classes
   const classNames = clsx('AbIconButton', 'icon-button', styles.abIconButton, AB_MOTION.interactive, expands && AB_MOTION.lift, shrinks && AB_MOTION.press, className); // 🎬 hover lift / press from ab-nextjs-animations
   // 🔣 the glyph is decoration (the button carries the name): AbIcon without a label is aria-hidden
-  const glyph = <AbIcon name={icon} variant={(iconFilled ?? active) ? 'filled' : 'outlined'} className="icon" />;
+  const glyph = <AbIcon name={icon} variant={(iconFilled ?? active) ? 'filled' : 'outlined'} className="icon" size={iconSize} />;
 
   // 🔗 link variant
   if (href && !isLoading) {

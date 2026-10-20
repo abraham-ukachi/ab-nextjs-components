@@ -102,4 +102,8 @@ describe('AbIconButton (G6)', () => {
     const plain = attrsOf(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" />), 'button')
     expect(plain).not.toContain('aria-expanded') // 🫥 omitted unless set
   })
+  // 📏 0.1.14: iconSize sizes the glyph (the terminal copy button uses 16)
+  it('iconSize sets the glyph size', () => {
+    expect(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" iconSize={16} />)).toMatch(/16px/)
+  })
 })
