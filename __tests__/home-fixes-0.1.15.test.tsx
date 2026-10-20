@@ -175,3 +175,19 @@ describe('inline language list: showLabel + divider ➖', () => {
     expect(css('ab-locale-switcher/styles.module.css')).toMatch(/\.inline\[data-divider='true'\] \{ margin-top: 8px; padding-top: 8px; border-top: 1px solid var\(--ab-color-div/) // 🎨
   })
 })
+
+// 🔁 James 00:22: switching presentation at runtime must not break the hook order
+describe('AbLocaleSwitcher presentation switch 🔁', () => {
+  it('menu → inline → menu re-renders without a hooks error', () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {}) // 🤫 catch React warnings
+    const P = (p: { presentation: 'menu' | 'inline' }) => <AbLocaleSwitcher locales={LOCALES} current="en" label="Language" onSelect={() => {}} {...p} />
+    const r = render(<P presentation="menu" />)
+    expect(r.container.querySelector('[aria-haspopup]')).not.toBeNull() // 🌐 trigger
+    r.rerender(<P presentation="inline" />)
+    expect(r.container.querySelector('[data-presentation="inline"]')).not.toBeNull() // 🧩
+    r.rerender(<P presentation="menu" />)
+    expect(r.container.querySelector('[aria-haspopup]')).not.toBeNull() // 🌐 back
+    expect(err.mock.calls.flat().join(' ')).not.toMatch(/order of Hooks|Rendered (more|fewer) hooks/) // ✅
+    err.mockRestore()
+  })
+})
