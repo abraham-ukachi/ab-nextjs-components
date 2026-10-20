@@ -117,7 +117,13 @@
   text-decoration: none; /* 🚫 */
   color: inherit; /* 🖋️ */
   font-weight: 500; /* 🔤 */
+  /* 🔤 0.1.13 (Joseph #15): M3 label-large, so names stop inheriting the big body size and wrapping at 280px */
+  font-family: var(--md-sys-typescale-label-large-font, inherit);
+  font-size: var(--md-sys-typescale-label-large-size, 14px);
+  line-height: var(--md-sys-typescale-label-large-line-height, 20px);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking, 0.1px);
 }
+.abSidebarLabel { min-width: 0; overflow-wrap: anywhere; } /* 🚫 no overflow, ReactNode-friendly */
 .abSidebarLink[data-depth='1'] { padding-inline-start: 44px; font-size: 14px; } /* 🌳 */
 .abSidebarLink:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
 .abSidebarLink[data-active='true'] {

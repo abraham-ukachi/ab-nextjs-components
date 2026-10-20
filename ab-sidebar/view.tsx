@@ -51,7 +51,8 @@ import styles from './styles.module.css';
 export interface AbSidebarItem {
   href: string; // 🔗
   icon?: string; // 🔣 AbIcons name: outlined, filled when active
-  label: string; // 🏷️
+  label: ReactNode; // 🏷️ 0.1.13: any node (Joseph #15), e.g. a mono package name
+  labelText?: string; // ♿ plain-text name for the rail tooltip/aria-label when `label` isn't a string
   badge?: ReactNode; // 🔴 e.g. "New" or a count
   items?: AbSidebarItem[]; // 🌳 children
 }
@@ -90,6 +91,7 @@ export interface AbSidebarBaseProps {
   collapsed?: boolean; // 🚪 icon rail
   header?: ReactNode; // 🏷️ top slot (brand, workspace switcher…)
   labels?: AbSidebarLabels; // 🌍
+  locales?: readonly string[]; // 🌍 0.1.13: stripped from the pathname (default: AbLinkProvider's)
   // 🕰️ legacy API (≤ 0.1.12)
   type?: 'customer' | 'admin';
   page?: string;
@@ -126,6 +128,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
   // 🔗 one item (+ children)
   const renderItem = (item: AbSidebarItem, depth: number): ReactElement => {
     const on = active(item.href, valueOf(item.href)); // 🎯
+    const text = item.labelText ?? (typeof item.label === 'string' ? item.label : undefined); // ♿ plain name
     const link = (
       <Link
         href={item.href}
@@ -134,7 +137,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
         data-active={on ? 'true' : 'false'}
         data-depth={depth}
         aria-current={on ? 'page' : undefined} // ♿
-        aria-label={collapsed ? item.label : undefined} // ♿ rail: the label is visually hidden
+        aria-label={collapsed ? text : undefined} // ♿ rail: the label is visually hidden
       >
         {item.icon && <Icon name={item.icon} variant={on ? 'filled' : 'outlined'} size={20} className={styles.abSidebarIcon} />}
         <span className={styles.abSidebarLabel}>{item.label}</span>
@@ -144,7 +147,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
     return (
       <li key={item.href}>
         {/* 🎈 rail: a balloon names the icon on hover / focus */}
-        {collapsed && depth === 0 ? <AbBalloon title={item.label} placement="end">{link}</AbBalloon> : link}
+        {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end">{link}</AbBalloon> : link}
         {!collapsed && item.items?.length ? (
           <ul className={styles.abSidebarList} data-ab-part="children">{item.items.map((c) => renderItem(c, depth + 1))}</ul>
         ) : null}
