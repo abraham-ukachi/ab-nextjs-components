@@ -96,6 +96,15 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   registerAbIcons({ code })
   ```
 
+### Home fidelity (0.1.14, unreleased) 🏠
+
+These match the approved Home mocks (`home-fidelity-spec.md` §4/§5). Colours come from the `ab-nextjs-theme` ≥ 0.3.5 Home tokens, with the light mock values as fallbacks. Each component also has its own `--ab-list-*` / `--ab-crumbs-*` / `--ab-version-*` / `--ab-bottom-drawer-*` knobs.
+
+* **`<AbList>` / `<AbListItem>`** (server-safe): `title`, `meta` (a `<code>` inside renders as mono), `media` (shown in a 30px tile), `badge` + `badgeTone="primary" | "tonal"` (64×22), `trailing="chevron"` or a node, and `href` (the whole row becomes a link).
+* **`<AbBreadcrumbs items={[{ label, href? }]}>`** (server-safe): a `nav` > `ol`. The last crumb has `aria-current="page"`.
+* **`<AbVersionSwitcher label="Docs" version="v0.2.x" versions={[{ value, href? }]} onSelect>`**: a 28px bordered trigger that opens an AbMenu. With JS off it falls back to a `<details>` list of links.
+* **`<AbBottomDrawer>`**: an app-scope bottom `AbDrawer` with a 20px top radius, a grab handle and safe-area padding, centred at up to 560px from 768px. `<AbDrawerList as={AbBottomDrawer}>` uses it, and so does the mobile language picker.
+
 ### Drawers (0.1.14, unreleased) 🗄️
 
 A drawer belongs to a **region**: the whole app, the main pane or the aside pane. It slides in from that region's edge, is clipped by it, and **never scrolls the document**.

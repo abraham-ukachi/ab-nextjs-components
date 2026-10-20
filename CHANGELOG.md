@@ -1,5 +1,11 @@
 ## 0.1.14 (Unreleased)
 
+* 🏠 **Home fidelity components (spec §5, approved by God 2026-10-20):**
+  * `AbList` + `AbListItem` (P13): bordered row lists with a media tile or badge, title, meta and chevron. A row with `href` is a single link.
+  * `AbBreadcrumbs` (P2): the tablet main bar crumb.
+  * `AbVersionSwitcher` (P9): the sidebar "Docs **v0.2.x** ▾", which opens an AbMenu, with a no-JS `<details>` fallback.
+  * `AbBottomDrawer`: the mobile bottom drawer (D40), which `AbLocaleSwitcher` / `AbAppBar` now use for `side="bottom"`. `AbDrawerList` gains `as`.
+  * They read the `ab-nextjs-theme` 0.3.5 Home tokens (`--ab-color-card`, `--ab-color-faint`, …), with the light mock values as fallbacks.
 * 🗄️ **AbDrawer + `useAbDrawer` (new, G53, D38).** The drawer is scoped to `app`, `main` or `aside`. It renders into a layer inside that layout box and never scrolls the document. Sides are `top`, `bottom`, `left` and `right`, plus logical `start` and `end`.
   * Accessibility: `role="dialog"`, `aria-modal`, a labelled panel, a focus trap that restores focus to the opener, Escape and scrim close, and the rest of the scope is `inert`.
   * It uses the 240ms `ab-nextjs-animations` slide, which reduced motion turns off.
