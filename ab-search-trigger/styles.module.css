@@ -56,7 +56,7 @@
   box-sizing: border-box; /* 📦 */
 }
 .abSearchTrigger:focus-visible {
-  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); /* ♿ */
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
 }
 .abSearchTrigger[aria-disabled='true'] { cursor: default; opacity: 0.72; } /* 🚧 */

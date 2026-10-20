@@ -47,7 +47,7 @@
 .abKbdKey {
   min-width: 20px; /* 📏 */
   padding: 3px 5px; /* 📦 */
-  border: 1px solid var(--ab-color-outline-variant, rgb(0 0 0 / 0.15)); /* 🖼️ */
+  border: 1px solid var(--ab-color-border, var(--ab-color-outline-variant, rgb(0 0 0 / 0.15))); /* 🖼️ */
   border-radius: 6px; /* 🟢 */
   box-sizing: border-box; /* 📦 */
   text-align: center; /* ↔️ */

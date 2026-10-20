@@ -245,3 +245,21 @@ describe('P18 AbNavbar indicator="none" · blur 📱', () => {
       /\.abNavbarLink \.abNavbarPill \{ width: auto; height: auto; background: none; \}/, /backdrop-filter: blur\(12px\)/, /color-mix\(in srgb, var\(--ab-color-bg, #fff8f5\) 92%, transparent\)/, /border-top: 1px solid var\(--ab-color-div/, /#1f170f/]) expect(c).toMatch(re)
   })
 })
+
+// 🎨 step 5: existing components read the theme 0.3.5 Home tokens first (M3 tokens stay as fallbacks)
+import { readdirSync, existsSync } from 'node:fs'
+describe('existing components on the Home tokens 🎨', () => {
+  const root = join(__dirname, '..') // 📁 component folders + server/ twins (one level deep each)
+  const dirs = (base: string) => readdirSync(join(root, base), { withFileTypes: true }).filter((d) => d.isDirectory() && d.name !== 'node_modules').map((d) => (base ? `${base}/${d.name}` : d.name))
+  const files = [...dirs(''), ...dirs('server')].map((d) => `${d}/styles.module.css`).filter((f) => existsSync(join(root, f)))
+  it('found the CSS modules', () => expect(files.length).toBeGreaterThan(30))
+  for (const f of files) {
+    it(f, () => {
+      const c = css(f)
+      for (const line of c.split('\n').filter((l) => /\boutline(-color)?:/.test(l) && /--ab-color-primary/.test(l))) expect(line).toMatch(/var\(--ab-color-accent, /) // ♿ rings
+      expect(c).not.toMatch(/(?<!--ab-color-border, )var\(--ab-color-outline-variant/) // ➖ borders
+      expect(c).not.toMatch(/(?<!--ab-color-hover, )color-mix\(in srgb, currentColor (8|10)%, transparent\)/) // 🖱️ hovers
+      expect(c).not.toMatch(/(?<!--ab-color-tint, )var\(--ab-color-secondary-container/) // 🎯 active rows
+    })
+  }
+})

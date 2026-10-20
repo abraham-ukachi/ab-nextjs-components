@@ -76,10 +76,10 @@
   color: inherit; /* 🖋️ */
   cursor: pointer; /* 👆 */
 }
-.abSidebarToggle:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
+.abSidebarToggle:hover { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } /* 🖱️ */
 .abSidebarToggle:focus-visible,
 .abSidebarLink:focus-visible {
-  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); /* ♿ */
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
 }
 @media (scripting: none) {
@@ -125,10 +125,10 @@
 }
 .abSidebarLabel { min-width: 0; overflow-wrap: anywhere; } /* 🚫 no overflow, ReactNode-friendly */
 .abSidebarLink[data-depth='1'] { padding-inline-start: 44px; font-size: 14px; } /* 🌳 */
-.abSidebarLink:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
+.abSidebarLink:hover { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } /* 🖱️ */
 .abSidebarLink[data-active='true'] {
-  background: var(--ab-color-secondary-container, color-mix(in srgb, #8f4c38 14%, transparent)); /* 🎯 */
-  color: var(--ab-color-on-secondary-container, inherit); /* 🖋️ */
+  background: var(--ab-color-tint, var(--ab-color-secondary-container, color-mix(in srgb, #8f4c38 14%, transparent))); /* 🎯 */
+  color: var(--ab-color-accent-text, var(--ab-color-on-secondary-container, inherit)); /* 🖋️ */
   font-weight: 600; /* 🔤 */
 }
 .abSidebarIcon { flex: none; } /* 🔣 */

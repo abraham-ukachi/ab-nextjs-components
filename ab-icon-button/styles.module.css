@@ -63,7 +63,7 @@
 }
 
 .abIconButton:hover {
-  background-color: color-mix(in srgb, currentColor 10%, transparent);
+  background-color: var(--ab-color-hover, color-mix(in srgb, currentColor 10%, transparent));
 }
 
 .abIconButton[data-naked='true']:hover {

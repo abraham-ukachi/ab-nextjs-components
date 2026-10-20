@@ -107,7 +107,7 @@
   cursor: pointer; /* 🖱️ */
 }
 .abDrawerClose:hover { background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🖱️ */
-.abDrawerClose:focus-visible { outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); outline-offset: 2px; } /* ♿ */
+.abDrawerClose:focus-visible { outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); outline-offset: 2px; } /* ♿ */
 .abDrawerBody { flex: 1 1 auto; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; padding: 8px 20px 16px; } /* 📜 its own scroller */
 .abDrawerFooter { flex: none; display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px 16px; } /* 🔚 */
 

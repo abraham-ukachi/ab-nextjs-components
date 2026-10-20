@@ -42,7 +42,7 @@
   gap: 2px; /* 🧱 */
   padding: 3px; /* 🧱 */
   border-radius: 9999px; /* 💊 */
-  border: 1px solid var(--ab-color-outline-variant, rgb(0 0 0 / 0.12)); /* 🖊️ */
+  border: 1px solid var(--ab-color-border, var(--ab-color-outline-variant, rgb(0 0 0 / 0.12))); /* 🖊️ */
   background: var(--ab-color-surface-container, transparent); /* 🎨 */
 }
 
@@ -76,13 +76,13 @@
 /* 🖱️ hover (unselected only) */
 .segment[aria-checked='false']:hover,
 .icon:hover {
-  background: color-mix(in srgb, currentColor 10%, transparent); /* 🌫️ */
+  background: var(--ab-color-hover, color-mix(in srgb, currentColor 10%, transparent)); /* 🌫️ */
 }
 
 /* ♿ visible focus ring (theme token, G18) */
 .segment:focus-visible,
 .icon:focus-visible {
-  outline: 2px solid var(--ab-focus-ring, var(--ab-color-primary, #A67C52)); /* 💍 */
+  outline: 2px solid var(--ab-color-accent, var(--ab-focus-ring, var(--ab-color-primary, #A67C52))); /* 💍 */
   outline-offset: 2px; /* ↔️ */
 }
 

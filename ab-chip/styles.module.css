@@ -43,7 +43,7 @@
   gap: 0.375rem; /* 🧱 */
   padding: 0.25rem 0.75rem; /* 🧱 */
   border-radius: 9999px; /* 💊 */
-  border: 1px solid var(--ab-color-outline-variant, rgb(0 0 0 / 0.12)); /* 🖊️ */
+  border: 1px solid var(--ab-color-border, var(--ab-color-outline-variant, rgb(0 0 0 / 0.12))); /* 🖊️ */
   background: var(--ab-color-surface-container, transparent); /* 🎨 */
   color: var(--ab-color-on-surface, currentColor); /* 🎨 */
   font-size: 0.875rem; /* 🔡 */
