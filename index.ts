@@ -134,6 +134,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbDrawer', file: 'ab-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
 ]
 
@@ -181,6 +182,9 @@ export { default as AbDrawerList } from './ab-drawer-list/index.tsx'
 export type { AbDrawerListItem, AbDrawerListProps } from './ab-drawer-list/index.tsx'
 export { default as AbConfirmDrawer } from './ab-confirm-drawer/index.tsx'
 export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
+// 🍞 0.1.14 (P2): AbBreadcrumbs
+export { default as AbBreadcrumbs } from './ab-breadcrumbs/index.tsx'
+export type { AbBreadcrumbItem, AbBreadcrumbsProps } from './ab-breadcrumbs/index.tsx'
 // 📋 0.1.14 (P13): AbList + AbListItem
 export { default as AbList, AbListItem } from './ab-list/index.tsx'
 export type { AbListProps, AbListItemProps } from './ab-list/index.tsx'
