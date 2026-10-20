@@ -139,6 +139,7 @@
     },
     "./package.json": "./package.json",
     "./ab-icon": "./ab-icon/index.tsx",
+    "./ab-icon/registrar": "./ab-icon/registrar.tsx",
     "./ab-logo": "./ab-logo/index.tsx",
     "./ab-linear-progress": "./ab-linear-progress/index.tsx",
     "./ab-splash": "./ab-splash/index.tsx",

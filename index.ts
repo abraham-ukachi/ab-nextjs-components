@@ -138,6 +138,7 @@ export { supportedComponents }
 export default abComponents
 
 export { default as AbIcon } from './ab-icon/index.tsx'
+export { AbIconRegistrar } from './ab-icon/registrar.tsx' // 🗂️ server-safe icon registration (0.1.13)
 export { default as AbLogo } from './ab-logo/index.tsx'
 // 📶 progress bar
 export { default as AbLinearProgress } from './ab-linear-progress/index.tsx'
