@@ -107,6 +107,11 @@ export function getAbDrawerHost(scope: AbDrawerScope, from?: Element | null): HT
 // ♿ everything that can take focus inside the panel
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';
 
+// 🥞 open drawers, newest last: only the top one answers Escape / Tab (a drawer opened from a drawer)
+const openStack: symbol[] = [];
+/** 🥞 is `token` the topmost open drawer? */
+const isTopDrawer = (token: symbol): boolean => openStack[openStack.length - 1] === token;
+
 // ♿ one-shot reduced-motion check
 const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -137,6 +142,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const [layer, setLayer] = useState<HTMLElement | null>(null);
   const [present, setPresent] = useState(open); // 🧱 mounted (open, or sliding out)
   const [shown, setShown] = useState(false); // 🎞️ slid in
+  const [token] = useState(() => Symbol('ab-drawer')); // 🥞 our place in the open stack
 
   // 🗺️ find the scope box once we're on the client and make a layer in it
   useEffect(() => {
@@ -194,9 +200,16 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     return () => { for (const el of touched) el.removeAttribute('inert'); }; // 🔓
   }, [open, modal, layer]);
 
-  // ⎋ Escape closes (skips events an inner menu already handled); Tab stays inside (modal)
+  // 🥞 join the open stack while open (StrictMode-safe: cleanup removes exactly us)
+  useEffect(() => {
+    if (!open) return;
+    openStack.push(token);
+    return () => { const i = openStack.lastIndexOf(token); if (i >= 0) openStack.splice(i, 1); };
+  }, [open, token]);
+
+  // ⎋ Escape closes (skips events an inner menu already handled); Tab stays inside (modal). Topmost drawer only
   const onKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!panel.current) return;
+    if (!panel.current || !isTopDrawer(token)) return; // 🥞 a drawer under another one stays put
     if (e.key === 'Escape' && !e.defaultPrevented) { e.preventDefault(); close.current(); return; } // ⎋
     if (e.key !== 'Tab' || !modal) return;
     const items = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((el) => el.offsetParent !== null || el === document.activeElement); // 👀 visible
@@ -205,7 +218,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     const inside = panel.current.contains(document.activeElement);
     if (e.shiftKey && (document.activeElement === a || !inside)) { e.preventDefault(); z.focus(); } // ⬅️ wrap
     else if (!e.shiftKey && (document.activeElement === z || !inside)) { e.preventDefault(); a.focus(); } // ➡️ wrap
-  }, [modal]);
+  }, [modal, token]);
   useEffect(() => {
     if (!open) return;
     document.addEventListener('keydown', onKeyDown); // 🎧 document-level, so Escape works wherever focus is

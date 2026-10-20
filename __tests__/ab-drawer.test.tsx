@@ -175,4 +175,26 @@ describe('AbDrawer 🗄️', () => {
     render(<AbDrawer open={false} onClose={() => {}} aria-label="x" />)
     expect(document.querySelector('[data-ab-drawer-layer="app"]')?.getAttribute('data-host')).toBe('body') // 📌
   })
+
+  it('Escape closes only the topmost drawer when two are open (stack)', () => {
+    function Two() {
+      const a = useAbDrawer('app'); const b = useAbDrawer('app')
+      return (
+        <div className="AbAppLayout">
+          <button id="open-a" {...a.triggerProps}>A</button>
+          <AbDrawer {...a.drawerProps} title="Outer"><button id="open-b" {...b.triggerProps}>B</button></AbDrawer>
+          <AbDrawer {...b.drawerProps} title="Inner"><button>in B</button></AbDrawer>
+        </div>
+      )
+    }
+    render(<Two />)
+    fireEvent.click(document.getElementById('open-a')!); flush()
+    fireEvent.click(document.getElementById('open-b')!); flush()
+    const names = () => Array.from(document.querySelectorAll('[role="dialog"]')).map((d) => d.querySelector('h2')?.textContent)
+    expect(names()).toEqual(['Outer', 'Inner']) // 🥞 both open
+    fireEvent.keyDown(document, { key: 'Escape' }); flush()
+    expect(names()).toEqual(['Outer']) // ⎋ only the top one
+    fireEvent.keyDown(document, { key: 'Escape' }); flush()
+    expect(names()).toEqual([]) // ⎋ then the next
+  })
 })
