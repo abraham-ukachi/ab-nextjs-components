@@ -45,7 +45,7 @@
 */
 
 // ⚛️ React
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🎨 styles
@@ -84,6 +84,7 @@ export interface AbTocProps {
   onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection(id, { container }) (hooks 0.1.7); without it a plain #id jump, which scrolls the nearest scroller (the main pane in core 0.1.6 panes)
   id?: string; // 🆔 root id (default "ab-toc"); the title gets `${id}-title`
   className?: string; // 🏷️
+  footer?: ReactNode; // 🧩 0.1.14 (P14): below the list after a 1px rule (Edit this page · Changelog · a promo card); links get the 12.5px Home style
 }
 
 /**
@@ -91,7 +92,7 @@ export interface AbTocProps {
  * aria-current="location". Pair with `useAbScrollSpy` from ab-nextjs-hooks 0.1.7 for `activeId`.
  * No hooks here, so it also renders on the server.
  */
-const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavigate, id = 'ab-toc', className }: AbTocProps): ReactElement | null => {
+const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavigate, id = 'ab-toc', className, footer }: AbTocProps): ReactElement | null => {
   if (!items.length) return null; // 🙈 nothing to list
   const headingId = `${id}-title`; // 🆔
   return (
@@ -115,6 +116,12 @@ const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavi
           );
         })}
       </ol>
+      {footer != null && (
+        <>
+          <hr className={styles.abTocSep} />{/* ➖ mock .toc-sep */}
+          <div className={styles.abTocFooter} data-ab-part="toc-footer">{footer}</div>
+        </>
+      )}
     </nav>
   );
 };

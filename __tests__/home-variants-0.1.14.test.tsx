@@ -52,6 +52,7 @@ import AbSidebar from '../ab-sidebar'
 import ServerAbSidebar from '../server/ab-sidebar'
 import AbPackageCard from '../ab-package-card'
 import AbInstallSnippet from '../ab-install-snippet'
+import AbToc from '../ab-toc'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -207,5 +208,20 @@ describe('P12 AbInstallSnippet variant="terminal" 💻', () => {
     for (const re of [/border-radius: var\(--ab-radius-code, 12px\)/, /padding: 6px 8px 0 10px;/, /border-bottom: 1px solid rgb\(255 232 210 \/ 0\.08\)/,
       /padding: 6px 8px 8px;/, /font-size: 12px; font-weight: 600; line-height: 1\.2; color: rgb\(237 224 212 \/ 0\.55\)/, /color: #e7c8a5; box-shadow: inset 0 -2px 0 #c29a6f/,
       /padding: 14px 16px 16px;[^}]*overflow-x: auto;/, /color: #8e7a69/, /\.termPkg \{ color: #e7c8a5; \}/, /font-size: 13\.5px; line-height: 1\.4; white-space: pre;/]) expect(c).toMatch(re)
+  })
+})
+
+// 📑 P14
+describe('P14 AbToc footer slot 📑', () => {
+  it('renders a rule + the footer inside the nav, nothing without it', () => {
+    const items = [{ id: 'overview', label: 'Overview' }]
+    const html = renderToStaticMarkup(<AbToc items={items} activeId="overview" footer={<a href="/edit">Edit this page</a>} />)
+    expect(html).toMatch(/<hr[^>]*\/?><div[^>]*data-ab-part="toc-footer"[^>]*><a href="\/edit">Edit this page<\/a><\/div><\/nav>/)
+    expect(renderToStaticMarkup(<AbToc items={items} />)).not.toContain('toc-footer')
+  })
+  it('CSS: heading 11/700/.06em faint mb 10, links 13 padding 6 0 6 14, active 650 accent-text + accent rail, sep mt 18 mb 12, footer 12.5 + 15px icons', () => {
+    const c = css('ab-toc/styles.module.css')
+    for (const re of [/margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0\.06em;/, /\.abToc \{ font-size: 13px; \}/, /padding: 6px 0 6px 14px;/,
+      /border-inline-start-color: var\(--ab-color-accent[^;]*; color: var\(--ab-color-accent-text[^;]*; font-weight: 650;/, /margin: 18px 0 12px;/, /font-size: 12\.5px;/, /width: 15px; height: 15px;/]) expect(c).toMatch(re)
   })
 })
