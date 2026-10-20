@@ -82,6 +82,7 @@ describe('AbList + AbListItem (P13) 📋', () => {
     expect(css).toMatch(/width: 64px; height: 22px; border-radius: 6px; font-size: 11px; font-weight: 700;/) // 🏷️
     expect(css).toMatch(/font-size: 13\.5px; font-weight: 600; line-height: 1\.3;/) // 💪
     expect(css).toMatch(/min-height: 44px;/) // 👆
+    expect(css).toMatch(/\.abListMeta \{[^}]*font-size: 12px; line-height: 1\.4;/) // 📏 58.5px rows like the mock, whatever the font
     expect(css).toMatch(/outline-offset: -2px;/) // ♿ inset
   })
 })
