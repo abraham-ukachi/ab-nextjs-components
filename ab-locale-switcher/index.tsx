@@ -32,6 +32,17 @@
 * Example usage:
 *   1+|> const { switchLocale } = useAbLocaleSwitch() // 🌍 from ab-nextjs-i18n/navigation
 *    -|> <AbLocaleSwitcher label={t('language')} current={locale} locales={[{ code: 'en', label: 'English' }, { code: 'fr', label: 'Français' }]} onSelect={switchLocale} />
+*
+*   🧩 0.1.15 inline, inside the mobile app drawer (John):
+*   2+|> // a) mixed drawer: nav + theme first, LANGUAGE last under a 1px rule
+*    -|> <AbBottomDrawer open={open} onClose={close} title={t('menu')}>
+*    -|>   <AbDrawerList … />{themeRow}
+*    -|>   <AbLocaleSwitcher presentation="inline" divider label={t('language')} current={locale} locales={LOCALES} onSelect={switchLocale} />
+*    -|> </AbBottomDrawer>
+*   3+|> // b) language only: the drawer title says it, so no uppercase label
+*    -|> <AbBottomDrawer open={open} onClose={close} title={t('language')}>
+*    -|>   <AbLocaleSwitcher presentation="inline" showLabel={false} label={t('language')} current={locale} locales={LOCALES} onSelect={switchLocale} />
+*    -|> </AbBottomDrawer>
 */
 
 /*
@@ -83,6 +94,11 @@ export interface AbLocaleSwitcherProps {
   /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above.
    *  🧩 0.1.15 (God 00:08): `inline` = no trigger; a labelled list of rows rendered in place, e.g. inside the app drawer on mobile */
   presentation?: AbPresentation | 'inline';
+  /** 🏷️ 0.1.15 (John): inline only. Show the small uppercase group label (default true). Set false when the language
+   *  list is the drawer's only content and the drawer title already says "Language" (the label stays the group's name) */
+  showLabel?: boolean;
+  /** ➖ 0.1.15 (John): inline only. A 1px --div rule above the block, for when it follows nav / theme items (default false) */
+  divider?: boolean;
   drawerScope?: AbDrawerScope; // 🗺️ default 'app'
   drawerSide?: 'top' | 'bottom' | 'start' | 'end'; // 🧭 default 'bottom'
 }
@@ -102,7 +118,7 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
 
 export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
   // 🧩 props
-  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation: rawPresentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation: rawPresentation = 'menu', drawerScope = 'app', drawerSide = 'bottom', showLabel = true, divider = false } = props;
   const inline = rawPresentation === 'inline'; // 🧩 0.1.15: rows in place (e.g. the mobile app drawer)
   const presentation: AbPresentation = inline ? 'menu' : rawPresentation; // 🗄️ the popover logic never runs inline
   // 🗄️ how this open happens (decided on click)
@@ -172,8 +188,8 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
   // 🧩 0.1.15: inline list (no trigger, no popover). Links mark the active row with aria-current, buttons with aria-pressed
   if (inline) {
     return (
-      <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" role="group" aria-labelledby={`${base}-label`}>
-        <div id={`${base}-label`} className={styles.inlineLabel}>{label}</div>
+      <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" data-divider={divider ? 'true' : undefined} role="group" aria-labelledby={showLabel ? `${base}-label` : undefined} aria-label={showLabel ? undefined : label}>
+        {showLabel && <div id={`${base}-label`} className={styles.inlineLabel}>{label}</div> /* 🏷️ hidden when the drawer title says it */}
         <ul className={styles.inlineList}>
           {locales.map((l) => {
             const on = l.code === current; // ✅

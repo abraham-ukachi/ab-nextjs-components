@@ -159,3 +159,19 @@ describe('AbBottomDrawer title + padding 🏷️', () => {
     expect(s).toMatch(/padding-bottom: calc\(16px \+ env\(safe-area-inset-bottom, 0px\)\);/) // 📱
   })
 })
+
+// ➖ John 00:20 #4: last-with-divider when mixed; no uppercase label when it's the only content
+describe('inline language list: showLabel + divider ➖', () => {
+  it('showLabel={false}: no label row, the group keeps its name via aria-label', () => {
+    const { container, getByRole } = render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" showLabel={false} onSelect={() => {}} />)
+    expect(getByRole('group', { name: 'Language' })).toBeTruthy() // ♿
+    expect(container.textContent).not.toContain('Language') // 🙈 no visible label
+  })
+  it('divider: data hook + 1px --div rule above; off by default', () => {
+    const a = render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" divider onSelect={() => {}} />)
+    expect(a.getByRole('group').getAttribute('data-divider')).toBe('true') // ➖
+    a.unmount()
+    expect(render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" onSelect={() => {}} />).getByRole('group').getAttribute('data-divider')).toBeNull() // 🫥
+    expect(css('ab-locale-switcher/styles.module.css')).toMatch(/\.inline\[data-divider='true'\] \{ margin-top: 8px; padding-top: 8px; border-top: 1px solid var\(--ab-color-div/) // 🎨
+  })
+})
