@@ -43,6 +43,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 // 🗄️ under test
 import AbDrawerList from '../ab-drawer-list'
 import AbConfirmDrawer from '../ab-confirm-drawer'
@@ -92,5 +94,15 @@ describe('AbConfirmDrawer ❓', () => {
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(onCancel).toHaveBeenCalledTimes(1); expect(onClose).toHaveBeenCalledTimes(1) // ⎋
     expect((screen.getByRole('button', { name: 'Cancel' }) as HTMLButtonElement).disabled).toBe(true) // ⏳
+  })
+})
+
+describe('AbDrawerList Home look (spec §2 tokens) 🏠', () => {
+  it('active row = --tint + --accent-t + 650, 8px radius, --hover, --accent ring', () => {
+    const css = readFileSync(join(__dirname, '..', 'ab-drawer-list/styles.module.css'), 'utf8')
+    expect(css).toMatch(/\[data-active='true'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text, #8b6340\); font-weight: 650; \}/)
+    expect(css).toMatch(/border-radius: 8px;/)
+    expect(css).toMatch(/:hover \{ background: var\(--ab-color-hover/)
+    expect(css).toMatch(/outline: 2px solid var\(--ab-color-accent, #a67c52\); outline-offset: -2px;/)
   })
 })
