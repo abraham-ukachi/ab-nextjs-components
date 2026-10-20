@@ -66,7 +66,7 @@ export interface AbVersionSwitcherProps {
   version: string; // ✅ current version (shown bold), e.g. 'v0.2.x'
   versions?: readonly AbVersionOption[]; // 📋 the choices (none / one = a static label, no menu)
   onSelect?: (value: string) => void; // 📣 button items
-  menuLabel?: string; // ♿ accessible name of the trigger (default "{label} version: {version}")
+  menuLabel?: string; // ♿ accessible name of the trigger (default "{label} {version}": contains the visible text, WCAG 2.5.3)
   className?: string; // 🏷️
 }
 
@@ -80,7 +80,7 @@ const AbVersionSwitcher = ({ label = 'Docs', version, versions = [], onSelect, m
   const menuId = `ab-version-menu-${useId().replace(/:/g, '')}`; // 🆔
   const wrap = useRef<HTMLDivElement>(null); // 📍
   const btn = useRef<HTMLButtonElement>(null); // 📍
-  const name = menuLabel ?? `${label} version: ${version}`; // ♿
+  const name = menuLabel ?? `${label} ${version}`; // ♿ WCAG 2.5.3 label-in-name (James)
   const hasMenu = versions.length > 1; // 📋
 
   // ⎋ Escape + outside click close it
