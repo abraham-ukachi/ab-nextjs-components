@@ -6,6 +6,21 @@
   * `AbVersionSwitcher` (P9): the sidebar "Docs **v0.2.x** ▾", which opens an AbMenu, with a no-JS `<details>` fallback.
   * `AbBottomDrawer`: the mobile bottom drawer (D40), which `AbLocaleSwitcher` / `AbAppBar` now use for `side="bottom"`. `AbDrawerList` gains `as`.
   * They read the `ab-nextjs-theme` 0.3.5 Home tokens (`--ab-color-card`, `--ab-color-faint`, …), with the light mock values as fallbacks.
+* 🏠 **Home variants on existing components (Joseph's P4–P19; everything is opt-in, defaults unchanged):**
+  * `AbAppBar`: `density="compact"` (height from core's `--ab-header-height`, 13.5px links, brand column `--ab-app-bar-brand-width` 236/270), `divider`, `moreMenu={false}` (P4/P5/P19).
+  * `AbSearchTrigger`: `variant="field"` (300×36, one `⌘ K` cap, "coming soon" only in the tooltip and SR text) and `size="sm"` (the 34px mobile pill) (P6).
+  * `AbThemeToggle`: `appearance="thumb"` (28px segments, raised thumb, filled active glyph) (P7).
+  * `AbSidebar`: `density="compact"`, `activeShape="rounded"`, `badgeVariant="text"`, section `itemSize="sm"`, and `collapseButtonVariant="outlined"` (32px `<<`/`>>`) (P8/P9).
+  * `AbPackageCard`: the Home layout with `preview`, `title` and `descriptionLines`, version and tag chips and a trailing arrow (P10). P11 `variant="all"` was not built (dropped by D1).
+  * `AbInstallSnippet`: `variant="terminal"` (underline tabs, copy button in the tab row, horizontal scroll instead of clipping) (P12).
+  * `AbToc`: a `footer` slot (P14). The TOC now uses the Home sizes: 11px heading, 13px links on 30px rows.
+  * `AbButton`: `shape="rounded"`, `size="md"` (40px, 44px below 768px), `type="secondary"`. `AbChip`: `size="sm"`, `shape="rounded"`, `mono`, `tone="accent" | "sage"` (P16).
+  * `AbNavbar`: `indicator="none"` and `blur` (P18).
+  * `AbIconButton`: `aria-expanded` / `aria-controls` pass through, and a new `iconSize`.
+  * `AbVersionSwitcher`: the accessible name is `"{label} {version}"`, so it contains the visible text (WCAG 2.5.3).
+  * AbList rows are 59/60px, like the mock.
+  * `AbBottomDrawer` (John): the sheet takes focus on open, the ✕ is 44px with an 8px hover tint and a `:focus-visible`-only ring, plus 16px + safe-area bottom padding and the 36×4 handle. It reads the theme 0.3.5 scrim, handle and sheet-edge tokens. `AbDrawer` gains `initialFocus`.
+* 🎨 **Home tokens first:** borders, hovers, active rows and focus rings read `--ab-color-border` / `-hover` / `-tint` / `-accent-text` / `-accent` (theme 0.3.5) before the M3 tokens. On theme 0.3.5 the rings turn bronze and active rows turn `--tint`.
 * 🗄️ **AbDrawer + `useAbDrawer` (new, G53, D38).** The drawer is scoped to `app`, `main` or `aside`. It renders into a layer inside that layout box and never scrolls the document. Sides are `top`, `bottom`, `left` and `right`, plus logical `start` and `end`.
   * Accessibility: `role="dialog"`, `aria-modal`, a labelled panel, a focus trap that restores focus to the opener, Escape and scrim close, and the rest of the scope is `inert`.
   * It uses the 240ms `ab-nextjs-animations` slide, which reduced motion turns off.
