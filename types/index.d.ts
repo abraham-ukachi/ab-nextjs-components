@@ -81,6 +81,10 @@ export type { AbTocItem, AbTocProps } from '../ab-toc/index.tsx';
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
 export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from '../ab-drawer/index.tsx';
 export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from '../ab-drawer/index.tsx';
+export { default as AbDrawerList } from '../ab-drawer-list/index.tsx';
+export type { AbDrawerListItem, AbDrawerListProps } from '../ab-drawer-list/index.tsx';
+export { default as AbConfirmDrawer } from '../ab-confirm-drawer/index.tsx';
+export type { AbConfirmDrawerProps } from '../ab-confirm-drawer/index.tsx';
 export { default as AbText } from '../ab-text/index.tsx';
 export { default as AbTestHello } from '../ab-test-hello/index.tsx';
 export { default as AbKeyFeature } from '../ab-key-feature/index.tsx';

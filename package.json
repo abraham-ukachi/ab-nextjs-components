@@ -115,6 +115,8 @@
     "ab-linear-progress",
     "ab-carousel",
     "ab-drawer",
+    "ab-drawer-list",
+    "ab-confirm-drawer",
     "ab-flow-diagram",
     "ab-locale-switcher",
     "ab-install-snippet",
@@ -156,6 +158,8 @@
     "./ab-flow-diagram/helpers": "./ab-flow-diagram/helpers.ts",
     "./ab-drawer": "./ab-drawer/index.tsx",
     "./ab-drawer/use-ab-drawer": "./ab-drawer/use-ab-drawer.ts",
+    "./ab-drawer-list": "./ab-drawer-list/index.tsx",
+    "./ab-confirm-drawer": "./ab-confirm-drawer/index.tsx",
     "./ab-splash/gate": "./ab-splash/gate.ts",
     "./ab-splash/csp": {
       "types": "./ab-splash/csp.d.ts",
