@@ -64,7 +64,7 @@ describe('P6 AbSearchTrigger variant="field" · size="sm" 🔎', () => {
   it('field: data hook, 18px icon, one "Ctrl K" cap on the server, label visible', () => {
     const html = renderToStaticMarkup(<AbSearchTrigger variant="field" label="Search docs…" onOpen={() => {}} />)
     expect(html).toContain('data-variant="field"')
-    expect(html).toMatch(/<kbd[^>]*>Ctrl K<\/kbd>/) // ⌨️ one cap (⌘ K on Apple after hydration)
+    expect(html).toMatch(/<kbd[^>]*>Ctrl<span data-ab-part="key-gap"> <\/span>K<\/kbd>/) // ⌨️ one cap ("Ctrl K"; 0.1.15: the gap is a span) (⌘ K on Apple after hydration)
     expect(html).toContain('Search docs…')
   })
   it('sm: "Search" + "CtrlK" cap, no space', () => {

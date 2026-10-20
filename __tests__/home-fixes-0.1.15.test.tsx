@@ -44,6 +44,8 @@ import { cleanup, fireEvent, render } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import AbLocaleSwitcher from '../ab-locale-switcher'
+import AbAppBar from '../ab-app-bar'
+import AbSearchTrigger from '../ab-search-trigger'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -76,5 +78,33 @@ describe('AbLocaleSwitcher presentation="inline" 🧩', () => {
     const s = css('ab-locale-switcher/styles.module.css') // 🎨
     expect(s).toMatch(/\.inlineItem \{[^}]*min-block-size: 48px/) // 👆
     expect(s).toMatch(/\.inlineItem\[data-active='true'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text, #88603d\)/) // 🎯
+  })
+})
+
+// 🔎 1. compact AbAppBar on mobile: "Search ⌘K" pill, not an icon circle
+describe('AbAppBar compactSearch + AbSearchTrigger compactLabel 🔎', () => {
+  it('compact density defaults to the pill; comfortable stays icon; the prop overrides', () => {
+    const bar = (p: object) => render(<AbAppBar search={<AbSearchTrigger variant="field" label="Search docs…" compactLabel="Search" onOpen={() => {}} />} {...p} />).container.querySelector('header')!
+    expect(bar({ density: 'compact' }).getAttribute('data-compact-search')).toBe('pill') // 💊
+    cleanup()
+    expect(bar({}).getAttribute('data-compact-search')).toBeNull() // 🔘 unchanged
+    cleanup()
+    expect(bar({ density: 'compact', compactSearch: 'icon' }).getAttribute('data-compact-search')).toBeNull() // 🔘 opt out
+  })
+  it('the trigger renders both labels; the short one is hidden by default (one accessible name off the app bar)', () => {
+    const { container } = render(<AbSearchTrigger variant="field" label="Search docs…" compactLabel="Search" onOpen={() => {}} />)
+    expect(container.querySelector('[data-ab-part="search-label"]')!.textContent).toBe('Search docs…') // 🏷️
+    expect(container.querySelector('[data-ab-part="search-label-compact"]')!.textContent).toBe('Search') // 📱
+    expect(css('ab-search-trigger/styles.module.css')).toMatch(/\.abSearchTriggerShort \{ display: none; \}/) // 🙈
+    expect(container.querySelector('[data-ab-part="key-gap"]')).not.toBeNull() // ⌨️ "⌘ K" on desktop
+  })
+  it('CSS: below 768px the pill is 34px, pill radius, 13px, label swap, tight 18px cap; icon collapse skips the pill bar', () => {
+    const s = css('ab-app-bar/styles.module.css') // 🎨
+    expect(s).toMatch(/\.abAppBar:not\(\[data-compact-search='pill'\]\) \.abAppBarSearch > :global\(\.AbSearchTrigger\):not\(\[data-size='sm'\]\) \{ width: 40px;/) // 🔘
+    const block = s.slice(s.indexOf("compactSearch=\"pill\" below 768px")) // 📏
+    expect(block).toMatch(/height: 34px; gap: 6px; padding: 0 6px 0 10px;/)
+    expect(block).toMatch(/border-radius: var\(--ab-radius-pill, 999px\); font-size: 13px;/)
+    expect(block).toMatch(/\[data-ab-part='search-label-compact'\] \{ display: inline; \}/)
+    expect(block).toMatch(/\[data-ab-part='key-gap'\] \{ display: none; \}/)
   })
 })

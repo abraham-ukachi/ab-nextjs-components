@@ -111,8 +111,8 @@
   .abAppBar { gap: 8px; padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); } /* 📦 */
   .abAppBarBrand { flex: 0 1 auto; min-width: 0; overflow: hidden; } /* 🏷️ may shrink */
   .abAppBarSearch { flex: none; margin-inline-start: auto; } /* 🔎 icon only, pushed right */
-  .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) { width: 40px; min-width: 40px; padding: 0; justify-content: center; flex: none; } /* 🔘 */
-  .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) > :not(:global(.AbIcon)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ label + kbd */
+  .abAppBar:not([data-compact-search='pill']) .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) { width: 40px; min-width: 40px; padding: 0; justify-content: center; flex: none; } /* 🔘 */
+  .abAppBar:not([data-compact-search='pill']) .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) > :not(:global(.AbIcon)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ label + kbd */
   .abAppBarActions { margin-inline-start: 0; gap: 0; } /* 🔘 */
   .abAppBar[data-has-compact-actions='true'] .abAppBarActionsWide { display: none; } /* 🙈 */
   .abAppBar[data-has-compact-actions='true'] .abAppBarActionsCompact { display: flex; } /* 👀 */
@@ -155,4 +155,20 @@
   .abAppBar[data-density='compact'] { gap: 2px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); } /* 📱 mock .mapp */
   .abAppBar[data-density='compact'] .abAppBarSearch { margin-inline: auto 4px; } /* 🔎 pushed right, 4px before the icon */
   .abAppBar[data-density='compact'] .abAppBarActions { gap: 0; }
+}
+
+/* ===== 🔎 0.1.15 (God 00:08, Joseph fidelity-2 #1): compactSearch="pill" below 768px =====
+ * The desktop field becomes the mobile mock's `.mpill`: 34px, pill radius, 13px "Search" + a tight "⌘K" cap.
+ * Same element, CSS only (no hydration flip, one hotkey listener). */
+@media (max-width: 767px) {
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch > :global(.AbSearchTrigger)[data-variant='field'] {
+    flex: none; width: auto; max-width: none; height: 34px; gap: 6px; padding: 0 6px 0 10px; /* 📏 = size="sm" */
+    border-radius: var(--ab-radius-pill, 999px); font-size: 13px; /* 💊 🔤 */
+  }
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch > :global(.AbSearchTrigger)[data-variant='field'] > :global(.AbIcon) { width: 17px; height: 17px; font-size: 17px; } /* 🔣 17px */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch > :global(.AbSearchTrigger)[data-variant='field'] > :global(.AbIcon) svg { width: 17px; height: 17px; }
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field']:has([data-ab-part='search-label-compact']) [data-ab-part='search-label'] { display: none; } /* 🏷️ long label out… */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field'] [data-ab-part='search-label-compact'] { display: inline; } /* …"Search" in */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field'] [data-ab-part='key-gap'] { display: none; } /* ⌨️ "⌘K" */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field'] :global(.AbKbd) { min-width: 18px; height: 18px; font-size: 10px; } /* 📱 = sm cap */
 }
