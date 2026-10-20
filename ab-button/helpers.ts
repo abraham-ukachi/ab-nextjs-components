@@ -39,7 +39,12 @@
 // 🎨 visual types shared by the client + server twins
 // 🥉 'filled' (0.1.12): solid bronze, painted by ab-nextjs-theme ≥ 0.3.3's
 //    `button[data-type="filled"]` rule (fallback in styles.module.css → .isFilled)
-export type AbButtonType = 'contained' | 'filled' | 'outlined' | 'text';
+// ⚪ 'secondary' (0.1.14, P16): the Home "Browse packages" button: --card bg, 1px --border hairline, --text
+export type AbButtonType = 'contained' | 'filled' | 'outlined' | 'text' | 'secondary';
+// 🔷 0.1.14 (P16): 'pill' = the legacy 999px look (default) · 'rounded' = the Home 10px button
+export type AbButtonShape = 'pill' | 'rounded';
+// 📏 0.1.14 (P16): 'md' = 40px (44px under 768px, the touch CTA); undefined keeps the legacy sizing
+export type AbButtonSize = 'md';
 // 🎨 colour roles
 export type AbButtonColor = 'primary' | 'secondary' | 'tertiary' | 'white' | 'black';
 // 🏷️ badge tones (G22): neutral grey or bronze accent

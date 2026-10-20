@@ -181,3 +181,42 @@ a.abButton[data-type="outlined"] {
   line-height: 32px; /* 📏 */
 }
 a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
+
+/* ===== 🔷 0.1.14 (P16, Home fidelity spec §4 CTAs): shape="rounded" · size="md" · type="secondary" =====
+ * Doubled class (0,3,0+) beats the theme's `button[data-type="filled"]` (0,1,1) and its :hover (0,3,1 → we use 0,5,0). */
+.abButton.abButton[data-shape="rounded"] {
+  gap: 6px; /* 🧱 icon ↔ label */
+  border-radius: var(--ab-radius-button, 10px); /* 🔷 */
+  padding: 0 var(--ab-button-padding-inline, 16px); /* 📦 */
+  font-size: 14px; font-weight: 650; line-height: 1; white-space: nowrap; /* 🔤 */
+  overflow: visible; /* 🌗 the primary shadow must show */
+}
+.abButton.abButton[data-size="md"] { height: var(--ab-button-height, 40px); box-sizing: border-box; } /* 📏 */
+.abButton.abButton[data-shape="rounded"] .abButtonSlot { width: 18px; height: 18px; } /* 🖼️ 18px icons */
+.abButton.abButton[data-shape="rounded"] .abButtonSlot svg { width: 100%; height: 100%; }
+/* 🥉 primary (filled) */
+.abButton.abButton[data-shape="rounded"][data-type="filled"] {
+  background: var(--ab-color-btn, #8b6340); color: var(--ab-color-btn-text, #fff); /* 🎨 AA (theme 0.3.5) */
+  border: 0; box-shadow: var(--ab-shadow-button, 0 1px 0 rgb(255 255 255 / 0.2) inset, 0 4px 12px rgb(139 99 64 / 0.25)); /* ✨ */
+}
+.abButton.abButton[data-shape="rounded"][data-type="filled"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: color-mix(in srgb, var(--ab-color-btn, #8b6340) 90%, #000); /* 🖱️ */
+}
+/* ⚪ secondary */
+.abButton.abButton[data-type="secondary"] {
+  border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); background: var(--ab-color-card, #fff); color: var(--ab-color-text, #211a16); /* 🎨 */
+  box-sizing: border-box;
+}
+.abButton.abButton[data-type="secondary"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: linear-gradient(var(--ab-color-hover, rgb(166 124 82 / 0.08)), var(--ab-color-hover, rgb(166 124 82 / 0.08))), var(--ab-color-card, #fff); /* 🖱️ tint over the card */
+}
+.abButton.abButton[data-shape="rounded"]:not(:disabled, [aria-disabled="true"]):active { transform: translateY(1px); } /* 👇 */
+.abButton.abButton[data-shape="rounded"]:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
+/* 📱 touch widths: 44px, 14.5px (mock .M .btn; the app sets flex: 1) */
+@media (max-width: 767px) {
+  .abButton.abButton[data-size="md"] { height: var(--ab-button-height-touch, 44px); }
+  .abButton.abButton[data-shape="rounded"][data-size="md"] { font-size: 14.5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .abButton.abButton[data-shape="rounded"]:active { transform: none; } /* ♿ no nudge */
+}
