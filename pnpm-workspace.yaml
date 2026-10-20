@@ -10,7 +10,7 @@ minimumReleaseAgeStrict: true
 minimumReleaseAgeExclude:
   # TODO(remove after 2026-10-21T17:15:19Z): ab-nextjs-icons 0.2.4 published 2026-10-20T17:15:19Z
   - ab-nextjs-icons@0.2.4
-  # TODO(remove after 2026-10-21T17:25:03Z): ab-nextjs-theme 0.3.4 published 2026-10-20T17:25:03Z
-  - ab-nextjs-theme@0.3.4
+  # TODO(remove after 2026-10-21T20:40:07Z): ab-nextjs-theme 0.3.5 published 2026-10-20T20:40:07Z
+  - ab-nextjs-theme@0.3.5
   # TODO(remove after 2026-10-21T17:28:56Z): ab-nextjs-hooks 0.1.7 published 2026-10-20T17:28:56Z
   - ab-nextjs-hooks@0.1.7
