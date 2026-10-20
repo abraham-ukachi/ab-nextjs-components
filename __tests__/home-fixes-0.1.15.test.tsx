@@ -150,3 +150,12 @@ describe('inline language list: row rhythm 📏', () => {
     expect(s).toMatch(/font-size: 16px; line-height: 20px;/) // 🔤
   })
 })
+
+// 🏷️ John 00:20 #3: the bottom-drawer title (package-owned h2) is Mulish 16/800; #5: 16px + safe-area bottom padding stays
+describe('AbBottomDrawer title + padding 🏷️', () => {
+  it('h2 = --ab-font-title (Mulish) 16/800; padding-bottom 16px + safe area', () => {
+    const s = css('ab-bottom-drawer/styles.module.css')
+    expect(s).toMatch(/\.abBottomDrawer h2 \{ font-family: var\(--ab-font-title, 'Mulish', inherit\); font-size: 16px; font-weight: 800;/) // 🔤
+    expect(s).toMatch(/padding-bottom: calc\(16px \+ env\(safe-area-inset-bottom, 0px\)\);/) // 📱
+  })
+})
