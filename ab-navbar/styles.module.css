@@ -84,3 +84,8 @@
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
   border-radius: 12px; /* 🟢 */
 }
+
+/* 🚫🚧 0.1.13: disabled / coming-soon button items (inert, still focusable) */
+.abNavbarLink[aria-disabled='true'] { cursor: default; opacity: 0.6; } /* 🚫 */
+.abNavbarSoon { font-size: 10px; line-height: 12px; opacity: 0.85; } /* 🚧 tag under the label */
+.abNavbarSrOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */

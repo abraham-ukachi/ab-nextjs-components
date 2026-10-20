@@ -62,6 +62,8 @@ export interface AbNavbarButtonItem {
   onSelect?: () => void; // 🔔
   expanded?: boolean; // ♿ aria-expanded for sheet toggles
   controls?: string; // ♿ aria-controls
+  disabled?: boolean; // 🚫 0.1.13 (Joseph #8, D24/D25): focusable, announced, inert (aria-disabled)
+  comingSoon?: boolean | string; // 🚧 0.1.13: inert + a "Coming soon" tag (string = your translated label)
 }
 
 /** 🧩 Either kind. */
@@ -83,6 +85,7 @@ export interface AbNavbarBaseProps<I extends AbNavbarItem = AbNavbarItem> {
   className?: string; // 🏷️
   items?: I[]; // 🧩 G41
   activeHref?: string; // 🎯
+  locales?: readonly string[]; // 🌍 0.1.13: stripped from the pathname (default: AbLinkProvider's)
   label?: string; // ♿ nav aria-label (default "Primary")
   // 🕰️ legacy
   type?: 'customer' | 'admin';
@@ -113,7 +116,9 @@ export function AbNavbarView({ props, Icon, active }: {
       <ul className={styles.abNavbarList}>
         {list.map((item) => {
           if (item.kind === 'button') {
-            // 🔘 action
+            // 🔘 action (🚫 disabled / 🚧 coming soon: stays focusable for the tag, never fires)
+            const inert = !!item.disabled || !!item.comingSoon;
+            const soon = item.comingSoon ? (typeof item.comingSoon === 'string' ? item.comingSoon : 'Coming soon') : undefined;
             return (
               <li key={item.id}>
                 <button
@@ -123,10 +128,13 @@ export function AbNavbarView({ props, Icon, active }: {
                   data-kind="button"
                   aria-expanded={item.expanded} // ♿
                   aria-controls={item.controls} // ♿
-                  onClick={item.onSelect}
+                  aria-disabled={inert || undefined} // 🚫
+                  data-coming-soon={item.comingSoon ? 'true' : undefined} // 🚧
+                  onClick={inert ? undefined : item.onSelect}
                 >
                   <span className={styles.abNavbarPill}><Icon name={item.icon} variant={item.expanded ? 'filled' : 'outlined'} size={24} /></span>
                   <span className={styles.abNavbarLabel}>{item.label}</span>
+                  {soon && <span className={styles.abNavbarSoon} data-ab-part="badge"><span className={styles.abNavbarSrOnly}>, </span>{soon}</span>}
                 </button>
               </li>
             );
