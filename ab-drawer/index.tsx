@@ -208,7 +208,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
       // ⏭️ a microtask later: the inert cleanup below runs after this one, and an inert opener can't take focus
       queueMicrotask(() => { if (back && back.isConnected && typeof back.focus === 'function') back.focus({ preventScroll: true }); });
     };
-  }, [open, present, layer]);
+  }, [open, present, layer, initialFocus]); // 🎯 initialFocus is static in practice
 
   // 🔒 the rest of the scope is inert while open (modal only); we only undo what we set
   useEffect(() => {
