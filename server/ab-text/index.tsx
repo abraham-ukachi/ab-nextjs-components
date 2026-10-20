@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbText - Server (port of lyd-text; i18n stripped)
 * @file: server/ab-text/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { ReactElement } from 'react';

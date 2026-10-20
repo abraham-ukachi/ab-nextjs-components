@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbAvatar - Server (port of server/lyd-avatar)
 * @file: server/ab-avatar/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { ReactElement } from 'react';

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbPriceTag - Client (port of lyd-price-tag)
 * @file: ab-price-tag/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbDemoBox - Client (port of lyd-demo-box)
 * @file: ab-demo-box/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

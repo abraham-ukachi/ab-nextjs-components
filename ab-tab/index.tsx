@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbTab - Client (port of lyd-tab)
 * @file: ab-tab/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

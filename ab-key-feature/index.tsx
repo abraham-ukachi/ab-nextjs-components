@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbKeyFeature - Client (port of lyd-key-feature)
 * @file: ab-key-feature/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

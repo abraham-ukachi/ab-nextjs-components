@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbName - Client (port of lyd-name)
 * @file: ab-name/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbAvatar - Client (port of lyd-avatar)
 * @file: ab-avatar/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

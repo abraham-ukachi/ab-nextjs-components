@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbText - Client (port of lyd-text; i18n stripped — pass value)
 * @file: ab-text/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

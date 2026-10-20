@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbSearchResult - Client (port of lyd-search-result)
 * @file: ab-search-result/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

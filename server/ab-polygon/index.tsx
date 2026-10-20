@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbPolygon - Server (port of lyd-polygon)
 * @file: server/ab-polygon/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { ReactElement } from 'react';

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbInput - Client (port of lyd-input)
 * @file: ab-input/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

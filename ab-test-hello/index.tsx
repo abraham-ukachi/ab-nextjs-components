@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbTestHello - Client (port of lyd-test-hello)
 * @file: ab-test-hello/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

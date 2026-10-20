@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbSwitchBack - Server (port of lyd-switch-back)
 * @file: server/ab-switch-back/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 

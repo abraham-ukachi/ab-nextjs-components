@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbName - Server (port of lyd-name)
 * @file: server/ab-name/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: Server Components - Barrel
 * @file: server/index.ts
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 export { default as AbIcon } from './ab-icon/index.tsx'

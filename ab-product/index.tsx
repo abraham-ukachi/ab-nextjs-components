@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbProduct - Client (Adapt of lyd-product; db/hooks stripped)
 * @file: ab-product/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

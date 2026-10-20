@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbMenu - Client (port of lyd-menu)
 * @file: ab-menu/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbPagePaginator - Client (port of lyd-page-paginator)
 * @file: ab-page-paginator/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';
