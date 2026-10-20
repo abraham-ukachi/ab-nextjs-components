@@ -95,7 +95,7 @@ const AbTocDrawer = ({ open, onClose, items, activeId, onNavigate, links = [], l
     <AbDrawer
       open={open} onClose={onClose} id={id} side="right" scope="app" tier="aside" swipe size="296px"
       title={L.title} closeLabel={L.close} closeIcon={<AbIcon name="close" size={24} />}
-      initialFocus='[aria-current="location"]' returnFocus={returnFocus}
+      initialFocus="panel" returnFocus={returnFocus} // 🎯 the sheet itself (WebKit drew a focus ring on the active row; Tab then enters)
       className={clsx('AbTocDrawer', kit.sheet, kit.titleSm, className)}
     >
       <nav aria-labelledby={`${id}-title`} data-ab-part="toc-drawer-nav">

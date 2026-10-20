@@ -66,10 +66,10 @@ describe('AbTocDrawer (drawers v2 §3) ➡️', () => {
     expect(dlg.style.getPropertyValue('--ab-drawer-size')).toBe('296px') // 📏
     expect(document.querySelector('[data-tier="aside"]')).not.toBeNull() // 🥞 below nav
   })
-  it('the active heading has aria-current="location" and takes focus; level 3 rows carry data-level', () => {
+  it('the active heading has aria-current="location"; the sheet takes focus (no ring on a row); level 3 rows carry data-level', () => {
     mount()
     const on = document.querySelector<HTMLElement>('[aria-current="location"]')!
-    expect(on.textContent).toBe('Requirements'); expect(document.activeElement).toBe(on) // 🎯
+    expect(on.textContent).toBe('Requirements'); expect(document.activeElement).toBe(document.querySelector('[role="dialog"]')) // 🎯
     expect(document.querySelector('[data-level="3"]')!.textContent).toBe('pnpm')
   })
   it('choosing a heading scrolls (onNavigate) then closes', () => {
