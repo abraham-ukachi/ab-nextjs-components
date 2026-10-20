@@ -59,6 +59,7 @@ export interface AbTocProps {
   items: AbTocItem[]; // 📑
   activeId?: string | null; // 🎯 e.g. from useAbScrollSpy (hooks 0.1.7)
   title?: string; // 🏷️ default "On this page"
+  label?: string; // 🏷️ 0.1.13 (Joseph #16): alias of `title`; `title` wins when both are set
   onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection (hooks 0.1.7); plain #id jump without it
   id?: string; // 🆔 root id (default "ab-toc"); the title gets `${id}-title`
   className?: string; // 🏷️
@@ -69,7 +70,7 @@ export interface AbTocProps {
  * aria-current="location". Pair with `useAbScrollSpy` from ab-nextjs-hooks 0.1.7 for `activeId`.
  * No hooks here, so it also renders on the server.
  */
-const AbToc = ({ items, activeId, title = 'On this page', onNavigate, id = 'ab-toc', className }: AbTocProps): ReactElement | null => {
+const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavigate, id = 'ab-toc', className }: AbTocProps): ReactElement | null => {
   if (!items.length) return null; // 🙈 nothing to list
   const headingId = `${id}-title`; // 🆔
   return (
