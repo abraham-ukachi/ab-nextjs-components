@@ -429,7 +429,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
               // ➖ 0.2.0: the handle (40×4 bar in a 24px strip, 44px touch zone): a button that toggles S1 / S2
               <button type="button" className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-expanded={snap === 'full'} aria-label={snap === 'full' ? handleLabels?.collapse ?? 'Collapse' : handleLabels?.expand ?? 'Expand'} onClick={() => { setReturned(false); setSnap(snap === 'full' ? 'partial' : 'full'); }} data-ab-grip="grip" {...gripProps} />
             ) : <div className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-hidden="true" />)}
-            <div className={styles.abDrawerHeader} {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})}>
+            <div className={styles.abDrawerHeader} data-ab-part="drawer-header" {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})}>
               {heading}
               <button type="button" className={styles.abDrawerClose} data-ab-part="drawer-close" aria-label={closeLabel} onClick={() => close.current()}>
                 {closeIcon ?? <span aria-hidden="true">✕</span>}

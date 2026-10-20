@@ -80,6 +80,9 @@ export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from '
 export type { AbTocItem, AbTocProps } from '../ab-toc/index.tsx';
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
 export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from '../ab-drawer/index.tsx';
+// 🤏 0.2.0 drawers v2: edge swipes + the swipe / snap rules
+export { useAbEdgeSwipe, AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from '../ab-drawer/index.tsx';
+export type { AbDrawerTier, AbSheetSnap, UseAbEdgeSwipeOptions } from '../ab-drawer/index.tsx';
 export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from '../ab-drawer/index.tsx';
 export { default as AbDrawerList } from '../ab-drawer-list/index.tsx';
 export type { AbDrawerListItem, AbDrawerListProps } from '../ab-drawer-list/index.tsx';
@@ -88,6 +91,9 @@ export type { AbConfirmDrawerProps } from '../ab-confirm-drawer/index.tsx';
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from '../ab-bottom-drawer/index.tsx';
 export type { AbBottomDrawerProps } from '../ab-bottom-drawer/index.tsx';
+// 🆕 0.2.0 drawers v2: AbSettingsDrawer
+export { default as AbSettingsDrawer } from '../ab-settings-drawer/index.tsx';
+export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from '../ab-settings-drawer/index.tsx';
 // 🏷️ 0.1.14 (P9): AbVersionSwitcher
 export { default as AbVersionSwitcher } from '../ab-version-switcher/index.tsx';
 export type { AbVersionOption, AbVersionSwitcherProps } from '../ab-version-switcher/index.tsx';
