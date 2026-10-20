@@ -38,6 +38,9 @@
 
 /* 🧱 bar */
 .abAppBar {
+  width: 100%; /* ↔️ never wider than its container */
+  max-width: 100%; /* 🚫 overflow */
+  min-width: 0; /* 🚫 overflow (flex/grid child) */
   display: flex; /* 📐 */
   align-items: center; /* ↕️ */
   gap: 16px; /* ↔️ */
@@ -72,7 +75,9 @@
   outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
 }
-.abAppBarActions { margin-inline-start: auto; display: flex; align-items: center; gap: 4px; } /* 🔘 */
+.abAppBarActions { margin-inline-start: auto; display: flex; align-items: center; gap: 4px; flex: none; } /* 🔘 */
+.abAppBarActionsWide, .abAppBarActionsCompact { display: flex; align-items: center; gap: 4px; } /* 🔘 */
+.abAppBarActionsCompact { display: none; } /* 🙈 wide screens */
 .abAppBarMore { position: relative; } /* 📍 */
 .abAppBarMoreButton {
   display: none; /* 🙈 wide screens */
@@ -96,4 +101,18 @@
 @media (max-width: 1179px) and (scripting: none) {
   .abAppBarNav { display: block; overflow-x: auto; min-width: 0; } /* 🧭 */
   .abAppBarMore { display: none; } /* 🙈 */
+}
+
+/* 📱 0.1.13 (Joseph #3): compact phone layout (< 768px). Tighter gaps, the brand may shrink, the search
+ *    pill becomes a 40px icon button (its label stays for screen readers), `compactActions` replace the
+ *    actions. Result: no horizontal overflow at 390px. */
+@media (max-width: 767px) {
+  .abAppBar { gap: 8px; padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); } /* 📦 */
+  .abAppBarBrand { flex: 0 1 auto; min-width: 0; overflow: hidden; } /* 🏷️ may shrink */
+  .abAppBarSearch { flex: none; margin-inline-start: auto; } /* 🔎 icon only, pushed right */
+  .abAppBarSearch > :global(.AbSearchTrigger) { width: 40px; min-width: 40px; padding: 0; justify-content: center; flex: none; } /* 🔘 */
+  .abAppBarSearch > :global(.AbSearchTrigger) > :not(:global(.AbIcon)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ label + kbd */
+  .abAppBarActions { margin-inline-start: 0; gap: 0; } /* 🔘 */
+  .abAppBar[data-has-compact-actions='true'] .abAppBarActionsWide { display: none; } /* 🙈 */
+  .abAppBar[data-has-compact-actions='true'] .abAppBarActionsCompact { display: flex; } /* 👀 */
 }

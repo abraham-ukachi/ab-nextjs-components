@@ -73,6 +73,7 @@ export interface AbAppBarProps {
   nav?: AbAppBarNavItem[]; // 🧭 inline from 1180px, in the "More" menu below
   activeHref?: string; // 🎯
   actions?: ReactNode; // 🔘 right side (theme toggle, locale switcher, GitHub…)
+  compactActions?: ReactNode; // 📱 0.1.13 (Joseph #3): shown INSTEAD of `actions` below 768px (e.g. only the theme toggle); the rest can live in the More menu or the nav sheet
   leading?: ReactNode; // ☰ optional slot before the brand (e.g. a rail toggle)
   sticky?: boolean; // 📌 default true (hairline under it)
   labels?: { nav?: string; more?: string }; // 🌍
@@ -86,7 +87,7 @@ const isActive = (href: string, active?: string) => !!active && (href === active
  * 🧱 AbAppBar (G43): brand, search, nav, actions, sticky with a hairline. Below 1180px the nav moves into a
  * "More" overflow menu built on AbMenu (G26). JS off: the More button is hidden and the nav scrolls inline.
  */
-const AbAppBar = ({ brand, search, nav = [], activeHref, actions, leading, sticky = true, labels, className }: AbAppBarProps): ReactElement => {
+const AbAppBar = ({ brand, search, nav = [], activeHref, actions, compactActions, leading, sticky = true, labels, className }: AbAppBarProps): ReactElement => {
   // 🆔 menu id
   const menuId = `ab-app-bar-more-${useId().replace(/:/g, '')}`;
   // 📋 menu state
@@ -114,7 +115,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, actions, leading, stick
   }, [open]);
 
   return (
-    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'}>
+    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined}>
       {leading}
       {brand && <div className={styles.abAppBarBrand}>{brand}</div>}
       {search && <div className={styles.abAppBarSearch}>{search}</div>}
@@ -133,7 +134,13 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, actions, leading, stick
         </nav>
       )}
       <div className={styles.abAppBarActions}>
-        {actions}
+        {/* 🔘 actions; 📱 below 768px `compactActions` replaces them (both rendered, CSS picks: no hydration flip) */}
+        {compactActions != null ? (
+          <>
+            <div className={styles.abAppBarActionsWide}>{actions}</div>
+            <div className={styles.abAppBarActionsCompact}>{compactActions}</div>
+          </>
+        ) : actions}
         {nav.length > 0 && (
           <div ref={wrap} className={styles.abAppBarMore}>
             <button
