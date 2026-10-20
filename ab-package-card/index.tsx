@@ -61,6 +61,14 @@ export interface AbPackageCardProps {
   className?: string; // 🏷️
 }
 
+/**
+ * 🧩 0.1.13 (Joseph): `ab-nextjs-components` → `ab-` `nextjs-` `components` with a `<wbr>` after each
+ * hyphen, so a narrow card wraps at a hyphen (never mid-word) instead of cutting the name off.
+ */
+export function toAbPackageNameParts(name: string): ReactNode[] {
+  return name.split(/(?<=-)/).flatMap((part, i) => (i ? [<wbr key={`w${i}`} />, part] : [part])); // ✂️ after each "-"
+}
+
 /** 📦 AbPackageCard (G45): a package tile on AbCard (one link, 2px lift on laptop+, none when reduced). */
 const AbPackageCard = ({ name, href, description, version, icon, media, id, badge, tags, headingLevel, className }: AbPackageCardProps): ReactElement => (
   <AbCard
@@ -69,7 +77,7 @@ const AbPackageCard = ({ name, href, description, version, icon, media, id, badg
     href={href}
     headingLevel={headingLevel}
     media={media ?? icon}
-    title={<span className={styles.abPackageCardName} title={name}>{name}</span>}
+    title={<span className={styles.abPackageCardName} title={name}>{toAbPackageNameParts(name)}</span>}
     eyebrow={badge}
     description={description}
     footer={(version || tags?.length) ? (

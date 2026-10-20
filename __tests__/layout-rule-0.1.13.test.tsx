@@ -51,6 +51,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/fr/docs/hooks' }))
 // 🧩 under test
 import AbAppBar from '../ab-app-bar'
 import AbSidebar from '../ab-sidebar'
+import AbPackageCard from '../ab-package-card'
 import AbIcon from '../ab-icon'
 import ServerAbIcon from '../server/ab-icon'
 import { scopeAbIconIds } from '../ab-icon/helpers'
@@ -91,6 +92,14 @@ describe('AbAppBar active link from the AbLinkProvider locales (Joseph) 🌍', (
     cleanup()
     const b = render(<AbAppBar nav={nav} locales={['fr']} activeHref="/blog" />)
     expect(b.container.querySelector('a[aria-current="page"]')?.textContent).toBe('Blog') // ✋ explicit
+  })
+})
+
+describe('AbPackageCard names wrap at hyphens (Joseph) 🧩', () => {
+  it('puts a <wbr> after each hyphen, keeps the full name in title', () => {
+    const html = renderToStaticMarkup(<AbPackageCard name="ab-nextjs-components" href="/docs/components" description="x" />)
+    expect(html).toContain('ab-<wbr/>nextjs-<wbr/>components') // ✂️ break points
+    expect(html).toContain('title="ab-nextjs-components"') // 🏷️
   })
 })
 
