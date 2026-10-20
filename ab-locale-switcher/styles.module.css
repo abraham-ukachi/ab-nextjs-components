@@ -152,7 +152,7 @@
 .inlineItem[data-active='true'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); font-weight: 650; } /* 🎯 */
 .inlineItem:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
 .inlineText { flex: 1 1 auto; min-width: 0; } /* 🏷️ */
-.inlineCheck { flex: none; display: inline-flex; inline-size: 18px; block-size: 18px; color: var(--ab-locale-check-color, #8b6340); } /* ✓ John: bronze 2px stroke, 18px */
+.inlineCheck { flex: none; display: inline-flex; inline-size: 18px; block-size: 18px; color: var(--ab-locale-check-color, var(--ab-color-btn, #8b6340)); } /* ✓ John: bronze 2px stroke, 18px (James P2: the --ab-color-btn token) */
 :global(.dark) .inlineCheck, :global([data-theme='dark']) .inlineCheck { color: var(--ab-locale-check-color, var(--ab-color-accent, #c29a6f)); } /* 🌙 the warm accent */
 /* ➖ 0.1.15 (John): language goes LAST in a drawer with nav / theme items, under a 1px --div rule */
 .inline[data-divider='true'] { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); }

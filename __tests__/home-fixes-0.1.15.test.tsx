@@ -130,13 +130,13 @@ describe('AbSidebar logo row 🏷️', () => {
 
 // ✓ John 00:20 #1: the check is an 18px, 2px-stroke bronze glyph
 describe('inline language list: check mark ✓', () => {
-  it('18px svg, stroke 2, currentColor; #8b6340 light, --ab-color-accent dark', () => {
+  it('18px svg, stroke 2, currentColor; --ab-color-btn light, --ab-color-accent dark', () => {
     const { container } = render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" onSelect={() => {}} />)
     const svg = container.querySelector('[data-ab-part="locale-check"]')! // ✓
     expect(svg.getAttribute('width')).toBe('18'); expect(svg.getAttribute('stroke-width')).toBe('2'); expect(svg.getAttribute('stroke')).toBe('currentColor')
     expect(container.querySelectorAll('[data-ab-part="locale-check"]')).toHaveLength(1) // 🎯 active row only
     const s = css('ab-locale-switcher/styles.module.css')
-    expect(s).toMatch(/\.inlineCheck \{[^}]*color: var\(--ab-locale-check-color, #8b6340\)/) // 🥉
+    expect(s).toMatch(/\.inlineCheck \{[^}]*color: var\(--ab-locale-check-color, var\(--ab-color-btn, #8b6340\)\)/) // 🥉 the token, hex only as fallback
     expect(s).toMatch(/:global\(\.dark\) \.inlineCheck, :global\(\[data-theme='dark'\]\) \.inlineCheck \{ color: var\(--ab-locale-check-color, var\(--ab-color-accent, #c29a6f\)\); \}/) // 🌙
   })
 })
