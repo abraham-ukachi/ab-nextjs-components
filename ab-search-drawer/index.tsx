@@ -167,7 +167,11 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     const q = query.trim();
     if (!open || q.length < 2) { const t = setTimeout(() => setGroups(null), 0); return () => clearTimeout(t); } // 🫥
     let live = true;
-    const t = setTimeout(() => { Promise.resolve(latest.current(q)).then((g) => { if (live) { setGroups(g); setActive(g.some((x) => x.items.length) ? 0 : -1); } }); }, 150);
+    const t = setTimeout(() => {
+      Promise.resolve().then(() => latest.current(q)) // 🧯 a sync throw becomes a rejection too
+        .then((g) => { if (live) { setGroups(g); setActive(g.some((x) => x.items.length) ? 0 : -1); } })
+        .catch(() => { if (live) { setGroups([]); setActive(-1); } }); // 🧯 James P2: a failed search shows "no results", never the previous query's results
+    }, 150);
     return () => { live = false; clearTimeout(t); };
   }, [query, open]);
 

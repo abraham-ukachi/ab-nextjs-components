@@ -131,4 +131,18 @@ describe('AbSearchDrawer (drawers v2 §4) 🔎', () => {
     expect(renderToStaticMarkup(<>{highlightAbSearch('Button buttons', 'button')}</>)).toBe('<mark class="mark">Button</mark> <mark class="mark">button</mark>s')
   })
   it('is exported from the package root', () => { expect(pkg.AbSearchDrawer).toBe(AbSearchDrawer) })
+  it('a rejected (or throwing) search clears to a safe empty state: no stale results, no unhandled rejection (James P2)', async () => {
+    let fail = false
+    const flaky = vi.fn((q: string) => { if (fail) return q === 'buttons' ? Promise.reject(new Error('net')) : (() => { throw new Error('sync') })(); return RES })
+    const { input } = await mount({ search: flaky })
+    await type(input, 'button'); await flush()
+    expect(document.querySelectorAll('[role="option"]').length).toBe(3) // 📦 results
+    fail = true; await type(input, 'buttons'); await flush(); await flush()
+    expect(document.querySelectorAll('[role="option"]').length).toBe(0) // 🧯 stale results gone
+    expect(input.hasAttribute('aria-activedescendant')).toBe(false)
+    await type(input, 'buttonz'); await flush(); await flush()
+    expect(document.querySelectorAll('[role="option"]').length).toBe(0) // 🧯 sync throw too
+    fail = false; await type(input, 'button'); await flush()
+    expect(document.querySelectorAll('[role="option"]').length).toBe(3) // 🔁 recovers
+  })
 })
