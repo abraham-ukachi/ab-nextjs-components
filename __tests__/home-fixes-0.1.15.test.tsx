@@ -117,8 +117,8 @@ describe('AbSidebar logo row 🏷️', () => {
   const sections = [{ id: 's', items: [{ href: '/', label: 'Home' }] }]
   it('client + server render data-ab-part="sidebar-logo" before the header, only when `logo` is set', () => {
     for (const S of [AbSidebar, ServerAbSidebar]) {
-      const html = renderToStaticMarkup(<S sections={sections} logo={<img alt="Elements" src="/l.svg" />} header={<b>v</b>} />) // 🖼️
-      expect(html).toMatch(/data-ab-part="sidebar-logo"><img alt="Elements"/) // 🏷️
+      const html = renderToStaticMarkup(<S sections={sections} logo={<span role="img" aria-label="Elements">E</span>} header={<b>v</b>} />) // 🖼️
+      expect(html).toMatch(/data-ab-part="sidebar-logo"><span role="img" aria-label="Elements">/) // 🏷️
       expect(html.indexOf('sidebar-logo')).toBeLessThan(html.indexOf('<b>v</b>')) // ⬆️ above the header
       expect(renderToStaticMarkup(<S sections={sections} />)).not.toContain('sidebar-logo') // 🫥 opt-in
     }
