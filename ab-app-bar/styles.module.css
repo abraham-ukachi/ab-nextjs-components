@@ -44,13 +44,13 @@
   display: flex; /* 📐 */
   align-items: center; /* ↕️ */
   gap: 16px; /* ↔️ */
-  min-height: var(--ab-app-bar-height, 64px); /* 📏 0.1.13: exactly 64px incl. the hairline (matches core's sticky offset) */
+  min-height: var(--ab-app-bar-height, 64px); /* 📏 0.1.13: 64px incl. the hairline (core 0.1.6 panes measure the header row, no offset to match) */
   padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); /* 📦 no block padding: 56px actions fit */
   box-sizing: border-box; /* 📦 */
   background: var(--ab-color-surface, inherit); /* 🎨 */
 }
 .abAppBar[data-sticky='true'] {
-  position: sticky; /* 📌 */
+  position: sticky; /* 📌 document layouts; in core 0.1.6 panes the bar is the header row OUTSIDE the main scroller, so it stays put on its own */
   top: 0; /* ⬆️ */
   z-index: 40; /* ⬆️ */
   border-bottom: var(--ab-divider-hairline, 1px solid rgb(0 0 0 / 0.12)); /* ➖ theme 0.3.4 hairline */

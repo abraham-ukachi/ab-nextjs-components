@@ -52,7 +52,9 @@ import { useEffect, useId, useRef, useState, type ReactElement, type ReactNode }
 // 🧵 classes
 import clsx from 'clsx';
 // 🔗 G42 link
-import Link from '../ab-link';
+import Link, { stripAbLocalePrefix, useAbLocales } from '../ab-link';
+// 🧭 current route (fallback when `activeHref` is omitted, like AbSidebar / AbNavbar)
+import { usePathname } from 'next/navigation';
 // 🔣 icons (more_vert is a built-in)
 import AbIcon from '../ab-icon';
 // 📋 the overflow menu (G26)
@@ -71,7 +73,8 @@ export interface AbAppBarProps {
   brand?: ReactNode; // 🏷️ logo / wordmark (left)
   search?: ReactNode; // 🔎 e.g. <AbSearchTrigger />
   nav?: AbAppBarNavItem[]; // 🧭 inline from 1180px, in the "More" menu below
-  activeHref?: string; // 🎯
+  activeHref?: string; // 🎯 default: the pathname without its locale prefix
+  locales?: readonly string[]; // 🌍 0.1.13 (Joseph): stripped from the pathname (default: AbLinkProvider's), so `/fr/docs` marks `/docs`
   actions?: ReactNode; // 🔘 right side (theme toggle, locale switcher, GitHub…)
   compactActions?: ReactNode; // 📱 0.1.13 (Joseph #3): shown INSTEAD of `actions` below 768px (e.g. only the theme toggle); the rest can live in the More menu or the nav sheet
   leading?: ReactNode; // ☰ optional slot before the brand (e.g. a rail toggle)
@@ -87,7 +90,11 @@ const isActive = (href: string, active?: string) => !!active && (href === active
  * 🧱 AbAppBar (G43): brand, search, nav, actions, sticky with a hairline. Below 1180px the nav moves into a
  * "More" overflow menu built on AbMenu (G26). JS off: the More button is hidden and the nav scrolls inline.
  */
-const AbAppBar = ({ brand, search, nav = [], activeHref, actions, compactActions, leading, sticky = true, labels, className }: AbAppBarProps): ReactElement => {
+const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className }: AbAppBarProps): ReactElement => {
+  // 🌍 the active link comes from the AbLinkProvider locales, same rule as AbSidebar / AbNavbar
+  const appLocales = useAbLocales();
+  const pathname = stripAbLocalePrefix(usePathname() ?? '', locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
+  const current = activeHref ?? pathname; // 🎯 explicit wins
   // 🆔 menu id
   const menuId = `ab-app-bar-more-${useId().replace(/:/g, '')}`;
   // 📋 menu state
@@ -123,7 +130,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, actions, compactActions
         <nav className={styles.abAppBarNav} aria-label={labels?.nav ?? 'Main'}>
           <ul>
             {nav.map((n) => {
-              const on = isActive(n.href, activeHref); // 🎯
+              const on = isActive(n.href, current); // 🎯
               return (
                 <li key={n.href}>
                   <Link href={n.href} className={styles.abAppBarLink} data-active={on ? 'true' : 'false'} aria-current={on ? 'page' : undefined}>{n.label}</Link>
@@ -160,7 +167,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, actions, compactActions
               hidden={!open}
               isActive={open}
               className={styles.abAppBarMenu}
-              items={nav.map((n) => ({ id: n.href, label: n.label, href: n.href, selected: isActive(n.href, activeHref), onClick: () => setOpen(false) }))}
+              items={nav.map((n) => ({ id: n.href, label: n.label, href: n.href, selected: isActive(n.href, current), onClick: () => setOpen(false) }))}
             />
           </div>
         )}
