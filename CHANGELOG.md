@@ -9,6 +9,7 @@
 * 🔗 **AbAppBar `searchCompact`:** a node shown instead of `search` below 768px (both rendered, CSS picks). Pass `<AbSearchTrigger size="sm" href="/docs" label="Search" />` for the mock's mobile pill: a plain link to /docs, 114px wide (`--ab-app-bar-compact-search-width`) in a compact bar, with no ⌘K cap and no hotkey (no `onOpen` means no shortcut; `hotkey={false}` also turns both off).
 * ♿ **Inline AbLocaleSwitcher `ariaLabel`:** the group's accessible name. It defaults to `label`, whether the label is visible or hidden.
 * 📱 **No globe on the mobile bar:** pass the bar's actions without the locale switcher as `compactActions` (from 0.1.13), and render the inline switcher in the app drawer.
+* 📝 **AbAppBar `searchCompact` docs:** a hotkey trigger passed to both `search` and `searchCompact` registers ⌘K twice; give only one `onOpen` (or `hotkey={false}` on the other).
 
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 

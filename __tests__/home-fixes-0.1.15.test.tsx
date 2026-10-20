@@ -227,3 +227,12 @@ describe('inline language list: ariaLabel ♿', () => {
     expect(g.getAttribute('aria-labelledby')).toBeNull() // 🎯 one source of the name
   })
 })
+
+// 📝 James P2 (round 3): the double-⌘K pitfall is documented on `searchCompact`
+describe('AbAppBar searchCompact docs', () => {
+  it('warns that a hotkey trigger in both slots registers ⌘K twice', () => {
+    const src = readFileSync(join(__dirname, '..', 'ab-app-bar', 'index.tsx'), 'utf8') // 📄
+    expect(src).toMatch(/BOTH `search` and `searchCompact` registers ⌘K\s*\*?\s*twice/) // ⚠️
+    expect(src).toMatch(/hotkey=\{false\}` to the other/) // 💡 the fix
+  })
+})

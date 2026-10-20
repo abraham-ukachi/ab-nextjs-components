@@ -99,7 +99,9 @@ export interface AbAppBarProps {
   compactSearch?: 'pill' | 'icon';
   /** 🔗 0.1.15 (God 00:37): shown INSTEAD of `search` below 768px (both rendered, CSS picks: no hydration flip), e.g.
    *  `<AbSearchTrigger size="sm" href="/docs" label="Search" />`: a plain link, no ⌘K cap and no hotkey (no `onOpen`).
-   *  In a compact bar it is the mock's 114px pill (`--ab-app-bar-compact-search-width`). */
+   *  In a compact bar it is the mock's 114px pill (`--ab-app-bar-compact-search-width`).
+   *  ⚠️ Both slots are rendered: a hotkey trigger (with `onOpen`) passed to BOTH `search` and `searchCompact` registers ⌘K
+   *  twice (one press opens twice). Give only one of them `onOpen`, or pass `hotkey={false}` to the other. */
   searchCompact?: ReactNode;
 }
 
