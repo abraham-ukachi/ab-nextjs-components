@@ -28,6 +28,8 @@
 * @file: ab-drawer/use-ab-edge-swipe.ts
 * @type: Client hook
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*
+* ⚠️ Known limit: Chromium (Android Chrome, Chrome DevTools touch emulation) fires `pointercancel` as soon as a touch drag starts, because the page's default `touch-action` lets the browser take the pan. The swipe never completes there, so the drawer doesn't open. Checked 2026-10-21 with Chromium 156 touch emulation; WebKit/iOS passes. Keep a visible opener (the menu or TOC button) as the main way in.
 */
 
 /*

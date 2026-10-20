@@ -33,6 +33,9 @@
 *   1+|> <AbAppLayout variant="panes" mobileHeader="main" content={<AbMainLayout
 *    -|>   mainHeader={<AbMobileHeader logo={<a href="/" id="home-logo">…</a>} onLanguage={openLanguage}
 *    -|>     theme={mode} onThemeChange={setMode} />} … />} />
+*
+* 📌 Requires ab-nextjs-core ≥ 0.2.1 with `mobileHeader="main"` on AbAppLayout. That hides the app header below
+*    768px and turns the main header slot into this 56px bar; older core shows it inside the normal main header.
 */
 
 /*

@@ -126,6 +126,11 @@ A drawer belongs to a **region**: the whole app, the main pane or the aside pane
 * **Presets.** `<AbDrawerList>` is one selectable list: `items={[{ value, label, description?, icon?, href?, lang?, disabled? }]}`, `value`, `onSelect`, `closeOnSelect`, with the current item marked `aria-current`. `<AbConfirmDrawer>` takes `message`, `confirmLabel`, `cancelLabel`, `onConfirm`, `onCancel`, `tone="danger"` and `busy`. Escape, the scrim and ✕ count as cancel.
 * **G56:** `<AbLocaleSwitcher presentation="drawer" | "auto">` and `<AbAppBar presentation="drawer" | "auto">` (the More menu) open as an app-scope bottom `AbDrawerList`. `auto` opens a drawer below 768px and a menu above. The default stays `menu`.
 
+### Drawers v2 (0.2.0)
+
+* **`<AbMobileHeader>`** (logo · globe · theme toggle) needs **ab-nextjs-core ≥ 0.2.1** with `<AbAppLayout variant="panes" mobileHeader="main">`. Pass it as `mainHeader`; core hides the app header below 768px and makes the main header the 56px mobile bar.
+* **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** ⚠️ known limit: Chromium (Android Chrome, Chrome DevTools touch emulation) fires `pointercancel` as soon as a touch drag starts, because the page's default `touch-action` lets the browser take the pan. The swipe never completes there, so the drawer doesn't open. Checked 2026-10-21 with Chromium 156 touch emulation; WebKit/iOS passes. Keep a visible opener (the menu or TOC button) as the main way in.
+
 ## Getting Started
 
 ### Installation
