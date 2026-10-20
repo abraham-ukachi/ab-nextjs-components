@@ -236,3 +236,11 @@ describe('AbAppBar searchCompact docs', () => {
     expect(src).toMatch(/hotkey=\{false\}` to the other/) // 💡 the fix
   })
 })
+
+// ✂️ James P2 (round 3): a longer translated label ellipsizes inside the 114px pill
+describe('AbAppBar compact pill label ellipsis', () => {
+  it('the pill labels get min-width 0, overflow hidden, ellipsis, nowrap', () => {
+    const s = readFileSync(join(__dirname, '..', 'ab-app-bar', 'styles.module.css'), 'utf8') // 📄
+    expect(s).toMatch(/:global\(\.AbSearchTrigger\) \[data-ab-part\^='search-label'\] \{ min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; \}/) // ✂️
+  })
+})

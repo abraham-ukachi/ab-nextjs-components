@@ -10,6 +10,7 @@
 * ♿ **Inline AbLocaleSwitcher `ariaLabel`:** the group's accessible name. It defaults to `label`, whether the label is visible or hidden.
 * 📱 **No globe on the mobile bar:** pass the bar's actions without the locale switcher as `compactActions` (from 0.1.13), and render the inline switcher in the app drawer.
 * 📝 **AbAppBar `searchCompact` docs:** a hotkey trigger passed to both `search` and `searchCompact` registers ⌘K twice; give only one `onOpen` (or `hotkey={false}` on the other).
+* ✂️ **AbAppBar compact pill:** a longer (translated) label ends in an ellipsis inside the 114px pill.
 
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 

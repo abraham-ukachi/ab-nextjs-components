@@ -179,4 +179,5 @@
   .abAppBarSearch[data-when='wide'] { display: none; } /* 🙈 */
   .abAppBarSearch[data-when='compact'] { display: block; } /* 👀 */
   .abAppBar[data-compact-search='pill'] .abAppBarSearch[data-when='compact'] > :global(.AbSearchTrigger) { width: var(--ab-app-bar-compact-search-width, 114px); box-sizing: border-box; } /* 📏 mock 114 */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch[data-when='compact'] > :global(.AbSearchTrigger) [data-ab-part^='search-label'] { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* ✂️ James P2: longer translations end in … inside the 114px pill */
 }
