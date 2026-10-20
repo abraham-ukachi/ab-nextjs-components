@@ -149,6 +149,8 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
   }; // 🌍
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔
   const base = id ?? `ab-search-${auto}`;
+  // 🆔 James P2: group ids come from app data ("@scope/pkg", "a b"); keep only id-safe characters, and the index keeps them unique
+  const groupId = (g: AbSearchDrawerGroup, i: number) => `${base}-g-${i}-${String(g.id).replace(/[^A-Za-z0-9_-]/g, '_')}`;
   const input = useRef<HTMLInputElement>(null); // 🔤
   const list = useRef<HTMLDivElement>(null); // 📜
   const [query, setQuery] = useState(defaultQuery); // 🔤
@@ -239,9 +241,9 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
               </>
             )}
             <div id={`${base}-list`} role="listbox" aria-label={L.title} hidden={!expanded}>
-              {(groups ?? []).filter((g) => g.items.length).map((g) => (
-                <div key={g.id} role="group" aria-labelledby={`${base}-g-${g.id}`}>
-                  <p className={kit.grp2} id={`${base}-g-${g.id}`}><span>{g.label}</span>{g.meta && <code>{g.meta}</code>}</p>
+              {(groups ?? []).filter((g) => g.items.length).map((g, gi) => (
+                <div key={g.id} role="group" aria-labelledby={groupId(g, gi)}>
+                  <p className={kit.grp2} id={groupId(g, gi)}><span>{g.label}</span>{g.meta && <code>{g.meta}</code>}</p>
                   {g.items.map((it, j) => {
                     const i = starts[g.id] + j; const on = i === active; // 🎯
                     return (

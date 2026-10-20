@@ -145,4 +145,14 @@ describe('AbSearchDrawer (drawers v2 §4) 🔎', () => {
     fail = false; await type(input, 'button'); await flush()
     expect(document.querySelectorAll('[role="option"]').length).toBe(3) // 🔁 recovers
   })
+  it('group heading ids are sanitised and unique, and each group stays labelled (James P2)', async () => {
+    const odd: AbSearchDrawerGroup[] = [{ ...RES[0], id: '@ab/components x' }, { ...RES[1], id: '@ab/components.x' }]
+    const { input } = await mount({ search: () => odd })
+    await type(input, 'button'); await flush()
+    const groups = Array.from(document.querySelectorAll('[role="group"][aria-labelledby]'))
+    const ids = groups.map((g) => g.getAttribute('aria-labelledby')!)
+    expect(groups).toHaveLength(2)
+    for (const id of ids) { expect(id).toMatch(/^[A-Za-z0-9_-]+$/); expect(document.querySelector(`#${id}`)).not.toBeNull() } // 🆔 a valid CSS id
+    expect(new Set(ids).size).toBe(2) // 🆔 no collision
+  })
 })
