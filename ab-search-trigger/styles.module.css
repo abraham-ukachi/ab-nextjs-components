@@ -63,3 +63,8 @@
 .abSearchTriggerLabel { flex: 1; text-align: start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* 🏷️ */
 .abSearchTriggerIcon { flex: none; } /* 🔣 */
 .abSearchTriggerSoon { font-size: 12px; opacity: 0.8; } /* 🚧 */
+
+/* 📱 compact (Joseph #3/#16): icon-only round pill for small app bars, no overflow at 390px */
+.abSearchTrigger[data-compact='true'] { flex: none; width: 40px; min-width: 40px; padding: 0; justify-content: center; } /* 🔘 */
+/* 🕶️ visually hidden, still read by screen readers */
+.abSearchTriggerSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; flex: none; }

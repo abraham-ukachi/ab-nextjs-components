@@ -24,13 +24,10 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbSearchTrigger (G44)
+* @name: index.tsx
 * @file: ab-search-trigger/index.tsx
-* @type: Client Component
+* @type: Component
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
-*
-* Example usage:
-*   <AbSearchTrigger label="Search docs" onOpen={() => setOpen(true)} href="/search" />
 */
 
 /*
@@ -42,7 +39,7 @@
 'use client';
 
 // ⚛️ React
-import { useEffect, useSyncExternalStore, type ReactElement } from 'react';
+import { useEffect, useSyncExternalStore, type MouseEvent, type ReactElement } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🔗 G42 link (href fallback)
@@ -62,6 +59,8 @@ export interface AbSearchTriggerProps {
   onOpen?: () => void; // 🔔 opens your search dialog (button mode)
   href?: string; // 🔗 no onOpen → a link to a search page (also the JS-off path)
   hotkey?: boolean; // ⌨️ listen for ⌘K / Ctrl+K (default true when onOpen is set)
+  shortcut?: boolean; // ⌨️ alias of `hotkey` (Joseph's spec name); `hotkey` wins when both are set
+  compact?: boolean; // 📱 icon-only pill (the label stays for screen readers), e.g. the mobile app bar
   comingSoon?: boolean; // 🚧 visible but inert: aria-disabled, no hotkey
   comingSoonLabel?: string; // 🏷️ default "Coming soon"
   className?: string; // 🏷️
@@ -81,7 +80,7 @@ export function isAbApplePlatform(nav?: { platform?: string; userAgent?: string;
  * announces `aria-keyshortcuts="Meta+K Control+K"`, and falls back to a link when there's no `onOpen`.
  * Note: the hotkey is a local listener; G48 `useAbHotkey` is deliberately not in hooks 0.1.7.
  */
-const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, comingSoon = false, comingSoonLabel = 'Coming soon', className }: AbSearchTriggerProps): ReactElement => {
+const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', className }: AbSearchTriggerProps): ReactElement => {
   // 🍎 SSR renders "Ctrl"; hydration then reads the platform (useSyncExternalStore: no mismatch, no effect)
   const apple = useSyncExternalStore(
     noopSubscribe, // 🔕 the platform never changes
@@ -89,7 +88,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, comingSoon = 
     () => false, // 🖨️ server
   );
   // ⌨️ ⌘K / Ctrl+K
-  const listen = !comingSoon && !!onOpen && (hotkey ?? true);
+  const listen = !comingSoon && !!onOpen && (hotkey ?? shortcut ?? true);
   useEffect(() => {
     if (!listen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -106,22 +105,34 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, comingSoon = 
   const inner = (
     <>
       <AbIcon name="search" size={20} className={styles.abSearchTriggerIcon} />
-      <span className={styles.abSearchTriggerLabel}>{label}</span>
+      <span className={clsx(styles.abSearchTriggerLabel, compact && styles.abSearchTriggerSrOnly)}>{label}</span>
+      {/* 🚧 coming soon tag, or ⌨️ the key hint ONLY while a hotkey is really listening (James #3, D24a) */}
       {comingSoon
-        ? <span className={styles.abSearchTriggerSoon}>{comingSoonLabel}</span>
-        : <AbKbd keys={[apple ? '⌘' : 'Ctrl', 'K']} className={styles.abSearchTriggerKbd} />}
+        ? !compact && <span className={styles.abSearchTriggerSoon}>{comingSoonLabel}</span>
+        : listen && !compact && <AbKbd keys={[apple ? '⌘' : 'Ctrl', 'K']} className={styles.abSearchTriggerKbd} />}
     </>
   );
   const common = {
     className: clsx('AbSearchTrigger', styles.abSearchTrigger, !comingSoon && 'ab-motion-interactive', className), // 🏷️
     'data-ab-part': 'search-trigger', // 🧩
-    'aria-keyshortcuts': comingSoon ? undefined : 'Meta+K Control+K', // ♿
+    'aria-keyshortcuts': listen ? 'Meta+K Control+K' : undefined, // ♿ only announced when bound (James #3)
+    'data-compact': compact ? 'true' : undefined, // 📱
   };
 
   // 🚧 coming soon: focusable, announced, inert
   if (comingSoon) return <button type="button" {...common} aria-disabled="true" data-coming-soon="true">{inner}</button>;
-  // 🔗 no handler → link (works without JS)
-  if (!onOpen && href) return <Link href={href} {...common}>{inner}</Link>;
+  // 🔗 href → ALWAYS a real link, so it works with JS off (D24a: /docs). With onOpen too, JS intercepts
+  //    the click and opens the dialog instead (James #4); modified clicks (new tab, …) keep the link.
+  if (href) {
+    const onClick = onOpen
+      ? (e: MouseEvent<HTMLAnchorElement>) => {
+          if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // 🖱️ let the browser handle it
+          e.preventDefault(); // 🚫 navigation
+          onOpen(); // 🔔
+        }
+      : undefined;
+    return <Link href={href} {...common} onClick={onClick} aria-haspopup={onOpen ? 'dialog' : undefined}>{inner}</Link>;
+  }
   // 🔘 dialog opener
   return <button type="button" {...common} aria-haspopup="dialog" onClick={onOpen}>{inner}</button>;
 };
