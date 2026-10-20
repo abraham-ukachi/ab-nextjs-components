@@ -123,7 +123,8 @@ const openStack: symbol[] = [];
 /** 🥞 is `token` the topmost open drawer? */
 const isTopDrawer = (token: symbol): boolean => openStack[openStack.length - 1] === token;
 
-// ♿ one-shot reduced-motion check
+// ♿ reduced-motion check, read once per open / close on purpose: it only picks the unmount delay for THAT
+// toggle (the slide itself is CSS, which follows the media query live), so a listener would buy nothing
 const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
