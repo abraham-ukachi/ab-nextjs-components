@@ -80,8 +80,9 @@ export interface AbLocaleSwitcherProps {
   icon?: ReactNode; // 🖼️ override the globe
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
-  /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above */
-  presentation?: AbPresentation;
+  /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above.
+   *  🧩 0.1.15 (God 00:08): `inline` = no trigger; a labelled list of rows rendered in place, e.g. inside the app drawer on mobile */
+  presentation?: AbPresentation | 'inline';
   drawerScope?: AbDrawerScope; // 🗺️ default 'app'
   drawerSide?: 'top' | 'bottom' | 'start' | 'end'; // 🧭 default 'bottom'
 }
@@ -101,7 +102,9 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
 
 export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
   // 🧩 props
-  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation: rawPresentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  const inline = rawPresentation === 'inline'; // 🧩 0.1.15: rows in place (e.g. the mobile app drawer)
+  const presentation: AbPresentation = inline ? 'menu' : rawPresentation; // 🗄️ the popover logic never runs inline
   // 🗄️ how this open happens (decided on click)
   const [mode, setMode] = useState<'menu' | 'drawer'>(presentation === 'drawer' ? 'drawer' : 'menu');
   // 🚪 open?
@@ -165,6 +168,30 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
     onSelect?.(code); // 📣
     close(); // 🚪
   };
+
+  // 🧩 0.1.15: inline list (no trigger, no popover). Links mark the active row with aria-current, buttons with aria-pressed
+  if (inline) {
+    return (
+      <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" role="group" aria-labelledby={`${base}-label`}>
+        <div id={`${base}-label`} className={styles.inlineLabel}>{label}</div>
+        <ul className={styles.inlineList}>
+          {locales.map((l) => {
+            const on = l.code === current; // ✅
+            const inner = (<><span className={styles.inlineText}>{l.label}</span><span className={styles.inlineCheck} aria-hidden="true">{on ? <AbIcon name="check" size={18} /> : null}</span></>);
+            return (
+              <li key={l.code}>
+                {getHref ? (
+                  <a className={styles.inlineItem} href={getHref(l.code)} hrefLang={l.code} lang={l.code} data-active={on ? 'true' : 'false'} aria-current={on ? 'true' : undefined} onClick={() => onSelect?.(l.code)}>{inner}</a>
+                ) : (
+                  <button type="button" className={styles.inlineItem} lang={l.code} data-active={on ? 'true' : 'false'} aria-pressed={on} onClick={() => onSelect?.(l.code)}>{inner}</button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
 
   return (
     <div ref={rootRef} className={clsx('AbLocaleSwitcher', styles.root, className)} style={style} data-ab-part="locale-switcher" data-align={align}>
