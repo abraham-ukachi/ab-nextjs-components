@@ -175,6 +175,8 @@
   padding: 0; border-radius: 0; background: none; line-height: 1; /* 🧹 no chip */
   font: 500 10.5px var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); color: var(--ab-color-faint, #807062); /* ⌨️ */
 }
+/* ♿ James: faint on --tint is 3.9:1, so on the active row the text badge takes the row's --accent-text (≥ 4.5:1 on tint) */
+.abSidebar[data-badge='text'] .abSidebarLink[data-active='true'] .abSidebarBadge { color: inherit; }
 /* ⏪ P9: outlined collapse, 32×32, radius 8, 1px --border, --card, --muted */
 .abSidebarToggle[data-variant='outlined'] {
   width: 32px; height: 32px; box-sizing: border-box; flex: none; /* 📏 */

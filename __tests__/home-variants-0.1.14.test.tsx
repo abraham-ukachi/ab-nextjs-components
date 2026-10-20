@@ -315,3 +315,10 @@ describe('faint fallbacks are the AA value 🖋️', () => {
     }
   })
 })
+
+// ♿ James: no faint small text on --tint; the active sidebar row's text badge inherits --accent-text
+describe('AbSidebar text badge on the active row 🧭', () => {
+  it('inherits the active colour instead of --faint', () => {
+    expect(css('ab-sidebar/styles.module.css')).toMatch(/\.abSidebar\[data-badge='text'\] \.abSidebarLink\[data-active='true'\] \.abSidebarBadge \{ color: inherit; \}/) // 🎯
+  })
+})
