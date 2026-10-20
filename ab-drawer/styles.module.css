@@ -1,0 +1,122 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbDrawer styles (G53)
+* @file: ab-drawer/styles.module.css
+* @type: CSS module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+
+/* 📍 the anchor is layout-neutral: the drawer itself lives in the scope's layer */
+.abDrawerAnchor { display: contents; }
+
+/* 🧱 the layer: absolute `inset: 0` INSIDE the scope box (app / main / aside), so a drawer is clipped
+   by its scope and never makes the document scroll (D34). Clicks pass through when no drawer is open. */
+.abDrawerLayer {
+  position: absolute; /* 📌 inside the scope box */
+  inset: 0; /* 📐 the whole scope */
+  z-index: 60; /* ⬆️ above the panes and the aside sheet (30) */
+  overflow: hidden; /* ✂️ a sliding panel never leaks out */
+  pointer-events: none; /* 🖱️ idle layer = transparent to clicks */
+  contain: layout paint; /* 🚀 */
+}
+.abDrawerLayer[data-host='body'] { position: fixed; } /* 📌 no AbAppLayout: cover the viewport */
+
+.abDrawerFrame { position: absolute; inset: 0; pointer-events: auto; } /* 🖱️ a drawer is up */
+
+/* 🌫️ scrim */
+.abDrawerScrim {
+  position: absolute; /* 📌 */
+  inset: 0; /* 📐 */
+  background: var(--ab-scrim-color, rgb(0 0 0 / 0.32)); /* 🌫️ */
+  opacity: 0; /* 🫥 */
+  --ab-motion-duration: var(--ab-drawer-duration, 240ms); /* 🎞️ fade = .ab-motion-colors (ab-nextjs-animations) */
+}
+.abDrawerFrame[data-state='open'] > .abDrawerScrim { opacity: 1; } /* 🌫️ */
+
+/* 🗄️ the panel */
+.abDrawer {
+  --ab-drawer-shift: 100%; /* 🛝 how far it starts off-screen */
+  position: absolute; /* 📌 */
+  display: flex; /* 📐 header · body · footer */
+  flex-direction: column; /* ↕️ */
+  box-sizing: border-box; /* 📦 */
+  margin: 0; /* 🧹 */
+  min-width: 0; /* 🚫 overflow */
+  min-height: 0; /* 🚫 overflow */
+  background: var(--ab-color-surface-container-low, var(--surface-color, Canvas)); /* 🎨 */
+  color: var(--ab-color-on-surface, var(--on-surface-color, CanvasText)); /* 🖋️ */
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.24); /* 🌗 */
+  outline: none; /* 🎯 the panel itself is only a fallback focus target */
+  overscroll-behavior: contain; /* 🚫 scroll chaining (G54) */
+  --ab-motion-duration: var(--ab-drawer-duration, 240ms); /* 🎞️ the panes slide = .ab-motion-transform (ab-nextjs-animations) */
+  --ab-motion-easing: cubic-bezier(0.2, 0, 0, 1); /* 🚀 */
+}
+.abDrawer[data-side='bottom'] { inset: auto 0 0 0; max-height: min(85%, var(--ab-drawer-size, 480px)); border-radius: 16px 16px 0 0; padding-bottom: env(safe-area-inset-bottom, 0px); transform: translateY(var(--ab-drawer-shift)); } /* ⬆️ */
+.abDrawer[data-side='top'] { inset: 0 0 auto 0; max-height: min(85%, var(--ab-drawer-size, 480px)); border-radius: 0 0 16px 16px; padding-top: env(safe-area-inset-top, 0px); transform: translateY(calc(-1 * var(--ab-drawer-shift))); } /* ⬇️ */
+.abDrawer[data-side='left'] { inset: 0 auto 0 0; width: min(85%, var(--ab-drawer-size, 360px)); transform: translateX(calc(-1 * var(--ab-drawer-shift))); } /* ➡️ */
+.abDrawer[data-side='right'] { inset: 0 0 0 auto; width: min(85%, var(--ab-drawer-size, 360px)); transform: translateX(var(--ab-drawer-shift)); } /* ⬅️ */
+/* 🌍 logical sides follow the writing direction */
+.abDrawer[data-side='start'] { inset-block: 0; inset-inline-start: 0; width: min(85%, var(--ab-drawer-size, 360px)); transform: translateX(calc(-1 * var(--ab-drawer-shift))); }
+.abDrawer[data-side='end'] { inset-block: 0; inset-inline-end: 0; width: min(85%, var(--ab-drawer-size, 360px)); transform: translateX(var(--ab-drawer-shift)); }
+.abDrawer[data-side='start']:dir(rtl) { transform: translateX(var(--ab-drawer-shift)); } /* 🌍 RTL */
+.abDrawer[data-side='end']:dir(rtl) { transform: translateX(calc(-1 * var(--ab-drawer-shift))); } /* 🌍 RTL */
+.abDrawerFrame[data-state='open'] > .abDrawer { transform: none; } /* 🛬 slid in */
+
+.abDrawerHeader { flex: none; display: flex; align-items: center; gap: 8px; padding: 12px 8px 4px 20px; } /* 🔝 */
+.abDrawerTitle { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1.125rem; font-weight: 600; } /* 🏷️ */
+.abDrawerClose {
+  flex: none; /* 📐 */
+  inline-size: 40px; /* 📏 */
+  block-size: 40px; /* 📏 */
+  border: 0; /* 🧹 */
+  border-radius: 999px; /* 🟢 */
+  background: transparent; /* 🎨 */
+  color: inherit; /* 🖋️ */
+  font: inherit; /* 🔤 */
+  cursor: pointer; /* 🖱️ */
+}
+.abDrawerClose:hover { background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🖱️ */
+.abDrawerClose:focus-visible { outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); outline-offset: 2px; } /* ♿ */
+.abDrawerBody { flex: 1 1 auto; min-height: 0; overflow: hidden auto; overscroll-behavior: contain; padding: 8px 20px 16px; } /* 📜 its own scroller */
+.abDrawerFooter { flex: none; display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px 16px; } /* 🔚 */
+
+/* ♿ reduced motion: no slide, no fade (handled by ab-nextjs-animations .ab-motion-*) */
+
+/* 🧩 D41 no-JS fallback: an in-flow section; hidden as soon as scripting runs (hydration swaps in the drawer) */
+.abDrawerFallback { display: block; margin-block: 16px; border: var(--ab-divider-hairline, 1px solid rgb(0 0 0 / 0.12)); border-radius: 12px; }
+.abDrawerFallback .abDrawerTitle { padding: 12px 20px 0; }
+.abDrawerFallback .abDrawerBody { overflow: visible; }
+@media (scripting: enabled) {
+  .abDrawerFallback { display: none; }
+}

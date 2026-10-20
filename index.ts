@@ -130,6 +130,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbPackageCard', file: 'ab-package-card/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbToc) — server-safe, no hooks
   { name: 'AbToc', file: 'ab-toc/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.14 (G53): AbDrawer + presets
+  { name: 'AbDrawer', file: 'ab-drawer/index.tsx', kind: 'client', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
@@ -169,6 +171,9 @@ export { default as AbSidebar } from './ab-sidebar/index.tsx'
 // 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
 export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from './ab-toc/index.tsx'
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
+// 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
+export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from './ab-drawer/index.tsx'
+export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from './ab-drawer/index.tsx'
 export { default as AbText } from './ab-text/index.tsx'
 export { default as AbTestHello } from './ab-test-hello/index.tsx'
 export { default as AbKeyFeature } from './ab-key-feature/index.tsx'

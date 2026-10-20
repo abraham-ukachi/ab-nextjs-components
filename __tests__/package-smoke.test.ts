@@ -54,6 +54,8 @@ const componentFiles = [
   'ab-card/index.tsx',
   'ab-package-card/index.tsx',
   'ab-toc/index.tsx',
+  'ab-drawer/index.tsx',
+  'ab-drawer/use-ab-drawer.ts',
   'ab-sidebar/view.tsx',
   'ab-navbar/view.tsx',
   'ab-theme-toggle/index.tsx',
@@ -120,11 +122,11 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (67 Done: 0.1.13 adds 7)', async () => {
+  it('exports supportedComponents catalog (68 Done: 0.1.13 adds 7, 0.1.14 AbDrawer)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(67)
+    expect(mod.supportedComponents).toHaveLength(68)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(45)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(46)
     expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(22)
   })
 
@@ -151,6 +153,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-card/styles.module.css',
       'ab-package-card/styles.module.css',
       'ab-toc/styles.module.css',
+      'ab-drawer/styles.module.css',
       'ab-theme-toggle/styles.module.css',
       'ab-input/styles.module.css',
       'ab-balloon/styles.module.css',
