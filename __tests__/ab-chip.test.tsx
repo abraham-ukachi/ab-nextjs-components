@@ -75,6 +75,6 @@ describe('AbChip 0.1.14: size="sm" · shape="rounded" · mono · tone (P16) 🏷
     expect(css).toMatch(/height: var\(--ab-chip-height, 20px\)/); expect(css).toMatch(/padding: 0 var\(--ab-chip-padding-inline, 7px\)/)
     expect(css).toMatch(/border-radius: var\(--ab-radius-chip, 6px\)/); expect(css).toMatch(/font-size: 11px; font-weight: 600; line-height: 1;/)
     expect(css).toMatch(/\[data-tone='accent'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text/)
-    expect(css).toMatch(/\[data-tone='sage'\] \{ background: rgb\(119 141 121 \/ 0\.12\); color: var\(--ab-color-sage-accent, #778d79\)/)
+    expect(css).toMatch(/\[data-tone='sage'\] \{ background: rgb\(119 141 121 \/ 0\.12\); color: var\(--ab-color-sage-accent, #566a58\)/) // ♿ John: AA sage
   })
 })

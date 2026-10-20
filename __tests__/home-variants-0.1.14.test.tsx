@@ -287,3 +287,20 @@ describe('AbThemeToggle icon shows the target mode 🎯', () => {
     expect(b.getByRole('button').getAttribute('aria-label')).toBe('Theme: Dark') // 🔙 fallback name
   })
 })
+
+// 🌿 John 20:57: the sage chip fallback text is AA (≥ 4.5:1) on its own tint over the card
+describe('AbChip sage fallback AA 🌿', () => {
+  it('fallback colour ≥ 4.5:1 on rgb(119 141 121 / 12%) over #fff and #fff8f5', () => {
+    const src = css('ab-chip/styles.module.css') // 🎨
+    const rule = src.match(/\.chip\[data-tone='sage'\]\s*\{([^}]*)\}/)![1] // 🔍
+    expect(rule).toContain('rgb(119 141 121 / 0.12)') // 🎨 tint unchanged
+    const fg = rule.match(/--ab-color-sage-accent,\s*(#[0-9a-f]{6})/i)![1] // 🖋️
+    const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)) // 🔢
+    const lum = (c: number[]) => { const [r, g, b] = c.map((x) => { x /= 255; return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4 }); return 0.2126 * r + 0.7152 * g + 0.0722 * b } // 💡
+    for (const bg of ['#ffffff', '#fff8f5']) {
+      const tint = [119, 141, 121].map((t, i) => t * 0.12 + hex(bg)[i] * 0.88) // 🎨 flattened
+      const [a, b] = [lum(hex(fg)), lum(tint)].sort((p, q) => q - p) // ⚖️
+      expect((a + 0.05) / (b + 0.05), bg).toBeGreaterThanOrEqual(4.5) // ♿
+    }
+  })
+})
