@@ -95,6 +95,7 @@ export interface AbDrawerProps {
   swipe?: boolean; // 🤏 side drawers: swipe the sheet back toward its edge to close (30% of the width or ≥ 0.5px/ms)
   snapPoints?: boolean; // 🧲 bottom only, below 768px: snaps at 70% (S1) and full height (S2) with a handle; gestures per the spec
   defaultSnap?: AbSheetSnap; // 🧲 where it opens (default 'partial'; e.g. 'full' for a search sheet)
+  fullOnly?: boolean; // 🧲 no 70% stop: opens at full height, a gentle drag springs back, a hard one closes (search: the keyboard is up)
   onSnapChange?: (snap: AbSheetSnap) => void; // 🔔
   handleLabels?: { expand: string; collapse: string }; // ♿ the handle button (default "Expand" / "Collapse")
   centerIn?: 'main'; // 💻 bottom only, 768px and up: centred in the main pane, min(640px, main width) wide, ≤ 70% tall
@@ -162,7 +163,7 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
  */
 const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, initialFocus = 'first', className } = props;
-  const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon, headerStart } = props; // 🆕 0.2.0
+  const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon, headerStart, fullOnly = false } = props; // 🆕 0.2.0
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔 SSR-stable
   const dialogId = id ?? `ab-drawer-${auto}`; // 🆔
   const titleId = `${dialogId}-title`; // 🏷️
@@ -254,7 +255,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
 
   // 🧲 0.2.0: snap state (bottom + snapPoints, below 768px) and the laptop centring (centerIn="main", 768px and up)
   const [mobile, setMobile] = useState(false); // 📱 below 768px?
-  const [snap, setSnapState] = useState<AbSheetSnap>(defaultSnap); // 🧲 S1 / S2
+  const [snap, setSnapState] = useState<AbSheetSnap>(fullOnly ? 'full' : defaultSnap); // 🧲 S1 / S2
   const [returned, setReturned] = useState(false); // ✌️ came back to S1 from S2 with a gentle drag
   const [geo, setGeo] = useState<Record<string, string>>({}); // 📐 measured CSS vars (px)
   const snapping = snapPoints && side === 'bottom' && mobile; // 🧲 live?
@@ -262,7 +263,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const setSnap = useCallback((next: AbSheetSnap) => { setSnapState(next); onSnapChange?.(next); }, [onSnapChange]);
   // 🔁 every open starts at defaultSnap (derived during render, like `present`)
   const [lastOpen, setLastOpen] = useState(open);
-  if (open !== lastOpen) { setLastOpen(open); if (open) { setSnapState(defaultSnap); setReturned(false); } }
+  if (open !== lastOpen) { setLastOpen(open); if (open) { setSnapState(fullOnly ? 'full' : defaultSnap); setReturned(false); } }
   // 📱 follow the 768px breakpoint (the same edge core uses)
   useEffect(() => {
     if (!(snapPoints || centerIn) || typeof window.matchMedia !== 'function') return;
@@ -343,7 +344,8 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     }
     const hostH = parseFloat(geo['--ab-drawer-host-h'] ?? '0') || window.innerHeight; // 📏
     const ph = panel.current?.offsetHeight || hostH; // 📏 S2 height
-    const to = resolveAbSheetRelease({ from: snap, dy: e.clientY - d.y, velocity: vel, partialHeight: 0.7 * hostH, fullHeight: ph, returned }); // 🧲
+    const resolved = resolveAbSheetRelease({ from: snap, dy: e.clientY - d.y, velocity: vel, partialHeight: 0.7 * hostH, fullHeight: ph, returned }); // 🧲
+    const to = fullOnly && resolved === 'partial' ? 'full' : resolved; // 🧲 fullOnly: no S1, spring back to S2
     // ⏱️ carry the release speed: the remaining distance at that speed, between 120 and 240ms
     const ms = Math.abs(vel) > 0.05 ? Math.round(Math.min(AB_DRAWER_DURATION, Math.max(120, (0.3 * hostH) / Math.abs(vel)))) : AB_DRAWER_DURATION;
     panel.current?.style.setProperty('--ab-motion-duration', `${ms}ms`); // 🎞️ the ab-nextjs-animations token
@@ -427,10 +429,10 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
             style={sizeVar}
             {...(swipe && edgeSign !== 0 ? { ...gripProps, 'data-ab-grip': 'body' } : {})}
           >
-            {handle && (snapping ? (
+            {handle && (snapping && !fullOnly ? (
               // ➖ 0.2.0: the handle (40×4 bar in a 24px strip, 44px touch zone): a button that toggles S1 / S2
               <button type="button" className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-expanded={snap === 'full'} aria-label={snap === 'full' ? handleLabels?.collapse ?? 'Collapse' : handleLabels?.expand ?? 'Expand'} onClick={() => { setReturned(false); setSnap(snap === 'full' ? 'partial' : 'full'); }} data-ab-grip="grip" {...gripProps} />
-            ) : <div className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-hidden="true" />)}
+            ) : <div className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-hidden="true" {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})} />)}
             <div className={styles.abDrawerHeader} data-ab-part="drawer-header" {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})}>
               {head}
               <button type="button" className={styles.abDrawerClose} data-ab-part="drawer-close" aria-label={closeLabel} onClick={() => close.current()}>

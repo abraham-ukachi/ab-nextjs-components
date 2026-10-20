@@ -152,3 +152,17 @@ describe('AbDrawer 0.2.0: side swipe + focus 🤏', () => {
     expect(document.activeElement?.id).toBe('logo') // ↩️ no opener (body) → the logo link
   })
 })
+
+describe('AbDrawer 0.2.0: fullOnly (the search sheet) 🔎', () => {
+  it('opens at S2, a gentle drag springs back to S2, a hard swipe closes; the handle is a decorative grip', () => {
+    stubMedia(true)
+    const onClose = mount({ snapPoints: true, fullOnly: true })
+    expect(panel().dataset.snap).toBe('full')
+    const h = document.querySelector('[data-ab-part="drawer-handle"]')!
+    expect(h.tagName).toBe('DIV'); expect(h.getAttribute('aria-hidden')).toBe('true') // ➖ no 70% to toggle to
+    dragOn(h, [195, 60], [195, 130], 700, 14) // 🫳 gentle
+    expect(panel().dataset.snap).toBe('full'); expect(onClose).not.toHaveBeenCalled()
+    dragOn(h, [195, 60], [195, 160], 80) // 💨
+    expect(onClose).toHaveBeenCalled()
+  })
+})
