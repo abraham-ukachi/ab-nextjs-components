@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbMainHeadline - Client (port of lyd-main-headline; providers stripped)
 * @file: ab-main-headline/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

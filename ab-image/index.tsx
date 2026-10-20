@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbImage - Client (Adapt of lyd-image — Dexie/offline stripped)
 * @file: ab-image/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

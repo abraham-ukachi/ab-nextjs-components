@@ -43,11 +43,11 @@
 'use client';
 
 // ⚛️ types
-import type { CSSProperties, ReactElement } from 'react';
+import { useId, type CSSProperties, type ReactElement } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🧮 shared helpers (NO icon map import: client bundles stay small)
-import { getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, registerAbIcons, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
+import { scopeAbIconIds, warnAbIconMissing, getAbIconStroke, getRegisteredAbIcon, pickAbIconMarkup, registerAbIcons, toAbIconSize, type AbIconSvgData, type AbIconVariant, type AbIconWeight } from './helpers';
 // 🗂️ the 8 glyphs components draw themselves (per-icon modules, not the map)
 import { AB_ICON_BUILTINS } from './builtin';
 // 🎨 styles
@@ -56,13 +56,14 @@ import styles from './styles.module.css';
 // 📦 helpers for consumers (registerAbIcons, types)
 export * from './helpers';
 export { AB_ICON_BUILTINS } from './builtin';
+export { AbIconRegistrar, type AbIconRegistrarProps } from './registrar'; // 🗂️ server-safe registration (Joseph #11)
 
 // 🗂️ register built-ins at module scope (same on server render + hydration → no mismatch)
 registerAbIcons(AB_ICON_BUILTINS);
 
 // ⚙️ props
 export interface AbIconProps {
-  name: string; // 🗂️ AbIcons name (snake_case); Material ligature fallback if unknown
+  name: string; // 🗂️ AbIcons name (snake_case); AbIcons name (registered / svg / map); unknown = Material ligature fallback + dev warning
   variant?: AbIconVariant; // 🎚️ outlined (default) | filled
   filled?: boolean; // 🕰️ legacy alias for variant="filled"
   weight?: AbIconWeight | number; // 📏 100–700 (outlined), default 200
@@ -74,10 +75,12 @@ export interface AbIconProps {
   style?: CSSProperties; // 🎨
 }
 
-/** 🔣 AbIcons SVG icon (client): `svg` prop → registry → Material ligature fallback. */
+/** 🔣 AbIcons SVG icon (client): `svg` prop → registry → Material ligature fallback + dev warning. */
 const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
   // 🔍 resolve markup without the full map
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), variant ?? (filled ? 'filled' : 'outlined'));
+  // 🆔 one id per rendered instance (Joseph: a hidden twin's mask broke the active Home)
+  const uid = useId();
   // 🎚️ legacy `filled` → variant
   const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
   // 🏷️ accessible name: `label` (new) or `title` (legacy)
@@ -98,18 +101,21 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
         title={title} // 💬 legacy tooltip only
         {...a11y} // ♿
         // 🔒 trusted, package-generated static markup (never user input)
-        dangerouslySetInnerHTML={{ __html: markup }}
+        dangerouslySetInnerHTML={{ __html: scopeAbIconIds(markup, uid) }}
       />
     );
   }
 
-  // 🕰️ fallback: Material Symbols ligature (pre-G2 behaviour) for names not in AbIcons
+  // 🕰️ 0.1.13 (James review): NON-breaking fallback for unregistered names. A patch must not blank icons,
+  //    so an unknown name still renders the pre-G2 Material Symbols ligature (needs the app's font), and
+  //    warns once in development so the missing registration gets fixed before the app drops the font.
+  warnAbIconMissing(name);
   return (
     <span
-      className={clsx('material-symbols-rounded', 'icon', styles.abIconFont, className)} // 🏷️
+      className={clsx('AbIcon', 'material-symbols-rounded', 'icon', styles.abIconFont, className)} // 🏷️ legacy font class
       style={{ ...style, fontSize: toAbIconSize(size) }} // 📏
-      data-filled={v === 'filled' ? 'true' : 'false'} // 🎚️
       data-icon={name} // 🗂️
+      data-filled={v === 'filled' ? 'true' : 'false'} // 🎚️
       data-ab-icon-fallback="font" // 🔎 easy to audit
       title={title} // 💬
       {...a11y} // ♿

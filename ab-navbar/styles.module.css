@@ -1,35 +1,91 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbNavbar - Styles (G41)
+* @file: ab-navbar/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 📱 bottom bar: M3 navigation bar, safe-area aware */
 .abNavbar {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  box-sizing: border-box;
+  width: 100%; /* 📏 */
+  box-sizing: border-box; /* 📦 */
+  padding: 12px 8px calc(16px + env(safe-area-inset-bottom, 0px)); /* 📱 home indicator */
+  padding-inline: max(8px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); /* 📱 notch */
+  background: var(--ab-color-surface-container, transparent); /* 🎨 */
 }
 .abNavbarList {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow-x: auto;
+  display: flex; /* 📐 */
+  justify-content: space-around; /* ↔️ */
+  list-style: none; /* 🚫 */
+  margin: 0; /* 🚫 */
+  padding: 0; /* 🚫 */
 }
+.abNavbarList > li { flex: 1 1 0; display: flex; justify-content: center; } /* ⚖️ equal slots */
+/* 🔗 item: pill icon over a label */
 .abNavbarLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.45rem 0.75rem;
-  border-radius: 9999px;
-  text-decoration: none;
-  color: inherit;
-  opacity: 0.7;
-  white-space: nowrap;
-  font-size: 0.875rem;
-  font-weight: 600;
+  display: flex; /* 📐 */
+  flex-direction: column; /* ⬇️ */
+  align-items: center; /* ↔️ */
+  gap: 4px; /* ↕️ */
+  min-width: 64px; /* 👆 */
+  border: 0; /* 🚫 (buttons) */
+  background: none; /* 🚫 */
+  font: inherit; /* 🔤 */
+  color: var(--ab-color-on-surface-variant, inherit); /* 🖋️ */
+  text-decoration: none; /* 🚫 */
+  cursor: pointer; /* 👆 */
 }
-.abNavbarLink[data-active='true'] {
-  opacity: 1;
-  background: color-mix(in srgb, var(--ab-primary, #6750a4) 14%, transparent);
+.abNavbarPill {
+  display: grid; /* 📐 */
+  place-items: center; /* 🎯 */
+  width: 64px; /* 📏 */
+  height: 32px; /* 📏 */
+  border-radius: 999px; /* 🟢 */
 }
-.abNavbarIcon { font-size: 1.15rem; }
+.abNavbarLabel { font-size: 12px; font-weight: 500; line-height: 16px; } /* 🔤 */
+.abNavbarLink[data-active='true'],
+.abNavbarLink[aria-expanded='true'] { color: var(--ab-color-on-surface, inherit); } /* 🎯 */
+.abNavbarLink[data-active='true'] .abNavbarPill,
+.abNavbarLink[aria-expanded='true'] .abNavbarPill { background: var(--ab-color-secondary-container, rgb(0 0 0 / 0.08)); } /* 🎯 */
+.abNavbarLink[data-active='true'] .abNavbarLabel { font-weight: 700; } /* 🔤 */
+.abNavbarLink:focus-visible {
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
+  border-radius: 12px; /* 🟢 */
+}
+
+/* 🚫🚧 0.1.13: disabled / coming-soon button items (inert, still focusable) */
+.abNavbarLink[aria-disabled='true'] { cursor: default; opacity: 0.6; } /* 🚫 */
+.abNavbarSoon { font-size: 10px; line-height: 12px; opacity: 0.85; } /* 🚧 tag under the label */
+.abNavbarSrOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */

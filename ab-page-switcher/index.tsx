@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbPageSwitcher - Client (port of lyd-page-switcher)
 * @file: ab-page-switcher/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

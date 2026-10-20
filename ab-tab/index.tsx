@@ -8,13 +8,14 @@
 * @project: ab-nextjs-components
 * @name: AbTab - Client (port of lyd-tab)
 * @file: ab-tab/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';
 
 import type { MouseEvent, ReactElement, ReactNode } from 'react';
 import { forwardRef } from 'react';
-import Link from 'next/link';
+import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import clsx from 'clsx';
 import styles from './styles.module.css';
 

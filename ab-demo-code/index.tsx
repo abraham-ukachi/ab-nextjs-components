@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbDemoCode - Client (port of lyd-demo-code; prism soft-optional)
 * @file: ab-demo-code/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

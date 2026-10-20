@@ -125,3 +125,14 @@
   width: 1em; /* 📏 fixed column */
   color: var(--ab-color-bronze-text, #8A6440); /* ♿ */
 }
+
+/* 🚫 JS off fallback (0.1.13): native <details> + hreflang links */
+.noJs { display: none; } /* 🙈 JS on */
+.noJsList { list-style: none; margin: 4px 0 0; padding: 4px; } /* 📜 */
+.noJs > summary { list-style: none; } /* 🚫 marker */
+.noJs > summary::-webkit-details-marker { display: none; } /* 🚫 marker (WebKit) */
+@media (scripting: none) {
+  .root > .trigger,
+  .root > .menu { display: none; } /* 🙈 needs JS */
+  .noJs { display: block; } /* 👁️ */
+}

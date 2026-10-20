@@ -205,6 +205,23 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
           );
         })}
       </ul>
+      {/* 🚫 JS off (0.1.13, gap-review): a native <details> list of hreflang links replaces the menu.
+          Only rendered with getHref (a callback can't run without JS). CSS shows it under (scripting: none). */}
+      {getHref ? (
+        <details className={styles.noJs} data-ab-part="locale-switcher-nojs">
+          <summary className={styles.trigger} aria-label={`${label}: ${active?.label ?? current}`}>
+            <span aria-hidden="true">{icon ?? <AbIcon name="language" size={20} />}</span>
+            <span lang={current}>{active?.label ?? current}</span>
+          </summary>
+          <ul className={styles.noJsList}>
+            {locales.map((l) => (
+              <li key={l.code}>
+                <a href={getHref(l.code)} hrefLang={l.code} lang={l.code} aria-current={l.code === current ? 'true' : undefined} className={styles.item}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
     </div>
   );
 }

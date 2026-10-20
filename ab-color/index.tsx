@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbColor - Client (port of lyd-color)
 * @file: ab-color/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

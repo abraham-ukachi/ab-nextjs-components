@@ -91,6 +91,18 @@ export interface AbButtonProps {
   badgeTone?: AbButtonBadgeTone; // 🎨 NEW: 'neutral' (default) | 'accent'
   disabledReason?: string; // 💬 NEW: SR-only reason, appended to the name while blocked
   focusableWhenDisabled?: boolean; // ⌨️ NEW: force aria-disabled (true) or native disabled (false)
+  // ===== 0.1.13 (Joseph #7) =====
+  // ♿ any aria-* / data-* attribute is passed to the <button>/<a>, e.g. useAbAsideToggle().props
+  //    (`aria-expanded`, `aria-controls`) or `data-testid`. Our own data-* (type, color, …) still win.
+  [aria: `aria-${string}`]: string | number | boolean | undefined;
+  [data: `data-${string}`]: string | number | boolean | undefined;
+}
+
+/** 🔍 pick the aria-* / data-* props to forward (0.1.13) */
+function pickAbButtonPassThrough(props: object): Record<string, unknown> {
+  const out: Record<string, unknown> = {}; // 📦
+  for (const [k, v] of Object.entries(props)) if (k.startsWith('aria-') || k.startsWith('data-')) out[k] = v; // ♿ 🗂️
+  return out;
 }
 
 const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps>(function AbButton(props, ref) {
@@ -144,8 +156,9 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     mode === 'native' && styles.isDisabled, // 🚫
   );
 
-  // 🗂️ data attributes for styling/tests
+  // 🗂️ data attributes for styling/tests (forwarded aria-* / data-* first, so ours win)
   const dataAttrs = {
+    ...pickAbButtonPassThrough(props), // ♿ 0.1.13
     'data-type': type, // 🎨
     'data-raised': raised ? 'true' : 'false', // 🏔️
     'data-shrinks': shrinks ? 'true' : 'false', // 🤏
@@ -154,7 +167,7 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     'data-iconpos': iconPosition, // ↔️
     'data-color': color, // 🎨
     'data-disabled-mode': mode, // 🚦
-  } as const;
+  };
 
   // 🔣 legacy Material icon (decorative)
   const legacyIcon = withIcon && icon

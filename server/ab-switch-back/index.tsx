@@ -8,11 +8,12 @@
 * @project: ab-nextjs-components
 * @name: AbSwitchBack - Server (port of lyd-switch-back)
 * @file: server/ab-switch-back/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 
 import type { ReactElement, ReactNode } from 'react';
-import Link from 'next/link';
+import Link from '../../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import Image from 'next/image';
 import clsx from 'clsx';
 import styles from './styles.module.css';

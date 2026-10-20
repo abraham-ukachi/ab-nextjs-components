@@ -1,6 +1,6 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "type": "module",
   "main": "index.ts",
@@ -36,14 +36,14 @@
   "author": {
     "name": "Abraham Ukachi",
     "url": "https://github.com/abraham-ukachi",
-    "email": "abraham.ukachi@laplateforme.io"
+    "email": "abrahamukachi@gmail.com"
   },
   "license": "MIT",
   "peerDependencies": {
     "ab-nextjs-animations": "^0.2.4",
-    "ab-nextjs-hooks": "^0.1.6",
-    "ab-nextjs-icons": "^0.2.3",
-    "ab-nextjs-theme": "^0.3.3",
+    "ab-nextjs-hooks": "^0.1.7",
+    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-theme": "^0.3.4",
     "clsx": "^2",
     "next": "^16.3.4",
     "react": "^19",
@@ -54,9 +54,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "ab-nextjs-animations": "^0.2.4",
-    "ab-nextjs-hooks": "^0.1.6",
-    "ab-nextjs-icons": "^0.2.3",
-    "ab-nextjs-theme": "^0.3.3",
+    "ab-nextjs-hooks": "^0.1.7",
+    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-theme": "^0.3.4",
     "clsx": "^2.1.1",
     "esbuild": "^0.28.2",
     "eslint": "^9.39.0",
@@ -123,7 +123,14 @@
     "ab-logo/ab-logo.svg",
     "styles.css",
     "css",
-    "assets"
+    "assets",
+    "ab-link",
+    "ab-kbd",
+    "ab-search-trigger",
+    "ab-app-bar",
+    "ab-card",
+    "ab-package-card",
+    "ab-toc"
   ],
   "exports": {
     ".": {
@@ -132,6 +139,7 @@
     },
     "./package.json": "./package.json",
     "./ab-icon": "./ab-icon/index.tsx",
+    "./ab-icon/registrar": "./ab-icon/registrar.tsx",
     "./ab-logo": "./ab-logo/index.tsx",
     "./ab-linear-progress": "./ab-linear-progress/index.tsx",
     "./ab-splash": "./ab-splash/index.tsx",
@@ -204,7 +212,16 @@
     "./server/ab-switch-back": "./server/ab-switch-back/index.tsx",
     "./styles.css": "./styles.css",
     "./css/*": "./css/*",
-    "./assets/*": "./assets/*"
+    "./assets/*": "./assets/*",
+    "./ab-link": "./ab-link/index.tsx",
+    "./ab-kbd": "./ab-kbd/index.tsx",
+    "./ab-search-trigger": "./ab-search-trigger/index.tsx",
+    "./ab-app-bar": "./ab-app-bar/index.tsx",
+    "./ab-card": "./ab-card/index.tsx",
+    "./ab-package-card": "./ab-package-card/index.tsx",
+    "./ab-toc": "./ab-toc/index.tsx",
+    "./ab-sidebar/view": "./ab-sidebar/view.tsx",
+    "./ab-navbar/view": "./ab-navbar/view.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {

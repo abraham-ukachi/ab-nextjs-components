@@ -37,7 +37,7 @@
 */
 
 // 🧪 vitest
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 // 🖨️ static render
 import { renderToStaticMarkup } from 'react-dom/server'
 // 📄 read the client source to guard the bundle
@@ -73,13 +73,22 @@ describe('AbIcon client (G2)', () => {
     expect(on).toContain('--ab-icon-stroke:1.85') // 📏 400
     expect(on).toContain('--ab-icon-size:20px') // 📐
   })
-  it('uses the registry, filled variant, and falls back to the font for unknown names', () => {
+  it('uses the registry, filled variant, and falls back to the font ligature for unknown names (non-breaking)', () => {
     registerAbIcons({ reg_dot: dot }) // 🗂️
     expect(renderToStaticMarkup(<AbIcon name="reg_dot" filled />)).toContain('fill="currentColor"') // ⬛ legacy filled
     const fb = renderToStaticMarkup(<AbIcon name="not_an_icon" title="Old" />) // 🕰️
-    expect(fb).toContain('data-ab-icon-fallback="font"') // 🔎
-    expect(fb).toContain('material-symbols-rounded') // 🔤
+    expect(fb).toContain('data-ab-icon-fallback="font"') // 🔎 0.1.13 (James review): not breaking in a patch
+    expect(fb).toContain('material-symbols-rounded') // 🕰️ legacy font class
+    expect(fb).toContain('>not_an_icon<') // 🕰️ ligature text (shows as text once the app drops the font)
     expect(fb).toContain('aria-label="Old"') // ♿ legacy title still names it
+  })
+  it('warns once in development for an unknown name', () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {}) // 🤫
+    renderToStaticMarkup(<AbIcon name="warn_me_once" />) // 1️⃣
+    renderToStaticMarkup(<AbIcon name="warn_me_once" />) // 2️⃣ no second warning
+    expect(spy).toHaveBeenCalledTimes(1) // 🔕 once
+    expect(String(spy.mock.calls[0][0])).toContain('registerAbIcons') // 💡 tells you how to fix it
+    spy.mockRestore() // 🧹
   })
   it('stroke table matches ab-nextjs-icons exactly', () => {
     expect(AB_ICON_WEIGHT_STROKE).toEqual(abIconWeightStroke) // 🔒 no drift

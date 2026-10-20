@@ -1,3 +1,35 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: contributing-fixes.test.ts
+* @file: __tests__/contributing-fixes.test.ts
+* @type: Vitest Test
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -7,9 +39,10 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 
 describe('contributing fixes (0.1.6)', () => {
   it('AbSidebar is a <nav data-ab-part="sidebar"> (not <aside>)', () => {
-    for (const file of ['ab-sidebar/index.tsx', 'server/ab-sidebar/index.tsx']) {
+    // 🖼️ 0.1.13: both twins render the shared view (rail = data-ab-part="rail")
+    for (const file of ['ab-sidebar/view.tsx']) {
       const src = read(file)
-      expect(src).toMatch(/<nav data-type=\{type\} data-ab-part="sidebar"/)
+      expect(src).toMatch(/<nav[\s\S]*?data-ab-part=\{collapsed \? 'rail' : 'sidebar'\}/)
       expect(src).not.toMatch(/<aside\b/)
       expect(src).toMatch(/<\/nav>/)
     }
@@ -33,7 +66,7 @@ describe('contributing fixes (0.1.6)', () => {
   })
 
   it('AbNavbar is a <nav data-ab-part="bottomBar">', () => {
-    for (const file of ['ab-navbar/index.tsx', 'server/ab-navbar/index.tsx']) {
+    for (const file of ['ab-navbar/view.tsx']) { // 🖼️ 0.1.13: shared by both twins
       const src = read(file)
       expect(src).toMatch(/<nav data-type=\{type\} data-ab-part="bottomBar"/)
       expect(src).toMatch(/<\/nav>/)

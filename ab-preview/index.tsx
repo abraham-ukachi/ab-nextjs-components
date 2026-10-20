@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbPreview - Client (Adapt of lyd-preview; db/providers stripped)
 * @file: ab-preview/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';

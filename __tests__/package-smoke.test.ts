@@ -47,6 +47,15 @@ const componentFiles = [
   'ab-install-snippet/index.tsx',
   'ab-pill/index.tsx',
   'ab-chip/index.tsx',
+  'ab-link/index.tsx',
+  'ab-kbd/index.tsx',
+  'ab-search-trigger/index.tsx',
+  'ab-app-bar/index.tsx',
+  'ab-card/index.tsx',
+  'ab-package-card/index.tsx',
+  'ab-toc/index.tsx',
+  'ab-sidebar/view.tsx',
+  'ab-navbar/view.tsx',
   'ab-theme-toggle/index.tsx',
   'ab-input/index.tsx',
   'ab-balloon/index.tsx',
@@ -111,12 +120,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (60 Done)', async () => {
+  it('exports supportedComponents catalog (67 Done: 0.1.13 adds 7)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(60)
+    expect(mod.supportedComponents).toHaveLength(67)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(42)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(18)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(45)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(22)
   })
 
   it('ships component entry files', () => {
@@ -136,6 +145,12 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-locale-switcher/styles.module.css',
       'ab-install-snippet/styles.module.css',
       'ab-chip/styles.module.css',
+      'ab-kbd/styles.module.css',
+      'ab-search-trigger/styles.module.css',
+      'ab-app-bar/styles.module.css',
+      'ab-card/styles.module.css',
+      'ab-package-card/styles.module.css',
+      'ab-toc/styles.module.css',
       'ab-theme-toggle/styles.module.css',
       'ab-input/styles.module.css',
       'ab-balloon/styles.module.css',
@@ -174,8 +189,6 @@ describe('ab-nextjs-components package smoke', () => {
   'ab-demo-code/styles.module.css',
   'server/ab-brand/styles.module.css',
   'server/ab-name/styles.module.css',
-  'server/ab-navbar/styles.module.css',
-  'server/ab-sidebar/styles.module.css',
   'server/ab-nav-link/styles.module.css',
   'server/ab-text/styles.module.css',
   'server/ab-test-hello/styles.module.css',

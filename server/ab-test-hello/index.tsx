@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbTestHello - Server (port of lyd-test-hello)
 * @file: server/ab-test-hello/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { ReactElement } from 'react';

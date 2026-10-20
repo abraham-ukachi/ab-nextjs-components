@@ -8,6 +8,7 @@
 * @project: ab-nextjs-components
 * @name: AbBadge - Server (port of server/lyd-badge)
 * @file: server/ab-badge/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { CSSProperties, ReactElement } from 'react';

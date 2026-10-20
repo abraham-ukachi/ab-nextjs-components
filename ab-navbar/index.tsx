@@ -5,64 +5,72 @@
 * ~~~~~~~~~~~~ 
 * Copyright (c) 2026 Abraham Ukachi. The abElements Project.
 *
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
 * @project: ab-nextjs-components
-* @name: AbNavbar - Client (port of lyd-navbar; providers stripped)
+* @name: AbNavbar - Client (G41)
 * @file: ab-navbar/index.tsx
+* @type: Client Component
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*
+* Example usage:
+*   <AbNavbar activeHref="/docs" items={[
+*     { kind: 'link', href: '/', icon: 'home', label: 'Home' },
+*     { kind: 'button', id: 'menu', icon: 'menu', label: 'Menu', onSelect: openSheet },
+*   ]} />
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
 'use client';
 
+// ⚛️ React
 import type { ReactElement } from 'react';
-import Link from 'next/link';
+// 🧭 route fallback
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+// 🌍 0.1.13 (Joseph #10): locale-stripped pathname
+import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
+// 🔣 client AbIcon
+import AbIcon from '../ab-icon';
+// 🖼️ shared view
+import { AbNavbarView, isAbNavbarActive, type AbNavbarBaseProps } from './view';
 
-export type AbNavbarLink = {
-  href: string;
-  icon: string;
-  value: string;
-  label: string;
+// 📦 shared types
+export type { AbNavbarItem, AbNavbarLinkItem, AbNavbarButtonItem, AbNavbarLink } from './view';
+export { isAbNavbarActive } from './view';
+
+/** ⚙️ Client props (link and button items). */
+export type AbNavbarProps = AbNavbarBaseProps;
+
+/** 📱 AbNavbar (client, G41): mobile bottom bar, filled active icon, aria-current, safe-area padding. */
+const AbNavbar = (props: AbNavbarProps): ReactElement => {
+  const appLocales = useAbLocales(); // 🌍 from AbLinkProvider
+  const pathname = stripAbLocalePrefix(usePathname() ?? '', props.locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
+  const { page, activeHref } = props;
+  const active = (href: string, value?: string) => (page ? page === value : isAbNavbarActive(href, activeHref ?? pathname)); // 🎯
+  return <AbNavbarView props={props} Icon={AbIcon} active={active} />;
 };
 
-export interface AbNavbarProps {
-  className?: string;
-  type?: 'customer' | 'admin';
-  page?: string;
-  links?: AbNavbarLink[];
-}
-
-const AbNavbar = ({
-  className,
-  type = 'customer',
-  page,
-  links = [],
-}: AbNavbarProps): ReactElement => {
-  const pathname = usePathname() ?? '';
-  return (
-    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label="Primary">
-      <ul className={styles.abNavbarList}>
-        {links.map((link) => {
-          const active = page ? page === link.value : pathname === link.href || pathname.startsWith(`${link.href}/`);
-          return (
-            <li key={link.value}>
-              <Link
-                href={link.href}
-                data-active={active ? 'true' : 'false'}
-                className={styles.abNavbarLink}
-              >
-                <span className={clsx('material-symbols-rounded', styles.abNavbarIcon)} aria-hidden>
-                  {link.icon}
-                </span>
-                <span>{link.label}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
-};
-
+// 📦 exports
 export default AbNavbar;
 export { AbNavbar };

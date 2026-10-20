@@ -8,10 +8,11 @@
 * @project: ab-nextjs-components
 * @name: AbNavLink - Server (port of lyd-nav-link)
 * @file: server/ab-nav-link/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 import type { ReactElement } from 'react';
-import Link from 'next/link';
+import Link from '../../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import clsx from 'clsx';
 import styles from './styles.module.css';
 

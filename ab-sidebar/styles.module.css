@@ -1,41 +1,146 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbSidebar - Styles (G40)
+* @file: ab-sidebar/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 🧭 shell */
 .abSidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  max-width: 16rem;
-  padding: 1rem 0.75rem;
-  box-sizing: border-box;
+  display: flex; /* 📐 */
+  flex-direction: column; /* ⬇️ */
+  gap: 12px; /* ↕️ */
+  width: 100%; /* 📏 */
+  max-width: 280px; /* 📏 docs-shell sidebar */
+  padding: 12px; /* 📦 */
+  box-sizing: border-box; /* 📦 */
 }
+.abSidebar[data-collapsed='true'] {
+  max-width: 72px; /* 🚪 rail */
+  align-items: center; /* ↔️ */
+}
+/* 🏷️ header row: brand/slot + toggle */
+.abSidebarHeader {
+  display: flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  justify-content: space-between; /* ↔️ */
+  gap: 8px; /* ↔️ */
+  min-height: 40px; /* 📏 */
+}
+.abSidebarHeader:empty { display: none; } /* 🙈 */
 .abSidebarBrand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 700;
-  text-decoration: none;
-  color: inherit;
+  font-weight: 700; /* 🔤 */
+  text-decoration: none; /* 🚫 */
+  color: inherit; /* 🖋️ */
 }
+/* 🔘 collapse button */
+.abSidebarToggle {
+  display: inline-grid; /* 📐 */
+  place-items: center; /* 🎯 */
+  width: 40px; /* 📏 */
+  height: 40px; /* 📏 */
+  border: 0; /* 🚫 */
+  border-radius: 999px; /* 🟢 */
+  background: transparent; /* 🎨 */
+  color: inherit; /* 🖋️ */
+  cursor: pointer; /* 👆 */
+}
+.abSidebarToggle:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
+.abSidebarToggle:focus-visible,
+.abSidebarLink:focus-visible {
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
+}
+@media (scripting: none) {
+  .abSidebarToggle { display: none; } /* 🚫 JS off: no toggle */
+}
+/* 🗂️ sections */
+.abSidebarSections { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+.abSidebarSection { display: flex; flex-direction: column; gap: 4px; }
+.abSidebarHeading {
+  margin: 0; /* 🚫 */
+  padding: 0 12px; /* 📦 */
+  font-size: 12px; /* 🔤 */
+  font-weight: 600; /* 🔤 */
+  letter-spacing: 0.04em; /* 🔤 */
+  text-transform: uppercase; /* 🔠 */
+  opacity: 0.7; /* 🌫️ */
+}
+.abSidebar[data-collapsed='true'] .abSidebarHeading { display: none; } /* 🚪 */
 .abSidebarList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display: flex; /* 📐 */
+  flex-direction: column; /* ⬇️ */
+  gap: 2px; /* ↕️ */
+  list-style: none; /* 🚫 */
+  margin: 0; /* 🚫 */
+  padding: 0; /* 🚫 */
 }
+/* 🔗 item */
 .abSidebarLink {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: 0.75rem;
-  text-decoration: none;
-  color: inherit;
-  opacity: 0.75;
-  font-weight: 600;
+  display: flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  gap: 12px; /* ↔️ */
+  min-height: 40px; /* 👆 target */
+  padding: 0 12px; /* 📦 */
+  border-radius: 999px; /* 🟢 */
+  text-decoration: none; /* 🚫 */
+  color: inherit; /* 🖋️ */
+  font-weight: 500; /* 🔤 */
+  /* 🔤 0.1.13 (Joseph #15): M3 label-large, so names stop inheriting the big body size and wrapping at 280px */
+  font-family: var(--md-sys-typescale-label-large-font, inherit);
+  font-size: var(--md-sys-typescale-label-large-size, 14px);
+  line-height: var(--md-sys-typescale-label-large-line-height, 20px);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking, 0.1px);
 }
+.abSidebarLabel { min-width: 0; overflow-wrap: anywhere; } /* 🚫 no overflow, ReactNode-friendly */
+.abSidebarLink[data-depth='1'] { padding-inline-start: 44px; font-size: 14px; } /* 🌳 */
+.abSidebarLink:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
 .abSidebarLink[data-active='true'] {
-  opacity: 1;
-  background: color-mix(in srgb, var(--ab-primary, #6750a4) 14%, transparent);
+  background: var(--ab-color-secondary-container, color-mix(in srgb, #8f4c38 14%, transparent)); /* 🎯 */
+  color: var(--ab-color-on-secondary-container, inherit); /* 🖋️ */
+  font-weight: 600; /* 🔤 */
 }
-.abSidebarIcon { font-size: 1.25rem; }
+.abSidebarIcon { flex: none; } /* 🔣 */
+.abSidebarBadge {
+  margin-inline-start: auto; /* ➡️ */
+  padding: 0 6px; /* 📦 */
+  border-radius: 999px; /* 🟢 */
+  font-size: 11px; /* 🔤 */
+  line-height: 18px; /* 📏 */
+  background: var(--ab-color-tertiary-container, rgb(0 0 0 / 0.08)); /* 🎨 */
+}
+/* 🚪 rail: icons only (labels stay for screen readers via aria-label) */
+.abSidebar[data-collapsed='true'] .abSidebarLink { width: 48px; justify-content: center; padding: 0; }
+.abSidebar[data-collapsed='true'] .abSidebarLabel,
+.abSidebar[data-collapsed='true'] .abSidebarBadge { display: none; }

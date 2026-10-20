@@ -8,12 +8,13 @@
 * @project: ab-nextjs-components
 * @name: AbKeyFeature - Client (port of lyd-key-feature)
 * @file: ab-key-feature/index.tsx
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
 
 'use client';
 
 import type { ReactElement } from 'react';
-import Link from 'next/link';
+import Link from '../ab-link'; // 🔗 G42: injectable via AbLinkProvider (default next/link)
 import clsx from 'clsx';
 import styles from './styles.module.css';
 

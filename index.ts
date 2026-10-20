@@ -116,6 +116,20 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbFlowDiagram)
   { name: 'AbFlowDiagram', file: 'ab-flow-diagram/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbLink)
+  { name: 'AbLink', file: 'ab-link/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbKbd) — server-safe, no hooks
+  { name: 'AbKbd', file: 'ab-kbd/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbSearchTrigger)
+  { name: 'AbSearchTrigger', file: 'ab-search-trigger/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbAppBar)
+  { name: 'AbAppBar', file: 'ab-app-bar/index.tsx', kind: 'client', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbCard) — server-safe, no hooks
+  { name: 'AbCard', file: 'ab-card/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbPackageCard) — server-safe, no hooks
+  { name: 'AbPackageCard', file: 'ab-package-card/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.13 docs shell (AbToc) — server-safe, no hooks
+  { name: 'AbToc', file: 'ab-toc/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
@@ -124,6 +138,7 @@ export { supportedComponents }
 export default abComponents
 
 export { default as AbIcon } from './ab-icon/index.tsx'
+export { AbIconRegistrar } from './ab-icon/registrar.tsx' // 🗂️ server-safe icon registration (0.1.13)
 export { default as AbLogo } from './ab-logo/index.tsx'
 // 📶 progress bar
 export { default as AbLinearProgress } from './ab-linear-progress/index.tsx'
@@ -151,6 +166,9 @@ export { default as AbBrand } from './ab-brand/index.tsx'
 export { default as AbName } from './ab-name/index.tsx'
 export { default as AbNavbar } from './ab-navbar/index.tsx'
 export { default as AbSidebar } from './ab-sidebar/index.tsx'
+// 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
+export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from './ab-toc/index.tsx'
+export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
 export { default as AbText } from './ab-text/index.tsx'
 export { default as AbTestHello } from './ab-test-hello/index.tsx'
 export { default as AbKeyFeature } from './ab-key-feature/index.tsx'

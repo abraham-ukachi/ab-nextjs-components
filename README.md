@@ -74,6 +74,28 @@ Shipped assets: `assets/logos/ab-logo.svg`, `assets/spinners/3-dots-scale.svg`, 
   ```
 * `<AbInstallSnippet>` tabs are **≥ 4.5:1** (WCAG AA) in light and dark, active, inactive and hover: inactive = on-surface-variant on surface-container, hover = on-surface on an 8% state layer, active = on-primary-container on primary-container.
 
+### Docs shell (0.1.13) 🧭
+
+New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**, and every icon is an AbIcon (no Material Symbols font).
+
+* **`ab-nextjs-components/ab-link`**: `<AbLinkProvider component={Link}>` swaps the link used by **every** Ab component (for example the locale-aware `Link` from `ab-nextjs-i18n`). `useAbLink()` and `<AbLink>` are exported too. It is the package's only `next/link` import (test-guarded).
+  ```tsx
+  <AbLinkProvider component={Link}>{children}</AbLinkProvider>
+  ```
+* **`<AbSidebar>` v2 (G40)**: `sections=[{ id, label, items: [{ href, icon, label, badge?, items? }] }]`, `activeHref`, `collapsed` / `defaultCollapsed` / `onCollapsedChange`, `header`, `labels`. The active item gets `aria-current="page"` and a filled icon. Collapsed it becomes a 72px rail with balloon tooltips. The collapse button has `aria-expanded` + `aria-controls` and is hidden when JS is off. The server twin renders the same markup (no toggle). Legacy `links` / `page` still work.
+* **`<AbNavbar>` v2 (G41)**: `items` of `{ kind: 'link', href, icon, label }` or `{ kind: 'button', id, icon, label, onSelect, expanded?, controls? }`, filled active icon, `aria-current`, safe-area padding.
+* **`<AbAppBar>` (G43)**: `brand`, `search`, `nav=[{ href, label }]`, `activeHref`, `actions`, `leading`, sticky with the theme hairline. Below **1180px** the nav moves into a "More" `AbMenu` (G26). It closes on Escape and outside click. With JS off the nav stays inline.
+* **`<AbSearchTrigger>` + `<AbKbd>` (G44)**: shows ⌘K on Apple and Ctrl K elsewhere, sets `aria-keyshortcuts="Meta+K Control+K"`, calls `onOpen` (button) or falls back to `href` (link). `comingSoon` makes it `aria-disabled`.
+* **`<AbCard>` / `<AbPackageCard>` (G45)**: one link per card (the title, stretched over the card). Hover lifts 2px on laptop and up only, never under `prefers-reduced-motion`.
+* **`<AbToc>` (G46)**: plain `#id` links, `aria-current="location"`. Pair with `useAbScrollSpy` / `scrollToAbSection` from `ab-nextjs-hooks@0.1.7`.
+* **`<AbBalloon>`** is now a real tooltip: `role="tooltip"`, `aria-describedby` on the trigger, shows on focus, after 300ms on hover, and hides on Escape.
+* **JS off**: `<AbInstallSnippet>` shows the pnpm command and hides copy. `<AbLocaleSwitcher getHref>` falls back to a `<details>` list of `hreflang` links.
+* ⚠️ **AbIcon has no font fallback any more.** An unknown name renders an empty box and warns once in development. The client AbIcon only knows registered icons, so register the ones your sidebar / navbar use:
+  ```ts
+  import code from 'ab-nextjs-icons/ab-icons/icons/code'
+  registerAbIcons({ code })
+  ```
+
 ## Getting Started
 
 ### Installation

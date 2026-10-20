@@ -1,8 +1,16 @@
 allowBuilds:
   esbuild: true
   unrs-resolver: true
-# 🛡️ pnpm 11 minimumReleaseAge (1 day): exempt ONLY our own ab-nextjs-theme@0.3.3 (published
-#    2026-10-16T00:03:31Z with trusted publishing + provenance), so the frozen lockfile resolves today.
-# TODO(next release): remove this block. It expires 2026-10-17 02:03:31 Paris, and a test enforces it.
+# 🛡️ pnpm 11 minimumReleaseAge (1 day) stays ON. Strict mode: pnpm fails instead of quietly adding
+#    exclude entries by itself (pnpm 11.28+), so every exemption is a reviewed, test-guarded line.
+minimumReleaseAgeStrict: true
+# ⏳ D33 (scoped, expiring exemptions): our own brand-new releases in the lockfile, one exact version
+#    each. Expiries live in __tests__/release-age.test.ts ALLOWED_EXCLUDES (publish time + 24h, UTC);
+#    the suite fails after them.
 minimumReleaseAgeExclude:
-  - ab-nextjs-theme@0.3.3
+  # TODO(remove after 2026-10-21T17:15:19Z): ab-nextjs-icons 0.2.4 published 2026-10-20T17:15:19Z
+  - ab-nextjs-icons@0.2.4
+  # TODO(remove after 2026-10-21T17:25:03Z): ab-nextjs-theme 0.3.4 published 2026-10-20T17:25:03Z
+  - ab-nextjs-theme@0.3.4
+  # TODO(remove after 2026-10-21T17:28:56Z): ab-nextjs-hooks 0.1.7 published 2026-10-20T17:28:56Z
+  - ab-nextjs-hooks@0.1.7

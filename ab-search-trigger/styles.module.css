@@ -1,0 +1,70 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbSearchTrigger - Styles (G44)
+* @file: ab-search-trigger/styles.module.css
+* @type: CSS Module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 🔎 pill "field" */
+.abSearchTrigger {
+  display: inline-flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  gap: 8px; /* ↔️ */
+  min-width: 0; /* 📏 */
+  width: 100%; /* 📏 */
+  max-width: 360px; /* 📏 */
+  height: 40px; /* 📏 */
+  padding: 0 8px 0 12px; /* 📦 */
+  border: 0; /* 🚫 */
+  border-radius: 999px; /* 🟢 */
+  background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); /* 🎨 */
+  color: var(--ab-color-on-surface-variant, inherit); /* 🖋️ */
+  font: inherit; /* 🔤 */
+  text-decoration: none; /* 🚫 */
+  cursor: pointer; /* 👆 */
+  box-sizing: border-box; /* 📦 */
+}
+.abSearchTrigger:focus-visible {
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
+}
+.abSearchTrigger[aria-disabled='true'] { cursor: default; opacity: 0.72; } /* 🚧 */
+.abSearchTriggerLabel { flex: 1; text-align: start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* 🏷️ */
+.abSearchTriggerIcon { flex: none; } /* 🔣 */
+.abSearchTriggerSoon { font-size: 12px; opacity: 0.8; } /* 🚧 */
+
+/* 📱 compact (Joseph #3/#16): icon-only round pill for small app bars, no overflow at 390px */
+.abSearchTrigger[data-compact='true'] { flex: none; width: 40px; min-width: 40px; padding: 0; justify-content: center; } /* 🔘 */
+/* 🕶️ visually hidden, still read by screen readers */
+.abSearchTriggerSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; flex: none; }
