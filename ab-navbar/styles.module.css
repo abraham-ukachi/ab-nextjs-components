@@ -89,3 +89,21 @@
 .abNavbarLink[aria-disabled='true'] { cursor: default; opacity: 0.6; } /* 🚫 */
 .abNavbarSoon { font-size: 10px; line-height: 12px; opacity: 0.85; } /* 🚧 tag under the label */
 .abNavbarSrOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */
+
+/* ===== 📱 0.1.14 (P18, Home spec §4 bottom nav): indicator="none" · blur ===== */
+.abNavbar[data-indicator='none'] { padding-top: 8px; min-height: calc(50px + env(safe-area-inset-bottom, 0px)); } /* 📏 84px with the iPhone home indicator */
+.abNavbar[data-indicator='none'] .abNavbarList { justify-content: space-around; }
+.abNavbar[data-indicator='none'] .abNavbarList > li { flex: 0 1 80px; } /* ↔️ 4 × 80px */
+.abNavbar[data-indicator='none'] .abNavbarLink { width: 80px; min-width: 0; gap: 3px; color: var(--ab-color-faint, inherit); } /* 🔗 */
+.abNavbar[data-indicator='none'] .abNavbarLink .abNavbarPill { width: auto; height: auto; background: none; } /* 🚫 pill (0,4,0 beats the active pill rules) */
+.abNavbar[data-indicator='none'] .abNavbarLabel { font-size: 11.5px; font-weight: 550; line-height: 1.2; } /* 🔤 */
+.abNavbar[data-indicator='none'] .abNavbarLink[data-active='true'],
+.abNavbar[data-indicator='none'] .abNavbarLink[aria-expanded='true'] { color: var(--ab-color-accent-text, inherit); } /* 🎯 */
+.abNavbar[data-indicator='none'] .abNavbarLink[data-active='true'] .abNavbarLabel { font-weight: 700; }
+.abNavbar[data-indicator='none'] .abNavbarLink:focus-visible { outline-color: var(--ab-color-accent, #a67c52); }
+.abNavbar[data-blur='true'] {
+  background: color-mix(in srgb, var(--ab-color-bg, #fff8f5) 92%, transparent); /* 🌫️ */
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); /* 🧊 */
+  border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); /* ➖ */
+}
+:global(.dark) .abNavbar[data-blur='true'], :global([data-theme='dark']) .abNavbar[data-blur='true'] { background: #1f170f; } /* 🌙 mock: solid warm */

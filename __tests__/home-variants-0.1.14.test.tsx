@@ -53,6 +53,8 @@ import ServerAbSidebar from '../server/ab-sidebar'
 import AbPackageCard from '../ab-package-card'
 import AbInstallSnippet from '../ab-install-snippet'
 import AbToc from '../ab-toc'
+import AbNavbar from '../ab-navbar'
+import ServerAbNavbar from '../server/ab-navbar'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -223,5 +225,21 @@ describe('P14 AbToc footer slot 📑', () => {
     const c = css('ab-toc/styles.module.css')
     for (const re of [/margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0\.06em;/, /\.abToc \{ font-size: 13px; \}/, /padding: 6px 0 6px 14px;/,
       /border-inline-start-color: var\(--ab-color-accent[^;]*; color: var\(--ab-color-accent-text[^;]*; font-weight: 650;/, /margin: 18px 0 12px;/, /font-size: 12\.5px;/, /width: 15px; height: 15px;/]) expect(c).toMatch(re)
+  })
+})
+
+// 📱 P18
+describe('P18 AbNavbar indicator="none" · blur 📱', () => {
+  const items = [{ kind: 'link' as const, href: '/', icon: 'home', label: 'Home' }, { kind: 'link' as const, href: '/docs', icon: 'menu_book', label: 'Docs' }]
+  for (const [n, Nav] of [['client', AbNavbar], ['server', ServerAbNavbar]] as const) {
+    it(`${n}: data hooks + 25px icons`, () => {
+      const html = renderToStaticMarkup(<Nav items={items} activeHref="/" indicator="none" blur />)
+      expect(html).toContain('data-indicator="none"'); expect(html).toContain('data-blur="true"'); expect(html).toMatch(/width="25"|--ab-icon-size:\s*25px|size-25|25px/)
+    })
+  }
+  it('CSS: 80px items, gap 3, 11.5/550 faint, active accent 700, no pill, blur 12 + 92% bg + div hairline, dark #1f170f', () => {
+    const c = css('ab-navbar/styles.module.css')
+    for (const re of [/width: 80px; min-width: 0; gap: 3px; color: var\(--ab-color-faint/, /font-size: 11\.5px; font-weight: 550;/, /color: var\(--ab-color-accent-text/,
+      /\.abNavbarLink \.abNavbarPill \{ width: auto; height: auto; background: none; \}/, /backdrop-filter: blur\(12px\)/, /color-mix\(in srgb, var\(--ab-color-bg, #fff8f5\) 92%, transparent\)/, /border-top: 1px solid var\(--ab-color-div/, /#1f170f/]) expect(c).toMatch(re)
   })
 })
