@@ -232,7 +232,8 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     return () => {
       const had = opener.current as HTMLElement | null; // ↩️
       const usable = had && had !== document.body && had.isConnected ? had : null; // 🤏 a swipe has no opener
-      const back = usable ?? (returnFocus ? document.querySelector<HTMLElement>(returnFocus) : null); // ↩️ 0.2.0 fallback
+      // ↩️ 0.2.0 fallback: the first VISIBLE match (an app often renders the logo twice, one hidden per breakpoint)
+      const back = usable ?? (returnFocus ? Array.from(document.querySelectorAll<HTMLElement>(returnFocus)).find((el) => el.getClientRects().length > 0) ?? null : null);
       // ⏭️ a microtask later: the inert cleanup below runs after this one, and an inert opener can't take focus
       queueMicrotask(() => { if (back && back.isConnected && typeof back.focus === 'function') back.focus({ preventScroll: true }); });
     };

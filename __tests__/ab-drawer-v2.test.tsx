@@ -151,6 +151,15 @@ describe('AbDrawer 0.2.0: side swipe + focus 🤏', () => {
     flush(); await act(async () => { await Promise.resolve() })
     expect(document.activeElement?.id).toBe('logo') // ↩️ no opener (body) → the logo link
   })
+  it('returnFocus skips hidden matches (the app-bar logo hidden on mobile) and takes the first visible one', async () => {
+    const vis = (el: Element, on: boolean) => { el.getClientRects = () => (on ? [{}] : []) as unknown as DOMRectList }
+    const onClose = vi.fn()
+    const ui = (open: boolean) => <div className="AbAppLayout"><a href="/" className="logo" id="hidden">A</a><a href="/" className="logo" id="shown">B</a><AbDrawer open={open} onClose={onClose} title="S" returnFocus=".logo"><button>A</button></AbDrawer></div>
+    const { rerender } = render(ui(true)); flush()
+    vis(document.getElementById('hidden')!, false); vis(document.getElementById('shown')!, true)
+    rerender(ui(false)); flush(); await act(async () => { await Promise.resolve() })
+    expect(document.activeElement?.id).toBe('shown') // 👀
+  })
 })
 
 describe('AbDrawer 0.2.0: fullOnly (the search sheet) 🔎', () => {
