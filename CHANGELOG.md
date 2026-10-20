@@ -1,4 +1,6 @@
-## 0.1.14 (Unreleased)
+## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
+
+* ⬆️ **Peer + dev range:** `ab-nextjs-theme` **^0.3.5** (was ^0.3.4), for the Home tokens. It has a D33 release-age pin that expires 2026-10-21T20:40:07Z. Components doesn't depend on `ab-nextjs-core`, so no core range changed.
 
 * 🎯 **AbThemeToggle icon shows the target (John, 20:57):** `variant="icon"` + `appearance="thumb"` now shows the mode a click switches to (moon in light, sun in dark). New `iconShows?: 'current' | 'target'` (default `target` for thumb, `current` otherwise, so fill is unchanged) and `labels.switchTo` for names like "Switch to dark theme". Segmented toggles are unchanged.
 * 🌿 **Sage chip AA (John):** the `tone="sage"` fallback text is now #566a58 (theme 0.3.5 value), ≥ 4.5:1 on the unchanged tint. Tested.
