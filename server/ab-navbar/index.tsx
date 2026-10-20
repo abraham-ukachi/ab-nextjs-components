@@ -42,6 +42,8 @@ import type { ReactElement } from 'react';
 import AbIcon from '../ab-icon';
 // 🖼️ shared view
 import { AbNavbarView, isAbNavbarActive, type AbNavbarBaseProps, type AbNavbarLinkItem } from '../../ab-navbar/view';
+// 🌍 0.1.13: strip `/fr` from activeHref when `locales` is given (pure helper, server-safe)
+import { stripAbLocalePrefix } from '../../ab-link/locale';
 
 // 📦 shared types
 export type { AbNavbarLinkItem, AbNavbarLink } from '../../ab-navbar/view';
@@ -52,7 +54,7 @@ export type AbNavbarProps = AbNavbarBaseProps<AbNavbarLinkItem>;
 /** 📱 AbNavbar (server, G41): same markup as the client twin; active from `activeHref` / legacy `page`. */
 const AbNavbar = (props: AbNavbarProps): ReactElement => {
   const { page, activeHref } = props;
-  const active = (href: string, value?: string) => (page ? page === value : isAbNavbarActive(href, activeHref)); // 🎯
+  const active = (href: string, value?: string) => (page ? page === value : isAbNavbarActive(href, activeHref && stripAbLocalePrefix(activeHref, props.locales))); // 🎯
   return <AbNavbarView props={props} Icon={AbIcon} active={active} />;
 };
 

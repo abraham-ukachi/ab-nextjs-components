@@ -48,6 +48,8 @@
 import { useState, type ReactElement } from 'react';
 // 🧭 current route (fallback when `activeHref` is omitted)
 import { usePathname } from 'next/navigation';
+// 🌍 0.1.13 (Joseph #10): locale-stripped pathname
+import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
 // 🔣 client AbIcon (built-in chevrons are always registered)
 import AbIcon from '../ab-icon';
 // 🖼️ shared view
@@ -73,7 +75,8 @@ export interface AbSidebarProps extends AbSidebarBaseProps {
 const AbSidebar = (props: AbSidebarProps): ReactElement => {
   const { collapsed: controlled, defaultCollapsed = false, onCollapsedChange, collapsible, activeHref, page, labels, id = 'ab-sidebar-list' } = props;
   // 🧭 route
-  const pathname = usePathname() ?? '';
+  const appLocales = useAbLocales(); // 🌍 from AbLinkProvider
+  const pathname = stripAbLocalePrefix(usePathname() ?? '', props.locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
   // 🚪 controlled or not
   const [inner, setInner] = useState(defaultCollapsed);
   const collapsed = controlled ?? inner;

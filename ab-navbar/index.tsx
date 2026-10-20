@@ -48,6 +48,8 @@
 import type { ReactElement } from 'react';
 // 🧭 route fallback
 import { usePathname } from 'next/navigation';
+// 🌍 0.1.13 (Joseph #10): locale-stripped pathname
+import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
 // 🔣 client AbIcon
 import AbIcon from '../ab-icon';
 // 🖼️ shared view
@@ -62,7 +64,8 @@ export type AbNavbarProps = AbNavbarBaseProps;
 
 /** 📱 AbNavbar (client, G41): mobile bottom bar, filled active icon, aria-current, safe-area padding. */
 const AbNavbar = (props: AbNavbarProps): ReactElement => {
-  const pathname = usePathname() ?? ''; // 🧭
+  const appLocales = useAbLocales(); // 🌍 from AbLinkProvider
+  const pathname = stripAbLocalePrefix(usePathname() ?? '', props.locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
   const { page, activeHref } = props;
   const active = (href: string, value?: string) => (page ? page === value : isAbNavbarActive(href, activeHref ?? pathname)); // 🎯
   return <AbNavbarView props={props} Icon={AbIcon} active={active} />;

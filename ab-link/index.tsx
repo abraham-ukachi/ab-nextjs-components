@@ -44,6 +44,9 @@
 
 // ⚛️ React
 import { createContext, createElement, useContext, type ComponentProps, type ComponentType, type ReactElement, type ReactNode } from 'react';
+// 🌍 pure, server-safe locale helper (0.1.13)
+import { stripAbLocalePrefix } from './locale';
+export { stripAbLocalePrefix };
 // 🔗 the default link (the ONLY next/link import in the package, see __tests__/ab-link.test.tsx)
 import NextLink from 'next/link';
 
@@ -54,11 +57,28 @@ export type AbLinkProps = ComponentProps<typeof NextLink>;
 
 // 🧠 context: null = use next/link
 const AbLinkContext = createContext<AbLinkComponent | null>(null);
+// 🌍 0.1.13 (Joseph #10): the app's locale codes, so active states can ignore the `/fr` prefix
+const AbLocalesContext = createContext<readonly string[]>([]);
 
-/** ⚙️ Props of {@link AbLinkProvider}. */
-export interface AbLinkProviderProps {
+
+/** 🪝 useAbLocales — the locale codes given to the nearest {@link AbLinkProvider} (default none). */
+export function useAbLocales(): readonly string[] {
+  return useContext(AbLocalesContext); // 🌍
+}
+
+/** 🧩 0.1.13 (Joseph #9): the STRUCTURAL shape a provided link needs: an `href` (any type, e.g. next-intl's
+ *  `string | { pathname, query }`) and children. next/link, next-intl's Link, ab-nextjs-i18n's Link all fit. */
+export interface AbLinkLikeProps {
+  href?: unknown; // 🔗
+  children?: ReactNode; // 🧒
+}
+
+/** ⚙️ Props of {@link AbLinkProvider}: generic over the link's own props, so no cast is needed. */
+export interface AbLinkProviderProps<P extends AbLinkLikeProps = ComponentProps<typeof NextLink>> {
   /** 🔗 the link every Ab component renders, e.g. ab-nextjs-i18n's locale-aware `Link`. */
-  component: AbLinkComponent;
+  component: ComponentType<P>;
+  /** 🌍 0.1.13: locale codes (e.g. `routing.locales`), stripped from the pathname for active states. */
+  locales?: readonly string[];
   children?: ReactNode;
 }
 
@@ -67,8 +87,10 @@ export interface AbLinkProviderProps {
  * Wrap the app (or one layout) once:
  *   <AbLinkProvider component={Link}>…</AbLinkProvider>   // Link from 'ab-nextjs-i18n/navigation'
  */
-export function AbLinkProvider({ component, children }: AbLinkProviderProps): ReactElement {
-  return <AbLinkContext.Provider value={component}>{children}</AbLinkContext.Provider>; // 🧠
+export function AbLinkProvider<P extends AbLinkLikeProps>({ component, locales, children }: AbLinkProviderProps<P>): ReactElement {
+  // 🧠 Ab components always pass next/link-compatible props (href string, className, aria-*, onClick, …)
+  const link = <AbLinkContext.Provider value={component as unknown as AbLinkComponent}>{children}</AbLinkContext.Provider>;
+  return locales ? <AbLocalesContext.Provider value={locales}>{link}</AbLocalesContext.Provider> : link; // 🌍
 }
 
 /** 🪝 useAbLink — the link component in effect (the provider's, or next/link). */
