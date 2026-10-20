@@ -87,6 +87,13 @@ export interface AbAppBarProps {
   className?: string; // 🏷️
   /** 🗄️ 0.1.14 (G56, D40): More as `menu` (default), `drawer` (app-scope bottom AbDrawerList) or `auto` (drawer below 768px) */
   presentation?: AbPresentation;
+  /** 📏 0.1.14 (P5): `'compact'` = the Home bar: height from core's `--ab-header-height` (52 / 60 / 64), 13.5px links,
+   *  brand column `--ab-app-bar-brand-width` (236, 270 at ≥ 1920), `--div` hairline. Default `'comfortable'` (64px). */
+  density?: 'comfortable' | 'compact';
+  /** ➖ 0.1.14 (P4): a 1×20 `--div` rule between the nav and the actions (mock: before GitHub) */
+  divider?: boolean;
+  /** ⋮ 0.1.14 (P19): `false` = no "More" button/menu; below 1180px the nav is simply hidden (default `true`) */
+  moreMenu?: boolean;
 }
 
 /** 🎯 exact match or parent prefix ("/" only matches itself) */
@@ -96,7 +103,7 @@ const isActive = (href: string, active?: string) => !!active && (href === active
  * 🧱 AbAppBar (G43): brand, search, nav, actions, sticky with a hairline. Below 1180px the nav moves into a
  * "More" overflow menu built on AbMenu (G26). JS off: the More button is hidden and the nav scrolls inline.
  */
-const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className, presentation = 'menu' }: AbAppBarProps): ReactElement => {
+const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className, presentation = 'menu', density = 'comfortable', divider = false, moreMenu = true }: AbAppBarProps): ReactElement => {
   // 🌍 the active link comes from the AbLinkProvider locales, same rule as AbSidebar / AbNavbar
   const appLocales = useAbLocales();
   const pathname = stripAbLocalePrefix(usePathname() ?? '', locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
@@ -129,7 +136,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
   }, [open, mode]);
 
   return (
-    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined}>
+    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined} data-density={density === 'compact' ? 'compact' : undefined} data-more={moreMenu ? undefined : 'false'}>
       {leading}
       {brand && <div className={styles.abAppBarBrand}>{brand}</div>}
       {search && <div className={styles.abAppBarSearch}>{search}</div>}
@@ -147,6 +154,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
           </ul>
         </nav>
       )}
+      {divider && <span className={styles.abAppBarDivider} aria-hidden="true" data-ab-part="app-bar-divider" /> /* ➖ P4 */}
       <div className={styles.abAppBarActions}>
         {/* 🔘 actions; 📱 below 768px `compactActions` replaces them (both rendered, CSS picks: no hydration flip) */}
         {compactActions != null ? (
@@ -155,7 +163,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
             <div className={styles.abAppBarActionsCompact}>{compactActions}</div>
           </>
         ) : actions}
-        {nav.length > 0 && (
+        {nav.length > 0 && moreMenu && (
           <div ref={wrap} className={styles.abAppBarMore}>
             <button
               ref={btn}

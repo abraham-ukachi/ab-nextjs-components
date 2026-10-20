@@ -111,9 +111,48 @@
   .abAppBar { gap: 8px; padding-inline: max(12px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); } /* 📦 */
   .abAppBarBrand { flex: 0 1 auto; min-width: 0; overflow: hidden; } /* 🏷️ may shrink */
   .abAppBarSearch { flex: none; margin-inline-start: auto; } /* 🔎 icon only, pushed right */
-  .abAppBarSearch > :global(.AbSearchTrigger) { width: 40px; min-width: 40px; padding: 0; justify-content: center; flex: none; } /* 🔘 */
-  .abAppBarSearch > :global(.AbSearchTrigger) > :not(:global(.AbIcon)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ label + kbd */
+  .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) { width: 40px; min-width: 40px; padding: 0; justify-content: center; flex: none; } /* 🔘 */
+  .abAppBarSearch > :global(.AbSearchTrigger):not([data-size='sm']) > :not(:global(.AbIcon)) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ label + kbd */
   .abAppBarActions { margin-inline-start: 0; gap: 0; } /* 🔘 */
   .abAppBar[data-has-compact-actions='true'] .abAppBarActionsWide { display: none; } /* 🙈 */
   .abAppBar[data-has-compact-actions='true'] .abAppBarActionsCompact { display: flex; } /* 👀 */
+}
+
+/* ===== 📏 0.1.14 (P4/P5/P19, Home spec §4 app bar) ===== */
+.abAppBarDivider { flex: none; width: 1px; height: 20px; background: var(--ab-color-div, rgb(92 64 48 / 0.11)); } /* ➖ P4 */
+.abAppBar[data-more='false'] .abAppBarMore { display: none; } /* ⋮ P19: belt and braces (not rendered) */
+@media (max-width: 1179px) { .abAppBar[data-more='false'] .abAppBarDivider { display: none; } } /* ➖ nothing to divide */
+.abAppBar[data-density='compact'] {
+  height: var(--ab-header-height, 60px); min-height: 0; gap: 14px; /* 📏 core 0.2.0: 52 / 60 / 64 */
+  padding: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(22px, env(safe-area-inset-left, 0px)); /* 📦 22px: the logo lines up with the sidebar rows */
+  background: var(--ab-color-bg, inherit); /* 🎨 --pane */
+}
+.abAppBar[data-density='compact'][data-sticky='true'] { border-bottom: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); } /* ➖ */
+.abAppBar[data-density='compact'] .abAppBarBrand { gap: 14px; } /* 🏷️ */
+.abAppBar[data-density='compact'] .abAppBarSearch { flex: none; } /* 🔎 the field sets its own width */
+.abAppBar[data-density='compact'] .abAppBarNav { margin-inline-start: auto; } /* ➡️ mock: grow, then the links */
+.abAppBar[data-density='compact'] .abAppBarNav ul { gap: 20px; } /* 🧭 */
+.abAppBar[data-density='compact'] .abAppBarLink {
+  height: auto; padding: 0; border-radius: 0; background: none; /* 🧹 no pill */
+  font-size: 13.5px; font-weight: 550; color: var(--ab-color-muted, #6b5b50); /* 🔤 */
+}
+.abAppBar[data-density='compact'] .abAppBarLink:hover { color: var(--ab-color-text, #211a16); } /* 🖱️ */
+.abAppBar[data-density='compact'] .abAppBarLink[data-active='true'] { background: none; color: var(--ab-color-accent-text, #88603d); font-weight: 650; } /* 🎯 */
+.abAppBar[data-density='compact'] .abAppBarLink:focus-visible { outline-color: var(--ab-color-accent, #a67c52); border-radius: 4px; } /* ♿ */
+.abAppBar[data-density='compact'] .abAppBarActions { gap: 14px; } /* 🔘 GitHub · theme pill */
+.abAppBar[data-density='compact'] :is(.abAppBarActionsWide, .abAppBarActionsCompact) { gap: 14px; }
+.abAppBar[data-density='compact'] .abAppBarNav + .abAppBarActions,
+.abAppBar[data-density='compact'] .abAppBarDivider + .abAppBarActions { margin-inline-start: 0; } /* ➡️ the nav already pushed right */
+@media (min-width: 1180px) {
+  .abAppBar[data-density='compact'] .abAppBarBrand { width: var(--ab-app-bar-brand-width, 236px); } /* 🏷️ P4: = sidebar edge */
+}
+@media (min-width: 1920px) {
+  .abAppBar[data-density='compact'] { --ab-app-bar-brand-width: 270px; padding-inline: 14px 12px; background: transparent; } /* 🖥️ gapped */
+  .abAppBar[data-density='compact'][data-sticky='true'] { border-bottom: 0; } /* 🚫 the panes float */
+  .abAppBar[data-density='compact'] { --ab-search-trigger-width: 360px; }
+}
+@media (max-width: 767px) {
+  .abAppBar[data-density='compact'] { gap: 2px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(8px, env(safe-area-inset-right, 0px)); } /* 📱 mock .mapp */
+  .abAppBar[data-density='compact'] .abAppBarSearch { margin-inline: auto 4px; } /* 🔎 pushed right, 4px before the icon */
+  .abAppBar[data-density='compact'] .abAppBarActions { gap: 0; }
 }

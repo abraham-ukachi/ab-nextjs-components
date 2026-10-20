@@ -47,6 +47,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import AbSearchTrigger from '../ab-search-trigger'
 import AbThemeToggle from '../ab-theme-toggle'
+import AbAppBar from '../ab-app-bar'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -94,5 +95,35 @@ describe('P7 AbThemeToggle appearance="thumb" 🌗', () => {
     expect(s).toMatch(/\.group\[data-appearance='thumb'\] \{\s*gap: 2px; padding: 3px;/); expect(s).toMatch(/background: var\(--ab-color-card2, #fbf3ec\)/)
     expect(s).toMatch(/\.segment \{ width: 28px; height: 28px; color: var\(--ab-color-faint/)
     expect(s).toMatch(/background: var\(--ab-color-thumb, #fff\); color: var\(--ab-color-accent-text/); expect(s).toMatch(/box-shadow: var\(--ab-shadow-thumb/)
+  })
+})
+
+// 📏 P4 / P5 / P19
+describe('P4/P5/P19 AbAppBar density="compact" · divider · moreMenu={false} 📏', () => {
+  const nav = [{ href: '/docs', label: 'Docs' }, { href: '/packages', label: 'Packages' }]
+  it('compact + divider + no More button', () => {
+    const { container } = render(<AbAppBar brand={<b>Ab</b>} nav={nav} activeHref="/docs" density="compact" divider moreMenu={false} actions={<i />} />)
+    const bar = container.querySelector('[data-ab-part="app-bar"]')!
+    expect(bar.getAttribute('data-density')).toBe('compact'); expect(bar.getAttribute('data-more')).toBe('false')
+    expect(bar.querySelector('[data-ab-part="app-bar-divider"]')?.getAttribute('aria-hidden')).toBe('true') // ➖ decorative
+    expect(bar.querySelector('[aria-haspopup]')).toBeNull() // ⋮ gone
+    // ➖ order: nav → divider → actions (mock: links, rule, GitHub)
+    const kids = Array.from(bar.children).map((c) => c.tagName === 'NAV' ? 'nav' : c.getAttribute('data-ab-part') ?? 'x')
+    expect(kids.indexOf('app-bar-divider')).toBe(kids.indexOf('nav') + 1)
+  })
+  it('defaults unchanged: More button still there', () => {
+    const { container } = render(<AbAppBar nav={nav} />)
+    expect(container.querySelector('[aria-haspopup="menu"]')).not.toBeNull()
+    expect(container.querySelector('[data-density]')).toBeNull()
+  })
+  it('CSS: header-height, padding 22, gap 14, links 13.5/550 gap 20, brand 236 / 270, gapped transparent, mobile 0 8 0 16', () => {
+    const c = css('ab-app-bar/styles.module.css')
+    expect(c).toMatch(/height: var\(--ab-header-height, 60px\); min-height: 0; gap: 14px;/)
+    expect(c).toMatch(/max\(22px, env\(safe-area-inset-left, 0px\)\)/)
+    expect(c).toMatch(/font-size: 13\.5px; font-weight: 550; color: var\(--ab-color-muted/); expect(c).toMatch(/\.abAppBarNav ul \{ gap: 20px; \}/)
+    expect(c).toMatch(/width: var\(--ab-app-bar-brand-width, 236px\)/); expect(c).toMatch(/--ab-app-bar-brand-width: 270px; padding-inline: 14px 12px; background: transparent;/)
+    expect(c).toMatch(/\.abAppBarDivider \{ flex: none; width: 1px; height: 20px; background: var\(--ab-color-div/)
+    expect(c).toMatch(/gap: 2px; padding-inline: max\(16px, env\(safe-area-inset-left, 0px\)\) max\(8px/)
+    expect(c).toMatch(/:global\(\.AbSearchTrigger\):not\(\[data-size='sm'\]\) \{ width: 40px;/) // 📱 the sm pill keeps its label
   })
 })
