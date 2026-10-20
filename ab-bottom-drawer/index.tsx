@@ -62,8 +62,8 @@ export interface AbBottomDrawerProps extends Omit<AbDrawerProps, 'side'> {
  * with `side="bottom"`, `scope="app"`, the Home tokens (card surface, hairline top edge, 20px top radius,
  * grab handle, safe-area padding) and at most 560px wide, centred, above 768px.
  */
-const AbBottomDrawer = ({ handle = true, scope = 'app', className, ...rest }: AbBottomDrawerProps): ReactElement => (
-  <AbDrawer {...rest} scope={scope} side="bottom" className={clsx('AbBottomDrawer', styles.abBottomDrawer, handle && styles.withHandle, className)} />
+const AbBottomDrawer = ({ handle = true, scope = 'app', initialFocus = 'panel', className, ...rest }: AbBottomDrawerProps): ReactElement => (
+  <AbDrawer {...rest} scope={scope} initialFocus={initialFocus} side="bottom" className={clsx('AbBottomDrawer', styles.abBottomDrawer, handle && styles.withHandle, className)} />
 );
 
 // 📦 exports

@@ -58,7 +58,7 @@
 .abDrawerScrim {
   position: absolute; /* 📌 */
   inset: 0; /* 📐 */
-  background: var(--ab-scrim-color, rgb(0 0 0 / 0.32)); /* 🌫️ */
+  background: var(--ab-scrim-color, rgb(25 18 12 / 0.4)); /* 🌫️ theme 0.3.5: 40% light / 60% dark (John) */
   opacity: 0; /* 🫥 */
   --ab-motion-duration: var(--ab-drawer-duration, 240ms); /* 🎞️ fade = .ab-motion-colors (ab-nextjs-animations) */
 }

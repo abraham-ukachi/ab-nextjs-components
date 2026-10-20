@@ -81,6 +81,7 @@ export interface AbDrawerProps {
   modal?: boolean; // 🔒 trap focus + make the rest of the scope inert (default `true`)
   closeLabel?: string; // 🌍 default "Close"
   noJsFallback?: boolean; // 🧩 D41: without JS, render the content in flow (default `true`)
+  initialFocus?: 'first' | 'panel'; // 🎯 on open: the first control (default) or the panel itself (no ring on the ✕; Tab then enters)
   className?: string; // 🏷️
 }
 
@@ -141,7 +142,7 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
  * - 🧩 D41 no-JS: the server renders the content as an in-flow `<section>` (hidden as soon as scripting runs).
  */
 const AbDrawer = (props: AbDrawerProps): ReactElement => {
-  const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, className } = props;
+  const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, initialFocus = 'first', className } = props;
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔 SSR-stable
   const dialogId = id ?? `ab-drawer-${auto}`; // 🆔
   const titleId = `${dialogId}-title`; // 🏷️
@@ -200,7 +201,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   // ♿ focus in on open, back to the opener on close
   useEffect(() => {
     if (!open || !present || !panel.current) return;
-    const first = panel.current.querySelector<HTMLElement>(FOCUSABLE); // 🎯 first control, else the panel
+    const first = initialFocus === 'panel' ? null : panel.current.querySelector<HTMLElement>(FOCUSABLE); // 🎯 first control, else the panel
     (first ?? panel.current).focus({ preventScroll: true });
     return () => {
       const back = opener.current as HTMLElement | null; // ↩️
@@ -287,7 +288,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
           >
             <div className={styles.abDrawerHeader}>
               {heading}
-              <button type="button" className={styles.abDrawerClose} aria-label={closeLabel} onClick={() => close.current()}>
+              <button type="button" className={styles.abDrawerClose} data-ab-part="drawer-close" aria-label={closeLabel} onClick={() => close.current()}>
                 <span aria-hidden="true">✕</span>
               </button>
             </div>

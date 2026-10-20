@@ -58,6 +58,11 @@ describe('AbBottomDrawer (D40) 📱', () => {
     expect(dlg.classList.contains('AbBottomDrawer')).toBe(true)
     expect(dlg.className).toMatch(/withHandle/) // ➖
   })
+  it('focuses the sheet on open, not the close button (John)', async () => {
+    render(<div className="AbAppLayout"><AbBottomDrawer open onClose={() => {}} title="Language"><button>x</button></AbBottomDrawer></div>)
+    await new Promise((r) => setTimeout(r, 400))
+    expect(document.activeElement?.getAttribute('role')).toBe('dialog') // 🎯 the sheet
+  })
   it('AbDrawerList renders into it via `as`; the locale switcher uses it for side="bottom"', () => {
     render(<div className="AbAppLayout"><AbDrawerList as={AbBottomDrawer} open onClose={() => {}} title="Sort" items={[{ value: 'a', label: 'A' }]} /></div>)
     expect(document.querySelector('[role="dialog"]')!.classList.contains('AbBottomDrawer')).toBe(true)
@@ -73,5 +78,12 @@ describe('AbBottomDrawer (D40) 📱', () => {
     expect(css).toMatch(/--ab-bottom-drawer-radius: 20px;/); expect(css).toMatch(/--ab-bottom-drawer-max-width: 560px;/)
     expect(css).toMatch(/background: var\(--ab-color-card, #fff\);/); expect(css).toMatch(/env\(safe-area-inset-bottom/)
     expect(css).toMatch(/@media \(min-width: 768px\)/)
+    expect(css).toMatch(/padding-bottom: calc\(16px \+ env\(safe-area-inset-bottom, 0px\)\);/) // 📱 John
+    expect(css).toMatch(/width: 36px; height: 4px; margin: 8px auto 0; border-radius: 2px;/) // ➖
+    expect(css).toMatch(/var\(--ab-color-handle, rgb\(25 18 12 \/ 0\.18\)\)/)
+    expect(css).toMatch(/border-top: 1px solid var\(--ab-color-sheet-edge, transparent\);/) // 🌙 edge
+    expect(css).toMatch(/\[data-ab-part='drawer-close'\] \{ inline-size: 44px; block-size: 44px; border: 0; border-radius: 8px;/) // ✕
+    expect(css).toMatch(/\[data-ab-part='drawer-close'\]:focus \{ outline: none; \}/); expect(css).toMatch(/:focus-visible \{ outline: 2px solid/) // ♿
+    expect(readFileSync(join(__dirname, '..', 'ab-drawer/styles.module.css'), 'utf8')).toMatch(/var\(--ab-scrim-color, rgb\(25 18 12 \/ 0\.4\)\)/) // 🌫️
   })
 })

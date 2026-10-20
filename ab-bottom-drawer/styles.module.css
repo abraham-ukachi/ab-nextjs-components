@@ -37,25 +37,30 @@
 */
 
 
-/* 📱 the sheet: doubled class beats AbDrawer's `.abDrawer[data-side='bottom']` without !important */
+/* 📱 the sheet: doubled class beats AbDrawer's `.abDrawer[data-side='bottom']` without !important (John's spec) */
 .abBottomDrawer.abBottomDrawer {
   --ab-bottom-drawer-radius: 20px; /* ⭕ = the gapped pane radius */
   --ab-bottom-drawer-max-width: 560px; /* 📏 tablet+ */
   background: var(--ab-color-card, #fff); /* 🎨 --card */
   color: var(--ab-color-text, #211a16); /* 🖋️ --text */
-  border-top: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); /* ➖ --border */
+  border-top: 1px solid var(--ab-color-sheet-edge, transparent); /* ➖ dark: rgba(255,248,245,.08) via theme 0.3.5 */
   border-radius: var(--ab-bottom-drawer-radius) var(--ab-bottom-drawer-radius) 0 0; /* ⭕ */
-  box-shadow: 0 -8px 28px rgb(92 64 48 / 0.12); /* 🌗 */
-  padding-bottom: max(8px, env(safe-area-inset-bottom, 0px)); /* 📱 home indicator */
+  box-shadow: 0 -8px 28px rgb(25 18 12 / 0.12); /* 🌗 */
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)); /* 📱 16px + home indicator */
+  outline: none; /* 🎯 the sheet takes focus on open: no ring on the sheet itself */
 }
-/* ➖ grab handle (decorative) */
+/* ➖ grab handle (decorative): 36×4, radius 2 */
 .withHandle.withHandle::before {
   content: ''; display: block; flex: none; /* 🧱 */
   width: 36px; height: 4px; margin: 8px auto 0; border-radius: 2px; /* 📏 */
-  background: var(--ab-color-div, rgb(92 64 48 / 0.11)); /* 🎨 */
-  filter: contrast(2); /* 👀 a touch stronger than a divider */
+  background: var(--ab-color-handle, rgb(25 18 12 / 0.18)); /* 🎨 dark: rgba(255,248,245,.18) via theme */
 }
-.abBottomDrawer :global(.AbDrawerTitle), .abBottomDrawer h2 { font-family: var(--ab-font-title, inherit); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; } /* 🏷️ */
+.abBottomDrawer h2 { font-family: var(--ab-font-title, inherit); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; } /* 🏷️ */
+/* ✕ close: 44px hit area, no border, 8px-radius hover tint (the Home icon buttons); ring on keyboard focus only */
+.abBottomDrawer [data-ab-part='drawer-close'] { inline-size: 44px; block-size: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--ab-color-muted, #6b5b50); }
+.abBottomDrawer [data-ab-part='drawer-close']:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); }
+.abBottomDrawer [data-ab-part='drawer-close']:focus { outline: none; }
+.abBottomDrawer [data-ab-part='drawer-close']:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; }
 @media (min-width: 768px) {
   .abBottomDrawer.abBottomDrawer { inset-inline: 0; margin-inline: auto; max-width: var(--ab-bottom-drawer-max-width); } /* 📏 centred */
 }
