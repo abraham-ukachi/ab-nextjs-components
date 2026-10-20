@@ -49,6 +49,8 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 // 🎨 package-shipped CSS module
 import styles from './styles.module.css';
+// 🔣 0.1.13 (G2, Joseph #6): the glyph is an AbIcon SVG, not the Material Symbols font
+import AbIcon from '../ab-icon';
 import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
 import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
 
@@ -60,8 +62,10 @@ export interface AbIconButtonProps {
   style?: CSSProperties;
   // 🙈 hide the whole button
   hidden?: boolean;
-  // 🔣 Material Symbols ligature name (AbIcons-backed AbIcon arrives with G2)
+  // 🔣 AbIcons name (rendered with AbIcon; unregistered names fall back to the font ligature)
   icon: string;
+  // ⬛ 0.1.13: filled variant (default: filled while `active`)
+  iconFilled?: boolean;
   // 🚫 disabled (button: native `disabled`; link: `aria-disabled` + no href)
   disabled?: boolean;
   // 🔍 grow a little on hover
@@ -107,6 +111,7 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
     label, // ♿
     title, // 💬
     type = 'button', // 🧾
+    iconFilled, // ⬛
   } = props;
 
   // ♿ G6: one accessible name for both variants, ON the interactive element (not the wrapper span)
@@ -115,8 +120,8 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
   const tooltip = title ?? label;
   // 🏷️ classes
   const classNames = clsx('AbIconButton', 'icon-button', styles.abIconButton, AB_MOTION.interactive, expands && AB_MOTION.lift, shrinks && AB_MOTION.press, className); // 🎬 hover lift / press from ab-nextjs-animations
-  // 🔣 the glyph is decoration: the ligature text ("arrow_back") must never be read aloud
-  const glyph = <span className={clsx('material-symbols-rounded', 'icon')} aria-hidden="true">{icon}</span>;
+  // 🔣 the glyph is decoration (the button carries the name): AbIcon without a label is aria-hidden
+  const glyph = <AbIcon name={icon} variant={(iconFilled ?? active) ? 'filled' : 'outlined'} className="icon" />;
 
   // 🔗 link variant
   if (href && !isLoading) {
