@@ -30,8 +30,10 @@
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 *
 * Example usage:
-*   const activeId = useAbScrollSpy(items.map((i) => i.id));
-*   <AbToc items={items} activeId={activeId} onNavigate={(id) => scrollToAbSection(id)} />
+*   // 📏 core 0.1.6 panes: the page never scrolls, the main pane does (G55), so spy on and scroll IT
+*   const { mainScrollElement } = useAbPage(); // or getAbMainScroller()
+*   const activeId = useAbScrollSpy(items.map((i) => i.id), { root: mainScrollElement });
+*   <AbToc items={items} activeId={activeId} onNavigate={(id) => scrollToAbSection(id, { container: mainScrollElement })} />
 */
 
 /*
@@ -47,6 +49,20 @@ import clsx from 'clsx';
 // 🎨 styles
 import styles from './styles.module.css';
 
+/** 📜 0.1.13 (D35/G55): core 0.1.6 marks the panes main scroller with this attribute (components doesn't depend on core). */
+export const AB_MAIN_SCROLLER_SELECTOR = '[data-ab-part="main-content"]';
+
+/**
+ * 📜 getAbMainScroller — the element that scrolls the page content: the core panes main pane when present,
+ * else `null` (= the window). Pass `from` (e.g. the heading) to pick the pane that contains it.
+ * Use it as `useAbScrollSpy({ root })` / `scrollToAbSection(id, { container })`.
+ */
+export function getAbMainScroller(from?: Element | null): HTMLElement | null {
+  if (typeof document === 'undefined') return null; // 🖥️ SSR
+  const own = from?.closest<HTMLElement>(AB_MAIN_SCROLLER_SELECTOR); // 🎯 the pane holding `from`
+  return own ?? document.querySelector<HTMLElement>(AB_MAIN_SCROLLER_SELECTOR); // 🔎 first main pane, or null
+}
+
 /** 📑 one heading */
 export interface AbTocItem {
   id: string; // 🆔 the heading id (link target)
@@ -60,7 +76,7 @@ export interface AbTocProps {
   activeId?: string | null; // 🎯 e.g. from useAbScrollSpy (hooks 0.1.7)
   title?: string; // 🏷️ default "On this page"
   label?: string; // 🏷️ 0.1.13 (Joseph #16): alias of `title`; `title` wins when both are set
-  onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection (hooks 0.1.7); plain #id jump without it
+  onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection(id, { container }) (hooks 0.1.7); without it a plain #id jump, which scrolls the nearest scroller (the main pane in core 0.1.6 panes)
   id?: string; // 🆔 root id (default "ab-toc"); the title gets `${id}-title`
   className?: string; // 🏷️
 }
