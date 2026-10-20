@@ -91,20 +91,26 @@
   align-items: center; /* ↕️ */
   gap: 0.5rem; /* 🧱 */
   min-width: 0; /* 🚫 overflow */
+  /* 💻 0.1.13 (Joseph #13): the command sits on the theme 0.3.4 code surface (dark in both themes) */
+  padding: 0.375rem 0.375rem 0.375rem 0.75rem; /* 🧱 */
+  border-radius: 0.625rem; /* 🔲 */
+  background: var(--ab-color-code-surface, rgb(35 28 23)); /* 💻 */
+  color: var(--ab-color-on-code-surface, rgb(240 223 215)); /* 🖋️ ≥ 4.5:1 */
 }
 .prompt {
   opacity: 0.5; /* 🌫️ */
-  font-family: var(--ab-font-mono, ui-monospace, monospace); /* 🔤 */
+  font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); /* ⌨️ code font (Roboto Mono via theme 0.3.4) */
 }
 .code {
   flex: 1; /* ↔️ */
   overflow-x: auto; /* 📜 long commands scroll */
   white-space: nowrap; /* 🚫 wrap */
-  font-family: var(--ab-font-mono, ui-monospace, monospace); /* 🔤 */
+  font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); /* ⌨️ code font (Roboto Mono via theme 0.3.4) */
   font-size: 0.875rem; /* 🔡 */
 }
 .copy {
   flex: none; /* 🚫 squash */
+  color: inherit; /* 🖋️ on-code-surface */
 }
 
 /* 🙈 visually hidden */
