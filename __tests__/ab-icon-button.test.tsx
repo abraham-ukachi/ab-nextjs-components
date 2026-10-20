@@ -92,4 +92,18 @@ describe('AbIconButton (G6)', () => {
     expect(button).toContain('aria-busy="true"') // ⏳
     expect(button).toContain('disabled=""') // 🚦
   })
+  // ♿ 0.1.14 (Joseph): disclosure buttons (menu, drawer, TOC) need the ARIA state on the <button>
+  it('passes aria-expanded / aria-controls through to the button', () => {
+    const open = attrsOf(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" aria-expanded aria-controls="nav-drawer" />), 'button') // 🖨️
+    expect(open).toContain('aria-expanded="true"') // 📂
+    expect(open).toContain('aria-controls="nav-drawer"') // 🎯
+    const closed = attrsOf(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" aria-expanded={false} />), 'button')
+    expect(closed).toContain('aria-expanded="false"') // 📁
+    const plain = attrsOf(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" />), 'button')
+    expect(plain).not.toContain('aria-expanded') // 🫥 omitted unless set
+  })
+  // 📏 0.1.14: iconSize sizes the glyph (the terminal copy button uses 16)
+  it('iconSize sets the glyph size', () => {
+    expect(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" iconSize={16} />)).toMatch(/16px/)
+  })
 })

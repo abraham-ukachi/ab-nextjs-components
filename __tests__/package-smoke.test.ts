@@ -54,6 +54,14 @@ const componentFiles = [
   'ab-card/index.tsx',
   'ab-package-card/index.tsx',
   'ab-toc/index.tsx',
+  'ab-drawer/index.tsx',
+  'ab-drawer/use-ab-drawer.ts',
+  'ab-drawer-list/index.tsx',
+  'ab-confirm-drawer/index.tsx',
+  'ab-bottom-drawer/index.tsx',
+  'ab-version-switcher/index.tsx',
+  'ab-breadcrumbs/index.tsx',
+  'ab-list/index.tsx',
   'ab-sidebar/view.tsx',
   'ab-navbar/view.tsx',
   'ab-theme-toggle/index.tsx',
@@ -120,12 +128,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (67 Done: 0.1.13 adds 7)', async () => {
+  it('exports supportedComponents catalog (74 Done: 0.1.13 adds 7, 0.1.14 adds 7)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(67)
+    expect(mod.supportedComponents).toHaveLength(74)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(45)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(22)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(50)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(24)
   })
 
   it('ships component entry files', () => {
@@ -151,6 +159,13 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-card/styles.module.css',
       'ab-package-card/styles.module.css',
       'ab-toc/styles.module.css',
+      'ab-drawer/styles.module.css',
+      'ab-drawer-list/styles.module.css',
+      'ab-confirm-drawer/styles.module.css',
+      'ab-bottom-drawer/styles.module.css',
+      'ab-version-switcher/styles.module.css',
+      'ab-breadcrumbs/styles.module.css',
+      'ab-list/styles.module.css',
       'ab-theme-toggle/styles.module.css',
       'ab-input/styles.module.css',
       'ab-balloon/styles.module.css',

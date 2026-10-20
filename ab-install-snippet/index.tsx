@@ -76,6 +76,7 @@ export interface AbInstallSnippetProps {
   dev?: boolean; // 🛠️ dev dependency flag
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
+  variant?: 'card' | 'terminal'; // 💻 0.1.14 (P12): 'terminal' = the Home dark block (underline tabs, copy in the tab row, no clipping). Default 'card'
 }
 
 // 🧠 state source: persisted (shared across instances) or local
@@ -96,7 +97,7 @@ function LocalSnippet(props: AbInstallSnippetProps) {
 }
 
 /** 🖼️ the actual UI */
-function SnippetView({ pkg, labels, managers = AB_PACKAGE_MANAGERS, dev = false, className, style, state }: AbInstallSnippetProps & { state: PmState }) {
+function SnippetView({ pkg, labels, managers = AB_PACKAGE_MANAGERS, dev = false, className, style, state, variant = 'card' }: AbInstallSnippetProps & { state: PmState }) {
   const [pm, setPm] = state; // 🎚️
   const current = managers.includes(pm) ? pm : managers[0]; // 🧯 stored pm not offered here
   const command = getAbInstallCommand(current, pkg, dev); // 🧾
@@ -122,38 +123,59 @@ function SnippetView({ pkg, labels, managers = AB_PACKAGE_MANAGERS, dev = false,
     tabs.current[j]?.focus(); // 🎯
   };
 
+  const terminal = variant === 'terminal'; // 💻 P12
+  // 📋 the copy button (card: in the command row · terminal: at the end of the tab row, always visible)
+  const copyButton = (
+    <AbIconButton
+      icon={copied ? 'check' : 'content_copy'} // 📋 / ✅
+      label={labels.copy} // ♿ name stays "Copy command"
+      naked // 🫥
+      iconSize={terminal ? 16 : undefined} // 📏 P12: 16px in the terminal tab row
+      className={styles.copy} // 🎨
+      onClick={() => { void copy(command); }} // 📋
+    />
+  );
+  // 🖍️ terminal: "$ pnpm add <pkg>" with the package highlighted (the text stays one copyable string)
+  const at = command.lastIndexOf(pkg); // 📍
+  const highlighted = at >= 0 ? <>{command.slice(0, at)}<span className={styles.termPkg}>{pkg}</span>{command.slice(at + pkg.length)}</> : command;
+
+  // 🗂️ manager tabs
+  const tablist = (
+    <div role="tablist" aria-label={labels.group} className={styles.tabs} onKeyDown={onKeyDown}>
+      {managers.map((m, i) => (
+        <button
+          key={m} // 🔑
+          ref={(el) => { tabs.current[i] = el; }} // 📍
+          id={`${base}-tab-${m}`} // 🆔
+          type="button" // 🧾
+          role="tab" // ♿
+          aria-selected={m === current} // ✅
+          aria-controls={`${base}-panel`} // 🔗
+          tabIndex={m === current ? 0 : -1} // ⌨️ roving
+          className={styles.tab} // 🎨
+          onClick={() => setPm(m)} // 🖱️
+        >
+          {m}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
-    <div className={clsx('AbInstallSnippet', styles.root, className)} style={style} data-ab-part="install-snippet" data-ab-swipe-ignore="">
-      {/* 🗂️ manager tabs */}
-      <div role="tablist" aria-label={labels.group} className={styles.tabs} onKeyDown={onKeyDown}>
-        {managers.map((m, i) => (
-          <button
-            key={m} // 🔑
-            ref={(el) => { tabs.current[i] = el; }} // 📍
-            id={`${base}-tab-${m}`} // 🆔
-            type="button" // 🧾
-            role="tab" // ♿
-            aria-selected={m === current} // ✅
-            aria-controls={`${base}-panel`} // 🔗
-            tabIndex={m === current ? 0 : -1} // ⌨️ roving
-            className={styles.tab} // 🎨
-            onClick={() => setPm(m)} // 🖱️
-          >
-            {m}
-          </button>
-        ))}
-      </div>
+    <div className={clsx('AbInstallSnippet', styles.root, terminal && styles.terminal, className)} style={style} data-ab-part="install-snippet" data-variant={terminal ? 'terminal' : undefined} data-ab-swipe-ignore="">
+      {/* 🗂️ manager tabs (💻 terminal: tabs + copy share one row; the copy button stays OUTSIDE the tablist) */}
+      {terminal ? (
+        <div className={styles.termHead}>
+          {tablist}
+          <span className={styles.termGrow} aria-hidden="true" />
+          {copyButton}
+        </div>
+      ) : tablist}
       {/* 🧾 command panel */}
       <div id={`${base}-panel`} role="tabpanel" aria-labelledby={`${base}-tab-${current}`} className={styles.panel}>
         <span className={styles.prompt} aria-hidden="true">$</span>{/* 💲 decorative prompt */}
-        <code className={styles.code}>{command}</code>
-        <AbIconButton
-          icon={copied ? 'check' : 'content_copy'} // 📋 / ✅
-          label={labels.copy} // ♿ name stays "Copy command"
-          naked // 🫥
-          className={styles.copy} // 🎨
-          onClick={() => { void copy(command); }} // 📋
-        />
+        <code className={styles.code}>{terminal ? highlighted : command}</code>
+        {!terminal && copyButton}
       </div>
       {/* 📣 own polite live region */}
       <span className={styles.srOnly} aria-live="polite" role="status">{copied ? labels.copied : ''}</span>

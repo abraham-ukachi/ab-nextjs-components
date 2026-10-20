@@ -45,7 +45,7 @@ import { act, cleanup, fireEvent, render } from '@testing-library/react'
 // 🌍 under test
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import AbLocaleSwitcher, { getAbTypeaheadIndex } from '../ab-locale-switcher'
+import AbLocaleSwitcher, { getAbTypeaheadIndex, resolveAbPresentation } from '../ab-locale-switcher'
 
 // 🌍 fixture locales (endonyms)
 const locales = [{ code: 'en', label: 'English' }, { code: 'fr', label: 'Français' }, { code: 'es', label: 'Español' }, { code: 'ru', label: 'Русский' }]
@@ -111,5 +111,34 @@ describe('AbLocaleSwitcher (G7)', () => {
     // 🔘 callback-only switchers have no fallback (nothing to link to)
     cleanup()
     expect(render(<AbLocaleSwitcher label="L" current="en" locales={locales} onSelect={() => {}} />).container.querySelector('details')).toBeNull()
+  })
+})
+
+describe('AbLocaleSwitcher presentation="drawer" (G56, D40) 🗄️', () => {
+  const mq = (matches: boolean) => vi.stubGlobal('matchMedia', (q: string) => ({ matches, media: q, addEventListener() {}, removeEventListener() {} }))
+  afterEach(() => { vi.unstubAllGlobals(); document.body.innerHTML = '' })
+
+  it('opens an app-scope bottom AbDrawerList instead of the menu; picking selects + closes', () => {
+    const onSelect = vi.fn()
+    const { container, getByRole } = render(<div className="AbAppLayout"><AbLocaleSwitcher locales={locales} current="en" label="Language" onSelect={onSelect} presentation="drawer" /></div>)
+    const trigger = container.querySelector('button[aria-haspopup]') as HTMLButtonElement
+    expect(trigger.getAttribute('aria-haspopup')).toBe('dialog') // ♿
+    fireEvent.click(trigger)
+    const dialog = getByRole('dialog')
+    expect(dialog.getAttribute('data-side')).toBe('bottom'); expect(dialog.closest('[data-scope]')?.getAttribute('data-scope')).toBe('app') // ⬇️ 🏠
+    expect(dialog.closest('[data-ab-drawer-layer]')?.parentElement?.classList.contains('AbAppLayout')).toBe(true) // 🗺️ in the app box
+    expect(container.querySelector('[role="menu"]')!.hasAttribute('hidden')).toBe(true) // 🙈 no popover
+    fireEvent.click(getByRole('button', { name: /Français/ }))
+    expect(onSelect).toHaveBeenCalledWith('fr') // 📣
+    expect(trigger.getAttribute('aria-expanded')).toBe('false') // 🚪
+  })
+
+  it('auto = drawer below 768px, menu above; default stays menu', () => {
+    mq(true); expect(resolveAbPresentation('auto')).toBe('drawer')
+    mq(false); expect(resolveAbPresentation('auto')).toBe('menu')
+    expect(resolveAbPresentation()).toBe('menu'); expect(resolveAbPresentation('drawer')).toBe('drawer')
+    const { container } = render(<AbLocaleSwitcher locales={locales} current="en" label="Language" />)
+    expect(container.querySelector('button[aria-haspopup]')!.getAttribute('aria-haspopup')).toBe('menu') // 🙅 unchanged default
+    expect(document.querySelector('[data-ab-drawer-layer]')).toBeNull() // 🙅 no layer for menu users
   })
 })

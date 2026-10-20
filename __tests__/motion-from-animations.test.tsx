@@ -116,6 +116,7 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
       'ab-brand/index.tsx': ['motion'], // 🏷️
       'server/ab-brand/index.tsx': ['motion'], // 🏷️ server twin
       'ab-splash/index.tsx': ['motion'], // 🌫️
+      'ab-drawer/index.tsx': ['motion'], // 🗄️ 0.1.14
     }
     for (const [f, mods] of Object.entries(uses)) for (const m of mods) expect(read(f), f).toContain(`import 'ab-nextjs-animations/${m}/styles.css';`) // ✅
   })

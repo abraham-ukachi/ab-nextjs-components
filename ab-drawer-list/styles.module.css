@@ -1,0 +1,65 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbDrawerList styles
+* @file: ab-drawer-list/styles.module.css
+* @type: CSS module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+
+.abDrawerList { list-style: none; margin: 0 -12px; padding: 0; display: grid; gap: 2px; } /* 📋 */
+.abDrawerListItem {
+  display: flex; /* 📐 icon · text · check */
+  align-items: center; /* ↕️ */
+  gap: 12px; /* ↔️ */
+  inline-size: 100%; /* ↔️ */
+  min-block-size: 48px; /* 👆 touch target */
+  padding: 8px 12px; /* 📦 */
+  border: 0; /* 🧹 */
+  border-radius: 8px; /* 🔲 = the Home nav rows */
+  background: transparent; /* 🎨 */
+  color: inherit; /* 🖋️ */
+  font: inherit; /* 🔤 */
+  text-align: start; /* ⬅️ */
+  text-decoration: none; /* 🚫 */
+  cursor: pointer; /* 🖱️ */
+  box-sizing: border-box; /* 📦 */
+}
+.abDrawerListItem:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } /* 🖱️ --hover */
+.abDrawerListItem[data-active='true'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #8b6340); font-weight: 650; } /* 🎯 = the Home active nav (--tint, --accent-t, 650) */
+.abDrawerListItem:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ --accent */
+.abDrawerListItem:disabled { opacity: 0.5; cursor: not-allowed; } /* 🚫 */
+.abDrawerListIcon { flex: none; display: inline-flex; } /* 🔣 */
+.abDrawerListText { flex: 1 1 auto; min-width: 0; display: grid; } /* 🏷️ */
+.abDrawerListDescription { font-size: 0.875rem; opacity: 0.75; } /* 📝 */
+.abDrawerListCheck { flex: none; inline-size: 1.25em; text-align: center; } /* ✓ */

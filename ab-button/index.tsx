@@ -54,11 +54,11 @@ import {
   getAbButtonSrReason,
   type AbButtonBadgeTone,
   type AbButtonColor,
-  type AbButtonType,
+  type AbButtonType, type AbButtonShape, type AbButtonSize,
 } from './helpers';
 
 // 📦 re-export the shared types (pre-G22 import paths keep working)
-export type { AbButtonBadgeTone, AbButtonColor, AbButtonType, AbButtonDisabledMode } from './helpers';
+export type { AbButtonBadgeTone, AbButtonColor, AbButtonType, AbButtonDisabledMode, AbButtonShape, AbButtonSize } from './helpers';
 
 // ⚙️ props
 export interface AbButtonProps {
@@ -71,6 +71,8 @@ export interface AbButtonProps {
   style?: CSSProperties; // 🎨
   iconStyle?: CSSProperties; // 🎨 Material icon style
   rounded?: boolean; // 💊
+  shape?: AbButtonShape; // 🔷 0.1.14 (P16): 'rounded' = Home 10px radius (overrides `rounded`)
+  size?: AbButtonSize; // 📏 0.1.14 (P16): 'md' = 40px / 44px on touch widths
   raised?: boolean; // 🏔️
   shrinks?: boolean; // 🤏
   expands?: boolean; // 🔍
@@ -117,6 +119,8 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     style, // 🎨
     iconStyle, // 🎨
     rounded = true, // 💊
+    shape, // 🔷
+    size, // 📏
     raised = false, // 🏔️
     shrinks = false, // 🤏
     expands = false, // 🔍
@@ -167,6 +171,8 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     'data-iconpos': iconPosition, // ↔️
     'data-color': color, // 🎨
     'data-disabled-mode': mode, // 🚦
+    'data-shape': shape, // 🔷 P16 (omitted when undefined)
+    'data-size': size, // 📏 P16
   };
 
   // 🔣 legacy Material icon (decorative)

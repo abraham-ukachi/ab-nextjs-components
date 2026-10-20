@@ -50,10 +50,11 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 /**
  * 🎯 the sibling ranges this release builds on (carets, peer == dev).
  * ✅ 0.1.13: theme ^0.3.4, icons ^0.2.4 and hooks ^0.1.7 are on npm (2026-10-20).
+ * ✅ 0.1.14: theme ^0.3.5 is on npm (2026-10-20T20:40:07Z, provenance).
  */
 const WANT: Record<string, string> = {
   'ab-nextjs-hooks': '^0.1.7',
-  'ab-nextjs-theme': '^0.3.4',
+  'ab-nextjs-theme': '^0.3.5',
   'ab-nextjs-animations': '^0.2.4',
   'ab-nextjs-icons': '^0.2.4',
 }
@@ -65,7 +66,7 @@ const WANT: Record<string, string> = {
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
   'ab-nextjs-icons@0.2.4': '2026-10-21T17:15:19.993Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:15:19.993Z
-  'ab-nextjs-theme@0.3.4': '2026-10-21T17:25:03.924Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:25:03.924Z
+  'ab-nextjs-theme@0.3.5': '2026-10-21T20:40:07.827Z', // ⏰ TODO(remove after expiry): published 2026-10-20T20:40:07.827Z
   'ab-nextjs-hooks@0.1.7': '2026-10-21T17:28:56.662Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:28:56.662Z
 }
 

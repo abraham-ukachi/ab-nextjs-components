@@ -41,7 +41,7 @@
 // 🧪 vitest
 import { afterEach, describe, expect, it, vi } from 'vitest'
 // 🖼️ renderers
-import { cleanup, fireEvent, render } from '@testing-library/react'
+import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -112,5 +112,20 @@ describe('AbSearchTrigger + AbKbd (G44)', () => {
   })
   it('AbKbd renders nested keys', () => {
     expect(renderToStaticMarkup(<AbKbd keys={['⌘', 'K']} />)).toMatch(/<kbd[^>]*><kbd[^>]*>⌘<\/kbd><kbd[^>]*>K<\/kbd><\/kbd>/) // ⌨️
+  })
+})
+
+describe('AbAppBar presentation="drawer" (G56) 🗄️', () => {
+  afterEach(() => { document.body.innerHTML = '' })
+  it('More opens a bottom drawer of nav links with the current page marked', () => {
+    const { container, getByRole } = render(<div className="AbAppLayout"><AbAppBar nav={nav} activeHref="/docs" presentation="drawer" /></div>)
+    const more = container.querySelector('button[aria-label="More"]') as HTMLButtonElement
+    expect(more.getAttribute('aria-haspopup')).toBe('dialog') // ♿
+    fireEvent.click(more)
+    const dialog = getByRole('dialog')
+    expect(dialog.getAttribute('data-side')).toBe('bottom') // ⬇️
+    expect(within(dialog).getByRole('link', { name: /Docs/ }).getAttribute('aria-current')).toBe('true') // 🎯
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(more.getAttribute('aria-expanded')).toBe('false') // ⎋
   })
 })

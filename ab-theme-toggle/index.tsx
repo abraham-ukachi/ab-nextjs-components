@@ -64,6 +64,9 @@ export interface AbThemeToggleLabels {
   light: string; // 🌞 "Light"
   dark: string; // 🌙 "Dark"
   system: string; // 🖥️ "System"
+  // 🎯 0.1.14 (John): action names for the icon button when it shows the target mode,
+  //    e.g. { dark: 'Switch to dark theme', light: 'Switch to light theme' }. Falls back to "Theme: Dark"
+  switchTo?: Partial<Record<AbThemeMode, string>>;
 }
 
 // ⚙️ props
@@ -76,6 +79,10 @@ export interface AbThemeToggleProps {
   defaultMode?: AbThemeMode; // 🌱 before hydration (default 'light')
   icons?: Partial<Record<AbThemeMode, ReactNode>>; // 🖼️ override glyphs
   size?: 'sm' | 'md'; // 📏 sm = 32px, md = 40px segments (hit area ≥ 24px either way)
+  appearance?: 'fill' | 'thumb'; // 🌗 0.1.14 (P7): 'thumb' = the Home pill (28px segments, raised card thumb, filled active glyph). Default 'fill'
+  // 🎯 0.1.14 (John): icon variant only. 'target' = glyph + name of the mode a click switches TO
+  //    (moon in light, sun in dark, like the Home mock). Default 'target' with appearance="thumb", else 'current' (unchanged)
+  iconShows?: 'current' | 'target';
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
 }
@@ -100,7 +107,8 @@ export function getNextAbThemeMode(modes: readonly AbThemeMode[], current: AbThe
 
 export function AbThemeToggle(props: AbThemeToggleProps) {
   // 🧩 props
-  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, defaultMode = 'light', icons, size = 'md', className, style } = props;
+  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, defaultMode = 'light', icons, size = 'md', appearance = 'fill', iconShows, className, style } = props;
+  const thumb = appearance === 'thumb'; // 🌗 P7
   // 🌗 engine: persists + applies to <html>
   const engine = useAbThemeMode(defaultMode);
   // 🎛️ controlled or engine-driven
@@ -115,11 +123,15 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
   };
 
   // 🖼️ glyph for a mode (decorative: the label names it)
-  const glyph = (mode: AbThemeMode) => icons?.[mode] ?? <AbIcon name={DEFAULT_ICON_NAMES[mode]} size={20} />;
+  //    P7 thumb: 17px (segments) / 22px (mobile icon), filled while active (spec §2 icons)
+  const glyph = (mode: AbThemeMode, active = false) =>
+    icons?.[mode] ?? <AbIcon name={DEFAULT_ICON_NAMES[mode]} size={thumb ? (variant === 'icon' ? 22 : 17) : 20} variant={thumb && active ? 'filled' : undefined} />;
 
   // 🔘 single cycling button variant
   if (variant === 'icon') {
     const next = modes[(Math.max(0, modes.indexOf(current)) + 1) % modes.length]; // ⏭️
+    const target = (iconShows ?? (thumb ? 'target' : 'current')) === 'target'; // 🎯 John: Home mock shows the target
+    const name = target ? (labels.switchTo?.[next] ?? `${labels.group}: ${labels[next]}`) : `${labels.group}: ${labels[current]}`; // ♿
     return (
       <button
         type="button" // 🧾
@@ -128,11 +140,13 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
         data-ab-part="theme-toggle" // 🗂️
         data-mode={current} // 🎚️
         data-size={size} // 📏
-        aria-label={`${labels.group}: ${labels[current]}`} // ♿ "Theme: Dark"
-        title={`${labels.group}: ${labels[current]}`} // 💬
+        data-appearance={thumb ? 'thumb' : undefined} // 🌗 P7
+        data-shows={target ? 'target' : 'current'} // 🎯
+        aria-label={name} // ♿ "Switch to dark theme" (target) / "Theme: Dark" (current)
+        title={name} // 💬
         onClick={() => select(next)} // 🔁
       >
-        <span aria-hidden="true">{glyph(current)}</span>
+        <span aria-hidden="true">{glyph(target ? next : current)}</span>
       </button>
     );
   }
@@ -157,6 +171,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
       data-ab-part="theme-toggle" // 🗂️
       data-mode={current} // 🎚️
       data-size={size} // 📏
+      data-appearance={thumb ? 'thumb' : undefined} // 🌗 P7
       onKeyDown={onKeyDown} // ⌨️
     >
       {modes.map((mode, i) => {
@@ -176,7 +191,7 @@ export function AbThemeToggle(props: AbThemeToggleProps) {
             data-mode={mode} // 🎚️
             onClick={() => select(mode)} // 🖱️
           >
-            <span aria-hidden="true">{glyph(mode)}</span>
+            <span aria-hidden="true">{glyph(mode, checked)}</span>
           </button>
         );
       })}

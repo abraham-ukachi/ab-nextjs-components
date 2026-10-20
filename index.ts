@@ -130,6 +130,14 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbPackageCard', file: 'ab-package-card/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbToc) — server-safe, no hooks
   { name: 'AbToc', file: 'ab-toc/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.1.14 (G53): AbDrawer + presets
+  { name: 'AbDrawer', file: 'ab-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbBottomDrawer', file: 'ab-bottom-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
 ]
 
 const abComponents = { supportedComponents }
@@ -169,6 +177,25 @@ export { default as AbSidebar } from './ab-sidebar/index.tsx'
 // 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
 export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from './ab-toc/index.tsx'
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
+// 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
+export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from './ab-drawer/index.tsx'
+export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from './ab-drawer/index.tsx'
+export { default as AbDrawerList } from './ab-drawer-list/index.tsx'
+export type { AbDrawerListItem, AbDrawerListProps } from './ab-drawer-list/index.tsx'
+export { default as AbConfirmDrawer } from './ab-confirm-drawer/index.tsx'
+export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
+// 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
+export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
+export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
+// 🏷️ 0.1.14 (P9): AbVersionSwitcher
+export { default as AbVersionSwitcher } from './ab-version-switcher/index.tsx'
+export type { AbVersionOption, AbVersionSwitcherProps } from './ab-version-switcher/index.tsx'
+// 🍞 0.1.14 (P2): AbBreadcrumbs
+export { default as AbBreadcrumbs } from './ab-breadcrumbs/index.tsx'
+export type { AbBreadcrumbItem, AbBreadcrumbsProps } from './ab-breadcrumbs/index.tsx'
+// 📋 0.1.14 (P13): AbList + AbListItem
+export { default as AbList, AbListItem } from './ab-list/index.tsx'
+export type { AbListProps, AbListItemProps } from './ab-list/index.tsx'
 export { default as AbText } from './ab-text/index.tsx'
 export { default as AbTestHello } from './ab-test-hello/index.tsx'
 export { default as AbKeyFeature } from './ab-key-feature/index.tsx'

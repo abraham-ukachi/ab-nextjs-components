@@ -87,6 +87,8 @@ export interface AbNavbarBaseProps<I extends AbNavbarItem = AbNavbarItem> {
   activeHref?: string; // 🎯
   locales?: readonly string[]; // 🌍 0.1.13: stripped from the pathname (default: AbLinkProvider's)
   label?: string; // ♿ nav aria-label (default "Primary")
+  indicator?: 'pill' | 'none'; // 🎯 0.1.14 (P18): 'none' = no active pill; 25px icons, accent text (the Home bottom nav). Default 'pill'
+  blur?: boolean; // 🌫️ 0.1.14 (P18): translucent --bg + 12px backdrop blur + --div top hairline
   // 🕰️ legacy
   type?: 'customer' | 'admin';
   page?: string;
@@ -106,13 +108,14 @@ export function AbNavbarView({ props, Icon, active }: {
   Icon: AbNavbarIconComponent;
   active: (href: string, legacyValue?: string) => boolean;
 }): ReactElement {
-  const { className, items, links, label = 'Primary', type = 'customer' } = props;
+  const { className, items, links, label = 'Primary', type = 'customer', indicator = 'pill', blur = false } = props;
+  const iconSize = indicator === 'none' ? 25 : 24; // 🔣 P18
   // 🕰️ legacy links → link items
   const list: AbNavbarItem[] = items?.length ? items : (links ?? []).map(({ href, icon, label: l }) => ({ kind: 'link', href, icon, label: l }));
   const valueOf = (href: string) => links?.find((l) => l.href === href)?.value;
 
   return (
-    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label={label}>
+    <nav data-type={type} data-ab-part="bottomBar" className={clsx('AbNavbar', styles.abNavbar, className)} aria-label={label} data-indicator={indicator === 'none' ? 'none' : undefined} data-blur={blur ? 'true' : undefined}>
       <ul className={styles.abNavbarList}>
         {list.map((item) => {
           if (item.kind === 'button') {
@@ -132,7 +135,7 @@ export function AbNavbarView({ props, Icon, active }: {
                   data-coming-soon={item.comingSoon ? 'true' : undefined} // 🚧
                   onClick={inert ? undefined : item.onSelect}
                 >
-                  <span className={styles.abNavbarPill}><Icon name={item.icon} variant={item.expanded ? 'filled' : 'outlined'} size={24} /></span>
+                  <span className={styles.abNavbarPill}><Icon name={item.icon} variant={item.expanded ? 'filled' : 'outlined'} size={iconSize} /></span>
                   <span className={styles.abNavbarLabel}>{item.label}</span>
                   {soon && <span className={styles.abNavbarSoon} data-ab-part="badge"><span className={styles.abNavbarSrOnly}>, </span>{soon}</span>}
                 </button>
@@ -151,7 +154,7 @@ export function AbNavbarView({ props, Icon, active }: {
                 data-active={on ? 'true' : 'false'}
                 aria-current={on ? 'page' : undefined} // ♿
               >
-                <span className={styles.abNavbarPill}><Icon name={item.icon} variant={on ? 'filled' : 'outlined'} size={24} /></span>
+                <span className={styles.abNavbarPill}><Icon name={item.icon} variant={on ? 'filled' : 'outlined'} size={iconSize} /></span>
                 <span className={styles.abNavbarLabel}>{item.label}</span>
               </Link>
             </li>

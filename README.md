@@ -96,6 +96,36 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   registerAbIcons({ code })
   ```
 
+### Home fidelity (0.1.14, unreleased) 🏠
+
+These match the approved Home mocks (`home-fidelity-spec.md` §4/§5). Colours come from the `ab-nextjs-theme` ≥ 0.3.5 Home tokens, with the light mock values as fallbacks. Each component also has its own `--ab-list-*` / `--ab-crumbs-*` / `--ab-version-*` / `--ab-bottom-drawer-*` knobs.
+
+* **`<AbList>` / `<AbListItem>`** (server-safe): `title`, `meta` (a `<code>` inside renders as mono), `media` (shown in a 30px tile), `badge` + `badgeTone="primary" | "tonal"` (64×22), `trailing="chevron"` or a node, and `href` (the whole row becomes a link).
+* **`<AbBreadcrumbs items={[{ label, href? }]}>`** (server-safe): a `nav` > `ol`. The last crumb has `aria-current="page"`.
+* **`<AbVersionSwitcher label="Docs" version="v0.2.x" versions={[{ value, href? }]} onSelect>`**: a 28px bordered trigger that opens an AbMenu. With JS off it falls back to a `<details>` list of links.
+* **`<AbBottomDrawer>`**: an app-scope bottom `AbDrawer` with a 20px top radius, a grab handle and safe-area padding, centred at up to 560px from 768px. `<AbDrawerList as={AbBottomDrawer}>` uses it, and so does the mobile language picker.
+
+### Drawers (0.1.14, unreleased) 🗄️
+
+A drawer belongs to a **region**: the whole app, the main pane or the aside pane. It slides in from that region's edge, is clipped by it, and **never scrolls the document**.
+
+> 🧱 **Requires `ab-nextjs-core` 0.1.6 or later markup** for the scopes (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`). With older core, or with no layout, every drawer falls back to a viewport layer on `<body>`.
+
+* **`<AbDrawer>`** (`ab-nextjs-components/ab-drawer`): `open`, `onClose`, `scope="app" | "main" | "aside"` (default `app`), `side="bottom" | "top" | "left" | "right" | "start" | "end"` (default `bottom`; `start` / `end` follow `dir`), `title` (or `aria-labelledby` / `aria-label`), `footer`, `size` (`--ab-drawer-size`), `modal` (default `true`), `closeLabel`, `noJsFallback` (default `true`).
+  * It portals into a layer inside the core layout box (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`). Without a layout it covers the viewport from `<body>`.
+  * `role="dialog"`, `aria-modal`, and the label goes on the panel. Focus moves in and is trapped. Escape, a scrim click or the ✕ close it, and focus goes back to the opener. While it's open the rest of its scope is `inert`.
+  * It slides for 240ms, the same as the panes, using `ab-nextjs-animations` motion. With reduced motion it appears without the slide.
+  * Without JS (D41) the content renders in flow as a labelled `<section>`, so nothing is hidden behind JavaScript.
+* **`useAbDrawer(scope?)`** (also on the root barrel) returns `{ open, show, close, toggle, setOpen, id, triggerProps, drawerProps }`:
+  ```tsx
+  import { AbDrawerList, useAbDrawer } from 'ab-nextjs-components'
+  const d = useAbDrawer('app')
+  <button {...d.triggerProps}>Language</button>
+  <AbDrawerList {...d.drawerProps} side="bottom" title="Language" items={[{ value: 'en', label: 'English', lang: 'en' }]} value={locale} onSelect={setLocale} />
+  ```
+* **Presets.** `<AbDrawerList>` is one selectable list: `items={[{ value, label, description?, icon?, href?, lang?, disabled? }]}`, `value`, `onSelect`, `closeOnSelect`, with the current item marked `aria-current`. `<AbConfirmDrawer>` takes `message`, `confirmLabel`, `cancelLabel`, `onConfirm`, `onCancel`, `tone="danger"` and `busy`. Escape, the scrim and ✕ count as cancel.
+* **G56:** `<AbLocaleSwitcher presentation="drawer" | "auto">` and `<AbAppBar presentation="drawer" | "auto">` (the More menu) open as an app-scope bottom `AbDrawerList`. `auto` opens a drawer below 768px and a menu above. The default stays `menu`.
+
 ## Getting Started
 
 ### Installation

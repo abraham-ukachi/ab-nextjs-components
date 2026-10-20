@@ -59,6 +59,10 @@ import { usePathname } from 'next/navigation';
 import AbIcon from '../ab-icon';
 // 📋 the overflow menu (G26)
 import AbMenu from '../ab-menu';
+// 🗄️ 0.1.14 (G56): the More menu can open as a drawer
+import AbDrawerList from '../ab-drawer-list';
+import AbBottomDrawer from '../ab-bottom-drawer';
+import { resolveAbPresentation, type AbPresentation } from '../ab-locale-switcher';
 // 🎨 styles
 import styles from './styles.module.css';
 
@@ -81,6 +85,15 @@ export interface AbAppBarProps {
   sticky?: boolean; // 📌 default true (hairline under it)
   labels?: { nav?: string; more?: string }; // 🌍
   className?: string; // 🏷️
+  /** 🗄️ 0.1.14 (G56, D40): More as `menu` (default), `drawer` (app-scope bottom AbDrawerList) or `auto` (drawer below 768px) */
+  presentation?: AbPresentation;
+  /** 📏 0.1.14 (P5): `'compact'` = the Home bar: height from core's `--ab-header-height` (52 / 60 / 64), 13.5px links,
+   *  brand column `--ab-app-bar-brand-width` (236, 270 at ≥ 1920), `--div` hairline. Default `'comfortable'` (64px). */
+  density?: 'comfortable' | 'compact';
+  /** ➖ 0.1.14 (P4): a 1×20 `--div` rule between the nav and the actions (mock: before GitHub) */
+  divider?: boolean;
+  /** ⋮ 0.1.14 (P19): `false` = no "More" button/menu; below 1180px the nav is simply hidden (default `true`) */
+  moreMenu?: boolean;
 }
 
 /** 🎯 exact match or parent prefix ("/" only matches itself) */
@@ -90,7 +103,7 @@ const isActive = (href: string, active?: string) => !!active && (href === active
  * 🧱 AbAppBar (G43): brand, search, nav, actions, sticky with a hairline. Below 1180px the nav moves into a
  * "More" overflow menu built on AbMenu (G26). JS off: the More button is hidden and the nav scrolls inline.
  */
-const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className }: AbAppBarProps): ReactElement => {
+const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className, presentation = 'menu', density = 'comfortable', divider = false, moreMenu = true }: AbAppBarProps): ReactElement => {
   // 🌍 the active link comes from the AbLinkProvider locales, same rule as AbSidebar / AbNavbar
   const appLocales = useAbLocales();
   const pathname = stripAbLocalePrefix(usePathname() ?? '', locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
@@ -99,11 +112,12 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
   const menuId = `ab-app-bar-more-${useId().replace(/:/g, '')}`;
   // 📋 menu state
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<'menu' | 'drawer'>(presentation === 'drawer' ? 'drawer' : 'menu'); // 🗄️ decided on click
   const wrap = useRef<HTMLDivElement>(null);
   const btn = useRef<HTMLButtonElement>(null);
   // ⎋ Escape + outside click close it
   useEffect(() => {
-    if (!open) return;
+    if (!open || mode !== 'menu') return; // 🗄️ the drawer has its own Escape / scrim
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false);
@@ -119,10 +133,10 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('pointerdown', onDown);
     };
-  }, [open]);
+  }, [open, mode]);
 
   return (
-    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined}>
+    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined} data-density={density === 'compact' ? 'compact' : undefined} data-more={moreMenu ? undefined : 'false'}>
       {leading}
       {brand && <div className={styles.abAppBarBrand}>{brand}</div>}
       {search && <div className={styles.abAppBarSearch}>{search}</div>}
@@ -140,6 +154,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
           </ul>
         </nav>
       )}
+      {divider && <span className={styles.abAppBarDivider} aria-hidden="true" data-ab-part="app-bar-divider" /> /* ➖ P4 */}
       <div className={styles.abAppBarActions}>
         {/* 🔘 actions; 📱 below 768px `compactActions` replaces them (both rendered, CSS picks: no hydration flip) */}
         {compactActions != null ? (
@@ -148,27 +163,41 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
             <div className={styles.abAppBarActionsCompact}>{compactActions}</div>
           </>
         ) : actions}
-        {nav.length > 0 && (
+        {nav.length > 0 && moreMenu && (
           <div ref={wrap} className={styles.abAppBarMore}>
             <button
               ref={btn}
               type="button"
               className={styles.abAppBarMoreButton} // 🙈 ≥ 1180px and JS off
               aria-label={labels?.more ?? 'More'}
-              aria-haspopup="menu"
+              aria-haspopup={mode === 'drawer' ? 'dialog' : 'menu'}
               aria-expanded={open}
-              aria-controls={menuId}
-              onClick={() => setOpen((o) => !o)}
+              aria-controls={mode === 'drawer' ? `${menuId}-drawer` : menuId}
+              onClick={() => { if (!open) setMode(resolveAbPresentation(presentation)); setOpen((o) => !o); }} // 🖱️ `auto` decides now
             >
               <AbIcon name="more_vert" size={24} />
             </button>
             <AbMenu
               id={menuId}
-              hidden={!open}
-              isActive={open}
+              hidden={!open || mode !== 'menu'}
+              isActive={open && mode === 'menu'}
               className={styles.abAppBarMenu}
               items={nav.map((n) => ({ id: n.href, label: n.label, href: n.href, selected: isActive(n.href, current), onClick: () => setOpen(false) }))}
             />
+            {presentation !== 'menu' && (
+              <AbDrawerList
+                id={`${menuId}-drawer`}
+                open={open && mode === 'drawer'}
+                onClose={() => setOpen(false)} // 🚪 focus goes back to More
+                scope="app"
+                side="bottom"
+                as={AbBottomDrawer} // 📱
+                title={labels?.more ?? 'More'}
+                noJsFallback={false} // 🚫 JS off: the nav already scrolls inline
+                value={nav.find((n) => isActive(n.href, current))?.href}
+                items={nav.map((n) => ({ value: n.href, label: n.label, href: n.href }))}
+              />
+            )}
           </div>
         )}
       </div>

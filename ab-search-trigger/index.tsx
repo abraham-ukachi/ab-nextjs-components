@@ -63,6 +63,8 @@ export interface AbSearchTriggerProps {
   compact?: boolean; // 📱 icon-only pill (the label stays for screen readers), e.g. the mobile app bar
   comingSoon?: boolean; // 🚧 visible but inert: aria-disabled, no hotkey
   comingSoonLabel?: string; // 🏷️ default "Coming soon"
+  variant?: 'pill' | 'field'; // 🔎 0.1.14 (P6): 'field' = the Home 300×36 bordered field (default 'pill', the legacy look)
+  size?: 'md' | 'sm'; // 📱 0.1.14 (P6): 'sm' = the mobile 34px "Search ⌘K" pill (label + key cap stay visible)
   className?: string; // 🏷️
 }
 
@@ -80,7 +82,7 @@ export function isAbApplePlatform(nav?: { platform?: string; userAgent?: string;
  * announces `aria-keyshortcuts="Meta+K Control+K"`, and falls back to a link when there's no `onOpen`.
  * Note: the hotkey is a local listener; G48 `useAbHotkey` is deliberately not in hooks 0.1.7.
  */
-const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', className }: AbSearchTriggerProps): ReactElement => {
+const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', variant = 'pill', size = 'md', className }: AbSearchTriggerProps): ReactElement => {
   // 🍎 SSR renders "Ctrl"; hydration then reads the platform (useSyncExternalStore: no mismatch, no effect)
   const apple = useSyncExternalStore(
     noopSubscribe, // 🔕 the platform never changes
@@ -101,8 +103,18 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
     return () => window.removeEventListener('keydown', onKey); // 🧹
   }, [listen, onOpen]);
 
+  // 🏠 P6: the Home looks (field / sm pill) show ONE key cap ("⌘ K" / "⌘K") and keep "coming soon" out of the field
+  const home = variant === 'field' || size === 'sm';
+  const keyCap = (apple ? '⌘' : 'Ctrl') + (size === 'sm' ? '' : ' ') + 'K'; // ⌨️ mock: "⌘ K" (field) · "⌘K" (sm)
   // 🧩 inner content
-  const inner = (
+  const inner = home ? (
+    <>
+      <AbIcon name="search" size={size === 'sm' ? 17 : 18} className={styles.abSearchTriggerIcon} />
+      <span className={styles.abSearchTriggerLabel}>{label}</span>
+      {/* 🚧 coming soon: tooltip + announced, never painted inside the field (spec §4) */}
+      {comingSoon ? <span className={styles.abSearchTriggerSrOnly}>, {comingSoonLabel}</span> : listen && <AbKbd className={styles.abSearchTriggerCap}>{keyCap}</AbKbd>}
+    </>
+  ) : (
     <>
       <AbIcon name="search" size={20} className={styles.abSearchTriggerIcon} />
       <span className={clsx(styles.abSearchTriggerLabel, compact && styles.abSearchTriggerSrOnly)}>{label}</span>
@@ -117,6 +129,9 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
     'data-ab-part': 'search-trigger', // 🧩
     'aria-keyshortcuts': listen ? 'Meta+K Control+K' : undefined, // ♿ only announced when bound (James #3)
     'data-compact': compact ? 'true' : undefined, // 📱
+    'data-variant': variant === 'field' ? 'field' : undefined, // 🔎 P6
+    'data-size': size === 'sm' ? 'sm' : undefined, // 📱 P6
+    title: home && comingSoon ? comingSoonLabel : undefined, // 💬 P6: "coming soon" lives in the tooltip
   };
 
   // 🚧 coming soon: focusable, announced, inert

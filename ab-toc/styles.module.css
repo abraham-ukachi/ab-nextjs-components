@@ -36,19 +36,31 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-.abToc { font-size: 14px; } /* 📑 */
-.abTocTitle { margin: 0 0 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.75; } /* 🏷️ */
-.abTocList { list-style: none; margin: 0; padding: 0; border-inline-start: var(--ab-divider-hairline, 1px solid rgb(0 0 0 / 0.12)); } /* ➖ */
+/* 📑 0.1.14 (P14 + token move): the Home TOC (spec §4), on the theme 0.3.5 tokens, M3 fallbacks kept */
+.abToc { font-size: 13px; } /* 📑 */
+.abTocTitle { margin: 0 0 10px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ab-color-faint, var(--ab-color-on-surface-variant, inherit)); } /* 🏷️ "ON THIS PAGE" */
+.abTocList { list-style: none; margin: 0; padding: 0; border-inline-start: 1px solid var(--ab-color-div, rgb(0 0 0 / 0.12)); } /* ➖ rail */
 .abTocList > li[data-level='3'] { padding-inline-start: 12px; } /* 📏 */
 .abTocList > li[data-level='4'] { padding-inline-start: 24px; } /* 📏 */
 .abTocLink {
   display: block; /* 📐 */
   margin-inline-start: -1px; /* ➖ sit on the rail */
-  padding: 4px 12px; /* 📦 */
+  padding: 6px 0 6px 14px; /* 📦 mock */
+  line-height: 18px; /* 📏 30px rows (WebKit-measured against the mock) */
   border-inline-start: 2px solid transparent; /* ➖ */
-  color: var(--ab-color-on-surface-variant, inherit); /* 🖋️ */
+  color: var(--ab-color-muted, var(--ab-color-on-surface-variant, inherit)); /* 🖋️ */
   text-decoration: none; /* 🚫 */
 }
-.abTocLink:hover { color: var(--ab-color-on-surface, inherit); } /* 🖱️ */
-.abTocLink[data-active='true'] { border-inline-start-color: var(--ab-color-primary, currentColor); color: var(--ab-color-primary, inherit); font-weight: 600; } /* 🎯 */
-.abTocLink:focus-visible { outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); outline-offset: var(--ab-focus-ring-offset, 2px); } /* ♿ */
+.abTocLink:hover { color: var(--ab-color-text, var(--ab-color-on-surface, inherit)); } /* 🖱️ */
+.abTocLink[data-active='true'] { border-inline-start-color: var(--ab-color-accent, var(--ab-color-primary, currentColor)); color: var(--ab-color-accent-text, var(--ab-color-primary, inherit)); font-weight: 650; } /* 🎯 */
+.abTocLink:focus-visible { outline: 2px solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); outline-offset: -2px; } /* ♿ */
+/* 🧩 P14 footer */
+.abTocSep { height: 1px; margin: 18px 0 12px; border: 0; background: var(--ab-color-div, rgb(0 0 0 / 0.12)); } /* ➖ */
+.abTocFooter > a, .abTocFooter > p > a, .abTocFooter > ul > li > a {
+  display: flex; align-items: center; gap: 8px; padding: 5px 0; /* 📐 */
+  font-size: 12.5px; line-height: 17px; color: var(--ab-color-muted, inherit); text-decoration: none; /* 🔤 27px rows */
+}
+.abTocFooter a:hover { color: var(--ab-color-accent-text, inherit); } /* 🖱️ */
+.abTocFooter a:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; border-radius: 4px; } /* ♿ */
+.abTocFooter a svg { flex: none; width: 15px; height: 15px; color: var(--ab-color-faint, inherit); } /* 🔣 GitHub · north_east */
+.abTocFooter > ul { list-style: none; margin: 0; padding: 0; }

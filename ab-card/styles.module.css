@@ -58,7 +58,7 @@
 .abCardLink::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* 🧲 whole card clickable */
 .abCard[data-linked='true']:hover { background: var(--ab-color-surface-container, rgb(0 0 0 / 0.06)); } /* 🖱️ */
 .abCard:focus-within:has(.abCardLink:focus-visible) {
-  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ ring on the card */
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); /* ♿ ring on the card */
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
 }
 .abCardLink:focus-visible { outline: none; } /* ♿ the card shows the ring */

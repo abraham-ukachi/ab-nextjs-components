@@ -90,6 +90,12 @@ export interface AbIconButtonProps {
   title?: string;
   // 🧾 button type
   type?: 'button' | 'submit' | 'reset';
+  // ♿ 0.1.14: disclosure state for menus / drawers / the TOC toggle (button variant)
+  'aria-expanded'?: boolean;
+  // ♿ 0.1.14: id of the element this button opens
+  'aria-controls'?: string;
+  // 📏 0.1.14: glyph size in px (default: AbIcon's 24), e.g. 16 for the terminal copy button
+  iconSize?: number;
 }
 
 const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function AbIconButton(props, ref) {
@@ -112,6 +118,9 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
     title, // 💬
     type = 'button', // 🧾
     iconFilled, // ⬛
+    'aria-expanded': ariaExpanded, // ♿ 0.1.14
+    'aria-controls': ariaControls, // ♿ 0.1.14
+    iconSize, // 📏 0.1.14
   } = props;
 
   // ♿ G6: one accessible name for both variants, ON the interactive element (not the wrapper span)
@@ -121,7 +130,7 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
   // 🏷️ classes
   const classNames = clsx('AbIconButton', 'icon-button', styles.abIconButton, AB_MOTION.interactive, expands && AB_MOTION.lift, shrinks && AB_MOTION.press, className); // 🎬 hover lift / press from ab-nextjs-animations
   // 🔣 the glyph is decoration (the button carries the name): AbIcon without a label is aria-hidden
-  const glyph = <AbIcon name={icon} variant={(iconFilled ?? active) ? 'filled' : 'outlined'} className="icon" />;
+  const glyph = <AbIcon name={icon} variant={(iconFilled ?? active) ? 'filled' : 'outlined'} className="icon" size={iconSize} />;
 
   // 🔗 link variant
   if (href && !isLoading) {
@@ -158,6 +167,8 @@ const AbIconButton = forwardRef<HTMLButtonElement, AbIconButtonProps>(function A
         aria-label={name} // ♿ accessible name
         title={tooltip} // 💬 tooltip on the button itself
         aria-busy={isLoading || undefined} // ⏳ announce loading
+        aria-expanded={ariaExpanded} // ♿ open / closed (omitted when undefined)
+        aria-controls={ariaControls} // ♿ what it opens
         data-active={String(active)} // ✅
         data-naked={String(naked)} // 🫥
         data-expands={String(expands)} // 🔍

@@ -48,7 +48,7 @@ import {
   getAbButtonSrReason,
   type AbButtonBadgeTone,
   type AbButtonColor,
-  type AbButtonType,
+  type AbButtonType, type AbButtonShape, type AbButtonSize,
 } from '../../ab-button/helpers';
 
 // 📦 shared types
@@ -63,6 +63,8 @@ export interface AbButtonProps {
   hidden?: boolean; // 🙈
   style?: CSSProperties; // 🎨
   rounded?: boolean; // 💊
+  shape?: AbButtonShape; // 🔷 0.1.14 (P16)
+  size?: AbButtonSize; // 📏 0.1.14 (P16)
   raised?: boolean; // 🏔️
   shrinks?: boolean; // 🤏
   expands?: boolean; // 🔍
@@ -84,7 +86,7 @@ export interface AbButtonProps {
 
 /** 🖥️ Server AbButton: no onClick. Use href for links or htmlType for form submit. No-JS safe. */
 const AbButton = ({
-  id, type = 'contained', htmlType = 'button', className, hidden = false, style, rounded = true, raised = false,
+  id, type = 'contained', htmlType = 'button', className, hidden = false, style, rounded = true, shape, size, raised = false,
   shrinks = false, expands = false, withIcon = false, disabled = false, iconPosition = 'left', label, icon,
   color = 'primary', href, children, startIcon, endIcon, badge, badgeTone = 'neutral', disabledReason, focusableWhenDisabled,
 }: AbButtonProps): ReactElement => {
@@ -106,6 +108,8 @@ const AbButton = ({
     'data-iconpos': iconPosition, // ↔️
     'data-color': color, // 🎨
     'data-disabled-mode': mode, // 🚦
+    'data-shape': shape, // 🔷 P16
+    'data-size': size, // 📏 P16
   } as const;
 
   // 🔣 legacy icon (decorative)

@@ -101,7 +101,7 @@
   /* 🎨 hover / 🤏 press motion: .ab-motion-interactive + .ab-motion-press (ab-nextjs-animations) */
 }
 .nav:hover {
-  background-color: color-mix(in srgb, currentColor 8%, transparent); /* 🌫️ */
+  background-color: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); /* 🌫️ */
 }
 .nav[data-variant='filled'] {
   border-color: transparent;

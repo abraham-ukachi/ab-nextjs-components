@@ -52,6 +52,8 @@ import moreVert from 'ab-nextjs-icons/ab-icons/icons/more_vert'; // ⋮ AbAppBar
 import search from 'ab-nextjs-icons/ab-icons/icons/search'; // 🔎 AbSearchTrigger (0.1.13)
 import close from 'ab-nextjs-icons/ab-icons/icons/close'; // ✖️ AbPage aside close (0.1.13)
 import expandMore from 'ab-nextjs-icons/ab-icons/icons/expand_more'; // 🔽 AbLocaleSwitcher no-JS list (0.1.13)
+import doubleLeft from 'ab-nextjs-icons/ab-icons/icons/keyboard_double_arrow_left'; // ⏪ AbSidebar outlined collapse (0.1.14, P9)
+import doubleRight from 'ab-nextjs-icons/ab-icons/icons/keyboard_double_arrow_right'; // ⏩ AbSidebar outlined expand (0.1.14, P9)
 // 🧾 shape
 import type { AbIconSvgData } from './helpers';
 
@@ -72,4 +74,6 @@ export const AB_ICON_BUILTINS: Record<string, AbIconSvgData> = {
   search, // 🔎
   close, // ✖️
   expand_more: expandMore, // 🔽
+  keyboard_double_arrow_left: doubleLeft, // ⏪
+  keyboard_double_arrow_right: doubleRight, // ⏩
 };

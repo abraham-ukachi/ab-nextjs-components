@@ -76,10 +76,10 @@
   color: inherit; /* 🖋️ */
   cursor: pointer; /* 👆 */
 }
-.abSidebarToggle:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
+.abSidebarToggle:hover { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } /* 🖱️ */
 .abSidebarToggle:focus-visible,
 .abSidebarLink:focus-visible {
-  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-primary, #8f4c38); /* ♿ */
+  outline: var(--ab-focus-ring-width, 2px) solid var(--ab-color-accent, var(--ab-color-primary, #8f4c38)); /* ♿ */
   outline-offset: var(--ab-focus-ring-offset, 2px); /* ♿ */
 }
 @media (scripting: none) {
@@ -125,10 +125,10 @@
 }
 .abSidebarLabel { min-width: 0; overflow-wrap: anywhere; } /* 🚫 no overflow, ReactNode-friendly */
 .abSidebarLink[data-depth='1'] { padding-inline-start: 44px; font-size: 14px; } /* 🌳 */
-.abSidebarLink:hover { background: color-mix(in srgb, currentColor 8%, transparent); } /* 🖱️ */
+.abSidebarLink:hover { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } /* 🖱️ */
 .abSidebarLink[data-active='true'] {
-  background: var(--ab-color-secondary-container, color-mix(in srgb, #8f4c38 14%, transparent)); /* 🎯 */
-  color: var(--ab-color-on-secondary-container, inherit); /* 🖋️ */
+  background: var(--ab-color-tint, var(--ab-color-secondary-container, color-mix(in srgb, #8f4c38 14%, transparent))); /* 🎯 */
+  color: var(--ab-color-accent-text, var(--ab-color-on-secondary-container, inherit)); /* 🖋️ */
   font-weight: 600; /* 🔤 */
 }
 .abSidebarIcon { flex: none; } /* 🔣 */
@@ -144,3 +144,46 @@
 .abSidebar[data-collapsed='true'] .abSidebarLink { width: 48px; justify-content: center; padding: 0; }
 .abSidebar[data-collapsed='true'] .abSidebarLabel,
 .abSidebar[data-collapsed='true'] .abSidebarBadge { display: none; }
+
+/* ===== 🏠 0.1.14 (P8/P9, Home spec §4 sidebar) ===== */
+.abSidebar[data-density='compact'] { max-width: none; gap: 0; padding: 0; } /* 📏 the pane sets the width (248 / 260 / 288) */
+.abSidebar[data-density='compact'] .abSidebarHeader { min-height: 0; padding: 12px 10px 6px 16px; } /* 🏷️ version switcher + collapse */
+.abSidebar[data-density='compact'] .abSidebarSections { gap: 1px; padding: 4px 10px 16px; box-sizing: border-box; } /* 📦 mock nav: 1px between every row and label */
+.abSidebar[data-density='compact'] .abSidebarSection { gap: 1px; }
+.abSidebar[data-density='compact'] .abSidebarList { gap: 1px; }
+.abSidebar[data-density='compact'] .abSidebarHeading {
+  padding: 14px 10px 6px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; /* 🔤 35px label row, like the mock */
+  color: var(--ab-color-faint, #807062); opacity: 1; /* 🎨 AA faint */
+}
+.abSidebar[data-density='compact'] .abSidebarLink {
+  gap: 10px; min-height: 0; height: 32px; padding: 0 10px; box-sizing: border-box; /* 📏 */
+  font-family: inherit; font-size: 13.5px; font-weight: 500; line-height: 1.2; letter-spacing: 0; /* 🔤 Inter body */
+  color: var(--ab-color-muted, #6b5b50); /* 🖋️ */
+}
+.abSidebar[data-density='compact'] .abSidebarLink[data-size='sm'] { height: 30px; } /* 📦 packages */
+.abSidebar[data-density='compact'] .abSidebarLabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; overflow-wrap: normal; } /* ✂️ one line */
+.abSidebar[data-density='compact'] .abSidebarIcon { color: var(--ab-color-faint, #807062); } /* 🔣 */
+.abSidebar[data-density='compact'] .abSidebarLink:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } /* 🖱️ */
+.abSidebar[data-active-shape='rounded'] .abSidebarLink { border-radius: var(--ab-radius-row, 8px); } /* 🔷 */
+.abSidebar[data-active-shape='rounded'] .abSidebarLink[data-active='true'] {
+  background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); font-weight: 650; /* 🎯 */
+}
+.abSidebar[data-active-shape='rounded'] .abSidebarLink[data-active='true'] .abSidebarIcon { color: inherit; } /* 🔣 filled, accent */
+.abSidebar[data-density='compact'] .abSidebarLink:focus-visible,
+.abSidebar[data-density='compact'] .abSidebarToggle:focus-visible { outline-color: var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ inside the pane */
+.abSidebar[data-badge='text'] .abSidebarBadge {
+  padding: 0; border-radius: 0; background: none; line-height: 1; /* 🧹 no chip */
+  font: 500 10.5px var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); color: var(--ab-color-faint, #807062); /* ⌨️ */
+}
+/* ♿ James: faint on --tint is 3.9:1, so on the active row the text badge takes the row's --accent-text (≥ 4.5:1 on tint) */
+.abSidebar[data-badge='text'] .abSidebarLink[data-active='true'] .abSidebarBadge { color: inherit; }
+/* ⏪ P9: outlined collapse, 32×32, radius 8, 1px --border, --card, --muted */
+.abSidebarToggle[data-variant='outlined'] {
+  width: 32px; height: 32px; box-sizing: border-box; flex: none; /* 📏 */
+  border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-row, 8px); /* 🔲 */
+  background: var(--ab-color-card, #fff); color: var(--ab-color-muted, #6b5b50); /* 🎨 */
+}
+.abSidebarToggle[data-variant='outlined']:hover { background: linear-gradient(var(--ab-color-hover, rgb(166 124 82 / 0.08)), var(--ab-color-hover, rgb(166 124 82 / 0.08))), var(--ab-color-card, #fff); } /* 🖱️ */
+.abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarHeader { padding: 12px 0 6px; justify-content: center; } /* 🚪 rail */
+.abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarSections { padding-inline: 8px; }
+.abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarLink { width: 40px; height: 40px; } /* 👆 */
