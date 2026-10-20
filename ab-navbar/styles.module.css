@@ -91,7 +91,7 @@
 .abNavbarSrOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */
 
 /* ===== 📱 0.1.14 (P18, Home spec §4 bottom nav): indicator="none" · blur ===== */
-.abNavbar[data-indicator='none'] { padding-top: 8px; min-height: calc(50px + env(safe-area-inset-bottom, 0px)); } /* 📏 84px with the iPhone home indicator */
+.abNavbar[data-indicator='none'] { padding-top: 8px; padding-bottom: env(safe-area-inset-bottom, 0px); min-height: calc(50px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; } /* 📏 84px with the iPhone home indicator */
 .abNavbar[data-indicator='none'] .abNavbarList { justify-content: space-around; }
 .abNavbar[data-indicator='none'] .abNavbarList > li { flex: 0 1 80px; } /* ↔️ 4 × 80px */
 .abNavbar[data-indicator='none'] .abNavbarLink { width: 80px; min-width: 0; gap: 3px; color: var(--ab-color-faint, inherit); } /* 🔗 */
