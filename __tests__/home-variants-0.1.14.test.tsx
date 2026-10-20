@@ -50,6 +50,7 @@ import AbThemeToggle from '../ab-theme-toggle'
 import AbAppBar from '../ab-app-bar'
 import AbSidebar from '../ab-sidebar'
 import ServerAbSidebar from '../server/ab-sidebar'
+import AbPackageCard from '../ab-package-card'
 
 const css = (f: string) => readFileSync(join(__dirname, '..', f), 'utf8') // 📄
 afterEach(cleanup) // 🧹
@@ -158,5 +159,30 @@ describe('P8/P9 AbSidebar density="compact" · activeShape="rounded" · badgeVar
     expect(c).toMatch(/padding: 14px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: 0\.06em;/)
     expect(c).toMatch(/font: 500 10\.5px var\(--ab-font-code/); expect(c).toMatch(/padding: 12px 10px 6px 16px;/); expect(c).toMatch(/padding: 4px 10px 16px;/)
     expect(c).toMatch(/\.abSidebarToggle\[data-variant='outlined'\] \{\s*width: 32px; height: 32px;/)
+  })
+})
+
+// 📦 P10 (P11 `variant="all"` was dropped by D1)
+describe('P10 AbPackageCard preview · title · descriptionLines · chips + arrow 📦', () => {
+  it('Home layout: decorative preview, display title link, mono name, clamp, version + sage tag chips, arrow', () => {
+    const { container } = render(<AbPackageCard name="ab-nextjs-animations" title="Animations" href="/docs/animations" preview={<span>curve</span>} icon={<svg />} description="Motion tokens" descriptionLines={2} version="0.2.x" tags={['beta']} />)
+    const card = container.querySelector('[data-ab-part="package-card"]')!
+    expect(card.getAttribute('data-variant')).toBe('home')
+    expect(card.querySelector('[aria-hidden="true"]')?.textContent).toBe('curve') // 🖼️ decorative
+    expect(card.querySelectorAll('a')).toHaveLength(1); expect(card.querySelector('h3 a')?.textContent).toBe('Animations') // 🔗 one link
+    expect(card.querySelector('code')?.textContent).toBe('ab-nextjs-animations')
+    expect((card.querySelector('p') as HTMLElement).style.getPropertyValue('--ab-package-card-lines')).toBe('2')
+    const chips = Array.from(card.querySelectorAll('[data-ab-part="chip"]')).map((c) => [c.textContent, c.getAttribute('data-tone')])
+    expect(chips).toEqual([['v0.2.x', 'accent'], ['beta', 'sage']])
+  })
+  it('legacy layout unchanged without preview / title', () => {
+    expect(renderToStaticMarkup(<AbPackageCard name="ab-nextjs-hooks" href="/h" />)).not.toContain('data-variant="home"')
+  })
+  it('CSS: radius 14, padding 10 10 12, preview 56 r9, icon 30 r8, h3 14/800, name 11 mono, desc 12.5/1.45 min 36, mobile 8 8 10 r13 / 44', () => {
+    const c = css('ab-package-card/styles.module.css')
+    for (const re of [/padding: 10px 10px 12px; border: 1px solid var\(--ab-color-border/, /border-radius: var\(--ab-radius-card, 14px\)/, /height: 56px; border-radius: var\(--ab-radius-tile, 9px\)/,
+      /width: 30px; height: 30px; border-radius: var\(--ab-radius-row, 8px\)/, /font-size: 14px; font-weight: 800; line-height: 1\.2;/, /font: 400 11px\/1\.3 var\(--ab-font-code/,
+      /font-size: 12\.5px; line-height: 1\.45; color: var\(--ab-color-muted, #6b5b50\); min-height: 36px;/, /\.home \{ padding: 8px 8px 10px; border-radius: 13px; \}/, /\.homePreview \{ height: 44px; \}/,
+      /translateY\(-1px\)/]) expect(c).toMatch(re)
   })
 })

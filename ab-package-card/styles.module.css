@@ -39,3 +39,43 @@
 .abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; overflow-wrap: anywhere; word-break: normal; hyphens: none; display: block; min-width: 0; max-width: 100%; } /* 📦 0.1.13 (Joseph): wraps at the <wbr> after a hyphen first (ab-nextjs-/components); `anywhere` only splits a part that alone is wider than a very narrow card (animations at ~70px), so it never overflows */
 .abPackageCardVersion { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); opacity: 0.8; } /* 🏷️ */
 .abPackageCardTag { padding: 0 8px; border-radius: 999px; line-height: 20px; background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🏷️ */
+
+/* ===== 🏠 0.1.14 (P10, Home spec §4 package card) ===== */
+.home {
+  position: relative; display: flex; flex-direction: column; min-width: 0; box-sizing: border-box; /* 📐 */
+  padding: 10px 10px 12px; border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-card, 14px); /* 🔲 */
+  background: var(--ab-color-card, #fff); color: var(--ab-color-text, #211a16); box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🎨 */
+  transition: border-color 160ms ease, transform 160ms ease; /* 🎞️ */
+}
+.home:hover { border-color: color-mix(in srgb, var(--ab-color-accent, #a67c52) 40%, transparent); transform: translateY(-1px); } /* 🖱️ */
+.home:has(.homeLink:focus-visible) { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ ring on the card */
+.homeLink { color: inherit; text-decoration: none; outline: none; } /* 🔗 */
+.homeLink::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* 🖱️ the whole card clicks */
+.homePreview {
+  height: 56px; border-radius: var(--ab-radius-tile, 9px); background: var(--ab-color-card2, #fbf3ec); /* 🖼️ */
+  display: flex; align-items: center; justify-content: center; gap: 10px; overflow: hidden; color: var(--ab-color-accent-text, #88603d);
+}
+.homeHead { display: flex; align-items: center; gap: 9px; margin-top: 11px; padding: 0 2px; min-width: 0; } /* 📐 */
+.homeIcon {
+  flex: none; width: 30px; height: 30px; border-radius: var(--ab-radius-row, 8px); /* 🔲 */
+  background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); display: flex; align-items: center; justify-content: center;
+}
+.homeIcon svg { width: 18px; height: 18px; } /* 🔣 */
+.homeTitles { min-width: 0; } /* ✂️ */
+.homeTitle { margin: 0; font-family: var(--ab-font-title, inherit); font-size: 14px; font-weight: 800; line-height: 1.2; letter-spacing: -0.005em; } /* 🏷️ Mulish */
+.homeName { display: block; margin-top: 1px; font: 400 11px/1.3 var(--ab-font-code, ui-monospace, monospace); color: var(--ab-color-faint, #807062); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* ⌨️ */
+.homeBadge { margin-inline-start: auto; flex: none; } /* 🔴 */
+.homeDesc { margin: 8px 0 0; padding: 0 2px; font-size: 12.5px; line-height: 1.45; color: var(--ab-color-muted, #6b5b50); min-height: 36px; } /* 📝 */
+.homeDesc[data-clamp='true'] { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--ab-package-card-lines, 2); line-clamp: var(--ab-package-card-lines, 2); overflow: hidden; } /* ✂️ */
+.homeFoot { display: flex; align-items: center; margin-top: 10px; padding: 0 2px; } /* 🏷️ */
+.homeTag { margin-inline-start: 6px; } /* 🌿 */
+.homeGrow { flex: 1; } /* ↔️ */
+.homeGo { width: 16px; height: 16px; color: var(--ab-color-faint, #807062); } /* → */
+@media (max-width: 767px) {
+  .home { padding: 8px 8px 10px; border-radius: 13px; } /* 📱 */
+  .homePreview { height: 44px; }
+  .homeHead { margin-top: 9px; }
+  .homeDesc { margin-top: 6px; font-size: 12px; }
+  .homeFoot { margin-top: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .home, .home:hover { transition: none; transform: none; } } /* ♿ */
