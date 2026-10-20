@@ -191,3 +191,26 @@ describe('AbLocaleSwitcher presentation switch 🔁', () => {
     err.mockRestore()
   })
 })
+
+// 🔗 God 00:37 #1: the mobile pill is a 114px link to /docs, no ⌘K, no hotkey
+describe('AbAppBar searchCompact 🔗', () => {
+  it('renders both slots (CSS picks); the compact one is an <a href="/docs"> with no key cap or shortcut', () => {
+    const { container } = render(<AbAppBar density="compact" search={<AbSearchTrigger variant="field" label="Search docs…" onOpen={() => {}} />} searchCompact={<AbSearchTrigger size="sm" href="/docs" label="Search" />} />)
+    const wide = container.querySelector('[data-when="wide"]')!, compact = container.querySelector('[data-when="compact"]')! // 🧩
+    expect(wide.querySelector('button')).not.toBeNull() // 🔘 desktop dialog opener
+    const a = compact.querySelector('a')! // 🔗
+    expect(a.getAttribute('href')).toBe('/docs')
+    expect(a.querySelector('kbd')).toBeNull() // ⌨️ no cap
+    expect(a.getAttribute('aria-keyshortcuts')).toBeNull() // 🚫 no hotkey
+  })
+  it('without searchCompact nothing changes (no data-when)', () => {
+    const { container } = render(<AbAppBar density="compact" search={<AbSearchTrigger variant="field" onOpen={() => {}} />} />)
+    expect(container.querySelector('[data-when]')).toBeNull() // 🫥
+  })
+  it('CSS: compact slot hidden ≥ 768px, wide hidden below; 114px in a compact bar', () => {
+    const s = css('ab-app-bar/styles.module.css')
+    expect(s).toMatch(/\.abAppBarSearch\[data-when='compact'\] \{ display: none; \}/)
+    expect(s).toMatch(/\.abAppBarSearch\[data-when='wide'\] \{ display: none; \}/)
+    expect(s).toMatch(/width: var\(--ab-app-bar-compact-search-width, 114px\)/)
+  })
+})

@@ -172,3 +172,11 @@
   .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field'] [data-ab-part='key-gap'] { display: none; } /* ⌨️ "⌘K" */
   .abAppBar[data-compact-search='pill'] .abAppBarSearch :global(.AbSearchTrigger)[data-variant='field'] :global(.AbKbd) { min-width: 18px; height: 18px; font-size: 10px; } /* 📱 = sm cap */
 }
+
+/* ===== 🔗 0.1.15 (God 00:37): `searchCompact` replaces `search` below 768px (mock .mpill = 114px, here a link) ===== */
+.abAppBarSearch[data-when='compact'] { display: none; } /* 🙈 ≥ 768px */
+@media (max-width: 767px) {
+  .abAppBarSearch[data-when='wide'] { display: none; } /* 🙈 */
+  .abAppBarSearch[data-when='compact'] { display: block; } /* 👀 */
+  .abAppBar[data-compact-search='pill'] .abAppBarSearch[data-when='compact'] > :global(.AbSearchTrigger) { width: var(--ab-app-bar-compact-search-width, 114px); box-sizing: border-box; } /* 📏 mock 114 */
+}
