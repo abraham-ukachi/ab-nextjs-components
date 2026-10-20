@@ -91,6 +91,9 @@ export type { AbConfirmDrawerProps } from '../ab-confirm-drawer/index.tsx';
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from '../ab-bottom-drawer/index.tsx';
 export type { AbBottomDrawerProps } from '../ab-bottom-drawer/index.tsx';
+// 🆕 0.2.0 drawers v2: AbTocDrawer
+export { default as AbTocDrawer } from '../ab-toc-drawer/index.tsx';
+export type { AbTocDrawerProps, AbTocDrawerLink } from '../ab-toc-drawer/index.tsx';
 // 🆕 0.2.0 drawers v2: AbNavDrawer
 export { default as AbNavDrawer } from '../ab-nav-drawer/index.tsx';
 export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from '../ab-nav-drawer/index.tsx';
