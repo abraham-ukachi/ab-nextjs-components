@@ -43,10 +43,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 // 🖼️ renderers
 import { cleanup, render } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 // 🧭 a French route: the app bar must strip `/fr` like the sidebar / navbar
 vi.mock('next/navigation', () => ({ usePathname: () => '/fr/docs/hooks' }))
 // 🧩 under test
 import AbAppBar from '../ab-app-bar'
+import AbSidebar from '../ab-sidebar'
 import AbIcon from '../ab-icon'
 import ServerAbIcon from '../server/ab-icon'
 import { scopeAbIconIds } from '../ab-icon/helpers'
@@ -87,6 +91,15 @@ describe('AbAppBar active link from the AbLinkProvider locales (Joseph) 🌍', (
     cleanup()
     const b = render(<AbAppBar nav={nav} locales={['fr']} activeHref="/blog" />)
     expect(b.container.querySelector('a[aria-current="page"]')?.textContent).toBe('Blog') // ✋ explicit
+  })
+})
+
+describe('AbSidebar item keys (James nit) 🔑', () => {
+  it('keys items by `id`, falling back to `href`, and still renders both same-href items', () => {
+    const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../ab-sidebar/view.tsx'), 'utf8')
+    expect(src).toMatch(/<li key=\{item\.id \?\? item\.href\}>/) // 🔑
+    const html = renderToStaticMarkup(<AbSidebar sections={[{ id: 'a', items: [{ id: 'x', href: '/docs', label: 'Docs' }, { id: 'y', href: '/docs', label: 'Docs again' }] }]} />)
+    expect(html).toContain('Docs again') // 🧱 both rendered
   })
 })
 

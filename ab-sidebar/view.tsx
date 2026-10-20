@@ -49,6 +49,7 @@ import styles from './styles.module.css';
 
 /** 🔗 One sidebar destination (G40). `items` = one level of children, shown under the parent. */
 export interface AbSidebarItem {
+  id?: string; // 🆔 0.1.13 (James nit): stable React key when two items share an href (default: `href`)
   href: string; // 🔗
   icon?: string; // 🔣 AbIcons name: outlined, filled when active
   label: ReactNode; // 🏷️ 0.1.13: any node (Joseph #15), e.g. a mono package name
@@ -145,7 +146,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
       </Link>
     );
     return (
-      <li key={item.href}>
+      <li key={item.id ?? item.href}>
         {/* 🎈 rail: a balloon names the icon on hover / focus */}
         {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end">{link}</AbBalloon> : link}
         {!collapsed && item.items?.length ? (

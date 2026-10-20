@@ -10,6 +10,7 @@
 * 📑 **AbToc (new, G46)**: plain `#id` anchors, `aria-current="location"`, and an optional `onNavigate` (for `scrollToAbSection`)
 * 📜 **Panes scrolling (D35/G55):** with core 0.1.6 the page never scrolls, the main pane does. `getAbMainScroller()` / `AB_MAIN_SCROLLER_SELECTOR` (`[data-ab-part="main-content"]`) from `ab-nextjs-components/ab-toc` give the `root` for `useAbScrollSpy` and the `container` for `scrollToAbSection`; a plain `#id` jump scrolls the pane on its own. In panes the AbAppBar is the header row outside the scroller, so it stays put without the document scrolling
 * 🌍 **AbAppBar active link (Joseph):** without `activeHref` it uses the pathname minus the AbLinkProvider `locales` (or its own `locales` prop), like AbSidebar / AbNavbar, so `/fr/docs` marks Docs
+* 🔑 **AbSidebar item `id`:** optional, used as the React key (`id ?? href`) so two items may share an href
 * 🆔 **AbIcon per-instance ids (Joseph):** every render suffixes the SVG ids and `url(#…)` refs with `useId()` (`scopeAbIconIds`), so two filled Homes never share a mask and a hidden twin can't turn the active Home into a solid square
 * 🎈 **AbBalloon a11y**: `role="tooltip"`, `aria-describedby` on the trigger, shows on focus, a 300ms hover delay (`AB_BALLOON_HOVER_DELAY`), Escape dismisses, `popIn` skipped under reduced motion. Without JS, CSS shows it on focus or hover. New `placement` and `delay` props
 * 🚫 **JS-off fallbacks**: AbInstallSnippet hides copy (the command shows the pnpm default). AbLocaleSwitcher with `getHref` renders a `<details>` list of `hreflang` links
