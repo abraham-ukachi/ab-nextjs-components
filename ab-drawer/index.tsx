@@ -136,6 +136,8 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
  *   trapped (Tab / Shift+Tab), and returns to the opener on close; Escape and a scrim click close it;
  *   the rest of the scope is `inert` while it's open (only the scope, unless `scope="app"`).
  * - 🎞️ 240ms slide; no motion and instant open/close under `prefers-reduced-motion`.
+ * - 🧱 Scopes need **ab-nextjs-core 0.1.6+** markup (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`);
+ *   with older core (or no layout) it falls back to a viewport layer on `<body>`.
  * - 🧩 D41 no-JS: the server renders the content as an in-flow `<section>` (hidden as soon as scripting runs).
  */
 const AbDrawer = (props: AbDrawerProps): ReactElement => {

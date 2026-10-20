@@ -100,6 +100,8 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
 
 A drawer belongs to a **region**: the whole app, the main pane or the aside pane. It slides in from that region's edge, is clipped by it, and **never scrolls the document**.
 
+> 🧱 **Requires `ab-nextjs-core` 0.1.6 or later markup** for the scopes (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`). With older core, or with no layout, every drawer falls back to a viewport layer on `<body>`.
+
 * **`<AbDrawer>`** (`ab-nextjs-components/ab-drawer`): `open`, `onClose`, `scope="app" | "main" | "aside"` (default `app`), `side="bottom" | "top" | "left" | "right" | "start" | "end"` (default `bottom`; `start` / `end` follow `dir`), `title` (or `aria-labelledby` / `aria-label`), `footer`, `size` (`--ab-drawer-size`), `modal` (default `true`), `closeLabel`, `noJsFallback` (default `true`).
   * It portals into a layer inside the core layout box (`.AbAppLayout`, `[data-ab-part="main"]`, `[data-ab-part="aside"]`). Without a layout it covers the viewport from `<body>`.
   * `role="dialog"`, `aria-modal`, and the label goes on the panel. Focus moves in and is trapped. Escape, a scrim click or the ✕ close it, and focus goes back to the opener. While it's open the rest of its scope is `inert`.
