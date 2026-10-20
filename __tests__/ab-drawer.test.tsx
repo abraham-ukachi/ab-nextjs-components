@@ -220,4 +220,16 @@ describe('AbDrawer 🗄️', () => {
     expect(read('ab-drawer/styles.module.css')).toContain(':where([data-ab-drawer-host]:has(> .abDrawerLayer)) { position: relative; }') // 🎨
     expect(read('ab-drawer/index.tsx')).not.toMatch(/host\.style/) // 🙅
   })
+
+  it('the Tab trap keeps position: fixed controls (no offsetParent) in the cycle', () => {
+    render(<div className="AbAppLayout"><AbDrawer open onClose={() => {}} aria-label="F" footer={<button id="fixed">Fixed</button>}><button id="a">A</button></AbDrawer></div>)
+    flush()
+    const fixed = document.getElementById('fixed')!
+    Object.defineProperty(fixed, 'offsetParent', { get: () => null }) // 📌 what fixed elements report
+    const rect = { length: 1 } as unknown as DOMRectList
+    for (const el of Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"] button'))) el.getClientRects = () => rect // 👀 all rendered
+    document.querySelector<HTMLElement>('[role="dialog"] button[aria-label="Close"]')!.focus()
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true }) // ⬅️ from the first → wraps to the LAST, the fixed one
+    expect(document.activeElement).toBe(fixed)
+  })
 })

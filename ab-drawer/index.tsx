@@ -229,7 +229,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     if (!panel.current || !isTopDrawer(token)) return; // 🥞 a drawer under another one stays put
     if (e.key === 'Escape' && !e.defaultPrevented) { e.preventDefault(); close.current(); return; } // ⎋
     if (e.key !== 'Tab' || !modal) return;
-    const items = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((el) => el.offsetParent !== null || el === document.activeElement); // 👀 visible
+    const items = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((el) => el.getClientRects().length > 0 || el === document.activeElement); // 👀 rendered (keeps position: fixed, which has no offsetParent)
     if (items.length === 0) { e.preventDefault(); panel.current.focus(); return; } // 🔒 nothing to tab to
     const [a, z] = [items[0], items[items.length - 1]];
     const inside = panel.current.contains(document.activeElement);
