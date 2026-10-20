@@ -78,6 +78,7 @@ describe('AbVersionSwitcher (P9) 🏷️', () => {
     expect(css).toMatch(/padding: 0 6px 0 10px;/); expect(css).toMatch(/font-size: 12px;/); expect(css).toMatch(/font-weight: 650;/)
     expect(css).toMatch(/outline: 2px solid var\(--ab-version-ring\); outline-offset: 2px;/) // ♿
     expect(css).toMatch(/@media \(scripting: none\)/) // 🚫 JS
+    expect(css).toMatch(/\.abVersionMenu\[hidden\] \{ display: none; \}/) // 🙈 closed menu takes no space
     const { container } = render(<AbVersionSwitcher version="v0.2.x" versions={versions} />)
     expect(container.querySelectorAll('details a')).toHaveLength(2)
   })

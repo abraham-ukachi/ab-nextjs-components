@@ -63,6 +63,7 @@ span.abVersion { cursor: default; } /* 🏷️ static */
 .abVersion:focus-visible { outline: 2px solid var(--ab-version-ring); outline-offset: 2px; } /* ♿ */
 .abVersionValue { color: var(--ab-version-strong); font-weight: 650; } /* 💪 */
 .abVersionIcon { width: 16px; height: 16px; } /* ▾ */
+.abVersionMenu[hidden] { display: none; } /* 🙈 AbMenu's own display would beat [hidden] */
 .abVersionMenu { position: absolute; inset-block-start: calc(100% + 4px); inset-inline-start: 0; z-index: 20; min-width: 160px; } /* 📋 */
 
 /* 🚫 no-JS: the details list replaces the button */
