@@ -63,6 +63,9 @@ import { AB_SWIPE, createAbVelocityTracker, resolveAbSheetRelease, resolveAbSide
 // 📦 re-exports: one import for the whole drawer API
 export { useAbDrawer };
 export type { AbDrawerScope, UseAbDrawer, AbSheetSnap };
+// 🤏 0.2.0: edge swipes + the pure rules, from the same entry
+export { useAbEdgeSwipe, type UseAbEdgeSwipeOptions } from './use-ab-edge-swipe';
+export { AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from './gestures';
 
 /** 🥞 drawers v2 stacking tiers (spec z-order): aside (right) < nav (left) < sheet (bottom). Unset = the old single level. */
 export type AbDrawerTier = 'aside' | 'nav' | 'sheet';
