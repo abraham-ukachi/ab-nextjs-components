@@ -130,6 +130,7 @@ function SnippetView({ pkg, labels, managers = AB_PACKAGE_MANAGERS, dev = false,
       icon={copied ? 'check' : 'content_copy'} // 📋 / ✅
       label={labels.copy} // ♿ name stays "Copy command"
       naked // 🫥
+      iconSize={terminal ? 16 : undefined} // 📏 P12: 16px in the terminal tab row
       className={styles.copy} // 🎨
       onClick={() => { void copy(command); }} // 📋
     />

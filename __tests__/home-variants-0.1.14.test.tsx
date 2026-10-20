@@ -204,11 +204,12 @@ describe('P12 AbInstallSnippet variant="terminal" 💻', () => {
     expect(copy.closest('[role="tabpanel"]')).toBeNull(); expect(list.parentElement!.contains(copy)).toBe(true) // 📋 head row
     expect(root.querySelector('code')!.textContent).toBe('pnpm add ab-nextjs-core') // 📋 one string
     expect(root.querySelector('code span')!.textContent).toBe('ab-nextjs-core') // 🖍️
+    expect(copy.querySelector('.AbIcon, svg')?.closest('[style]')?.getAttribute('style') ?? '').toMatch(/16px/) // 📏 16px glyph (AbIconButton iconSize)
   })
   it('CSS: radius 12, tab row 6 8 0 10 + hairline, tabs 12/600 underline #c29a6f, pre 14 16 16 13.5/1.4, $ #8e7a69, pkg #e7c8a5, scrolls', () => {
     const c = css('ab-install-snippet/styles.module.css')
     for (const re of [/border-radius: var\(--ab-radius-code, 12px\)/, /padding: 6px 8px 0 10px;/, /border-bottom: 1px solid rgb\(255 232 210 \/ 0\.08\)/,
-      /padding: 6px 8px 8px;/, /font-size: 12px; font-weight: 600; line-height: 1\.2; color: rgb\(237 224 212 \/ 0\.55\)/, /color: #e7c8a5; box-shadow: inset 0 -2px 0 #c29a6f/,
+      /padding: 6px 8px 8px;/, /font-size: 12px; font-weight: 600; line-height: 17px; color: rgb\(237 224 212 \/ 0\.55\)/, /color: #e7c8a5; box-shadow: inset 0 -2px 0 #c29a6f/,
       /padding: 14px 16px 16px;[^}]*overflow-x: auto;/, /color: #8e7a69/, /\.termPkg \{ color: #e7c8a5; \}/, /font-size: 13\.5px; line-height: 1\.4; white-space: pre;/]) expect(c).toMatch(re)
   })
 })
