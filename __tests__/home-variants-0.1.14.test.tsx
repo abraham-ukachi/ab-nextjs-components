@@ -304,3 +304,14 @@ describe('AbChip sage fallback AA 🌿', () => {
     }
   })
 })
+
+// ♿ James: no component falls back to the pre-AA mock faint #9c8c80
+describe('faint fallbacks are the AA value 🖋️', () => {
+  it('breadcrumbs + list fall back to #807062, and no CSS module uses #9c8c80', () => {
+    expect(css('ab-breadcrumbs/styles.module.css')).toContain('--ab-color-faint, #807062') // 🍞
+    expect(css('ab-list/styles.module.css')).toContain('--ab-color-faint, #807062') // 📋
+    for (const d of readdirSync(join(__dirname, '..')).filter((n) => n.startsWith('ab-'))) {
+      if (existsSync(join(__dirname, '..', d, 'styles.module.css'))) expect(css(`${d}/styles.module.css`), d).not.toMatch(/#9c8c80/i) // 🔍
+    }
+  })
+})

@@ -48,7 +48,7 @@
   --ab-list-ring: var(--ab-color-accent, #a67c52); /* ♿ --accent */
   --ab-list-text: var(--ab-color-text, #211a16); /* 🖋️ */
   --ab-list-muted: var(--ab-color-muted, #6b5b50); /* 🖋️ */
-  --ab-list-faint: var(--ab-color-faint, #9c8c80); /* 🖋️ */
+  --ab-list-faint: var(--ab-color-faint, #807062); /* 🖋️ --faint ♿ AA fallback (James) */
   --ab-list-tile: var(--ab-color-card2, #fbf3ec); /* 🖼️ --card2 */
   --ab-list-accent-text: var(--ab-color-accent-text, #8b6340); /* 🖋️ --accent-t */
   --ab-list-tint: var(--ab-color-tint, #f4e7db); /* 🎨 --tint */

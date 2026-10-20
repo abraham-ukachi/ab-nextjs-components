@@ -39,7 +39,7 @@
 
 /* 🎚️ knobs (mock .crumb; theme tokens from ab-nextjs-theme 0.3.5) */
 .abCrumbs {
-  --ab-crumbs-color: var(--ab-color-faint, #9c8c80); /* 🖋️ --faint */
+  --ab-crumbs-color: var(--ab-color-faint, #807062); /* 🖋️ --faint ♿ AA fallback (James) */
   --ab-crumbs-current: var(--ab-color-text, var(--ab-color-on-surface, #211a16)); /* 🖋️ --text */
   --ab-crumbs-hover: var(--ab-color-accent-text, var(--ab-color-bronze-text, #8b6340)); /* 🖱️ --accent-t */
   --ab-crumbs-ring: var(--ab-color-accent, var(--ab-color-bronze, #a67c52)); /* ♿ --accent */
