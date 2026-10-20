@@ -1,3 +1,11 @@
+## 0.1.15 (Unreleased)
+
+* 🔎 **AbAppBar `compactSearch`** (`'pill'` | `'icon'`): below 768px, a `density="compact"` bar now shows its `variant="field"` search as the mock's 34px "Search ⌘K" pill, not a 40px icon circle. It is the same element, styled by CSS, so there's still one hotkey listener. The default is `'pill'` for compact bars; comfortable bars keep the icon, as before.
+* 🏷️ **AbSearchTrigger `compactLabel`:** an optional short label (e.g. "Search") that the compact bar shows on mobile instead of `label` ("Search docs…"). Only one is ever displayed. The key cap's space is now its own span, so the pill shows "⌘K".
+* 🏷️ **AbSidebar `logo`:** a 60px (`--ab-header-height`) logo row above `header`, like mock 06's `.sb-logo`. With core ≥ 0.2.1 panes it only shows where the app header is hidden (`tabletHeader="main"` at 768–1179px).
+* 🧩 **AbLocaleSwitcher `presentation="inline"`:** no trigger and no popover; it renders a labelled group of 48px rows (`--tint` + `--accent-text` when active, a check mark, `lang` / `hreflang`) in place. Put it inside the mobile app drawer. Link rows mark the current locale with `aria-current`, button rows with `aria-pressed`.
+* 📱 **No globe on the mobile bar:** pass the bar's actions without the locale switcher as `compactActions` (from 0.1.13), and render the inline switcher in the app drawer.
+
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 
 * ⬆️ **Peer + dev range:** `ab-nextjs-theme` **^0.3.5** (was ^0.3.4), for the Home tokens. It has a D33 release-age pin that expires 2026-10-21T20:40:07Z. Components doesn't depend on `ab-nextjs-core`, so no core range changed.
