@@ -100,6 +100,7 @@ export interface AbDrawerProps {
   centerIn?: 'main'; // 💻 bottom only, 768px and up: centred in the main pane, min(640px, main width) wide, ≤ 70% tall
   returnFocus?: string; // ↩️ selector focused on close when there was no focusable opener (an edge swipe), e.g. the header logo link
   closeIcon?: ReactNode; // ✕ the close glyph (default a text ✕)
+  headerStart?: ReactNode; // 🏷️ header content that does NOT label the dialog (e.g. a logo; then use `aria-label`). `title` wins
   className?: string; // 🏷️
 }
 
@@ -161,7 +162,7 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
  */
 const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, initialFocus = 'first', className } = props;
-  const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon } = props; // 🆕 0.2.0
+  const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon, headerStart } = props; // 🆕 0.2.0
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔 SSR-stable
   const dialogId = id ?? `ab-drawer-${auto}`; // 🆔
   const titleId = `${dialogId}-title`; // 🏷️
@@ -383,6 +384,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const heading = title == null ? null : typeof title === 'string' || typeof title === 'number'
     ? <h2 id={titleId} className={styles.abDrawerTitle}>{title}</h2>
     : <div id={props['aria-labelledby'] ? undefined : titleId} className={styles.abDrawerTitle}>{title}</div>;
+  const head = heading ?? (headerStart != null ? <div className={styles.abDrawerTitle} data-ab-part="drawer-header-start">{headerStart}</div> : null); // 🏷️ 0.2.0
   const sizeVar = (size || snapping || centring ? { ...(size ? { '--ab-drawer-size': size } : {}), ...(snapping || centring ? geo : {}) } : undefined) as CSSProperties | undefined; // 📏 + 🧲 measured vars
   const grip = snapping || (swipe && edgeSign !== 0); // 🤏 drags on
   const handle = snapPoints && side === 'bottom'; // ➖ the handle strip
@@ -430,7 +432,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
               <button type="button" className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-expanded={snap === 'full'} aria-label={snap === 'full' ? handleLabels?.collapse ?? 'Collapse' : handleLabels?.expand ?? 'Expand'} onClick={() => { setReturned(false); setSnap(snap === 'full' ? 'partial' : 'full'); }} data-ab-grip="grip" {...gripProps} />
             ) : <div className={styles.abDrawerHandle} data-ab-part="drawer-handle" aria-hidden="true" />)}
             <div className={styles.abDrawerHeader} data-ab-part="drawer-header" {...(snapping ? { ...gripProps, 'data-ab-grip': 'grip' } : {})}>
-              {heading}
+              {head}
               <button type="button" className={styles.abDrawerClose} data-ab-part="drawer-close" aria-label={closeLabel} onClick={() => close.current()}>
                 {closeIcon ?? <span aria-hidden="true">✕</span>}
               </button>

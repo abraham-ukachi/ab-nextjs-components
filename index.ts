@@ -135,6 +135,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBottomDrawer', file: 'ab-bottom-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbSettingsDrawer', file: 'ab-settings-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
@@ -191,6 +192,9 @@ export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
 export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbNavDrawer
+export { default as AbNavDrawer } from './ab-nav-drawer/index.tsx'
+export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from './ab-nav-drawer/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSettingsDrawer
 export { default as AbSettingsDrawer } from './ab-settings-drawer/index.tsx'
 export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from './ab-settings-drawer/index.tsx'

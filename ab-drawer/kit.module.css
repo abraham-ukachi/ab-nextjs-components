@@ -135,7 +135,7 @@
 .nv[aria-current='page'] { background: var(--ab-dr-on); box-shadow: var(--ab-dr-on-ring); color: var(--ab-color-accent-text, #8b6340); font-weight: 700; }
 .nv[aria-current='page'] > svg { color: var(--ab-color-accent-text, #8b6340); }
 .mini { margin-inline-start: auto; font: 400 12px/1 var(--ab-font-mono, 'Roboto Mono', monospace); color: var(--ab-color-muted, #6b5b50); }
-.navFoot { flex: none; border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); padding: 8px 0 0; margin: 0 -16px; padding-inline: 16px; }
+.navFoot { flex: none; border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); margin: 0 -16px; padding: 8px 16px calc(8px + env(safe-area-inset-bottom, 0px)); } /* 📌 pinned, full-width rule */
 
 /* ➡️ the outline: 44px rows on a 2px rail, level 3 indented 16px, the active one bronze */
 .toc { list-style: none; margin: 0 0 0 8px; padding: 0; }
@@ -193,3 +193,4 @@
 .ibtn:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); }
 .ibtn:focus { outline: none; }
 .ibtn:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; }
+.verRow { display: flex; flex: none; } /* 🏷️ keeps the chip its own size */
