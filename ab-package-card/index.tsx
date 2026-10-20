@@ -51,6 +51,9 @@ import Link from '../ab-link';
 import AbChip from '../ab-chip';
 // 🔣 trailing arrow
 import AbIcon from '../ab-icon';
+// 🎬 motion classes (ab-nextjs-animations ≥ 0.2.4)
+import { AB_MOTION } from 'ab-nextjs-animations/motion';
+import 'ab-nextjs-animations/motion/styles.css';
 // 🎨 styles
 import styles from './styles.module.css';
 
@@ -90,7 +93,7 @@ function AbPackageCardHome({ name, href, description, version, icon, media, id, 
   const H = `h${headingLevel}` as 'h2' | 'h3' | 'h4'; // ♿
   const clamp = descriptionLines ? ({ '--ab-package-card-lines': descriptionLines } as CSSProperties) : undefined; // ✂️
   return (
-    <article id={id} className={clsx('AbPackageCard', styles.home, className)} data-ab-part="package-card" data-variant="home">
+    <article id={id} className={clsx('AbPackageCard', styles.home, AB_MOTION.interactive, className)} data-ab-part="package-card" data-variant="home">
       {preview != null && <div className={styles.homePreview} aria-hidden="true">{preview}</div> /* 🖼️ decorative */}
       <div className={styles.homeHead}>
         {(media ?? icon) != null && <span className={styles.homeIcon} aria-hidden="true">{media ?? icon}</span>}

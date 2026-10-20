@@ -45,7 +45,7 @@
   position: relative; display: flex; flex-direction: column; min-width: 0; box-sizing: border-box; /* 📐 */
   padding: 10px 10px 12px; border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-card, 14px); /* 🔲 */
   background: var(--ab-color-card, #fff); color: var(--ab-color-text, #211a16); box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🎨 */
-  transition: border-color 160ms ease, transform 160ms ease; /* 🎞️ */
+  /* 🎞️ the fade + lift timing comes from ab-nextjs-animations (.ab-motion-interactive on the element) */
 }
 .home:hover { border-color: color-mix(in srgb, var(--ab-color-accent, #a67c52) 40%, transparent); transform: translateY(-1px); } /* 🖱️ */
 .home:has(.homeLink:focus-visible) { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ ring on the card */
@@ -78,4 +78,4 @@
   .homeDesc { margin-top: 6px; font-size: 12px; }
   .homeFoot { margin-top: 8px; }
 }
-@media (prefers-reduced-motion: reduce) { .home, .home:hover { transition: none; transform: none; } } /* ♿ */
+@media (prefers-reduced-motion: reduce) { .home:hover { transform: none; } } /* ♿ no lift */
