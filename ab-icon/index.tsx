@@ -56,13 +56,14 @@ import styles from './styles.module.css';
 // 📦 helpers for consumers (registerAbIcons, types)
 export * from './helpers';
 export { AB_ICON_BUILTINS } from './builtin';
+export { AbIconRegistrar, type AbIconRegistrarProps } from './registrar'; // 🗂️ server-safe registration (Joseph #11)
 
 // 🗂️ register built-ins at module scope (same on server render + hydration → no mismatch)
 registerAbIcons(AB_ICON_BUILTINS);
 
 // ⚙️ props
 export interface AbIconProps {
-  name: string; // 🗂️ AbIcons name (snake_case); AbIcons name (registered / svg / map); unknown = empty box + dev warning (0.1.13)
+  name: string; // 🗂️ AbIcons name (snake_case); AbIcons name (registered / svg / map); unknown = Material ligature fallback + dev warning
   variant?: AbIconVariant; // 🎚️ outlined (default) | filled
   filled?: boolean; // 🕰️ legacy alias for variant="filled"
   weight?: AbIconWeight | number; // 📏 100–700 (outlined), default 200
@@ -74,7 +75,7 @@ export interface AbIconProps {
   style?: CSSProperties; // 🎨
 }
 
-/** 🔣 AbIcons SVG icon (client): `svg` prop → registry → empty box + dev warning (no font, 0.1.13). */
+/** 🔣 AbIcons SVG icon (client): `svg` prop → registry → Material ligature fallback + dev warning. */
 const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
   // 🔍 resolve markup without the full map
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), variant ?? (filled ? 'filled' : 'outlined'));
@@ -103,18 +104,22 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
     );
   }
 
-  // ⚠️ 0.1.13 (G2): no Material Symbols font fallback. An unknown name renders an empty, sized box (layout
-  //    stays stable) and warns once in development, so missing registrations show up in the console.
+  // 🕰️ 0.1.13 (James review): NON-breaking fallback for unregistered names. A patch must not blank icons,
+  //    so an unknown name still renders the pre-G2 Material Symbols ligature (needs the app's font), and
+  //    warns once in development so the missing registration gets fixed before the app drops the font.
   warnAbIconMissing(name);
   return (
     <span
-      className={clsx('AbIcon', styles.abIcon, className)} // 🏷️ same box as a real icon
-      style={vars} // 📐 same size
+      className={clsx('AbIcon', 'material-symbols-rounded', 'icon', styles.abIconFont, className)} // 🏷️ legacy font class
+      style={{ ...style, fontSize: toAbIconSize(size) }} // 📏
       data-icon={name} // 🗂️
-      data-ab-icon-fallback="missing" // 🔎 easy to audit (no font class)
+      data-filled={v === 'filled' ? 'true' : 'false'} // 🎚️
+      data-ab-icon-fallback="font" // 🔎 easy to audit
       title={title} // 💬
       {...a11y} // ♿
-    />
+    >
+      {name}
+    </span>
   );
 };
 
