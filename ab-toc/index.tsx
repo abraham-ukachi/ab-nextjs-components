@@ -31,7 +31,9 @@
 *
 * Example usage:
 *   // 📏 core 0.1.6 panes: the page never scrolls, the main pane does (G55), so spy on and scroll IT
-*   const { mainScrollElement } = useAbPage(); // or getAbMainScroller()
+*   const { mainScrollElement } = useAbPage(); // ✅ state from core, safe in render
+*   // without core: resolve the DOM node in an EFFECT, never during render (SSR + hydration safe)
+*   //   const [main, setMain] = useState<HTMLElement | null>(null); useEffect(() => setMain(getAbMainScroller()), []);
 *   const activeId = useAbScrollSpy(items.map((i) => i.id), { root: mainScrollElement });
 *   <AbToc items={items} activeId={activeId} onNavigate={(id) => scrollToAbSection(id, { container: mainScrollElement })} />
 */
@@ -56,6 +58,9 @@ export const AB_MAIN_SCROLLER_SELECTOR = '[data-ab-part="main-content"]';
  * 📜 getAbMainScroller — the element that scrolls the page content: the core panes main pane when present,
  * else `null` (= the window). Pass `from` (e.g. the heading) to pick the pane that contains it.
  * Use it as `useAbScrollSpy({ root })` / `scrollToAbSection(id, { container })`.
+ *
+ * ⚠️ Call it only in an effect or an event handler, **never during render**: it reads the DOM, so a render
+ *    call returns `null` on the server and the element on the client (hydration mismatch). (James nit)
  */
 export function getAbMainScroller(from?: Element | null): HTMLElement | null {
   if (typeof document === 'undefined') return null; // 🖥️ SSR

@@ -43,7 +43,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 // 🖼️ renderers
 import { cleanup, render } from '@testing-library/react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 // 🧭 a French route: the app bar must strip `/fr` like the sidebar / navbar
@@ -104,6 +104,14 @@ describe('AbSidebar item keys (James nit) 🔑', () => {
 })
 
 describe('AbToc follows the main scroller (D35/G55) 📜', () => {
+  it('no component calls getAbMainScroller during render (James nit: effects / handlers only)', () => {
+    const base = join(dirname(fileURLToPath(import.meta.url)), '..')
+    const walk = (d: string): string[] => readdirSync(d).flatMap((f) => { const p = join(d, f); return f === 'node_modules' || f === '__tests__' ? [] : statSync(p).isDirectory() ? walk(p) : /\.tsx?$/.test(f) ? [p] : [] })
+    for (const f of walk(base)) {
+      const calls = readFileSync(f, 'utf8').split('\n').filter((l) => /getAbMainScroller\(/.test(l) && !/^\s*(\*|\/\/)/.test(l) && !/export function getAbMainScroller/.test(l))
+      for (const l of calls) expect(l, f).toMatch(/useEffect|useLayoutEffect|onClick|=>/) // 🧭 inside an effect / handler only
+    }
+  })
   it('getAbMainScroller finds the core panes main pane, else null (= window)', () => {
     expect(getAbMainScroller()).toBeNull() // 🪟 no panes
     document.body.innerHTML = '<div data-ab-part="main-content"><h2 id="install"></h2></div>'
