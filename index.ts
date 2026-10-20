@@ -135,6 +135,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBottomDrawer', file: 'ab-bottom-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbMobileHeader', file: 'ab-mobile-header/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbSearchDrawer', file: 'ab-search-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbTocDrawer', file: 'ab-toc-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
@@ -194,6 +195,9 @@ export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
 export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbMobileHeader
+export { default as AbMobileHeader } from './ab-mobile-header/index.tsx'
+export type { AbMobileHeaderProps } from './ab-mobile-header/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSearchDrawer
 export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY } from './ab-search-drawer/index.tsx'
 export type { AbSearchDrawerProps, AbSearchDrawerItem, AbSearchDrawerGroup, AbSearchDrawerLabels } from './ab-search-drawer/index.tsx'

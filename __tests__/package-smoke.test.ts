@@ -128,11 +128,11 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (78 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 4)', async () => {
+  it('exports supportedComponents catalog (79 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(78)
+    expect(mod.supportedComponents).toHaveLength(79)
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(54)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(55)
     expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(24)
   })
 
