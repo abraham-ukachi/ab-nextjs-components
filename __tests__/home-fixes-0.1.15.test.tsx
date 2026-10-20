@@ -214,3 +214,16 @@ describe('AbAppBar searchCompact 🔗', () => {
     expect(s).toMatch(/width: var\(--ab-app-bar-compact-search-width, 114px\)/)
   })
 })
+
+// ♿ God 00:37 #3: the inline list has its own aria-label (default from `label`)
+describe('inline language list: ariaLabel ♿', () => {
+  it('defaults to the label (visible or not) and can be overridden', () => {
+    const r = (p: object) => render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" onSelect={() => {}} {...p} />)
+    expect(r({}).getByRole('group', { name: 'Language' })).toBeTruthy() // 🏷️ via the visible label
+    cleanup()
+    expect(r({ showLabel: false }).getByRole('group', { name: 'Language' })).toBeTruthy() // 🙈 label hidden, same name
+    cleanup()
+    const g = r({ ariaLabel: 'Choose a language' }).getByRole('group', { name: 'Choose a language' }) // ✍️ override
+    expect(g.getAttribute('aria-labelledby')).toBeNull() // 🎯 one source of the name
+  })
+})

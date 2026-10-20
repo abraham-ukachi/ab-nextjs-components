@@ -99,6 +99,9 @@ export interface AbLocaleSwitcherProps {
   /** 🏷️ 0.1.15 (John): inline only. Show the small uppercase group label (default true). Set false when the language
    *  list is the drawer's only content and the drawer title already says "Language" (the label stays the group's name) */
   showLabel?: boolean;
+  /** ♿ 0.1.15 (God 00:37): inline only. The group's accessible name. Default: `label` (e.g. "Language"), so a visible
+   *  label and the name always agree; set it when the drawer needs a fuller name (e.g. "Choose a language") */
+  ariaLabel?: string;
   /** ➖ 0.1.15 (John): inline only. A 1px --div rule above the block, for when it follows nav / theme items (default false) */
   divider?: boolean;
   drawerScope?: AbDrawerScope; // 🗺️ default 'app'
@@ -124,10 +127,10 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
  * at runtime remounts instead of changing the hook order. Links mark the active row with aria-current, buttons aria-pressed.
  */
 export function AbLocaleSwitcherInline(props: AbLocaleSwitcherProps) {
-  const { locales, current, label, onSelect, getHref, className, style, showLabel = true, divider = false } = props;
+  const { locales, current, label, onSelect, getHref, className, style, showLabel = true, divider = false, ariaLabel } = props;
   const base = useId(); // 🆔
   return (
-    <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" data-divider={divider ? 'true' : undefined} role="group" aria-labelledby={showLabel ? `${base}-label` : undefined} aria-label={showLabel ? undefined : label}>
+    <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" data-divider={divider ? 'true' : undefined} role="group" aria-labelledby={showLabel && ariaLabel == null ? `${base}-label` : undefined} aria-label={ariaLabel ?? (showLabel ? undefined : label)}>
       {showLabel && <div id={`${base}-label`} className={styles.inlineLabel}>{label}</div> /* 🏷️ hidden when the drawer title says it */}
       <ul className={styles.inlineList}>
         {locales.map((l) => {
