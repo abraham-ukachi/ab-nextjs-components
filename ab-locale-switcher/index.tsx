@@ -177,7 +177,7 @@ export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
         <ul className={styles.inlineList}>
           {locales.map((l) => {
             const on = l.code === current; // ✅
-            const inner = (<><span className={styles.inlineText}>{l.label}</span><span className={styles.inlineCheck} aria-hidden="true">{on ? <AbIcon name="check" size={18} /> : null}</span></>);
+            const inner = (<><span className={styles.inlineText}>{l.label}</span><span className={styles.inlineCheck} aria-hidden="true">{on ? <svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" data-ab-part="locale-check"><path d="M3.5 9.5 7.25 13 14.5 5.5" /></svg> : null}</span></>);
             return (
               <li key={l.code}>
                 {getHref ? (

@@ -151,4 +151,5 @@
 .inlineItem[data-active='true'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); font-weight: 650; } /* 🎯 */
 .inlineItem:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
 .inlineText { flex: 1 1 auto; min-width: 0; } /* 🏷️ */
-.inlineCheck { flex: none; display: inline-flex; inline-size: 18px; } /* ✓ */
+.inlineCheck { flex: none; display: inline-flex; inline-size: 18px; block-size: 18px; color: var(--ab-locale-check-color, #8b6340); } /* ✓ John: bronze 2px stroke, 18px */
+:global(.dark) .inlineCheck, :global([data-theme='dark']) .inlineCheck { color: var(--ab-locale-check-color, var(--ab-color-accent, #c29a6f)); } /* 🌙 the warm accent */
