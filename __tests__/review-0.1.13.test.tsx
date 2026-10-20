@@ -174,7 +174,7 @@ describe('cards, toc, sidebar labels, snippet tokens, app bar (Joseph #3, #13–
     const html = renderToStaticMarkup(<AbPackageCard id="core" name="ab-nextjs-core" href="/docs/core" media={<span data-src="/x.png" />} />)
     expect(html).toContain('id="core"') // 🆔
     expect(html).toContain('data-src="/x.png"') // 🖼️
-    expect(read('ab-package-card/styles.module.css')).toMatch(/\.abPackageCardName \{[^}]*overflow-wrap: normal; word-break: normal/) // 🚫 mid-word (Joseph: wraps at hyphens instead of cutting off)
+    expect(read('ab-package-card/styles.module.css')).toMatch(/\.abPackageCardName \{[^}]*overflow-wrap: anywhere; word-break: normal/) // ✂️ hyphens first, `anywhere` as the last resort (Joseph: never overflows the card)
     expect(read('ab-package-card/styles.module.css')).not.toMatch(/\.abPackageCardName \{[^}]*text-overflow: ellipsis/) // ✂️ never cut off
   })
   it('sidebar labels accept ReactNode and use label-large', () => {

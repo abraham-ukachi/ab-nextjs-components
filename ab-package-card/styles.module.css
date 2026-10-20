@@ -36,6 +36,6 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; overflow-wrap: normal; word-break: normal; hyphens: none; display: block; min-width: 0; } /* 📦 0.1.13 (Joseph): wraps only at the <wbr> after a hyphen (ab-nextjs-/components), never mid-word, never cut off */
+.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; overflow-wrap: anywhere; word-break: normal; hyphens: none; display: block; min-width: 0; max-width: 100%; } /* 📦 0.1.13 (Joseph): wraps at the <wbr> after a hyphen first (ab-nextjs-/components); `anywhere` only splits a part that alone is wider than a very narrow card (animations at ~70px), so it never overflows */
 .abPackageCardVersion { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); opacity: 0.8; } /* 🏷️ */
 .abPackageCardTag { padding: 0 8px; border-radius: 999px; line-height: 20px; background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🏷️ */
