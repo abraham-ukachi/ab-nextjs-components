@@ -1,4 +1,25 @@
-## 0.1.15 (Unreleased)
+## 0.2.0 (Unreleased, proposed)
+
+Includes everything planned for 0.1.15, which is not released separately.
+
+### ⚠️ Heads-up (default changes, not breaking)
+
+* ⚠️ **AbVersionSwitcher `label`** now defaults to `''` (it was `'Docs'`), so the control shows just "v0.2.x ▾". Its accessible name is then `Version v0.2.x`. Pass `label="Docs"` for the old look.
+* ⚠️ **AbAppBar compact bars** (`density="compact"`) now show the search **pill** below 768px by default (it used to be a 40px icon circle). Pass `compactSearch="icon"` for the old look.
+
+### Drawers v2
+- ✨ AbDrawer: `tier`, `swipe`, `snapPoints`/`defaultSnap`/`fullOnly`/`onSnapChange`, `handleLabels`, `centerIn="main"`, `initialFocus` selector, `returnFocus`, `closeIcon`, `headerStart` (all additive)
+- ✨ Gesture kit: `AB_SWIPE`, `resolveAbSheetRelease`, `resolveAbSideRelease`, `isInAbEdgeZone`, `createAbVelocityTracker`, `useAbEdgeSwipe`
+- ✨ New: AbSettingsDrawer, AbNavDrawer, AbTocDrawer, AbSearchDrawer (combobox/listbox, recents, grouped results), AbMobileHeader
+- 🔥 Docs removed from examples; AbVersionSwitcher `label` defaults to ''
+- 🐛 Initial focus no longer scrolls the layer; returnFocus takes the first visible match
+- ♿ AbVersionSwitcher: with no `label`, the accessible name is `Version <version>`
+- 🧯 AbSearchDrawer: a rejected or throwing `search` clears to "no results"; no stale results, no unhandled rejection
+- 🆔 AbSearchDrawer: group heading ids are sanitised (`[A-Za-z0-9_-]`) and indexed, so they stay valid and unique
+- 📌 AbMobileHeader needs ab-nextjs-core ≥ 0.2.1 with `mobileHeader="main"`
+- ⚠️ Known limit: edge swipes don't open drawers in Chromium touch (`pointercancel` from the default `touch-action`; checked with Chromium 156 emulation). WebKit/iOS works. Keep a visible menu/TOC button.
+
+### From 0.1.15
 
 * 🔎 **AbAppBar `compactSearch`** (`'pill'` | `'icon'`): below 768px, a `density="compact"` bar now shows its `variant="field"` search as the mock's 34px "Search ⌘K" pill, not a 40px icon circle. It is the same element, styled by CSS, so there's still one hotkey listener. The default is `'pill'` for compact bars; comfortable bars keep the icon, as before.
   * ⚠️ **Heads-up:** `density="compact"` bars now show the search pill below 768px by default (they used to show a 40px icon circle). Pass `compactSearch="icon"` to keep the old look.
@@ -11,15 +32,6 @@
 * 📱 **No globe on the mobile bar:** pass the bar's actions without the locale switcher as `compactActions` (from 0.1.13), and render the inline switcher in the app drawer.
 * 📝 **AbAppBar `searchCompact` docs:** a hotkey trigger passed to both `search` and `searchCompact` registers ⌘K twice; give only one `onOpen` (or `hotkey={false}` on the other).
 * ✂️ **AbAppBar compact pill:** a longer (translated) label ends in an ellipsis inside the 114px pill.
-
-## 0.2.0 (Unreleased, proposed)
-
-- ✨ AbDrawer: `tier`, `swipe`, `snapPoints`/`defaultSnap`/`fullOnly`/`onSnapChange`, `handleLabels`, `centerIn="main"`, `initialFocus` selector, `returnFocus`, `closeIcon`, `headerStart` (all additive)
-- ✨ Gesture kit: `AB_SWIPE`, `resolveAbSheetRelease`, `resolveAbSideRelease`, `isInAbEdgeZone`, `createAbVelocityTracker`, `useAbEdgeSwipe`
-- ✨ New: AbSettingsDrawer, AbNavDrawer, AbTocDrawer, AbSearchDrawer (combobox/listbox, recents, grouped results), AbMobileHeader
-- 🔥 Docs removed from examples; AbVersionSwitcher `label` defaults to ''
-- 🐛 Initial focus no longer scrolls the layer; returnFocus takes the first visible match
-- Folds in the unreleased 0.1.15
 
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 
