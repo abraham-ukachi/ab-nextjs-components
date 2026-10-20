@@ -194,3 +194,11 @@
 .ibtn:focus { outline: none; }
 .ibtn:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; }
 .verRow { display: flex; flex: none; } /* 🏷️ keeps the chip its own size */
+
+/* 🔎 the search sheet: laptop = a fixed 70% (567px at 810) with the results scrolling inside under a 48px fade */
+.searchSheet.searchSheet[data-center='main'] { block-size: 70%; }
+.resWrap { position: relative; flex: 1 1 auto; min-block-size: 0; display: flex; flex-direction: column; }
+.resFade { display: none; position: absolute; inset: auto 0 0; block-size: 48px; pointer-events: none; background: linear-gradient(transparent, var(--ab-dr-bg)); }
+.searchSheet[data-center='main'] .resFade { display: block; }
+.didYouMean { justify-content: center; gap: 0; margin-top: 8px; font-size: 15px; }
+.nores code { font-family: var(--ab-font-mono, 'Roboto Mono', monospace); }
