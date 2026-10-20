@@ -65,7 +65,8 @@ const WANT: Record<string, string> = {
  * so nobody forgets to remove it.
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
-  'ab-nextjs-theme@0.3.3': '2026-10-17T00:03:31.633Z', // ⏰ 02:03:31 Paris, 17 Oct
+  // ⏳ empty: no sibling is < 24h old. Template (one exact version, publish time + 24h, UTC):
+  // 'ab-nextjs-theme@0.3.4': '2026-10-XXT00:00:00.000Z', // ⏰ TODO(remove after expiry)
 }
 
 // 📋 the list under `minimumReleaseAgeExclude:` (stops at the next top-level key)
@@ -102,5 +103,15 @@ describe('release age + sibling ranges 📦', () => {
 
   it('the minimum release age itself stays on (no repo-level opt-out)', () => {
     expect(read('pnpm-workspace.yaml')).not.toMatch(/^minimumReleaseAge:\s*0\b/m) // 🛡️
+  })
+
+  it('.npmrc has no minimum-release-age setting (pnpm 11 ignores it there; James review)', () => {
+    let npmrc = '' // 📄 a missing .npmrc is fine
+    try { npmrc = read('.npmrc') } catch { /* 🙅 none */ }
+    expect(npmrc).not.toMatch(/^\s*minimum-?release-?age/im) // 🚫 minimumReleaseAge / minimum-release-age
+  })
+
+  it('pnpm-workspace.yaml turns on minimumReleaseAgeStrict 🛡️', () => {
+    expect(read('pnpm-workspace.yaml')).toMatch(/^minimumReleaseAgeStrict:\s*true\b/m) // 🛡️
   })
 })

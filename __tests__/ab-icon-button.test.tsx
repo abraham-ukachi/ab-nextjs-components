@@ -69,9 +69,15 @@ describe('AbIconButton (G6)', () => {
     expect(attrsOf(html, 'button')).toContain('aria-label="Clear"') // ♿
   })
 
-  it('hides the ligature text from screen readers', () => {
+  it('renders the glyph with AbIcon (SVG, decorative), not the font (Joseph #6)', () => {
     const html = renderToStaticMarkup(<AbIconButton icon="arrow_back" label="Back" />) // 🖨️
-    expect(html).toMatch(/<span class="material-symbols-rounded icon" aria-hidden="true">arrow_back<\/span>/) // 🙈
+    expect(html).toContain('<svg') // 🔣 AbIcons SVG
+    expect(html).toMatch(/class="AbIcon [^"]*icon"[^>]*aria-hidden="true"/) // 🙈 decorative
+    expect(html).not.toContain('>arrow_back<') // 🚫 no ligature text
+    expect(html).toContain('aria-label="Back"') // ♿ the button carries the name
+  })
+  it('active buttons use the filled variant', () => {
+    expect(renderToStaticMarkup(<AbIconButton icon="search" label="Search" active />)).toContain('data-variant="filled"') // ⬛
   })
 
   it('disabled link: no href, aria-disabled, out of the tab order', () => {
