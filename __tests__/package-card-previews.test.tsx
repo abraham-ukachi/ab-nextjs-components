@@ -75,4 +75,13 @@ describe('🖼️ Home preview tiles (God 02:44, mock .pv-*)', () => {
     const h = renderToStaticMarkup(<AbPackageCard name="ab-nextjs-animations" title="Animations" href="/a" preview={<AbPackagePreviewCurve />} />)
     expect(h).toMatch(/aria-hidden="true"><span[^>]*data-ab-part="preview-curve"/) // ✅
   })
+  it('🌍 0.2.2 labels: English defaults unchanged, labels win, legacy props still work', () => {
+    const d = renderToStaticMarkup(<AbPackagePreviewComponents />)
+    expect(d).toMatch(/>Button<.*aria-label="Switch".*>Chip</) // 🇬🇧 defaults
+    const fr = renderToStaticMarkup(<AbPackagePreviewComponents labels={{ button: 'Bouton', chip: 'Puce', switch: 'Interrupteur' }} />)
+    expect(fr).toMatch(/>Bouton<.*aria-label="Interrupteur".*>Puce</) // 🇫🇷
+    expect(renderToStaticMarkup(<AbPackagePreviewComponents chip="Tag" />)).toContain('>Tag<') // 🕰️ 0.2.1 prop
+    expect(renderToStaticMarkup(<AbPackagePreviewComponents chip="Tag" labels={{ chip: 'Puce' }} />)).toContain('>Puce<') // 🥇 labels win
+    expect(renderToStaticMarkup(<AbPackagePreviewComponents labels={{ button: 'Go' }} />)).toMatch(/>Go<.*>Chip</) // 🧩 partial
+  })
 })

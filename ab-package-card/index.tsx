@@ -140,4 +140,4 @@ const AbPackageCardLegacy = ({ name, href, description, version, icon, media, id
 export default AbPackageCard;
 export { AbPackageCard };
 // 🖼️ 0.2.1 (God 02:44): the Home preview tiles (mock .pv-anim / .pv-code / .pv-comp)
-export { AbPackagePreviewCurve, AbPackagePreviewCode, AbPackagePreviewComponents } from './previews';
+export { AbPackagePreviewCurve, AbPackagePreviewCode, AbPackagePreviewComponents, type AbPackagePreviewComponentsLabels, type AbPackagePreviewComponentsProps } from './previews';

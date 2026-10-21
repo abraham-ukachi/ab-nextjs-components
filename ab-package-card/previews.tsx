@@ -34,6 +34,7 @@
 *   <AbPackageCard preview={<AbPackagePreviewCode lines={['*use*Theme()', '*use*Media()']} />} … />   // 🪝 Hooks
 *   <AbPackageCard preview={<AbPackagePreviewCode lines={['<*AbProvider*>', '~  {children}']} />} … /> // 🧱 Core
 *   <AbPackageCard preview={<AbPackagePreviewComponents />} … />                  // 🧩 Components: button · switch · chip
+*   <AbPackagePreviewComponents labels={{ button: 'Bouton', chip: 'Puce', switch: 'Interrupteur' }} />   // 🌍 0.2.2
 */
 
 /*
@@ -82,13 +83,28 @@ export function AbPackagePreviewCode({ lines }: { lines: readonly string[] }): R
   );
 }
 
+/** 🌍 0.2.2: the Components tile's strings (English defaults) */
+export interface AbPackagePreviewComponentsLabels {
+  button?: string; // 🔘 default "Button"
+  chip?: string; // 💊 default "Chip"
+  switch?: string; // 🎚️ default "Switch" (the switch's name when the tile is used outside an aria-hidden card preview)
+}
+
+/** ⚙️ props: `labels` (0.2.2) wins over the 0.2.1 `button` / `chip` props (kept for back-compat) */
+export interface AbPackagePreviewComponentsProps {
+  labels?: AbPackagePreviewComponentsLabels; // 🌍
+  button?: string; // 🕰️ 0.2.1: prefer `labels.button`
+  chip?: string; // 🕰️ 0.2.1: prefer `labels.chip`
+}
+
 /** 🧩 Components tile: a mini button, an on switch and a pill chip, intrinsic size (no stretch), centred both ways. */
-export function AbPackagePreviewComponents({ button = 'Button', chip = 'Chip' }: { button?: string; chip?: string }): ReactElement {
+export function AbPackagePreviewComponents({ labels = {}, button, chip }: AbPackagePreviewComponentsProps): ReactElement {
+  const L = { button: button ?? 'Button', chip: chip ?? 'Chip', switch: 'Switch', ...labels }; // 🌍 defaults < legacy props < labels
   return (
     <span className={styles.pvComp} data-ab-part="preview-components">
-      <span className={styles.pvBtn}>{button}</span> {/* 🔘 6px radius (kept) */}
-      <span className={styles.pvSw}><i /></span> {/* 🎚️ on */}
-      <span className={styles.pvChip}>{chip}</span> {/* 💊 pill */}
+      <span className={styles.pvBtn}>{L.button}</span> {/* 🔘 6px radius (kept) */}
+      <span className={styles.pvSw} role="img" aria-label={L.switch}><i /></span> {/* 🎚️ on */}
+      <span className={styles.pvChip}>{L.chip}</span> {/* 💊 pill */}
     </span>
   );
 }
