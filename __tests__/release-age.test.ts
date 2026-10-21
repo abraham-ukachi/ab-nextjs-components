@@ -66,7 +66,6 @@ const WANT: Record<string, string> = {
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
   'ab-nextjs-icons@0.2.4': '2026-10-21T17:15:19.993Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:15:19.993Z
-  'ab-nextjs-theme@0.3.5': '2026-10-21T20:40:07.827Z', // ⏰ TODO(remove after expiry): published 2026-10-20T20:40:07.827Z
   'ab-nextjs-hooks@0.1.7': '2026-10-21T17:28:56.662Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:28:56.662Z
   'ab-nextjs-theme@0.3.6': '2026-10-22T00:14:50.731Z', // ⏰ TODO(remove after expiry): published 2026-10-21T00:14:50.731Z
 }
