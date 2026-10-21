@@ -148,7 +148,7 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
   return (
     <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined} data-density={density === 'compact' ? 'compact' : undefined} data-more={moreMenu ? undefined : 'false'} data-compact-search={(compactSearch ?? (density === 'compact' ? 'pill' : 'icon')) === 'pill' ? 'pill' : undefined}>
       {leading}
-      {brand && <div className={styles.abAppBarBrand}>{brand}</div>}
+      {brand && <div className={styles.abAppBarBrand} data-ab-part="app-bar-brand">{brand}</div> /* 🏷️ 0.2.1: the drawers' default return-focus target */}
       {search && <div className={styles.abAppBarSearch} data-when={searchCompact != null ? 'wide' : undefined}>{search}</div>}
       {searchCompact != null && <div className={styles.abAppBarSearch} data-when="compact">{searchCompact}</div> /* 📱 0.1.15 */}
       {nav.length > 0 && (

@@ -104,7 +104,10 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
     const finish = (x: number) => {
       const cur = d; d = null;
       if (!cur || cur.axis !== 1) return;
-      if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) latest.current(); // ✅
+      if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) {
+        (document.activeElement as HTMLElement | null)?.blur?.(); // ↩️ 0.2.1 (Joseph): a swipe has no opener, so the drawer returns focus to the logo, not a stale element
+        latest.current(); // ✅
+      }
     };
 
     // 🖊️ pointer path: pen (and touch only where there are no touch events)
