@@ -1,6 +1,6 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "type": "module",
   "main": "index.ts",
@@ -123,6 +123,7 @@
     "ab-toc-drawer",
     "ab-nav-drawer",
     "ab-settings-drawer",
+    "ab-profile-avatar",
     "ab-version-switcher",
     "ab-breadcrumbs",
     "ab-list",
@@ -175,6 +176,7 @@
     "./ab-toc-drawer": "./ab-toc-drawer/index.tsx",
     "./ab-nav-drawer": "./ab-nav-drawer/index.tsx",
     "./ab-settings-drawer": "./ab-settings-drawer/index.tsx",
+    "./ab-profile-avatar": "./ab-profile-avatar/index.tsx",
     "./ab-version-switcher": "./ab-version-switcher/index.tsx",
     "./ab-breadcrumbs": "./ab-breadcrumbs/index.tsx",
     "./ab-list": "./ab-list/index.tsx",

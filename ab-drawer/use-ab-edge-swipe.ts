@@ -52,7 +52,13 @@ export interface UseAbEdgeSwipeOptions {
   enabled?: boolean; // 🎚️ e.g. false while that drawer is open, or when the page has no aside (default true)
   width?: number; // 📏 the drawer width the 30% rule uses (default 320)
   pointerTypes?: readonly string[]; // 🖐️ default touch + pen (a mouse never edge-swipes)
+  // 📐 0.2.1 (God 02:47): only swipe while the viewport is at most this wide, e.g. AB_ASIDE_DRAWER_MAX_WIDTH (1179) for
+  //    the right drawer: mobile AND tablet hide the aside and open it as the right drawer; from 1180px it's a column
+  maxWidth?: number;
 }
+
+/** 📐 0.2.1: the widest viewport where the aside is a right drawer (mobile + tablet; the column starts at 1180px) */
+export const AB_ASIDE_DRAWER_MAX_WIDTH = 1179;
 
 // 📱 iOS home-screen web app (the zone starts 16px in there)
 const standalone = (): boolean => typeof navigator !== 'undefined' && (navigator as Navigator & { standalone?: boolean }).standalone === true;
@@ -71,7 +77,7 @@ const standalone = (): boolean => typeof navigator !== 'undefined' && (navigator
  *
  * The drawer opens on release (it doesn't follow the finger), then slides in with its normal 200ms motion.
  */
-export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, pointerTypes = ['touch', 'pen'] }: UseAbEdgeSwipeOptions): void {
+export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, pointerTypes = ['touch', 'pen'], maxWidth }: UseAbEdgeSwipeOptions): void {
   const latest = useRef(onOpen); // 🔁 latest callback for the listener
   useEffect(() => { latest.current = onOpen; }, [onOpen]);
   const types = pointerTypes.join(','); // 🧮 a stable dep
@@ -82,6 +88,7 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
     const allow = types.split(','); // 🖐️
     // 🧱 shared start rule (pointer or touch): from the edge zone, not in a sideways scroller / opt-out / open drawer
     const start = (x: number, y: number, t: number, target: Element): boolean => {
+      if (maxWidth != null && window.innerWidth > maxWidth) return false; // 📐 0.2.1: too wide (e.g. the aside is a column)
       const host = getAbDrawerHost('app', target); // 🗺️ the app box
       const box = host === document.body ? { left: 0, right: window.innerWidth } : host.getBoundingClientRect();
       if (!isInAbEdgeZone(x, edge, box, standalone())) return false; // 🧱 not from the edge
@@ -104,7 +111,10 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
     const finish = (x: number) => {
       const cur = d; d = null;
       if (!cur || cur.axis !== 1) return;
-      if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) latest.current(); // ✅
+      if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) {
+        (document.activeElement as HTMLElement | null)?.blur?.(); // ↩️ 0.2.1 (Joseph): a swipe has no opener, so the drawer returns focus to the logo, not a stale element
+        latest.current(); // ✅
+      }
     };
 
     // 🖊️ pointer path: pen (and touch only where there are no touch events)
@@ -148,7 +158,7 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
       document.removeEventListener('touchstart', tstart, true);
       detach();
     };
-  }, [edge, enabled, width, types]);
+  }, [edge, enabled, width, types, maxWidth]);
 }
 
 // 📦 default export

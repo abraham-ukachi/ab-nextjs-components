@@ -56,16 +56,21 @@ import AbIcon from '../ab-icon';
 import { AbSidebarView, isAbSidebarActive, type AbSidebarBaseProps } from './view';
 // 🎨 styles
 import styles from './styles.module.css';
+// 👤 0.2.1 (God 02:44): the bottom-left profile button (≥ 1180px, CSS)
+import AbSidebarProfileButton, { type AbSidebarProfileButtonProps } from './profile-button';
 
 // 📦 re-export the shared types
 export type { AbSidebarItem, AbSidebarSection, AbSidebarLink, AbSidebarLabels } from './view';
 export { isAbSidebarActive, toAbSidebarSections } from './view';
+export { AbSidebarProfileButton, type AbSidebarProfileButtonProps } from './profile-button';
 
 /** ⚙️ Client props: the shared ones + collapse control. */
 export interface AbSidebarProps extends AbSidebarBaseProps {
   defaultCollapsed?: boolean; // 🚪 uncontrolled start
   onCollapsedChange?: (collapsed: boolean) => void; // 🔔
   collapsible?: boolean; // 🔘 show the collapse button (default true when sections are given)
+  // 👤 0.2.1 (God 02:44): opt-in; pass `user` + the AbSettingsDrawer props for a profile button at the bottom left
+  profile?: Omit<AbSidebarProfileButtonProps, 'collapsed'>;
   collapseButtonVariant?: 'plain' | 'outlined'; // ⏪ 0.1.14 (P9): 'outlined' = 32×32 bordered `<<` / `>>` (default 'plain' chevron)
 }
 
@@ -106,7 +111,10 @@ const AbSidebar = (props: AbSidebarProps): ReactElement => {
     </button>
   ) : undefined;
 
-  return <AbSidebarView props={{ ...props, collapsed }} Icon={AbIcon} active={active} toggle={toggle} />;
+  // 👤 0.2.1: the profile button joins any custom footer (label from `labels.profile`)
+  const profileButton = props.profile ? <AbSidebarProfileButton label={labels?.profile ?? 'Profile and settings'} {...props.profile} collapsed={collapsed} /> : null;
+  const footer = profileButton || props.footer != null ? <>{profileButton}{props.footer}</> : undefined; // 🦶
+  return <AbSidebarView props={{ ...props, collapsed, footer }} Icon={AbIcon} active={active} toggle={toggle} />;
 };
 
 // 📦 exports

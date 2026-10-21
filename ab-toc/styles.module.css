@@ -64,3 +64,19 @@
 .abTocFooter a:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; border-radius: 4px; } /* ♿ */
 .abTocFooter a svg { flex: none; width: 15px; height: 15px; color: var(--ab-color-faint, inherit); } /* 🔣 GitHub · north_east */
 .abTocFooter > ul { list-style: none; margin: 0; padding: 0; }
+
+/* 🆕 0.2.1 (God 02:44): AbTocPromo, the aside "New" card (mock .toc-card), theme tokens only */
+.abTocPromo {
+  position: relative; /* 📌 the stretched link */
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px; /* 📐 */
+  margin-top: 16px; padding: 12px; box-sizing: border-box; /* 📦 evenly padded */
+  border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: 12px; /* 🔲 rounded */
+  background: var(--ab-color-card, #fff); color: var(--ab-color-text, #211a16); /* 🎨 */
+}
+.abTocPromoChip { display: inline-flex; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font: 600 11px/1 var(--ab-font-code, ui-monospace, monospace); color: var(--ab-color-accent-text, #88603d); background: var(--ab-color-tint, #f4e7db); } /* 🆕 */
+.abTocPromoTitle { font-size: 13px; font-weight: 700; line-height: 1.3; } /* 🏷️ smaller title */
+.abTocPromoText { font-size: 11.5px; line-height: 1.4; color: var(--ab-color-muted, #6b5b50); } /* 📝 relatively smaller */
+.abTocPromoText code { font-size: 10.5px; font-family: var(--ab-font-code, ui-monospace, monospace); } /* ⌨️ */
+.abTocPromoLink { color: inherit; text-decoration: none; } /* 🔗 */
+.abTocPromoLink::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* 🖱️ whole card */
+.abTocPromo:has(.abTocPromoLink:focus-visible) { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */

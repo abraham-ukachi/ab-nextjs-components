@@ -129,3 +129,6 @@ const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavi
 // 📦 exports
 export default AbToc;
 export { AbToc };
+
+// 🆕 0.2.1 (God 02:44): the aside "New" card
+export { AbTocPromo, type AbTocPromoProps } from './promo';

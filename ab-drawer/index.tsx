@@ -64,7 +64,7 @@ import { AB_SWIPE, createAbVelocityTracker, resolveAbSheetRelease, resolveAbSide
 export { useAbDrawer };
 export type { AbDrawerScope, UseAbDrawer, AbSheetSnap };
 // 🤏 0.2.0: edge swipes + the pure rules, from the same entry
-export { useAbEdgeSwipe, type UseAbEdgeSwipeOptions } from './use-ab-edge-swipe';
+export { useAbEdgeSwipe, AB_ASIDE_DRAWER_MAX_WIDTH, type UseAbEdgeSwipeOptions } from './use-ab-edge-swipe';
 export { AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from './gestures';
 
 /** 🥞 drawers v2 stacking tiers (spec z-order): aside (right) < nav (left) < sheet (bottom). Unset = the old single level. */
@@ -99,7 +99,7 @@ export interface AbDrawerProps {
   onSnapChange?: (snap: AbSheetSnap) => void; // 🔔
   handleLabels?: { expand: string; collapse: string }; // ♿ the handle button (default "Expand" / "Collapse")
   centerIn?: 'main'; // 💻 bottom only, 768px and up: centred in the main pane, min(640px, main width) wide, ≤ 70% tall
-  returnFocus?: string; // ↩️ selector focused on close when there was no focusable opener (an edge swipe), e.g. the header logo link
+  returnFocus?: string; // ↩️ selector focused on close when there was no focusable opener (an edge swipe); default AB_DRAWER_RETURN_FOCUS (the header / brand logo)
   closeIcon?: ReactNode; // ✕ the close glyph (default a text ✕)
   headerStart?: ReactNode; // 🏷️ header content that does NOT label the dialog (e.g. a logo; then use `aria-label`). `title` wins
   className?: string; // 🏷️
@@ -146,6 +146,9 @@ const isTopDrawer = (token: symbol): boolean => openStack[openStack.length - 1] 
 
 // ♿ reduced-motion check, read once per open / close on purpose: it only picks the unmount delay for THAT
 // toggle (the slide itself is CSS, which follows the media query live), so a listener would buy nothing
+/** ↩️ 0.2.1 (Joseph): where focus goes after a drawer that had no focusable opener closes (an edge swipe): the
+ *  mobile header's logo link, else AbAppBar's brand link, else AbSidebar's logo row link. `returnFocus` overrides it. */
+export const AB_DRAWER_RETURN_FOCUS = '[data-ab-part="mobile-header"] a[href], [data-ab-part="app-bar-brand"] a[href], [data-ab-part="sidebar-logo"] a[href]';
 const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
@@ -229,11 +232,13 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     const body = panel.current.querySelector<HTMLElement>('[data-ab-part="drawer-body"]');
     if (first && body && body.contains(first)) { const b = body.getBoundingClientRect(); const r = first.getBoundingClientRect(); if (r.bottom > b.bottom) body.scrollTop += r.bottom - b.bottom; else if (r.top < b.top) body.scrollTop -= b.top - r.top; }
     (first ?? panel.current).focus({ preventScroll: true });
+    const node = panel.current; // 📌 this open's panel (for the cleanup)
     return () => {
       const had = opener.current as HTMLElement | null; // ↩️
       const usable = had && had !== document.body && had.isConnected ? had : null; // 🤏 a swipe has no opener
       // ↩️ 0.2.0 fallback: the first VISIBLE match (an app often renders the logo twice, one hidden per breakpoint)
-      const back = usable ?? (returnFocus ? Array.from(document.querySelectorAll<HTMLElement>(returnFocus)).find((el) => el.getClientRects().length > 0) ?? null : null);
+      const pool = Array.from(document.querySelectorAll<HTMLElement>(returnFocus ?? AB_DRAWER_RETURN_FOCUS)).filter((el) => !node.contains(el)); // 🏷️ 0.2.1 (Joseph): default = the header / brand logo
+      const back = usable ?? pool.find((el) => el.getClientRects().length > 0) ?? pool[0] ?? null; // 👀 the visible one, else the first
       // ⏭️ a microtask later: the inert cleanup below runs after this one, and an inert opener can't take focus
       queueMicrotask(() => { if (back && back.isConnected && typeof back.focus === 'function') back.focus({ preventScroll: true }); });
     };

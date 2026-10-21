@@ -79,6 +79,7 @@ export interface AbSidebarLabels {
   nav?: string; // ♿ nav aria-label (default "Sidebar")
   collapse?: string; // ◀️ (default "Collapse sidebar")
   expand?: string; // ▶️ (default "Expand sidebar")
+  profile?: string; // 👤 0.2.1: the profile button (default "Profile and settings")
 }
 
 /** 🔣 What the view needs from an icon component (client and server AbIcon both fit). */
@@ -101,6 +102,7 @@ export interface AbSidebarBaseProps {
   // 🏷️ 0.1.15 (God 00:08): a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
   //    where the app header is hidden (tabletHeader="main" at 768–1179); elsewhere it always shows
   logo?: ReactNode;
+  footer?: ReactNode; // 🦶 0.2.1: a bottom slot pinned to the bottom left (e.g. AbSidebarProfileButton)
   // 🕰️ legacy API (≤ 0.1.12)
   type?: 'customer' | 'admin';
   page?: string;
@@ -158,7 +160,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
     return (
       <li key={item.id ?? item.href}>
         {/* 🎈 rail: a balloon names the icon on hover / focus */}
-        {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end">{link}</AbBalloon> : link}
+        {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end" strategy="fixed">{link}</AbBalloon> : link}
         {!collapsed && item.items?.length ? (
           <ul className={styles.abSidebarList} data-ab-part="children">{item.items.map((c) => renderItem(c, depth + 1))}</ul>
         ) : null}
@@ -191,6 +193,8 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
           </section>
         ))}
       </div>
+      {/* 🦶 0.2.1: bottom-left slot (margin-top: auto pins it) */}
+      {props.footer != null && <div className={styles.abSidebarFooter} data-ab-part="sidebar-footer">{props.footer}</div>}
     </nav>
   );
 }

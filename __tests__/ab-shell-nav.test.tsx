@@ -93,7 +93,7 @@ describe('AbSidebar v2 (G40)', () => {
     expect(onChange).toHaveBeenCalledWith(true) // 🔔
     expect(container.querySelector('nav')!.getAttribute('data-ab-part')).toBe('rail') // 🚪
     expect(getByRole('button', { name: 'Expand sidebar' }).getAttribute('aria-expanded')).toBe('false') // ♿
-    expect(container.querySelectorAll('[role="tooltip"]').length).toBe(3) // 🎈 balloons name the icons
+    expect(document.querySelectorAll('[role="tooltip"]').length).toBe(3) // 🎈 balloons name the icons (0.2.1: portalled to <body>)
   })
   it('legacy links + page still work', () => {
     const html = renderToStaticMarkup(<ServerAbSidebar page="b" links={[{ href: '/a', icon: 'home', value: 'a', label: 'A' }, { href: '/b', icon: 'search', value: 'b', label: 'B' }]} />)

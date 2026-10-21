@@ -52,6 +52,8 @@ import clsx from 'clsx';
 import AbDrawer, { type AbSheetSnap } from '../ab-drawer';
 // 🔣 icons
 import AbIcon from '../ab-icon';
+// 👤 0.2.1: the account row's avatar
+import AbProfileAvatar, { type AbProfileUser } from '../ab-profile-avatar';
 // 🎨 the drawers v2 kit
 import kit from '../ab-drawer/kit.module.css';
 
@@ -68,6 +70,9 @@ export interface AbSettingsDrawerLabels {
   light?: string; dark?: string; system?: string; // 🌗
   close?: string; // "Close settings"
   expand?: string; collapse?: string; // ➖ the handle: "Expand settings" / "Collapse settings"
+  account?: string; // 👤 0.2.1: the section label "Account"
+  signIn?: string; // 🔑 0.2.1: the signed-out row "Sign in"
+  help?: string; about?: string; // ❓ ℹ️ 0.2.1: "Help" / "About"
 }
 
 /** ⚙️ props */
@@ -81,6 +86,13 @@ export interface AbSettingsDrawerProps {
   onLocaleChange: (code: string) => void; // 📣
   labels?: AbSettingsDrawerLabels; // 🏷️
   themes?: readonly AbSettingsTheme[]; // 🎚️ default light, dark, system
+  // 👤 0.2.1 (God 02:44): the account section is back, on top. `account` = signed in (avatar, name, email);
+  //    signed out, pass `onSignIn` for a "Sign in" row. Neither = no section.
+  account?: AbProfileUser | null;
+  onAccount?: () => void; // 👤 tap the signed-in row (e.g. open the profile page)
+  onSignIn?: () => void; // 🔑
+  onHelp?: () => void; // ❓ 0.2.1: a "Help ›" row after Language
+  onAbout?: () => void; // ℹ️ 0.2.1: an "About ›" row after Help
   children?: ReactNode; // ➕ extra sections after Language (your own; Accessibility / About are not built in)
   defaultSnap?: AbSheetSnap; // 🧲 default 'partial' (70%)
   returnFocus?: string; // ↩️ see AbDrawer
@@ -106,8 +118,8 @@ function radioKeys<T>(e: KeyboardEvent, items: readonly T[], current: T, pick: (
 
 /**
  * ⚙️ AbSettingsDrawer — John's Settings bottom drawer (drawers v2, spec §1): the default bottom sheet, holding
- * THEME (a Light / Dark / System segmented radiogroup, 48px) and LANGUAGE (48px radio rows, each label in its
- * own `lang`, the checked one tinted with a check).
+ * ACCOUNT (0.2.1, optional), THEME (a Light / Dark / System segmented radiogroup, 48px) and LANGUAGE (48px radio rows, each label in its
+ * own `lang`, the checked one tinted with a check), then optional Help / About rows (0.2.1).
  *
  * - 📱 below 768px: full width, snaps at 70% and full height via the handle (AbDrawer `snapPoints`)
  * - 💻 768px and up: centred in the main pane, min(640px, main width), at most 70% tall
@@ -115,10 +127,10 @@ function radioKeys<T>(e: KeyboardEvent, items: readonly T[], current: T, pick: (
  *   "Change language" lands right there) and back to the opener on close; Esc / scrim / ✕ close it
  * - 🥞 tier 'sheet': above the left and right drawers. Opening it from the left drawer? Close that one first.
  */
-const AbSettingsDrawer = ({ open, onClose, theme, onThemeChange, locales, locale, onLocaleChange, labels = {}, themes = ['light', 'dark', 'system'], children, defaultSnap, returnFocus, id, className }: AbSettingsDrawerProps): ReactElement => {
+const AbSettingsDrawer = ({ open, onClose, theme, onThemeChange, locales, locale, onLocaleChange, labels = {}, account, onAccount, onSignIn, onHelp, onAbout, themes = ['light', 'dark', 'system'], children, defaultSnap, returnFocus, id, className }: AbSettingsDrawerProps): ReactElement => {
   const seg = useRef<HTMLDivElement>(null); // 🎚️
   const langs = useRef<HTMLDivElement>(null); // 🌍
-  const L = { title: 'Settings', theme: 'Theme', language: 'Language', light: 'Light', dark: 'Dark', system: 'System', close: 'Close settings', expand: 'Expand settings', collapse: 'Collapse settings', ...labels }; // 🏷️
+  const L = { title: 'Settings', theme: 'Theme', language: 'Language', light: 'Light', dark: 'Dark', system: 'System', close: 'Close settings', expand: 'Expand settings', collapse: 'Collapse settings', account: 'Account', signIn: 'Sign in', help: 'Help', about: 'About', ...labels }; // 🏷️
   const base = id ?? 'ab-settings'; // 🆔
   const codes = locales.map((l) => l.code); // 🌍
   return (
@@ -129,6 +141,30 @@ const AbSettingsDrawer = ({ open, onClose, theme, onThemeChange, locales, locale
       initialFocus='[data-ab-part="settings-language"] [aria-checked="true"]' returnFocus={returnFocus}
       className={clsx('AbSettingsDrawer', kit.sheet, className)}
     >
+      {/* 👤 0.2.1: ACCOUNT (signed in: avatar · name · email; signed out: "Sign in") */}
+      {(account || onSignIn) && (
+        <section aria-labelledby={`${base}-account`} data-ab-part="settings-account">
+          <p className={kit.lbl} id={`${base}-account`}>{L.account}</p>
+          {account ? (
+            onAccount ? ( // 👆 tappable: a button with a chevron
+              <button type="button" className={clsx(kit.row, kit.acct)} onClick={onAccount} data-ab-part="settings-account-row">
+                <AbProfileAvatar user={account} size={36} Icon={AbIcon} />
+                <span className={kit.acctText}><b>{account.name}</b>{account.email && <small>{account.email}</small>}</span>
+                <AbIcon name="chevron_right" size={24} className={kit.chev} />
+              </button>
+            ) : ( // 🪧 info only: plain row, not a dead button
+              <div className={clsx(kit.row, kit.acct)} data-ab-part="settings-account-row">
+                <AbProfileAvatar user={account} size={36} Icon={AbIcon} />
+                <span className={kit.acctText}><b>{account.name}</b>{account.email && <small>{account.email}</small>}</span>
+              </div>
+            )
+          ) : (
+            <button type="button" className={clsx(kit.row, kit.acct)} onClick={onSignIn} data-ab-part="settings-sign-in">
+              <AbProfileAvatar size={36} Icon={AbIcon} /><span>{L.signIn}</span><AbIcon name="chevron_right" size={24} className={kit.chev} />
+            </button>
+          )}
+        </section>
+      )}
       <p className={kit.lbl} id={`${base}-theme`}>{L.theme}</p>
       <div ref={seg} className={kit.seg} role="radiogroup" aria-labelledby={`${base}-theme`} data-ab-part="settings-theme">
         {themes.map((t) => (
@@ -150,6 +186,13 @@ const AbSettingsDrawer = ({ open, onClose, theme, onThemeChange, locales, locale
           );
         })}
       </div>
+      {/* ❓ ℹ️ 0.2.1: Help and About rows (back from 0.1.x), after Language */}
+      {(onHelp || onAbout) && (
+        <div className={kit.more} data-ab-part="settings-more">
+          {onHelp && <button type="button" className={kit.row} onClick={onHelp} data-ab-part="settings-help"><AbIcon name="help" size={24} /><span>{L.help}</span><AbIcon name="chevron_right" size={24} className={kit.chev} /></button>}
+          {onAbout && <button type="button" className={kit.row} onClick={onAbout} data-ab-part="settings-about"><AbIcon name="info" size={24} /><span>{L.about}</span><AbIcon name="chevron_right" size={24} className={kit.chev} /></button>}
+        </div>
+      )}
       {children}
     </AbDrawer>
   );

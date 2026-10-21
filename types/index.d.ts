@@ -77,11 +77,14 @@ export { default as AbNavbar } from '../ab-navbar/index.tsx';
 export { default as AbSidebar } from '../ab-sidebar/index.tsx';
 // 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
 export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from '../ab-toc/index.tsx';
+// 🆕 0.2.1: the aside "New" card
+export { default as AbTocPromo } from '../ab-toc/promo.tsx';
+export type { AbTocPromoProps } from '../ab-toc/promo.tsx';
 export type { AbTocItem, AbTocProps } from '../ab-toc/index.tsx';
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
-export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from '../ab-drawer/index.tsx';
+export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION, AB_DRAWER_RETURN_FOCUS } from '../ab-drawer/index.tsx';
 // 🤏 0.2.0 drawers v2: edge swipes + the swipe / snap rules
-export { useAbEdgeSwipe, AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from '../ab-drawer/index.tsx';
+export { useAbEdgeSwipe, AB_ASIDE_DRAWER_MAX_WIDTH, AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from '../ab-drawer/index.tsx';
 export type { AbDrawerTier, AbSheetSnap, UseAbEdgeSwipeOptions } from '../ab-drawer/index.tsx';
 export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from '../ab-drawer/index.tsx';
 export { default as AbDrawerList } from '../ab-drawer-list/index.tsx';
@@ -106,6 +109,11 @@ export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from '../a
 // 🆕 0.2.0 drawers v2: AbSettingsDrawer
 export { default as AbSettingsDrawer } from '../ab-settings-drawer/index.tsx';
 export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from '../ab-settings-drawer/index.tsx';
+// 👤 0.2.1: AbSidebarProfileButton + AbProfileAvatar
+export { default as AbSidebarProfileButton } from '../ab-sidebar/profile-button.tsx';
+export type { AbSidebarProfileButtonProps } from '../ab-sidebar/profile-button.tsx';
+export { default as AbProfileAvatar, getAbInitials } from '../ab-profile-avatar/index.tsx';
+export type { AbProfileAvatarProps, AbProfileUser } from '../ab-profile-avatar/index.tsx';
 // 🏷️ 0.1.14 (P9): AbVersionSwitcher
 export { default as AbVersionSwitcher } from '../ab-version-switcher/index.tsx';
 export type { AbVersionOption, AbVersionSwitcherProps } from '../ab-version-switcher/index.tsx';

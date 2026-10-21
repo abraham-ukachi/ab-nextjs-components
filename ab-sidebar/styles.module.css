@@ -192,3 +192,41 @@
  *    Height follows core's --ab-header-height (60px at tablet) so it lines up with the main bar. */
 .abSidebarLogo { flex: none; display: flex; align-items: center; box-sizing: border-box; height: var(--ab-header-height, 60px); padding: 0 20px; }
 .abSidebar[data-collapsed='true'] .abSidebarLogo { justify-content: center; padding: 0; } /* 🚪 rail: centred */
+
+/* 🦶 0.2.1: bottom-left slot (the profile button), pinned by margin-top: auto (the sidebar is a column) */
+.abSidebarFooter {
+  display: flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  gap: 8px; /* ↔️ */
+  margin-top: auto; /* ⬇️ pinned to the bottom */
+  padding-top: 8px; /* 📦 */
+  position: sticky; /* 📌 stays in view when the list scrolls */
+  bottom: 0; /* ⬇️ */
+  background: inherit; /* 🎨 the pane colour behind it */
+}
+.abSidebar[data-collapsed='true'] .abSidebarFooter { justify-content: center; } /* 🚪 rail: centred */
+.abSidebar { min-height: 100%; } /* 📏 fill the pane so the footer can reach the bottom */
+.abSidebar[data-density='compact'] .abSidebarFooter { padding: 8px 10px 12px; box-sizing: border-box; width: 100%; } /* 📦 compact: line up with the rows (sections pad 10px) */
+/* 👤 0.2.1 (God 02:44): the profile button: avatar (+ the name when expanded), theme tokens only */
+.abSidebarProfile {
+  display: inline-flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  gap: 10px; /* ↔️ */
+  max-width: 100%; /* 📏 */
+  min-height: 44px; /* 👆 touch-size */
+  padding: 2px 10px 2px 2px; /* 📦 a pill around the circle */
+  border: 0; /* 🚫 */
+  border-radius: 999px; /* 💊 */
+  background: transparent; /* 🎨 */
+  color: var(--ab-color-text, inherit); /* 🖋️ */
+  font: 600 13.5px/1.2 var(--ab-font-body, inherit); /* 🔤 */
+  cursor: pointer; /* 👆 */
+}
+.abSidebarProfile[data-collapsed='true'], .abSidebarProfile[data-signed-in='false'] { padding: 2px; } /* ⭕ just the circle */
+@media (hover: hover) { .abSidebarProfile:hover { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } } /* 🖱️ */
+.abSidebarProfile[aria-expanded='true'] { background: var(--ab-color-hover, color-mix(in srgb, currentColor 8%, transparent)); } /* ✅ open */
+.abSidebarProfile:focus { outline: none; } /* 🎯 */
+.abSidebarProfile:focus-visible { outline: 2px solid var(--ab-color-accent, currentColor); outline-offset: 2px; } /* ♿ */
+.abSidebarProfileName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* 🏷️ */
+/* 📱 mobile + tablet reach Settings another way: hidden by CSS (rendered on the server, no flash) */
+@media (max-width: 1179.98px) { .abSidebarProfile { display: none; } }
