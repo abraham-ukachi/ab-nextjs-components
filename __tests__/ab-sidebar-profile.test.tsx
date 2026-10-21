@@ -101,8 +101,8 @@ describe('👤 AbSidebar profile button (God 02:44)', () => {
     render(tree({ profile: { ...drawer, user: ME }, collapsed: true }))
     expect(btn()!.getAttribute('data-collapsed')).toBe('true') // 🚪
     expect(btn()!.textContent).not.toContain('Abraham Ukachi') // ⭕ no name
-    const balloon = btn()!.closest('.AbBalloon') // 🎈 wrapped
-    expect(balloon?.querySelector('[role="tooltip"]')?.textContent).toBe('Profile and settings') // 💬 the hover / focus label
+    expect(btn()!.closest('.AbBalloon')).not.toBeNull() // 🎈 wrapped
+    expect(document.getElementById(btn()!.getAttribute('aria-describedby')!)?.textContent).toBe('Profile and settings') // 💬 the hover / focus label
   })
   it('🔕 opt-in, and exported (old settings-button name is gone)', () => {
     render(<AbSidebar sections={S} />); expect(btn()).toBeNull() // 🚫

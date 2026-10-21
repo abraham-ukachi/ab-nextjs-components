@@ -104,7 +104,7 @@ const AbSidebarProfileButton = ({ user = null, label = 'Profile and settings', c
   );
   return (
     <>
-      {collapsed ? <AbBalloon title={label} placement="end">{button}</AbBalloon> : button /* 🎈 rail tooltip */}
+      {collapsed ? <AbBalloon title={label} placement="end" strategy="fixed">{button}</AbBalloon> : button /* 🎈 rail tooltip (fixed: the rail scrolls / clips) */}
       <AbSettingsDrawer {...drawer} account={showAccount ? user : undefined} id={drawerId} className={drawerClassName} open={open} onClose={() => set(false)} /> {/* 🗄️ */}
     </>
   );

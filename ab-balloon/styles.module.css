@@ -87,3 +87,11 @@
 .abBalloon[data-placement='end'] .abBalloonTip { inset-inline-start: calc(100% + 6px); top: 50%; translate: 0 -50%; }
 
 /* ♿ reduced motion: the component skips the popIn class (pop-in has no reduced-motion rule of its own) */
+
+/* 📌 0.2.1: strategy="fixed": portalled to <body>, viewport-placed from the trigger's box (inline top / left) */
+.abBalloonTipFixed { position: fixed; inset: auto; z-index: 1000; } /* 🧹 the absolute insets; above the panes */
+.abBalloonTipFixed[data-open='true'] { display: block; } /* 👁️ open (it's no longer inside the wrapper) */
+.abBalloonTipFixed[data-placement='top'] { translate: -50% -100%; } /* ⬆️ */
+.abBalloonTipFixed[data-placement='bottom'] { translate: -50% 0; } /* ⬇️ */
+.abBalloonTipFixed[data-placement='start'] { translate: -100% -50%; } /* ⬅️ */
+.abBalloonTipFixed[data-placement='end'] { translate: 0 -50%; } /* ➡️ */

@@ -44,13 +44,18 @@
 'use client';
 
 // ⚛️ React
-import { cloneElement, isValidElement, useCallback, useEffect, useId, useRef, useState, type FocusEvent, type KeyboardEvent, type ReactElement, type ReactNode } from 'react';
+import { cloneElement, isValidElement, useCallback, useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type FocusEvent, type KeyboardEvent, type ReactElement, type ReactNode } from 'react';
+// 🌀 0.2.1: the fixed tip goes to <body> (out of the rail's stacking context)
+import { createPortal } from 'react-dom';
 // 🧵 classes
 import clsx from 'clsx';
 // 🎬 the tooltip pops in with the package keyframes (reduced-motion safe in ab-nextjs-animations)
 import 'ab-nextjs-animations/pop-in/styles.css';
 // 🎨 styles
 import styles from './styles.module.css';
+
+/** 🌀 a store that never changes: true on the client, false on the server */
+const noSub = () => () => {};
 
 /** ⏱️ hover delay before the balloon shows (focus shows it at once). */
 export const AB_BALLOON_HOVER_DELAY = 300;
@@ -67,6 +72,9 @@ export interface AbBalloonProps {
   hidden?: boolean; // 🙈 render the child alone
   disabled?: boolean; // 🚫 no balloon
   children: ReactNode; // 🎯 the trigger (ideally ONE focusable element)
+  /** 📌 0.2.1: `'fixed'` = the tip is placed in the viewport from the trigger's box, so a scrolling / clipped parent
+   *  (e.g. the collapsed sidebar rail) can't cut it off. Default `'absolute'` (relative to the wrapper). */
+  strategy?: 'absolute' | 'fixed';
 }
 
 /**
@@ -77,7 +85,7 @@ export interface AbBalloonProps {
  * - 🎬 `popIn` from ab-nextjs-animations (no motion under prefers-reduced-motion)
  * - 🚫 JS off: the balloon shows on `:focus-within` / `:hover` with CSS alone
  */
-const AbBalloon = ({ title, placement = 'top', delay = AB_BALLOON_HOVER_DELAY, className, hidden = false, disabled = false, children }: AbBalloonProps): ReactElement => {
+const AbBalloon = ({ title, placement = 'top', delay = AB_BALLOON_HOVER_DELAY, className, hidden = false, disabled = false, children, strategy = 'absolute' }: AbBalloonProps): ReactElement => {
   // 🆔 tooltip id for aria-describedby
   const id = useId();
   // 👁️ open state
@@ -101,6 +109,21 @@ const AbBalloon = ({ title, placement = 'top', delay = AB_BALLOON_HOVER_DELAY, c
   }, []);
   // 🧹 unmount
   useEffect(() => clear, [clear]);
+  // 📌 0.2.1: fixed strategy: measure the trigger when it opens (6px gap, same as the CSS placements)
+  const root = useRef<HTMLSpanElement>(null);
+  const [pos, setPos] = useState<CSSProperties | undefined>(undefined);
+  const mounted = useSyncExternalStore(noSub, () => true, () => false); // 🌀 portals need the DOM (false on the server)
+  useLayoutEffect(() => {
+    if (strategy !== 'fixed' || !open || !root.current) return; // 🚫 absolute / closed
+    const r = root.current.getBoundingClientRect(); // 📐 the trigger box
+    const at: Record<NonNullable<AbBalloonProps['placement']>, CSSProperties> = {
+      top: { left: r.left + r.width / 2, top: r.top - 6 }, // ⬆️
+      bottom: { left: r.left + r.width / 2, top: r.bottom + 6 }, // ⬇️
+      start: { left: r.left - 6, top: r.top + r.height / 2 }, // ⬅️
+      end: { left: r.right + 6, top: r.top + r.height / 2 }, // ➡️
+    };
+    setPos(at[placement]); // 📍
+  }, [strategy, open, placement]);
 
   // 🙈 nothing to show
   if (hidden) return <>{children}</>;
@@ -145,6 +168,8 @@ const AbBalloon = ({ title, placement = 'top', delay = AB_BALLOON_HOVER_DELAY, c
       data-open={open ? 'true' : 'false'} // 👁️
       data-placement={placement} // 🧭
       data-ab-part="balloon" // 🧩
+      data-strategy={strategy === 'fixed' ? 'fixed' : undefined} // 📌 0.2.1
+      ref={root} // 📐
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       onFocus={onFocus}
@@ -152,10 +177,17 @@ const AbBalloon = ({ title, placement = 'top', delay = AB_BALLOON_HOVER_DELAY, c
       onKeyDown={onKeyDown}
     >
       {trigger}
-      {active && (
+      {active && strategy !== 'fixed' && (
         <span id={id} role="tooltip" className={clsx(styles.abBalloonTip, open && !still && 'popIn')} data-ab-part="balloon-tip">
           {title}
         </span>
+      )}
+      {/* 📌 0.2.1 fixed: portalled to <body> so neither a scroller's clip nor a pane's stacking context can hide it */}
+      {active && strategy === 'fixed' && mounted && createPortal(
+        <span id={id} role="tooltip" className={clsx(styles.abBalloonTip, styles.abBalloonTipFixed, open && !still && 'popIn')} data-ab-part="balloon-tip" data-open={open ? 'true' : 'false'} data-placement={placement} style={pos}>
+          {title}
+        </span>,
+        document.body,
       )}
     </span>
   );

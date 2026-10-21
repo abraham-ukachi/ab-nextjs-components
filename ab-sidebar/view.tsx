@@ -160,7 +160,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
     return (
       <li key={item.id ?? item.href}>
         {/* 🎈 rail: a balloon names the icon on hover / focus */}
-        {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end">{link}</AbBalloon> : link}
+        {collapsed && depth === 0 ? <AbBalloon title={text ?? item.href} placement="end" strategy="fixed">{link}</AbBalloon> : link}
         {!collapsed && item.items?.length ? (
           <ul className={styles.abSidebarList} data-ab-part="children">{item.items.map((c) => renderItem(c, depth + 1))}</ul>
         ) : null}

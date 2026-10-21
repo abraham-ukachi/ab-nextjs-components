@@ -4,6 +4,7 @@
 - ✨ AbSidebar `profile` prop (opt-in): a 40px profile button at the bottom left opens AbSettingsDrawer. Signed out it shows the profile glyph; signed in the initials ("AU") on the container colour, or the photo masked to a circle, plus the name when expanded. Rendered on the server and hidden by CSS below 1180px (no flash); the collapsed rail names it with an AbBalloon tooltip. Label via `labels.profile` (default "Profile and settings")
 - ✨ New `AbSidebarProfileButton` (standalone) and `AbProfileAvatar` + `getAbInitials` (client + server)
 - ✨ AbSidebar `footer` slot (bottom left, sticky)
+- ✨ AbBalloon `strategy="fixed"`: the tip is placed in the viewport, so the collapsed sidebar rail (a scroller) can't clip it; rail items + the profile button use it
 - ✨ AbTocPromo: the aside "New" card (mock .toc-card: 12px radius + padding, card colour, 13px title, 11.5px subtitle)
 - ✨ Home preview tiles for AbPackageCard `preview`: `AbPackagePreviewCurve` (ease-out), `AbPackagePreviewCode` (`*kw*` / `~dim` lines), `AbPackagePreviewComponents` (button · switch · pill chip); preview children no longer stretch
 - ✨ `useAbEdgeSwipe({ maxWidth })` + `AB_ASIDE_DRAWER_MAX_WIDTH` (1179): the right drawer swipes on mobile and tablet only (God 02:47)
