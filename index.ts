@@ -140,6 +140,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbTocDrawer', file: 'ab-toc-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbSettingsDrawer', file: 'ab-settings-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbProfileAvatar', file: 'ab-profile-avatar/index.tsx', kind: 'server', status: 'Done' }, // 🆕 0.2.1 initials / photo / glyph circle (no hooks: client + server)
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
@@ -210,6 +211,9 @@ export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from './ab
 // 🆕 0.2.0 drawers v2: AbSettingsDrawer
 export { default as AbSettingsDrawer } from './ab-settings-drawer/index.tsx'
 export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from './ab-settings-drawer/index.tsx'
+// 👤 0.2.1: the profile circle (initials / photo / signed-out glyph)
+export { default as AbProfileAvatar, getAbInitials } from './ab-profile-avatar/index.tsx'
+export type { AbProfileAvatarProps, AbProfileUser } from './ab-profile-avatar/index.tsx'
 // 🏷️ 0.1.14 (P9): AbVersionSwitcher
 export { default as AbVersionSwitcher } from './ab-version-switcher/index.tsx'
 export type { AbVersionOption, AbVersionSwitcherProps } from './ab-version-switcher/index.tsx'

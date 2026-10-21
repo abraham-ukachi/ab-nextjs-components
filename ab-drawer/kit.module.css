@@ -202,3 +202,9 @@
 .searchSheet[data-center='main'] .resFade { display: block; }
 .didYouMean { justify-content: center; gap: 0; margin-top: 8px; font-size: 15px; }
 .nores code { font-family: var(--ab-font-mono, 'Roboto Mono', monospace); }
+/* 👤 0.2.1: the settings account row (avatar · name / email) and the Help / About block */
+.acct { block-size: auto; min-block-size: 56px; padding-block: 8px; } /* 📏 two lines fit */
+.acctText { display: flex; flex-direction: column; min-width: 0; gap: 2px; } /* 📐 */
+.acctText b { font-weight: 600; } /* 🔤 the name */
+.acctText small { font-size: 13px; color: var(--ab-color-muted, #6b5b50); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* ✉️ */
+.more { display: flex; flex-direction: column; margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); } /* ➖ after Language */

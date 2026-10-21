@@ -106,6 +106,9 @@ export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from '../a
 // 🆕 0.2.0 drawers v2: AbSettingsDrawer
 export { default as AbSettingsDrawer } from '../ab-settings-drawer/index.tsx';
 export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from '../ab-settings-drawer/index.tsx';
+// 👤 0.2.1: AbProfileAvatar
+export { default as AbProfileAvatar, getAbInitials } from '../ab-profile-avatar/index.tsx';
+export type { AbProfileAvatarProps, AbProfileUser } from '../ab-profile-avatar/index.tsx';
 // 🏷️ 0.1.14 (P9): AbVersionSwitcher
 export { default as AbVersionSwitcher } from '../ab-version-switcher/index.tsx';
 export type { AbVersionOption, AbVersionSwitcherProps } from '../ab-version-switcher/index.tsx';
