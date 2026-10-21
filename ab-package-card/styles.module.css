@@ -79,3 +79,24 @@
   .homeFoot { margin-top: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .home:hover { transform: none; } } /* ♿ no lift */
+
+/* ===== 🖼️ 0.2.1 (God 02:44): Home preview tiles, John's mock `.pv-*` (theme tokens, fallbacks = the mock) ===== */
+.homePreview > * { flex: none; } /* 🚫 no child stretches; the tile centres them both ways */
+/* 〰️ Animations */
+.pvAnim { position: relative; display: block; box-sizing: border-box; width: 100%; height: 100%; padding: 6px 10px; } /* 📐 */
+.pvAnim svg { display: block; width: 100%; height: 44px; } /* 📏 */
+.pvAx { stroke: var(--ab-color-border, rgb(92 64 48 / 0.13)); stroke-width: 1; } /* ➖ */
+.pvCrv { fill: none; stroke: var(--ab-color-accent, #a67c52); stroke-width: 2.2; stroke-linecap: round; } /* 〰️ */
+.pvDot { fill: var(--ab-color-accent, #a67c52); } /* 🔴 */
+.pvDot2 { fill: var(--ab-color-faint, #807062); } /* ⚪ */
+.pvEase { position: absolute; right: 10px; bottom: 6px; font: 500 9.5px/1 var(--ab-font-code, ui-monospace, monospace); color: var(--ab-color-faint, #807062); } /* 🏷️ */
+/* 🪝🧱 Hooks / Core code */
+.pvCode { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; justify-content: center; align-self: stretch; flex: 1 1 auto; padding: 0 12px; text-align: left; font: 500 11.5px/1.25 var(--ab-font-code, ui-monospace, monospace); color: var(--ab-color-muted, #6b5b50); } /* ⬅️ left-aligned */
+.pvCode b { color: var(--ab-color-accent-text, #88603d); font-weight: 600; } /* 🖍️ keyword */
+.pvDim { color: var(--ab-color-faint, #807062); } /* 🌫️ */
+/* 🧩 Components */
+.pvComp { display: inline-flex; align-items: center; justify-content: center; gap: 8px; } /* 🎯 */
+.pvBtn { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 6px; background: var(--ab-color-btn, #8b6340); color: var(--ab-color-btn-text, #fff); font-size: 10.5px; font-weight: 650; } /* 🔘 */
+.pvSw { position: relative; display: inline-block; width: 30px; height: 17px; border-radius: 999px; background: var(--ab-color-accent, #a67c52); } /* 🎚️ */
+.pvSw i { position: absolute; right: 2px; top: 2px; width: 13px; height: 13px; border-radius: 50%; background: var(--ab-color-card, #fff); } /* ⚪ knob */
+.pvChip { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); background: var(--ab-color-card, #fff); color: var(--ab-color-text, #211a16); font-size: 10.5px; font-weight: 600; } /* 💊 */
