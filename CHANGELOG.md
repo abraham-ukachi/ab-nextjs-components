@@ -1,3 +1,11 @@
+## 0.2.1 (Unreleased, proposed)
+
+### Sidebar profile (God 02:44)
+- ✨ AbSidebar `profile` prop (opt-in): a 40px profile button at the bottom left opens AbSettingsDrawer. Signed out it shows the profile glyph; signed in the initials ("AU") on the container colour, or the photo masked to a circle, plus the name when expanded. Rendered on the server and hidden by CSS below 1180px (no flash); the collapsed rail names it with an AbBalloon tooltip. Label via `labels.profile` (default "Profile and settings")
+- ✨ New `AbSidebarProfileButton` (standalone) and `AbProfileAvatar` + `getAbInitials` (client + server)
+- ✨ AbSidebar `footer` slot (bottom left, sticky)
+- ✨ AbSettingsDrawer: the Account section is back on top (`account`, `onAccount`, `onSignIn`), plus `onHelp` / `onAbout` rows after Language (labels `account`, `signIn`, `help`, `about`)
+
 ## 0.2.0 (Unreleased, proposed)
 
 Includes everything planned for 0.1.15, which is not released separately.

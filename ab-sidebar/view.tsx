@@ -79,6 +79,7 @@ export interface AbSidebarLabels {
   nav?: string; // ♿ nav aria-label (default "Sidebar")
   collapse?: string; // ◀️ (default "Collapse sidebar")
   expand?: string; // ▶️ (default "Expand sidebar")
+  profile?: string; // 👤 0.2.1: the profile button (default "Profile and settings")
 }
 
 /** 🔣 What the view needs from an icon component (client and server AbIcon both fit). */

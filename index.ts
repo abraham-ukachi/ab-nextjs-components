@@ -140,6 +140,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbTocDrawer', file: 'ab-toc-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbSettingsDrawer', file: 'ab-settings-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbSidebarProfileButton', file: 'ab-sidebar/profile-button.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.1 bottom-left profile → settings (≥ 1180px)
   { name: 'AbProfileAvatar', file: 'ab-profile-avatar/index.tsx', kind: 'server', status: 'Done' }, // 🆕 0.2.1 initials / photo / glyph circle (no hooks: client + server)
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
@@ -180,6 +181,9 @@ export { default as AbBrand } from './ab-brand/index.tsx'
 export { default as AbName } from './ab-name/index.tsx'
 export { default as AbNavbar } from './ab-navbar/index.tsx'
 export { default as AbSidebar } from './ab-sidebar/index.tsx'
+// 👤 0.2.1 (God 02:44): the bottom-left sidebar profile button → AbSettingsDrawer (laptop + wide)
+export { default as AbSidebarProfileButton } from './ab-sidebar/profile-button.tsx'
+export type { AbSidebarProfileButtonProps } from './ab-sidebar/profile-button.tsx'
 // 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
 export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from './ab-toc/index.tsx'
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
