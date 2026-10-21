@@ -129,7 +129,7 @@ A drawer belongs to a **region**: the whole app, the main pane or the aside pane
 ### Drawers v2 (0.2.0)
 
 * **`<AbMobileHeader>`** (logo · globe · theme toggle) needs **ab-nextjs-core ≥ 0.2.1** with `<AbAppLayout variant="panes" mobileHeader="main">`. Pass it as `mainHeader`; core hides the app header below 768px and makes the main header the 56px mobile bar.
-* **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** ⚠️ known limit: Chromium (Android Chrome, Chrome DevTools touch emulation) fires `pointercancel` as soon as a touch drag starts, because the page's default `touch-action` lets the browser take the pan. The swipe never completes there, so the drawer doesn't open. Checked 2026-10-21 with Chromium 156 touch emulation; WebKit/iOS passes. Keep a visible opener (the menu or TOC button) as the main way in.
+* **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** a touch starting in the 24px edge zone is read from touch events. A non-passive `touchmove` listener exists only while that touch is down, and it calls `preventDefault` only once the move is sideways, so Android Chrome can't cancel it for a pan. Vertical scrolling from the edge, sideways code blocks and `[data-ab-no-edge-swipe]` keep working. Checked on WebKit and Chromium touch emulation.
 
 ## Getting Started
 

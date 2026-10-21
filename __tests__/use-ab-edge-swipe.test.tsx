@@ -38,7 +38,7 @@
 
 // @vitest-environment happy-dom
 // 🧪 vitest
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import { useAbEdgeSwipe } from '../ab-drawer'
 
@@ -85,5 +85,46 @@ describe('useAbEdgeSwipe 🤏', () => {
     rerender(<Probe edge="left" onOpen={onOpen} enabled={false} />)
     swipe(document.getElementById('page')!, 10, 200, 300) // 🎚️
     expect(onOpen).not.toHaveBeenCalled()
+  })
+  describe('👆 touch events (Android Chrome: pointercancel on pan)', () => {
+    // 👆 a synthetic touch gesture; returns which touchmoves were prevented
+    const touch = (target: Element, pts: [number, number][], ms: number) => {
+      const ev = (k: string, x: number, y: number, t: number, down = true) => { const e = new Event(k, { bubbles: true, cancelable: true }); const p = { clientX: x, clientY: y, identifier: 1 }; Object.assign(e, { touches: down ? [p] : [], changedTouches: [p] }); Object.defineProperty(e, 'timeStamp', { value: 1000 + t }); return e }
+      target.dispatchEvent(ev('touchstart', ...pts[0], 0))
+      const prevented = pts.slice(1).map(([x, y], i) => { const e = ev('touchmove', x, y, (ms * (i + 1)) / (pts.length - 1)); target.dispatchEvent(e); return e.defaultPrevented })
+      const [lx, ly] = pts[pts.length - 1]; target.dispatchEvent(ev('touchend', lx, ly, ms, false))
+      return prevented
+    }
+    const line = (x0: number, y0: number, x1: number, y1: number, n = 8): [number, number][] => Array.from({ length: n + 1 }, (_, i) => [x0 + ((x1 - x0) * i) / n, y0 + ((y1 - y0) * i) / n])
+    beforeEach(() => { (window as unknown as Record<string, unknown>).ontouchstart = null })
+    afterEach(() => { delete (window as unknown as Record<string, unknown>).ontouchstart })
+
+    it('a sideways touch from the left edge opens and prevents the browser pan once it is sideways (not before the slop)', () => {
+      const onOpen = vi.fn(); render(<Probe edge="left" onOpen={onOpen} />); stubBox()
+      const prevented = touch(document.getElementById('page')!, line(6, 400, 206, 402, 40), 250) // 5px steps
+      expect(onOpen).toHaveBeenCalledTimes(1) // ✅
+      expect(prevented[0]).toBe(false); expect(prevented.slice(1).every(Boolean)).toBe(true) // 🛑 only after 8px sideways
+    })
+    it('the right edge works the same way', () => {
+      const onOpen = vi.fn(); render(<Probe edge="right" onOpen={onOpen} />); stubBox()
+      touch(document.getElementById('page')!, line(384, 400, 184, 401), 250)
+      expect(onOpen).toHaveBeenCalledTimes(1)
+    })
+    it('a vertical touch starting in the edge zone is never prevented (the page scrolls) and does not open', () => {
+      const onOpen = vi.fn(); render(<Probe edge="left" onOpen={onOpen} />); stubBox()
+      const prevented = touch(document.getElementById('page')!, line(6, 600, 9, 200), 250)
+      expect(prevented.some(Boolean)).toBe(false); expect(onOpen).not.toHaveBeenCalled() // 📜
+    })
+    it('[data-ab-no-edge-swipe] and touches outside the zone are left alone (never prevented)', () => {
+      const onOpen = vi.fn(); render(<Probe edge="left" onOpen={onOpen} />); stubBox()
+      expect(touch(document.getElementById('code')!, line(6, 400, 206, 400), 250).some(Boolean)).toBe(false) // 🎠
+      expect(touch(document.getElementById('page')!, line(80, 400, 280, 400), 250).some(Boolean)).toBe(false) // 🧱
+      expect(onOpen).not.toHaveBeenCalled()
+    })
+    it('with touch events present, touch pointer events are ignored (no double open), pens still work', () => {
+      const onOpen = vi.fn(); render(<Probe edge="left" onOpen={onOpen} />); stubBox()
+      swipe(document.getElementById('page')!, 10, 200, 200); expect(onOpen).not.toHaveBeenCalled() // 👆 the touch path owns it
+      swipe(document.getElementById('page')!, 10, 200, 200, 400, 'pen'); expect(onOpen).toHaveBeenCalledTimes(1) // 🖊️
+    })
   })
 })

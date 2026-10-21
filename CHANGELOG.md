@@ -17,7 +17,7 @@ Includes everything planned for 0.1.15, which is not released separately.
 - 🧯 AbSearchDrawer: a rejected or throwing `search` clears to "no results"; no stale results, no unhandled rejection
 - 🆔 AbSearchDrawer: group heading ids are sanitised (`[A-Za-z0-9_-]`) and indexed, so they stay valid and unique
 - 📌 AbMobileHeader needs ab-nextjs-core ≥ 0.2.1 with `mobileHeader="main"`
-- ⚠️ Known limit: edge swipes don't open drawers in Chromium touch (`pointercancel` from the default `touch-action`; checked with Chromium 156 emulation). WebKit/iOS works. Keep a visible menu/TOC button.
+- 🤖 Edge swipes work on Android Chrome: touches are read from touch events, and `touchmove` is non-passive only during an edge press, with `preventDefault` only once the move is sideways. Vertical scrolling from the edge zone and sideways code blocks are unaffected; checked in WebKit and Chromium touch emulation.
 
 ### From 0.1.15
 

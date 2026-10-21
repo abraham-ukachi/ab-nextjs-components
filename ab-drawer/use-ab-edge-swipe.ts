@@ -28,8 +28,6 @@
 * @file: ab-drawer/use-ab-edge-swipe.ts
 * @type: Client hook
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
-*
-* ⚠️ Known limit: Chromium (Android Chrome, Chrome DevTools touch emulation) fires `pointercancel` as soon as a touch drag starts, because the page's default `touch-action` lets the browser take the pan. The swipe never completes there, so the drawer doesn't open. Checked 2026-10-21 with Chromium 156 touch emulation; WebKit/iOS passes. Keep a visible opener (the menu or TOC button) as the main way in.
 */
 
 /*
@@ -68,6 +66,9 @@ const standalone = (): boolean => typeof navigator !== 'undefined' && (navigator
  * - 📱 iOS Safari's own back gesture starts at the very screen edge and takes the touch before the page sees it,
  *   so the two don't fight; in standalone mode the 16px inset leaves that edge to the system
  *
+ * - 👆 touch uses touch events (non-passive touchmove only during an edge press, preventDefault only once it's
+ *   sideways), so Android Chrome's pointercancel-on-pan can't swallow it
+ *
  * The drawer opens on release (it doesn't follow the finger), then slides in with its normal 200ms motion.
  */
 export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, pointerTypes = ['touch', 'pen'] }: UseAbEdgeSwipeOptions): void {
@@ -78,40 +79,74 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
     if (!enabled) return;
     let d: { x: number; y: number; axis: 0 | 1 | 2; v: ReturnType<typeof createAbVelocityTracker> } | null = null; // 🫳 the current press
     const sign = edge === 'left' ? 1 : -1; // ➡️ / ⬅️ toward the middle
-    const down = (e: PointerEvent) => {
-      if (!types.split(',').includes(e.pointerType)) return; // 🖐️
-      const host = getAbDrawerHost('app', e.target as Element); // 🗺️ the app box
+    const allow = types.split(','); // 🖐️
+    // 🧱 shared start rule (pointer or touch): from the edge zone, not in a sideways scroller / opt-out / open drawer
+    const start = (x: number, y: number, t: number, target: Element): boolean => {
+      const host = getAbDrawerHost('app', target); // 🗺️ the app box
       const box = host === document.body ? { left: 0, right: window.innerWidth } : host.getBoundingClientRect();
-      if (!isInAbEdgeZone(e.clientX, edge, box, standalone())) return; // 🧱 not from the edge
-      if (isInAbHorizontalScroller(e.target as Element)) return; // 🎠
-      if ((e.target as Element).closest?.('[data-ab-part="drawer"]')) return; // 🗄️ a drawer is already up there
-      const v = createAbVelocityTracker(); v.add(e.clientX, e.timeStamp);
-      d = { x: e.clientX, y: e.clientY, axis: 0, v };
+      if (!isInAbEdgeZone(x, edge, box, standalone())) return false; // 🧱 not from the edge
+      if (isInAbHorizontalScroller(target)) return false; // 🎠 (also [data-ab-no-edge-swipe])
+      if (target.closest?.('[data-ab-part="drawer"]')) return false; // 🗄️ a drawer is already up there
+      const v = createAbVelocityTracker(); v.add(x, t);
+      d = { x, y, axis: 0, v }; return true;
     };
-    const move = (e: PointerEvent) => {
-      if (!d || d.axis === 2) return;
-      const dx = e.clientX - d.x; const dy = e.clientY - d.y;
+    // 🧭 shared move rule; returns true while the gesture is ours (sideways)
+    const step = (x: number, y: number, t: number): boolean => {
+      if (!d || d.axis === 2) return false;
+      const dx = x - d.x; const dy = y - d.y;
       if (d.axis === 0) {
-        if (Math.max(Math.abs(dx), Math.abs(dy)) < AB_SWIPE.slop) return; // 🫳
-        d.axis = Math.abs(dx) > Math.abs(dy) ? 1 : 2; // 🧭 sideways = ours
+        if (Math.max(Math.abs(dx), Math.abs(dy)) < AB_SWIPE.slop) return false; // 🫳
+        d.axis = Math.abs(dx) > Math.abs(dy) ? 1 : 2; // 🧭 sideways = ours, vertical = the page's scroll
       }
-      if (d.axis === 1) d.v.add(e.clientX, e.timeStamp); // ⚡
+      if (d.axis === 1) { d.v.add(x, t); return true; } // ⚡
+      return false;
     };
-    const up = (e: PointerEvent) => {
+    const finish = (x: number) => {
       const cur = d; d = null;
       if (!cur || cur.axis !== 1) return;
-      if (resolveAbSideRelease({ distance: (e.clientX - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) latest.current(); // ✅
+      if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) latest.current(); // ✅
     };
-    const cancel = () => { d = null; }; // 🧹 the browser took it (scroll)
+
+    // 🖊️ pointer path: pen (and touch only where there are no touch events)
+    const touchy = typeof window !== 'undefined' && 'ontouchstart' in window;
+    const byPointer = (e: PointerEvent) => allow.includes(e.pointerType) && !(touchy && e.pointerType === 'touch');
+    const down = (e: PointerEvent) => { if (byPointer(e)) start(e.clientX, e.clientY, e.timeStamp, e.target as Element); };
+    const move = (e: PointerEvent) => { if (byPointer(e)) step(e.clientX, e.clientY, e.timeStamp); };
+    const up = (e: PointerEvent) => { if (byPointer(e)) finish(e.clientX); };
+    const cancel = (e: PointerEvent) => { if (byPointer(e)) d = null; }; // 🧹 the browser took it (scroll)
+
+    // 👆 touch path (Android Chrome fix): Chromium fires pointercancel as soon as it starts a native pan, so a
+    // touch swipe is read from touch events instead. A NON-passive touchmove listener is attached only while a
+    // touch that started in the edge zone is down (no scroll jank elsewhere), and it calls preventDefault only
+    // once the move is sideways. Vertical moves are never prevented, so the page still scrolls from the strip.
+    const tmove = (e: TouchEvent) => {
+      const t = e.touches[0]; if (!t) return;
+      if (step(t.clientX, t.clientY, e.timeStamp) && e.cancelable) e.preventDefault(); // 🛑 ours: keep the browser out
+      if (d?.axis === 2) detach(); // 🧭 a scroll: let go early
+    };
+    const tend = (e: TouchEvent) => { const t = e.changedTouches[0]; detach(); if (t && e.type === 'touchend') finish(t.clientX); else d = null; };
+    const attach = () => { document.addEventListener('touchmove', tmove, { capture: true, passive: false }); document.addEventListener('touchend', tend, true); document.addEventListener('touchcancel', tend, true); };
+    const detach = () => { document.removeEventListener('touchmove', tmove, true); document.removeEventListener('touchend', tend, true); document.removeEventListener('touchcancel', tend, true); };
+    const tstart = (e: TouchEvent) => {
+      if (!allow.includes('touch')) return;
+      detach(); d = null;
+      if (e.touches.length !== 1) return; // ✌️ pinch etc. are not swipes
+      const t = e.touches[0];
+      if (start(t.clientX, t.clientY, e.timeStamp, e.target as Element)) attach();
+    };
+
     document.addEventListener('pointerdown', down, true); // 🎧 capture: before anything stops it
     document.addEventListener('pointermove', move, true);
     document.addEventListener('pointerup', up, true);
     document.addEventListener('pointercancel', cancel, true);
+    document.addEventListener('touchstart', tstart, { capture: true, passive: true }); // 👆 passive: never delays a tap or scroll
     return () => {
       document.removeEventListener('pointerdown', down, true);
       document.removeEventListener('pointermove', move, true);
       document.removeEventListener('pointerup', up, true);
       document.removeEventListener('pointercancel', cancel, true);
+      document.removeEventListener('touchstart', tstart, true);
+      detach();
     };
   }, [edge, enabled, width, types]);
 }
