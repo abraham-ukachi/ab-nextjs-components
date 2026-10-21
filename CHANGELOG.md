@@ -1,4 +1,8 @@
-## 0.2.1 (Unreleased, proposed)
+## 0.2.2 (Unreleased, proposed)
+
+- 🌍 AbPackagePreviewComponents `labels` ({ button, chip, switch }); English defaults unchanged, the 0.2.1 `button` / `chip` props still work
+
+## 0.2.1
 
 ### Sidebar profile (God 02:44)
 - ✨ AbSidebar `profile` prop (opt-in): a 40px profile button at the bottom left opens AbSettingsDrawer. Signed out it shows the profile glyph; signed in the initials ("AU") on the container colour, or the photo masked to a circle, plus the name when expanded. Rendered on the server and hidden by CSS below 1180px (no flash); the collapsed rail names it with an AbBalloon tooltip. Label via `labels.profile` (default "Profile and settings")
