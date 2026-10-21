@@ -47,6 +47,7 @@
   inset: 0; /* 📐 the whole scope */
   z-index: 60; /* ⬆️ above the panes and the aside sheet (30) */
   overflow: hidden; /* ✂️ a sliding panel never leaks out */
+  overflow: clip; /* ✂️ 0.2.0: clip, so nothing (focus, scrollIntoView) can scroll the layer itself */
   pointer-events: none; /* 🖱️ idle layer = transparent to clicks */
   contain: layout paint; /* 🚀 */
 }
@@ -112,6 +113,44 @@
 .abDrawerFooter { flex: none; display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px 16px; } /* 🔚 */
 
 /* ♿ reduced motion: no slide, no fade (handled by ab-nextjs-animations .ab-motion-*) */
+
+/* ===== 🆕 0.2.0 drawers v2 (John's frames, God 01:22) ===== */
+/* 🥞 stacking tiers (spec z-order): right drawer < left drawer < bottom sheet. The layers are siblings in the host,
+   so the tier sits on the layer (z 60 / 61 / 62 keeps all three above the panes and bars, like before) */
+.abDrawerLayer:has(> .abDrawerFrame[data-tier='nav']) { z-index: 61; } /* ⬅️ the left drawer is in front of the right one */
+.abDrawerLayer:has(> .abDrawerFrame[data-tier='sheet']) { z-index: 62; } /* ⬆️ the bottom sheet is on top */
+/* 🎞️ side drawers slide in 200ms and out 160ms, cubic-bezier(.2,0,0,1) (the ab-nextjs-animations tokens) */
+.abDrawerFrame[data-tier] > .abDrawer:is([data-side='left'], [data-side='right'], [data-side='start'], [data-side='end']) { --ab-motion-duration: var(--ab-drawer-duration, 200ms); }
+.abDrawerFrame[data-tier][data-state='closed'] > .abDrawer:is([data-side='left'], [data-side='right'], [data-side='start'], [data-side='end']) { --ab-motion-duration: var(--ab-drawer-close-duration, 160ms); }
+/* 🫳 while a finger leads, the sheet follows it 1:1 (no transition); on release CSS takes over again */
+.abDrawer.abDrawer[data-dragging] { --ab-motion-duration: 0ms; } /* ⏱️ the ab-nextjs-animations token at 0 */
+.abDrawer[data-swipe='true']:not([data-side='bottom']) { touch-action: pan-y; } /* ↔️ sideways drags reach us, vertical scroll stays native */
+
+/* ➖ the handle: a 40×4 bar in a 24px strip at the very top; its touch zone reaches 44px (over the header) */
+.abDrawerHandle {
+  flex: none; position: relative; z-index: 1; display: block; box-sizing: border-box; /* 📐 */
+  inline-size: 100%; block-size: 24px; margin: 0; padding: 0; border: 0; /* 📏 */
+  background: transparent; cursor: grab; touch-action: none; /* 🤏 the drag is ours */
+}
+.abDrawerHandle::before { content: ''; position: absolute; inset-block-start: 10px; inset-inline-start: calc(50% - 20px); inline-size: 40px; block-size: 4px; border-radius: 2px; background: var(--ab-color-handle, rgb(25 18 12 / 0.18)); } /* ➖ the bar */
+.abDrawerHandle::after { content: ''; position: absolute; inset: 0 0 -20px; } /* 🖐️ 24 + 20 = 44px touch zone */
+.abDrawerHandle:focus { outline: none; }
+.abDrawerHandle:focus-visible::before { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 4px; } /* ♿ */
+.abDrawer[data-snap] > .abDrawerHeader { touch-action: none; } /* 🤏 the header drags the sheet too */
+
+/* 🧲 snap points (bottom, below 768px): the sheet is full height (top at the safe-area top) and slides:
+   closed = off-screen, S1 = 70% of the app visible (JS measures --ab-drawer-partial-offset), S2 = all of it */
+.abDrawer[data-side='bottom'][data-snap] { inset: env(safe-area-inset-top, 0px) 0 0 0; max-height: none; transform: translateY(100%); }
+.abDrawerFrame[data-state='open'] > .abDrawer[data-snap='partial'] { transform: translateY(var(--ab-drawer-partial-offset, 30%)); } /* 🧲 S1 */
+.abDrawerFrame[data-state='open'] > .abDrawer[data-snap='full'] { transform: none; } /* 🧲 S2 */
+
+/* 💻 laptop (768px and up): centred in the main pane, min(640px, main width), at most 70% of the app height */
+.abDrawer[data-side='bottom'][data-center='main'] {
+  --ab-drawer-w: min(var(--ab-drawer-max-width, 640px), var(--ab-drawer-main-width, 100%)); /* 📏 never wider than main */
+  inset: auto auto 0 calc(var(--ab-drawer-main-left, 0px) + (var(--ab-drawer-main-width, 100%) - var(--ab-drawer-w)) / 2); /* 🎯 centred */
+  inline-size: var(--ab-drawer-w); max-inline-size: none; margin: 0; /* 📏 */
+  max-block-size: 70%; /* 📏 ≤ 70% of the app (567px at 810) */
+}
 
 /* 🧩 D41 no-JS fallback: an in-flow section; hidden as soon as scripting runs (hydration swaps in the drawer) */
 .abDrawerFallback { display: block; margin-block: 16px; border: var(--ab-divider-hairline, 1px solid rgb(0 0 0 / 0.12)); border-radius: 12px; }

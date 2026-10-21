@@ -33,8 +33,8 @@
 *   <AbAppBar
 *     brand={<AbBrand />}
 *     search={<AbSearchTrigger onOpen={openSearch} />}
-*     nav={[{ href: '/docs', label: 'Docs' }, { href: '/components', label: 'Components' }]}
-*     activeHref="/docs"
+*     nav={[{ href: '/packages', label: 'Packages' }, { href: '/guides', label: 'Guides' }]}
+*     activeHref="/packages"
 *     actions={<AbThemeToggle />}
 *   />
 */
@@ -94,6 +94,16 @@ export interface AbAppBarProps {
   divider?: boolean;
   /** ⋮ 0.1.14 (P19): `false` = no "More" button/menu; below 1180px the nav is simply hidden (default `true`) */
   moreMenu?: boolean;
+  /** 🔎 0.1.15 (God 00:08): below 768px the search shows as a `'pill'` ("Search ⌘K", the Home mock) or an `'icon'`
+   *  (40px circle, label for screen readers only). Default `'pill'` with `density="compact"`, else `'icon'` (unchanged). */
+  compactSearch?: 'pill' | 'icon';
+  /** 🔗 0.1.15 (God 00:37): shown INSTEAD of `search` below 768px (both rendered, CSS picks: no hydration flip), e.g.
+   *  `<AbSearchTrigger size="sm" label="Search" onOpen={openSearchDrawer} hotkey={false} />`: a button that opens
+   *  AbSearchDrawer, with no ⌘K cap and no hotkey (God 01:27: there is no /docs page; `href` still makes a plain link).
+   *  In a compact bar it is the mock's 114px pill (`--ab-app-bar-compact-search-width`).
+   *  ⚠️ Both slots are rendered: a hotkey trigger (with `onOpen`) passed to BOTH `search` and `searchCompact` registers ⌘K
+   *  twice (one press opens twice). Give only one of them `onOpen`, or pass `hotkey={false}` to the other. */
+  searchCompact?: ReactNode;
 }
 
 /** 🎯 exact match or parent prefix ("/" only matches itself) */
@@ -103,7 +113,7 @@ const isActive = (href: string, active?: string) => !!active && (href === active
  * 🧱 AbAppBar (G43): brand, search, nav, actions, sticky with a hairline. Below 1180px the nav moves into a
  * "More" overflow menu built on AbMenu (G26). JS off: the More button is hidden and the nav scrolls inline.
  */
-const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className, presentation = 'menu', density = 'comfortable', divider = false, moreMenu = true }: AbAppBarProps): ReactElement => {
+const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compactActions, leading, sticky = true, labels, className, presentation = 'menu', density = 'comfortable', divider = false, moreMenu = true, compactSearch, searchCompact }: AbAppBarProps): ReactElement => {
   // 🌍 the active link comes from the AbLinkProvider locales, same rule as AbSidebar / AbNavbar
   const appLocales = useAbLocales();
   const pathname = stripAbLocalePrefix(usePathname() ?? '', locales ?? appLocales); // 🧭 `/fr/docs` → `/docs`
@@ -136,10 +146,11 @@ const AbAppBar = ({ brand, search, nav = [], activeHref, locales, actions, compa
   }, [open, mode]);
 
   return (
-    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined} data-density={density === 'compact' ? 'compact' : undefined} data-more={moreMenu ? undefined : 'false'}>
+    <header className={clsx('AbAppBar', styles.abAppBar, className)} data-ab-part="app-bar" data-sticky={sticky ? 'true' : 'false'} data-has-compact-actions={compactActions != null ? 'true' : undefined} data-density={density === 'compact' ? 'compact' : undefined} data-more={moreMenu ? undefined : 'false'} data-compact-search={(compactSearch ?? (density === 'compact' ? 'pill' : 'icon')) === 'pill' ? 'pill' : undefined}>
       {leading}
       {brand && <div className={styles.abAppBarBrand}>{brand}</div>}
-      {search && <div className={styles.abAppBarSearch}>{search}</div>}
+      {search && <div className={styles.abAppBarSearch} data-when={searchCompact != null ? 'wide' : undefined}>{search}</div>}
+      {searchCompact != null && <div className={styles.abAppBarSearch} data-when="compact">{searchCompact}</div> /* 📱 0.1.15 */}
       {nav.length > 0 && (
         <nav className={styles.abAppBarNav} aria-label={labels?.nav ?? 'Main'}>
           <ul>

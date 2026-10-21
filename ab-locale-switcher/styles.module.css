@@ -136,3 +136,23 @@
   .root > .menu { display: none; } /* 🙈 needs JS */
   .noJs { display: block; } /* 👁️ */
 }
+
+/* ===== 🧩 0.1.15 (God 00:08): presentation="inline", the language list inside the mobile app drawer =====
+ * Rows match AbDrawerList / the Home drawer: 48px, 12px padding, radius 8, --tint + --accent-text + 650 when active. */
+.inline { display: grid; gap: 4px; } /* 📐 */
+.inlineLabel { padding: 14px 12px 6px; font-size: 11px; font-weight: 700; line-height: 15px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ab-color-faint, #807062); } /* 🏷️ = sidebar group label */
+.inlineList { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; } /* 📜 John: 8px between rows */
+.inlineList > li { display: block; margin: 0; padding: 0; line-height: 0; } /* 🧹 no inherited li spacing / line box: the row is the box */
+.inlineItem {
+  display: flex; align-items: center; gap: 12px; box-sizing: border-box; inline-size: 100%; block-size: 48px; min-block-size: 44px; /* 👆 John: exactly 48px (≥ 44px hit area) */
+  padding: 8px 12px; border: 0; border-radius: var(--ab-radius-row, 8px); background: none; /* 🧹 */
+  font: inherit; font-size: 16px; line-height: 20px; text-align: start; color: var(--ab-color-text, #211a16); text-decoration: none; cursor: pointer; /* 🔤 */
+}
+.inlineItem:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } /* 🖱️ */
+.inlineItem[data-active='true'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); font-weight: 650; } /* 🎯 */
+.inlineItem:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+.inlineText { flex: 1 1 auto; min-width: 0; } /* 🏷️ */
+.inlineCheck { flex: none; display: inline-flex; inline-size: 18px; block-size: 18px; color: var(--ab-locale-check-color, var(--ab-color-btn, #8b6340)); } /* ✓ John: bronze 2px stroke, 18px (James P2: the --ab-color-btn token) */
+:global(.dark) .inlineCheck, :global([data-theme='dark']) .inlineCheck { color: var(--ab-locale-check-color, var(--ab-color-accent, #c29a6f)); } /* 🌙 the warm accent */
+/* ➖ 0.1.15 (John): language goes LAST in a drawer with nav / theme items, under a 1px --div rule */
+.inline[data-divider='true'] { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--ab-color-div, rgb(92 64 48 / 0.11)); }

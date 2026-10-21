@@ -135,6 +135,11 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBottomDrawer', file: 'ab-bottom-drawer/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbMobileHeader', file: 'ab-mobile-header/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbSearchDrawer', file: 'ab-search-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbTocDrawer', file: 'ab-toc-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbSettingsDrawer', file: 'ab-settings-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
@@ -179,6 +184,9 @@ export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from '
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
 export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION } from './ab-drawer/index.tsx'
+// 🤏 0.2.0 drawers v2: edge swipes + the swipe / snap rules
+export { useAbEdgeSwipe, AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from './ab-drawer/index.tsx'
+export type { AbDrawerTier, AbSheetSnap, UseAbEdgeSwipeOptions } from './ab-drawer/index.tsx'
 export type { AbDrawerProps, AbDrawerSide, AbDrawerScope, UseAbDrawer } from './ab-drawer/index.tsx'
 export { default as AbDrawerList } from './ab-drawer-list/index.tsx'
 export type { AbDrawerListItem, AbDrawerListProps } from './ab-drawer-list/index.tsx'
@@ -187,6 +195,21 @@ export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
 export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbMobileHeader
+export { default as AbMobileHeader } from './ab-mobile-header/index.tsx'
+export type { AbMobileHeaderProps } from './ab-mobile-header/index.tsx'
+// 🆕 0.2.0 drawers v2: AbSearchDrawer
+export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY } from './ab-search-drawer/index.tsx'
+export type { AbSearchDrawerProps, AbSearchDrawerItem, AbSearchDrawerGroup, AbSearchDrawerLabels } from './ab-search-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbTocDrawer
+export { default as AbTocDrawer } from './ab-toc-drawer/index.tsx'
+export type { AbTocDrawerProps, AbTocDrawerLink } from './ab-toc-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbNavDrawer
+export { default as AbNavDrawer } from './ab-nav-drawer/index.tsx'
+export type { AbNavDrawerProps, AbNavDrawerItem, AbNavDrawerSection } from './ab-nav-drawer/index.tsx'
+// 🆕 0.2.0 drawers v2: AbSettingsDrawer
+export { default as AbSettingsDrawer } from './ab-settings-drawer/index.tsx'
+export type { AbSettingsDrawerProps, AbSettingsDrawerLabels, AbSettingsLocale, AbSettingsTheme } from './ab-settings-drawer/index.tsx'
 // 🏷️ 0.1.14 (P9): AbVersionSwitcher
 export { default as AbVersionSwitcher } from './ab-version-switcher/index.tsx'
 export type { AbVersionOption, AbVersionSwitcherProps } from './ab-version-switcher/index.tsx'

@@ -32,7 +32,7 @@
 * Example usage:
 *   <AbSidebar
 *     activeHref="/docs/components"
-*     sections={[{ id: 'docs', label: 'Docs', items: [{ href: '/docs/components', icon: 'widgets', label: 'Components' }] }]}
+*     sections={[{ id: 'gs', label: 'Getting started', items: [{ href: '/introduction', icon: 'description', label: 'Introduction' }] }]}
 *   />
 */
 

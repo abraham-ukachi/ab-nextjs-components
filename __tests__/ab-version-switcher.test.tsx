@@ -49,12 +49,12 @@ afterEach(cleanup)
 const versions = [{ value: 'v0.2.x', href: '/docs' }, { value: 'v0.1.x', href: '/v0.1/docs' }]
 
 describe('AbVersionSwitcher (P9) 🏷️', () => {
-  it('shows "Docs v0.2.x ▾"; opens the menu with the current version selected; Escape closes + refocuses', () => {
+  it('shows "v0.2.x ▾" (no Docs prefix by default, God 01:27); opens the menu with the current version selected; Escape closes + refocuses', () => {
     const { container } = render(<AbVersionSwitcher version="v0.2.x" versions={versions} />)
     const btn = container.querySelector('button[aria-haspopup="menu"]') as HTMLButtonElement
-    expect(btn.textContent).toContain('Docs'); expect(btn.querySelector('b')?.textContent).toBe('v0.2.x') // 💪
-    expect(btn.getAttribute('aria-label')).toBe('Docs v0.2.x') // ♿ WCAG 2.5.3: the name contains the visible text
-    expect(btn.getAttribute('aria-label')).toBe(btn.textContent?.replace(/\s+/g, ' ').trim())
+    expect(btn.textContent).not.toContain('Docs'); expect(btn.querySelector('b')?.textContent).toBe('v0.2.x') // 💪
+    expect(btn.getAttribute('aria-label')).toBe('Version v0.2.x') // ♿ no label → "Version …" (James P2)
+    expect(btn.getAttribute('aria-label')).toContain(btn.textContent!.replace(/\s+/g, ' ').trim()) // ♿ WCAG 2.5.3: the name contains the visible text
     const menu = document.getElementById(btn.getAttribute('aria-controls')!)!
     expect(menu.hidden).toBe(true)
     fireEvent.click(btn)
@@ -62,6 +62,12 @@ describe('AbVersionSwitcher (P9) 🏷️', () => {
     expect(menu.querySelector('a[aria-current="page"]')?.getAttribute('href')).toBe('/docs') // ✅ current
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(menu.hidden).toBe(true); expect(document.activeElement).toBe(btn) // ⎋ ↩️
+  })
+  it('a label or menuLabel still wins over the "Version" default', () => {
+    const { container, rerender } = render(<AbVersionSwitcher label="Docs" version="v0.2.x" versions={versions} />)
+    expect(container.querySelector('button')!.getAttribute('aria-label')).toBe('Docs v0.2.x') // 🏷️
+    rerender(<AbVersionSwitcher menuLabel="Pick a version" version="v0.2.x" versions={versions} />)
+    expect(container.querySelector('button')!.getAttribute('aria-label')).toBe('Pick a version') // 🏷️
   })
   it('button items call onSelect and close; one version = static label', () => {
     const onSelect = vi.fn()

@@ -30,7 +30,7 @@
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 *
 * Example usage:
-*   1+|> <AbBreadcrumbs items={[{ label: "Docs", href: "/docs" }, { label: "Home" }]} />
+*   1+|> <AbBreadcrumbs items={[{ label: "Getting started", href: "/introduction" }, { label: "Installation" }]} />
 */
 
 /*

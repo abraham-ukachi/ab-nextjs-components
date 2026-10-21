@@ -126,6 +126,11 @@ A drawer belongs to a **region**: the whole app, the main pane or the aside pane
 * **Presets.** `<AbDrawerList>` is one selectable list: `items={[{ value, label, description?, icon?, href?, lang?, disabled? }]}`, `value`, `onSelect`, `closeOnSelect`, with the current item marked `aria-current`. `<AbConfirmDrawer>` takes `message`, `confirmLabel`, `cancelLabel`, `onConfirm`, `onCancel`, `tone="danger"` and `busy`. Escape, the scrim and ✕ count as cancel.
 * **G56:** `<AbLocaleSwitcher presentation="drawer" | "auto">` and `<AbAppBar presentation="drawer" | "auto">` (the More menu) open as an app-scope bottom `AbDrawerList`. `auto` opens a drawer below 768px and a menu above. The default stays `menu`.
 
+### Drawers v2 (0.2.0)
+
+* **`<AbMobileHeader>`** (logo · globe · theme toggle) needs **ab-nextjs-core ≥ 0.2.1** with `<AbAppLayout variant="panes" mobileHeader="main">`. Pass it as `mainHeader`; core hides the app header below 768px and makes the main header the 56px mobile bar.
+* **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** a touch starting in the 24px edge zone is read from touch events. A non-passive `touchmove` listener exists only while that touch is down, and it calls `preventDefault` only once the move is sideways, so Android Chrome can't cancel it for a pan. Vertical scrolling from the edge, sideways code blocks and `[data-ab-no-edge-swipe]` keep working. Checked on WebKit and Chromium touch emulation.
+
 ## Getting Started
 
 ### Installation

@@ -31,7 +31,7 @@
 *
 * Example usage:
 *   1+|> <AbIconButton icon="arrow_back" label={t('back')} onClick={prev} />
-*    -|> <AbIconButton icon="open_in_new" href="/docs" label="Open docs" /> // 🔗 link variant is named too
+*    -|> <AbIconButton icon="open_in_new" href="/packages" label="Open packages" /> // 🔗 link variant is named too
 */
 
 /*

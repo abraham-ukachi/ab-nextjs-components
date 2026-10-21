@@ -32,6 +32,19 @@
 * Example usage:
 *   1+|> const { switchLocale } = useAbLocaleSwitch() // 🌍 from ab-nextjs-i18n/navigation
 *    -|> <AbLocaleSwitcher label={t('language')} current={locale} locales={[{ code: 'en', label: 'English' }, { code: 'fr', label: 'Français' }]} onSelect={switchLocale} />
+*
+*   🧩 0.1.15 inline, inside the mobile app drawer (John):
+*   2+|> // a) mixed drawer: nav + theme first, LANGUAGE last under a 1px rule
+*    -|> <AbBottomDrawer open={open} onClose={close} title={t('menu')}>
+*    -|>   <AbDrawerList … />{themeRow}
+*    -|>   <AbLocaleSwitcher presentation="inline" divider label={t('language')} current={locale} locales={LOCALES} onSelect={switchLocale} />
+*    -|> </AbBottomDrawer>
+*   🔁 Switching `presentation` at runtime (e.g. inline in the drawer, menu on desktop) is safe: inline and popover
+*      are separate components, so React remounts instead of reordering hooks. `AbLocaleSwitcherInline` is also exported.
+*   3+|> // b) language only: the drawer title says it, so no uppercase label
+*    -|> <AbBottomDrawer open={open} onClose={close} title={t('language')}>
+*    -|>   <AbLocaleSwitcher presentation="inline" showLabel={false} label={t('language')} current={locale} locales={LOCALES} onSelect={switchLocale} />
+*    -|> </AbBottomDrawer>
 */
 
 /*
@@ -80,8 +93,17 @@ export interface AbLocaleSwitcherProps {
   icon?: ReactNode; // 🖼️ override the globe
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
-  /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above */
-  presentation?: AbPresentation;
+  /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above.
+   *  🧩 0.1.15 (God 00:08): `inline` = no trigger; a labelled list of rows rendered in place, e.g. inside the app drawer on mobile */
+  presentation?: AbPresentation | 'inline';
+  /** 🏷️ 0.1.15 (John): inline only. Show the small uppercase group label (default true). Set false when the language
+   *  list is the drawer's only content and the drawer title already says "Language" (the label stays the group's name) */
+  showLabel?: boolean;
+  /** ♿ 0.1.15 (God 00:37): inline only. The group's accessible name. Default: `label` (e.g. "Language"), so a visible
+   *  label and the name always agree; set it when the drawer needs a fuller name (e.g. "Choose a language") */
+  ariaLabel?: string;
+  /** ➖ 0.1.15 (John): inline only. A 1px --div rule above the block, for when it follows nav / theme items (default false) */
+  divider?: boolean;
   drawerScope?: AbDrawerScope; // 🗺️ default 'app'
   drawerSide?: 'top' | 'bottom' | 'start' | 'end'; // 🧭 default 'bottom'
 }
@@ -99,9 +121,48 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
   return -1; // 🙅
 }
 
+/**
+ * 🧩 0.1.15: the inline list (no trigger, no popover), e.g. inside the mobile app drawer.
+ * Its own component (James): AbLocaleSwitcher picks this OR the popover by type, so switching `presentation`
+ * at runtime remounts instead of changing the hook order. Links mark the active row with aria-current, buttons aria-pressed.
+ */
+export function AbLocaleSwitcherInline(props: AbLocaleSwitcherProps) {
+  const { locales, current, label, onSelect, getHref, className, style, showLabel = true, divider = false, ariaLabel } = props;
+  const base = useId(); // 🆔
+  return (
+    <div className={clsx('AbLocaleSwitcher', styles.inline, className)} style={style} data-ab-part="locale-switcher" data-presentation="inline" data-divider={divider ? 'true' : undefined} role="group" aria-labelledby={showLabel && ariaLabel == null ? `${base}-label` : undefined} aria-label={ariaLabel ?? (showLabel ? undefined : label)}>
+      {showLabel && <div id={`${base}-label`} className={styles.inlineLabel}>{label}</div> /* 🏷️ hidden when the drawer title says it */}
+      <ul className={styles.inlineList}>
+        {locales.map((l) => {
+          const on = l.code === current; // ✅
+          const inner = (<><span className={styles.inlineText}>{l.label}</span><span className={styles.inlineCheck} aria-hidden="true">{on ? <svg viewBox="0 0 18 18" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" data-ab-part="locale-check"><path d="M3.5 9.5 7.25 13 14.5 5.5" /></svg> : null}</span></>);
+          return (
+            <li key={l.code}>
+              {getHref ? (
+                <a className={styles.inlineItem} href={getHref(l.code)} hrefLang={l.code} lang={l.code} data-active={on ? 'true' : 'false'} aria-current={on ? 'true' : undefined} onClick={() => onSelect?.(l.code)}>{inner}</a>
+              ) : (
+                <button type="button" className={styles.inlineItem} lang={l.code} data-active={on ? 'true' : 'false'} aria-pressed={on} onClick={() => onSelect?.(l.code)}>{inner}</button>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * 🌍 AbLocaleSwitcher: `presentation="inline"` renders AbLocaleSwitcherInline, anything else the popover / drawer.
+ * 🔁 Two component types, so a runtime `presentation` change remounts cleanly (rules of hooks).
+ */
 export function AbLocaleSwitcher(props: AbLocaleSwitcherProps) {
+  return props.presentation === 'inline' ? <AbLocaleSwitcherInline {...props} /> : <AbLocaleSwitcherPopover {...props} />;
+}
+
+function AbLocaleSwitcherPopover(props: AbLocaleSwitcherProps) {
   // 🧩 props
-  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  const { locales, current, label, onSelect, getHref, variant = 'icon', align = 'end', icon, className, style, presentation: rawPresentation = 'menu', drawerScope = 'app', drawerSide = 'bottom' } = props;
+  const presentation: AbPresentation = rawPresentation === 'inline' ? 'menu' : rawPresentation; // 🗄️ (never 'inline' here: see the dispatcher)
   // 🗄️ how this open happens (decided on click)
   const [mode, setMode] = useState<'menu' | 'drawer'>(presentation === 'drawer' ? 'drawer' : 'menu');
   // 🚪 open?

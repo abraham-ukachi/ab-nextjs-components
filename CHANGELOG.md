@@ -1,3 +1,38 @@
+## 0.2.0 (Unreleased, proposed)
+
+Includes everything planned for 0.1.15, which is not released separately.
+
+### ⚠️ Heads-up (default changes, not breaking)
+
+* ⚠️ **AbVersionSwitcher `label`** now defaults to `''` (it was `'Docs'`), so the control shows just "v0.2.x ▾". Its accessible name is then `Version v0.2.x`. Pass `label="Docs"` for the old look.
+* ⚠️ **AbAppBar compact bars** (`density="compact"`) now show the search **pill** below 768px by default (it used to be a 40px icon circle). Pass `compactSearch="icon"` for the old look.
+
+### Drawers v2
+- ✨ AbDrawer: `tier`, `swipe`, `snapPoints`/`defaultSnap`/`fullOnly`/`onSnapChange`, `handleLabels`, `centerIn="main"`, `initialFocus` selector, `returnFocus`, `closeIcon`, `headerStart` (all additive)
+- ✨ Gesture kit: `AB_SWIPE`, `resolveAbSheetRelease`, `resolveAbSideRelease`, `isInAbEdgeZone`, `createAbVelocityTracker`, `useAbEdgeSwipe`
+- ✨ New: AbSettingsDrawer, AbNavDrawer, AbTocDrawer, AbSearchDrawer (combobox/listbox, recents, grouped results), AbMobileHeader
+- 🔥 Docs removed from examples; AbVersionSwitcher `label` defaults to ''
+- 🐛 Initial focus no longer scrolls the layer; returnFocus takes the first visible match
+- ♿ AbVersionSwitcher: with no `label`, the accessible name is `Version <version>`
+- 🧯 AbSearchDrawer: a rejected or throwing `search` clears to "no results"; no stale results, no unhandled rejection
+- 🆔 AbSearchDrawer: group heading ids are sanitised (`[A-Za-z0-9_-]`) and indexed, so they stay valid and unique
+- 📌 AbMobileHeader needs ab-nextjs-core ≥ 0.2.1 with `mobileHeader="main"`
+- 🤖 Edge swipes work on Android Chrome: touches are read from touch events, and `touchmove` is non-passive only during an edge press, with `preventDefault` only once the move is sideways. Vertical scrolling from the edge zone and sideways code blocks are unaffected; checked in WebKit and Chromium touch emulation.
+
+### From 0.1.15
+
+* 🔎 **AbAppBar `compactSearch`** (`'pill'` | `'icon'`): below 768px, a `density="compact"` bar now shows its `variant="field"` search as the mock's 34px "Search ⌘K" pill, not a 40px icon circle. It is the same element, styled by CSS, so there's still one hotkey listener. The default is `'pill'` for compact bars; comfortable bars keep the icon, as before.
+  * ⚠️ **Heads-up:** `density="compact"` bars now show the search pill below 768px by default (they used to show a 40px icon circle). Pass `compactSearch="icon"` to keep the old look.
+* 🏷️ **AbSearchTrigger `compactLabel`:** an optional short label (e.g. "Search") that the compact bar shows on mobile instead of `label` ("Search docs…"). Only one is ever displayed. The key cap's space is now its own span, so the pill shows "⌘K".
+* 🏷️ **AbSidebar `logo`:** a 60px (`--ab-header-height`) logo row above `header`, like mock 06's `.sb-logo`. With core ≥ 0.2.1 panes it only shows where the app header is hidden (`tabletHeader="main"` at 768–1179px).
+* 🧩 **AbLocaleSwitcher `presentation="inline"`:** no trigger and no popover; it renders a labelled group of 48px rows (`--tint` + `--accent-text` when active, a check mark, `lang` / `hreflang`) in place. Put it inside the mobile app drawer. Link rows mark the current locale with `aria-current`, button rows with `aria-pressed`. Rows are exactly 48px (44px minimum), 8px apart, with an 18px bronze 2px-stroke check (`--ab-color-btn` light, `--ab-color-accent` dark). Use `divider` when it goes last after nav / theme items, and `showLabel={false}` when it's the drawer's only content (title the drawer "Language"). See the snippet in `ab-locale-switcher/index.tsx`. The inline list is its own component (`AbLocaleSwitcherInline`, also exported), so changing `presentation` at runtime remounts cleanly.
+* 🏷️ **AbBottomDrawer title:** Mulish (`--ab-font-title`) 16/**800** (was 700). The bottom padding stays 16px + the safe area.
+* 🔗 **AbAppBar `searchCompact`:** a node shown instead of `search` below 768px (both rendered, CSS picks). Pass `<AbSearchTrigger size="sm" href="/docs" label="Search" />` for the mock's mobile pill: a plain link to /docs, 114px wide (`--ab-app-bar-compact-search-width`) in a compact bar, with no ⌘K cap and no hotkey (no `onOpen` means no shortcut; `hotkey={false}` also turns both off).
+* ♿ **Inline AbLocaleSwitcher `ariaLabel`:** the group's accessible name. It defaults to `label`, whether the label is visible or hidden.
+* 📱 **No globe on the mobile bar:** pass the bar's actions without the locale switcher as `compactActions` (from 0.1.13), and render the inline switcher in the app drawer.
+* 📝 **AbAppBar `searchCompact` docs:** a hotkey trigger passed to both `search` and `searchCompact` registers ⌘K twice; give only one `onOpen` (or `hotkey={false}` on the other).
+* ✂️ **AbAppBar compact pill:** a longer (translated) label ends in an ellipsis inside the 114px pill.
+
 ## [0.1.14](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.13...v0.1.14) (2026-10-20)
 
 * ⬆️ **Peer + dev range:** `ab-nextjs-theme` **^0.3.5** (was ^0.3.4), for the Home tokens. It has a D33 release-age pin that expires 2026-10-21T20:40:07Z. Components doesn't depend on `ab-nextjs-core`, so no core range changed.

@@ -30,7 +30,7 @@
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 *
 * Example usage:
-*   <AbNavbar activeHref="/docs" items={[
+*   <AbNavbar activeHref="/" items={[
 *     { kind: 'link', href: '/', icon: 'home', label: 'Home' },
 *     { kind: 'button', id: 'menu', icon: 'menu', label: 'Menu', onSelect: openSheet },
 *   ]} />

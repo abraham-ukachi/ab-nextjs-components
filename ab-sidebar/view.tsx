@@ -98,6 +98,9 @@ export interface AbSidebarBaseProps {
   density?: 'comfortable' | 'compact'; // 📏 'compact' = 32px rows, 13.5/500, 18px icons, 11px group labels
   activeShape?: 'pill' | 'rounded'; // 🔷 'rounded' = 8px-radius --tint row (default 'pill')
   badgeVariant?: 'chip' | 'text'; // 🏷️ 'text' = plain mono 10.5 --faint meta (e.g. a version), no chip
+  // 🏷️ 0.1.15 (God 00:08): a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
+  //    where the app header is hidden (tabletHeader="main" at 768–1179); elsewhere it always shows
+  logo?: ReactNode;
   // 🕰️ legacy API (≤ 0.1.12)
   type?: 'customer' | 'admin';
   page?: string;
@@ -174,6 +177,7 @@ export function AbSidebarView({ props, Icon, active, toggle }: {
       data-badge={badgeVariant === 'text' ? 'text' : undefined} // 🏷️ P8
       aria-label={labels?.nav ?? 'Sidebar'} // ♿
     >
+      {props.logo != null && <div className={styles.abSidebarLogo} data-ab-part="sidebar-logo">{props.logo}</div> /* 🏷️ 0.1.15 */}
       {/* 🏷️ header slot, or the legacy brand link */}
       <div className={styles.abSidebarHeader}>
         {header ?? (links?.length && !sections?.length ? <Link href={brandHref} className={styles.abSidebarBrand}>{brandLabel}</Link> : null)}

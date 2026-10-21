@@ -94,3 +94,6 @@
 }
 .abSearchTrigger[data-size='sm'] .abSearchTriggerCap { min-width: 18px; height: 18px; font-size: 10px; } /* 📱 */
 .abSearchTrigger[data-variant='field'][aria-disabled='true'], .abSearchTrigger[data-size='sm'][aria-disabled='true'] { opacity: 1; } /* 🚧 the Home field looks the same while search is coming soon (the tooltip says so) */
+
+/* 📱 0.1.15: the short label is hidden unless a compact AbAppBar (< 768px) swaps it in */
+.abSearchTriggerShort { display: none; }

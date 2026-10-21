@@ -64,6 +64,9 @@ export interface AbSearchTriggerProps {
   comingSoon?: boolean; // 🚧 visible but inert: aria-disabled, no hotkey
   comingSoonLabel?: string; // 🏷️ default "Coming soon"
   variant?: 'pill' | 'field'; // 🔎 0.1.14 (P6): 'field' = the Home 300×36 bordered field (default 'pill', the legacy look)
+  /** 📱 0.1.15 (God 00:08): a shorter label (e.g. "Search") that a compact AbAppBar shows below 768px instead of `label`
+   *  (CSS picks; only one is ever displayed, so the accessible name stays single). Home field only. */
+  compactLabel?: string;
   size?: 'md' | 'sm'; // 📱 0.1.14 (P6): 'sm' = the mobile 34px "Search ⌘K" pill (label + key cap stay visible)
   className?: string; // 🏷️
 }
@@ -82,7 +85,7 @@ export function isAbApplePlatform(nav?: { platform?: string; userAgent?: string;
  * announces `aria-keyshortcuts="Meta+K Control+K"`, and falls back to a link when there's no `onOpen`.
  * Note: the hotkey is a local listener; G48 `useAbHotkey` is deliberately not in hooks 0.1.7.
  */
-const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', variant = 'pill', size = 'md', className }: AbSearchTriggerProps): ReactElement => {
+const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', compactLabel, variant = 'pill', size = 'md', className }: AbSearchTriggerProps): ReactElement => {
   // 🍎 SSR renders "Ctrl"; hydration then reads the platform (useSyncExternalStore: no mismatch, no effect)
   const apple = useSyncExternalStore(
     noopSubscribe, // 🔕 the platform never changes
@@ -105,12 +108,14 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
 
   // 🏠 P6: the Home looks (field / sm pill) show ONE key cap ("⌘ K" / "⌘K") and keep "coming soon" out of the field
   const home = variant === 'field' || size === 'sm';
-  const keyCap = (apple ? '⌘' : 'Ctrl') + (size === 'sm' ? '' : ' ') + 'K'; // ⌨️ mock: "⌘ K" (field) · "⌘K" (sm)
+  // ⌨️ mock: "⌘ K" (field) · "⌘K" (sm). The gap is its own span so a compact app bar can drop it (0.1.15)
+  const keyCap = <>{apple ? '⌘' : 'Ctrl'}{size === 'sm' ? null : <span data-ab-part="key-gap"> </span>}K</>;
   // 🧩 inner content
   const inner = home ? (
     <>
       <AbIcon name="search" size={size === 'sm' ? 17 : 18} className={styles.abSearchTriggerIcon} />
-      <span className={styles.abSearchTriggerLabel}>{label}</span>
+      <span className={styles.abSearchTriggerLabel} data-ab-part="search-label">{label}</span>
+      {compactLabel != null && <span className={clsx(styles.abSearchTriggerLabel, styles.abSearchTriggerShort)} data-ab-part="search-label-compact">{compactLabel}</span> /* 📱 0.1.15 */}
       {/* 🚧 coming soon: tooltip + announced, never painted inside the field (spec §4) */}
       {comingSoon ? <span className={styles.abSearchTriggerSrOnly}>, {comingSoonLabel}</span> : listen && <AbKbd className={styles.abSearchTriggerCap}>{keyCap}</AbKbd>}
     </>
