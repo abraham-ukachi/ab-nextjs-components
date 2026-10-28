@@ -58,6 +58,8 @@ import clsx from 'clsx';
 import AbIcon from '../ab-icon';
 // 🎨 the drawers v2 kit
 import kit from '../ab-drawer/kit.module.css';
+// 🌗 0.2.3: the shared theme state (AbThemeModeProvider)
+import { useAbThemeModeContext } from '../ab-theme-mode';
 
 /** 🌗 0.2.3: the three theme modes (same names as ab-nextjs-hooks' AbThemeMode) */
 export type AbMobileHeaderThemeMode = 'light' | 'dark' | 'system';
@@ -105,10 +107,16 @@ export interface AbMobileHeaderProps {
 const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, size = 'default', className }: AbMobileHeaderProps): ReactElement => {
   const L = { language: 'Change language', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', toSystem: 'Use the system theme', header: 'Main header', ...labels }; // 🌍
   const name: Record<AbMobileHeaderThemeMode, string> = { light: L.toLight, dark: L.toDark, system: L.toSystem }; // ♿ "switch TO" names
-  // 🌗 0.2.3: 3-state when onThemeModeChange is given, else the 2-state toggle (unchanged)
-  const three = !!onThemeModeChange;
+  // 🌗 0.2.3: under an AbThemeModeProvider with no theme props, the button is the 3-state cycle on the SHARED state
+  //    (same mode as the laptop toggles, no drift across 768px). Explicit props still win
+  const shared = useAbThemeModeContext();
+  const fromShared = !!shared && !onThemeModeChange && !onThemeChange; // 🧠
+  const mode3 = fromShared ? (shared.mode as AbMobileHeaderThemeMode) : themeMode; // 🔗 the mode shown
+  const set3 = fromShared ? shared.setMode : onThemeModeChange; // 🔗 the setter used
+  // 🌗 0.2.3: 3-state when onThemeModeChange is given (or shared), else the 2-state toggle (unchanged)
+  const three = !!set3;
   const next: AbMobileHeaderThemeMode = three
-    ? AB_MOBILE_HEADER_THEME_CYCLE[(Math.max(0, AB_MOBILE_HEADER_THEME_CYCLE.indexOf(themeMode)) + 1) % AB_MOBILE_HEADER_THEME_CYCLE.length] // 🔁
+    ? AB_MOBILE_HEADER_THEME_CYCLE[(Math.max(0, AB_MOBILE_HEADER_THEME_CYCLE.indexOf(mode3)) + 1) % AB_MOBILE_HEADER_THEME_CYCLE.length] // 🔁
     : theme === 'dark' ? 'light' : 'dark'; // 🌗 the target
   const showTheme = three || !!onThemeChange; // 👀
   // 🧱 the 56px bar: logo · globe · theme · actions
@@ -150,9 +158,9 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
           type="button"
           className={kit.ibtn}
           aria-label={name[next]} // ♿ the mode a tap switches TO
-          onClick={() => (three ? onThemeModeChange!(next) : onThemeChange?.(next as 'light' | 'dark'))} // 🌗
+          onClick={() => (three ? set3!(next) : onThemeChange?.(next as 'light' | 'dark'))} // 🌗
           data-ab-part="mobile-header-theme"
-          data-theme-mode={three ? themeMode : undefined} // 🧪 0.2.3: the current mode (3-state only)
+          data-theme-mode={three ? mode3 : undefined} // 🧪 0.2.3: the current mode (3-state only)
         >
           <AbIcon name={THEME_ICON[next]} size={24} />
         </button>
