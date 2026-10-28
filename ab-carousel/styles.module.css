@@ -54,7 +54,17 @@
   --ab-slide-step-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
   --ab-slide-step-distance: var(--ab-carousel-shift, 24px); /* ↔️ */
   --ab-slide-step-flip: 1; /* 🌍 LTR */
-  --_accent: var(--ab-carousel-accent, var(--ab-primary, #a67c52)); /* 🟤 bronze */
+  --_accent: var(--ab-carousel-accent, var(--ab-color-accent, var(--ab-primary, #a67c52))); /* 🟤 bronze (0.2.3: theme accent first) */
+}
+
+/* 🟤 0.2.3 (Joseph, Welcome 0.2.21): headless mode renders parts (dots, Prev / Next, counter) OUTSIDE the region,
+   where the region's `--_accent` doesn't exist and the bronze turned grey. Every part now resolves the accent ON ITS
+   OWN, with the same chain: --ab-carousel-accent, then the theme accent, then --ab-primary, then bronze. */
+.nav,
+.dots,
+.dot,
+.counter {
+  --_accent: var(--ab-carousel-accent, var(--ab-color-accent, var(--ab-primary, #a67c52))); /* 🟤 */
 }
 
 /* 🌍 RTL: mirror the slide offsets */
