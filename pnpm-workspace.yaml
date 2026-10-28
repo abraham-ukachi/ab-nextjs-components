@@ -7,10 +7,5 @@ minimumReleaseAgeStrict: true
 # ⏳ D33 (scoped, expiring exemptions): our own brand-new releases in the lockfile, one exact version
 #    each. Expiries live in __tests__/release-age.test.ts ALLOWED_EXCLUDES (publish time + 24h, UTC);
 #    the suite fails after them.
-minimumReleaseAgeExclude:
-  # TODO(remove after 2026-10-21T17:15:19Z): ab-nextjs-icons 0.2.4 published 2026-10-20T17:15:19Z
-  - ab-nextjs-icons@0.2.4
-  # TODO(remove after 2026-10-21T17:28:56Z): ab-nextjs-hooks 0.1.7 published 2026-10-20T17:28:56Z
-  - ab-nextjs-hooks@0.1.7
-  # TODO(remove after 2026-10-22T00:14:50Z): ab-nextjs-theme 0.3.6 published 2026-10-21T00:14:50Z
-  - ab-nextjs-theme@0.3.6
+# 🧹 0.2.3: every exemption above expired (icons 0.2.4, hooks 0.1.7, theme 0.3.6 are all > 1 day old now),
+#    so the list is empty again. Add a new exact line (and its ALLOWED_EXCLUDES expiry) only for a fresh release.
