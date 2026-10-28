@@ -210,7 +210,7 @@ export function useAbCarousel(): AbCarouselContextValue {
   // 🔍 nearest carousel
   const ctx = useContext(AbCarouselContext);
   // 💥 used outside → explain how to fix it
-  if (!ctx) throw new Error('useAbCarousel() must be used inside <AbCarousel>.');
+  if (!ctx) throw new Error('useAbCarousel() must be used inside <AbCarousel> or <AbCarouselProvider>.');
   // 📦
   return ctx;
 }
@@ -277,7 +277,31 @@ const readAbServerDir = (): AbCarouselDir => 'ltr';
  *
  * 🎬 Motion: slides cross-fade + shift 24px (280ms); reduced motion → 120ms fade, no transform.
  */
-export function AbCarousel(props: AbCarouselProps) {
+// ⚙️ 0.2.3: the provider takes the state props only (no element of its own)
+export type AbCarouselProviderProps = Omit<AbCarouselProps, 'as' | 'id' | 'className' | 'style' | 'ref'>;
+
+// 🧷 0.2.3: what the region element needs (spread by <AbCarousel>, or by the consumer in headless mode)
+export interface AbCarouselRegionProps {
+  className: string; // 🏷️ 'AbCarousel' + the module class (carries the slide-step tokens)
+  'aria-roledescription': 'carousel'; // ♿
+  'aria-label': string; // 🏷️
+  'data-ab-part': 'carousel'; // 🧩
+  'data-dir': AbCarouselDir; // 🌍
+  'data-reduced-motion': string; // ♿ CSS switch
+  'data-ab-reduced-motion': string; // ♿ ab-nextjs-animations switch
+  'data-ab-direction'?: AbSlideStepDirection; // 🧭
+  'data-hydrated': string; // 🟢
+  onKeyDown: (event: KeyboardEvent<HTMLElement>) => void; // ⌨️ ←/→ Home/End while focus is inside
+}
+
+// 🧠 0.2.3: region props + the live message, for headless consumers (null outside a provider)
+const AbCarouselRegionContext = createContext<{ regionProps: AbCarouselRegionProps; message: string } | null>(null);
+
+/**
+ * 🧠 the whole carousel brain (state, ids, keyboard, announcements), shared by <AbCarousel> and
+ * <AbCarouselProvider>. Internal: render either of those, not this.
+ */
+function useAbCarouselController(props: AbCarouselProviderProps): { value: AbCarouselContextValue; regionProps: AbCarouselRegionProps; message: string } {
   // 🧩 destructure with defaults
   const {
     label, // 🏷️
@@ -296,12 +320,7 @@ export function AbCarousel(props: AbCarouselProps) {
     autoHeight = false, // 📏 0.2.3
     slideLabel = defaultAbCarouselSlideLabel, // 🏷️
     announce = defaultAbCarouselAnnouncement, // 📣
-    as: Tag = 'section', // 🧱
-    id, // 🆔
-    className, // 🏷️
-    style, // 🎨
-    ref, // 🔗
-    children, // 🧩
+    children, // 🧩 (only used to count the slides)
   } = props;
 
   // 🔢 slide count: explicit, else counted from the track
@@ -384,30 +403,86 @@ export function AbCarousel(props: AbCarouselProps) {
     swipe: { enabled: swipe && count > 1, threshold: swipeThreshold, ignore: swipeIgnore },
   }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, autoHeight, swipe, swipeThreshold, swipeIgnore]);
 
+  // 🧷 the region's attributes (memo-free: cheap, and onKeyDown closes over the latest state)
+  const regionProps: AbCarouselRegionProps = {
+    className: clsx('AbCarousel', styles.carousel), // 🏷️ + the slide-step tokens
+    'aria-roledescription': 'carousel', // ♿ "carousel" instead of "region"
+    'aria-label': label, // 🏷️ accessible name
+    'data-ab-part': 'carousel', // 🧩 part hook
+    'data-dir': dir, // 🌍
+    'data-reduced-motion': String(reducedMotion), // ♿ CSS switch
+    'data-ab-reduced-motion': String(reducedMotion), // ♿ ab-nextjs-animations switch (prop OR OS)
+    'data-ab-direction': direction ?? undefined, // 🧭 forward / back for .ab-slide-step-*
+    'data-hydrated': String(hydrated), // 🟢
+    onKeyDown, // ⌨️
+  };
+  return { value, regionProps, message }; // 📦
+}
+
+/**
+ * 🎠 AbCarousel — accessible slide carousel / walkthrough (Welcome v6, gap G31). See the a11y notes above
+ * `useAbCarouselController`. It renders the region element itself; for a layout where the carousel can't own one
+ * wrapper (e.g. it would have to wrap <main>), use <AbCarouselProvider> + useAbCarouselRegion() instead.
+ */
+export function AbCarousel(props: AbCarouselProps) {
+  const { as: Tag = 'section', id, className, style, ref, children } = props; // 🧱 element props
+  const { value, regionProps, message } = useAbCarouselController(props); // 🧠
   // 🖼️ render
   return (
     <AbCarouselContext.Provider value={value}>
-      <Tag
-        ref={ref as Ref<HTMLElement & HTMLDivElement>} // 🔗
-        id={id} // 🆔
-        className={clsx('AbCarousel', styles.carousel, className)} // 🏷️
-        style={style} // 🎨
-        aria-roledescription="carousel" // ♿ "carousel" instead of "region"
-        aria-label={label} // 🏷️ accessible name
-        data-ab-part="carousel" // 🧩 part hook
-        data-dir={dir} // 🌍
-        data-reduced-motion={String(reducedMotion)} // ♿ CSS switch
-        data-ab-reduced-motion={String(reducedMotion)} // ♿ ab-nextjs-animations switch (prop OR OS)
-        data-ab-direction={direction ?? undefined} // 🧭 forward / back for .ab-slide-step-*
-        data-hydrated={String(hydrated)} // 🟢
-        onKeyDown={onKeyDown} // ⌨️
-      >
-        {children}
-        {/* 📣 polite live region (visually hidden) */}
-        <div className={styles.srOnly} aria-live="polite" aria-atomic="true" data-ab-part="status">{message}</div>
-      </Tag>
+      <AbCarouselRegionContext.Provider value={{ regionProps, message }}>
+        <Tag
+          ref={ref as Ref<HTMLElement & HTMLDivElement>} // 🔗
+          id={id} // 🆔
+          {...regionProps} // ♿ roledescription / label / data-* / keyboard
+          className={clsx(regionProps.className, className)} // 🏷️
+          style={style} // 🎨
+        >
+          {children}
+          {/* 📣 polite live region (visually hidden) */}
+          <div className={styles.srOnly} aria-live="polite" aria-atomic="true" data-ab-part="status">{message}</div>
+        </Tag>
+      </AbCarouselRegionContext.Provider>
     </AbCarouselContext.Provider>
   );
+}
+
+// ===== 0.2.3 HEADLESS MODE: <AbCarouselProvider /> + useAbCarouselRegion() + <AbCarouselStatus /> ===== //
+
+/**
+ * 🧠 AbCarouselProvider — 0.2.3 (Joseph, Welcome 0.2.21): the carousel state WITHOUT an element, so it no longer
+ * has to wrap <main>. Put it high enough for every control (header counter, aside dots, main track), then mark
+ * ONE element as the region with `useAbCarouselRegion()` and drop <AbCarouselStatus /> inside it:
+ *
+ *   <AbCarouselProvider label="Welcome" count={9}>
+ *     <AbAppLayout mainHeader={<AbCarouselCounter />} main={<Slides />} />
+ *   </AbCarouselProvider>
+ *   function Slides() { const region = useAbCarouselRegion(); return (
+ *     <div {...region}><AbCarouselTrack>…</AbCarouselTrack><AbCarouselStatus /></div>) }
+ *
+ * 🔢 Pass `count` when the track isn't a direct (element-tree) descendant of the provider's children.
+ */
+export function AbCarouselProvider(props: AbCarouselProviderProps) {
+  const { value, regionProps, message } = useAbCarouselController(props); // 🧠
+  return (
+    <AbCarouselContext.Provider value={value}>
+      <AbCarouselRegionContext.Provider value={{ regionProps, message }}>{props.children}</AbCarouselRegionContext.Provider>
+    </AbCarouselContext.Provider>
+  );
+}
+
+/** 🧷 useAbCarouselRegion — 0.2.3: the attributes for YOUR region element (spread them; merge your own className). */
+export function useAbCarouselRegion(): AbCarouselRegionProps {
+  const ctx = useContext(AbCarouselRegionContext); // 🔍
+  if (!ctx) throw new Error('useAbCarouselRegion() must be used inside <AbCarouselProvider> or <AbCarousel>.'); // 💥
+  return ctx.regionProps; // 📦
+}
+
+/** 📣 AbCarouselStatus — 0.2.3: the polite live region ("Slide 3 of 9: Title"); render it once, inside the region. */
+export function AbCarouselStatus({ className }: { className?: string }) {
+  const ctx = useContext(AbCarouselRegionContext); // 🔍
+  if (!ctx) throw new Error('<AbCarouselStatus> must be used inside <AbCarouselProvider> or <AbCarousel>.'); // 💥
+  return <div className={clsx(styles.srOnly, className)} aria-live="polite" aria-atomic="true" data-ab-part="status">{ctx.message}</div>;
 }
 
 // ===== <AbCarouselTrack /> ===== //
