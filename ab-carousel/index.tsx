@@ -500,11 +500,16 @@ export interface UseAbCarouselKeysOptions {
 const AB_CAROUSEL_KEYS_SKIP = '[role="dialog"], [aria-modal="true"], [contenteditable=""], [contenteditable="true"]';
 
 /**
- * ⌨️ useAbCarouselKeys — 0.2.3 (Joseph, Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on ANY element, or the
- * whole document, not just inside the region. Call it under <AbCarouselProvider> (or <AbCarousel>):
+ * ⌨️ useAbCarouselKeys — 0.2.3 (Joseph, Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on a SCOPE element, not
+ * just inside the region. The listener sits on that element only, so keys act only while focus is within it.
+ * Call it under <AbCarouselProvider> (or <AbCarousel>):
  *
- *   useAbCarouselKeys('document')            // 🌍 the Welcome page: arrows work wherever focus is
- *   useAbCarouselKeys(mainRef)               // 📄 only while focus is inside <main>
+ *   useAbCarouselKeys('main')                // ✅ RECOMMENDED: the layout's <main> (core's [data-ab-part="main"], else <main>)
+ *   useAbCarouselKeys(slidesRef)             // 📌 any element you hold a ref to
+ *   useAbCarouselKeys('document')            // ⚠️ OPT-IN only: every key on the page (header, aside…) — a global
+ *                                            //    hijack; Joseph's e2e "no global hijack" forbids it on Welcome
+ *
+ * There is no default: the scope is always explicit.
  *
  * 🧭 Why a hook (and not core passing the region props to <main>): core stays carousel-agnostic, the hook works
  *    with any layout, and the region's own handler is untouched. Safety rules:
@@ -514,14 +519,17 @@ const AB_CAROUSEL_KEYS_SKIP = '[role="dialog"], [aria-modal="true"], [contentedi
  * - ⌨️ never with Alt / Ctrl / Meta / Shift, and never an event someone already handled (defaultPrevented)
  * - ⏮️⏭️ Home / End only with `homeEnd: true`
  */
-export function useAbCarouselKeys(target: 'document' | RefObject<HTMLElement | null>, options: UseAbCarouselKeysOptions = {}): void {
+export function useAbCarouselKeys(target: 'main' | 'document' | RefObject<HTMLElement | null>, options: UseAbCarouselKeysOptions = {}): void {
   const { enabled = true, homeEnd = false } = options;
   const ctx = useAbCarousel(); // 🧠
   const latest = useRef(ctx); // 🔁 the latest state for the listener (no re-binding per slide)
   useEffect(() => { latest.current = ctx; });
   useEffect(() => {
     if (!enabled) return;
-    const el: HTMLElement | Document | null = target === 'document' ? document : target.current; // 🎯
+    // 🎯 the scope: 'main' = core's main pane (AbMainLayout renders data-ab-part="main"), else the first <main>
+    const el: HTMLElement | Document | null = target === 'document' ? document
+      : target === 'main' ? document.querySelector<HTMLElement>('[data-ab-part="main"]') ?? document.querySelector('main')
+      : target.current;
     if (!el) return;
     const onKey = (event: Event) => {
       const e = event as globalThis.KeyboardEvent; // ⌨️

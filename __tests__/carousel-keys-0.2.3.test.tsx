@@ -50,9 +50,9 @@ function Region() {
   const r = useAbCarouselRegion() // 🧷
   return <div {...r} id="region"><button id="inside">in</button><AbCarouselTrack>{['A', 'B', 'C'].map((t) => <AbCarouselSlide key={t}>{t}</AbCarouselSlide>)}</AbCarouselTrack></div>
 }
-function Keys({ on, homeEnd, enabled }: { on: 'document' | 'main'; homeEnd?: boolean; enabled?: boolean }) {
+function Keys({ on, homeEnd, enabled }: { on: 'document' | 'main' | 'ref'; homeEnd?: boolean; enabled?: boolean }) {
   const main = useRef<HTMLElement>(null)
-  useAbCarouselKeys(on === 'document' ? 'document' : main, { homeEnd, enabled }) // ⌨️
+  useAbCarouselKeys(on === 'ref' ? main : on, { homeEnd, enabled }) // ⌨️
   return (
     <>
       <header><button id="hdr">menu</button><input id="field" /></header>
@@ -61,6 +61,7 @@ function Keys({ on, homeEnd, enabled }: { on: 'document' | 'main'; homeEnd?: boo
     </>
   )
 }
+function MainKeys() { useAbCarouselKeys('main'); return <main><button id="cta2">c</button><Region /></main> }
 const App = (p: Parameters<typeof Keys>[0]) => <AbCarouselProvider label="W" count={3}><Keys {...p} /></AbCarouselProvider>
 const key = (id: string, k: string, extra: Record<string, unknown> = {}) => act(() => { fireEvent.keyDown(document.getElementById(id)!, { key: k, ...extra }) })
 
@@ -70,8 +71,18 @@ describe('⌨️ useAbCarouselKeys (Joseph, Welcome 0.2.21)', () => {
     key('hdr', 'ArrowRight'); expect(active()).toBe('B') // ⏭️
     key('hdr', 'ArrowLeft'); expect(active()).toBe('A') // ⏮️
   })
-  it('a ref: only while focus is inside that element', () => {
+  it('"main" (recommended): listens on <main> only — no global hijack from the header', () => {
     render(<App on="main" />)
+    key('hdr', 'ArrowRight'); expect(active()).toBe('A') // 🙅 outside <main>
+    key('cta', 'ArrowRight'); expect(active()).toBe('B') // ✅ inside
+  })
+  it('"main" prefers core\'s [data-ab-part="main"] pane', () => {
+    render(<AbCarouselProvider label="W" count={3}><div data-ab-part="main"><button id="pane">p</button></div><MainKeys /></AbCarouselProvider>)
+    key('cta2', 'ArrowRight'); expect(active()).toBe('A') // 🙅 the plain <main> is not the scope
+    key('pane', 'ArrowRight'); expect(active()).toBe('B') // ✅ core's pane
+  })
+  it('a ref: only while focus is inside that element', () => {
+    render(<App on="ref" />)
     key('hdr', 'ArrowRight'); expect(active()).toBe('A') // 🙅 outside <main>
     key('cta', 'ArrowRight'); expect(active()).toBe('B') // ✅ inside
   })
