@@ -51,7 +51,7 @@
 'use client';
 
 // ⚛️ React
-import type { ReactElement, ReactNode } from 'react';
+import type { MouseEvent, ReactElement, ReactNode, Ref } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🔣 icons
@@ -82,6 +82,17 @@ export interface AbMobileHeaderProps {
   // ➕ 0.2.3: extra content shared with the main header, as a second row under the bar (e.g. Welcome's counter
   //    row). Core ≥ 0.2.3 lets the 56px mobile bar grow to fit it
   row?: ReactNode;
+  // 🌍 0.2.3: the globe's popup wiring. `languageControls` = the language sheet's id → aria-controls, and
+  //    aria-expanded is always present (false unless `languageExpanded`). `languageRef` = the globe element, e.g.
+  //    for AbBottomDrawer's `trigger` focus return
+  languageControls?: string;
+  languageRef?: Ref<HTMLButtonElement & HTMLAnchorElement>;
+  // 🧩 0.2.3 no-JS fallback: with `languageHref` the globe is a real link to a language list (works before
+  //    hydration and without JS); once hydrated, `onLanguage` (if set) opens the sheet instead of navigating
+  languageHref?: string;
+  // 📏 0.2.3: 'compact' = a 48px bar with 18px start inset (the Welcome v6 mock: 48 + the counter row = 96px).
+  //    Default 'default' (56px, John's drawers v2 frame)
+  size?: 'default' | 'compact';
   className?: string; // 🏷️
 }
 
@@ -91,7 +102,7 @@ export interface AbMobileHeaderProps {
  * no menu button (the left drawer opens with an edge swipe). Put it in AbMainLayout's `mainHeader` with core
  * ≥ 0.2.1 `mobileHeader="main"`: the 56px row, its divider and the hidden app header come from core.
  */
-const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, className }: AbMobileHeaderProps): ReactElement => {
+const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, size = 'default', className }: AbMobileHeaderProps): ReactElement => {
   const L = { language: 'Change language', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', toSystem: 'Use the system theme', header: 'Main header', ...labels }; // 🌍
   const name: Record<AbMobileHeaderThemeMode, string> = { light: L.toLight, dark: L.toDark, system: L.toSystem }; // ♿ "switch TO" names
   // 🌗 0.2.3: 3-state when onThemeModeChange is given, else the 2-state toggle (unchanged)
@@ -104,8 +115,33 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
   const bar = (
     <>
       <span className={kit.logoRow}>{logo}</span>
-      {onLanguage && (
-        <button type="button" className={kit.ibtn} aria-label={L.language} aria-haspopup="dialog" aria-expanded={languageExpanded} onClick={onLanguage} data-ab-part="mobile-header-language">
+      {languageHref != null ? (
+        // 🧩 0.2.3: a link first (no-JS / pre-hydration: navigates to the list), upgraded to the sheet by onLanguage
+        <a
+          ref={languageRef}
+          href={languageHref}
+          className={kit.ibtn}
+          aria-label={L.language}
+          aria-haspopup={onLanguage ? 'dialog' : undefined} // ♿ only when it opens a sheet
+          aria-controls={onLanguage ? languageControls : undefined} // 🔗
+          aria-expanded={onLanguage && languageControls ? !!languageExpanded : languageExpanded} // ♿
+          onClick={(e: MouseEvent<HTMLAnchorElement>) => { if (!onLanguage || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; e.preventDefault(); onLanguage(); }} // 🖱️ new-tab clicks still navigate
+          data-ab-part="mobile-header-language"
+        >
+          <AbIcon name="language" size={24} />
+        </a>
+      ) : onLanguage && (
+        <button
+          ref={languageRef}
+          type="button"
+          className={kit.ibtn}
+          aria-label={L.language}
+          aria-haspopup="dialog"
+          aria-controls={languageControls} // 🔗 0.2.3
+          aria-expanded={languageControls ? !!languageExpanded : languageExpanded} // ♿ 0.2.3: always set with a target
+          onClick={onLanguage}
+          data-ab-part="mobile-header-language"
+        >
           <AbIcon name="language" size={24} />
         </button>
       )}
@@ -126,10 +162,11 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
   );
   return (
     <div
-      className={clsx('AbMobileHeader', kit.mh, row != null && kit.mhStack, className)} // 🧱 0.2.3: a column when there is a row
+      className={clsx('AbMobileHeader', kit.mh, row != null && kit.mhStack, size === 'compact' && kit.mhCompact, className)} // 🧱 0.2.3: a column when there is a row
       role="group"
       aria-label={L.header}
       data-ab-part="mobile-header"
+      data-ab-header-size={size === 'compact' ? 'compact' : undefined} // 📏 0.2.3: core ≥ 0.2.3 sizes the slot to 48px
       data-ab-header-extra={row != null ? 'true' : undefined} // 📏 0.2.3: core ≥ 0.2.3 lets the 56px slot grow for it
     >
       {row != null ? (
