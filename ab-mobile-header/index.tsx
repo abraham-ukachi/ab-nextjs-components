@@ -51,7 +51,7 @@
 'use client';
 
 // ⚛️ React
-import type { MouseEvent, ReactElement, ReactNode, Ref } from 'react';
+import { useSyncExternalStore, type MouseEvent, type ReactElement, type ReactNode, type Ref } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🔣 icons
@@ -67,6 +67,18 @@ export type AbMobileHeaderThemeMode = 'light' | 'dark' | 'system';
 export const AB_MOBILE_HEADER_THEME_CYCLE: readonly AbMobileHeaderThemeMode[] = ['light', 'dark', 'system'];
 // 🔣 the glyph of each mode
 const THEME_ICON: Record<AbMobileHeaderThemeMode, string> = { light: 'light_mode', dark: 'dark_mode', system: 'computer' };
+
+/** 🌍 0.2.3: one entry of the no-JS language list */
+export interface AbMobileHeaderLanguage {
+  locale: string; // 🏷️ e.g. 'fr' (lang + hreflang on the link)
+  label: string; // 🗣️ e.g. 'Français' (in its own language)
+  href: string; // 🔗 that locale's URL of the current page
+  current?: boolean; // ✅ aria-current="true" on the active one
+}
+
+// 🟢 hydrated? false on the server + the hydration pass, true after (no setState-in-effect)
+const subscribeNothing = () => () => {};
+const useHydrated = (): boolean => useSyncExternalStore(subscribeNothing, () => true, () => false);
 
 /** ⚙️ props */
 export interface AbMobileHeaderProps {
@@ -92,6 +104,10 @@ export interface AbMobileHeaderProps {
   // 🧩 0.2.3 no-JS fallback: with `languageHref` the globe is a real link to a language list (works before
   //    hydration and without JS); once hydrated, `onLanguage` (if set) opens the sheet instead of navigating
   languageHref?: string;
+  // 🧩 0.2.3 no-JS fallback (preferred; the app has no language route): with `languages` the globe is a
+  //    <details>/<summary> holding a list of links, which works with no JS at all. Once hydrated and `onLanguage`
+  //    is set, the summary opens the sheet instead (aria-controls / aria-expanded kept). Wins over `languageHref`
+  languages?: readonly AbMobileHeaderLanguage[];
   // 📏 0.2.3: 'compact' = a 48px bar with 18px start inset (the Welcome v6 mock: 48 + the counter row = 96px).
   //    Default 'default' (56px, John's drawers v2 frame)
   size?: 'default' | 'compact';
@@ -104,12 +120,14 @@ export interface AbMobileHeaderProps {
  * no menu button (the left drawer opens with an edge swipe). Put it in AbMainLayout's `mainHeader` with core
  * ≥ 0.2.1 `mobileHeader="main"`: the 56px row, its divider and the hidden app header come from core.
  */
-const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, size = 'default', className }: AbMobileHeaderProps): ReactElement => {
+const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, languages, size = 'default', className }: AbMobileHeaderProps): ReactElement => {
   const L = { language: 'Change language', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', toSystem: 'Use the system theme', header: 'Main header', ...labels }; // 🌍
   const name: Record<AbMobileHeaderThemeMode, string> = { light: L.toLight, dark: L.toDark, system: L.toSystem }; // ♿ "switch TO" names
   // 🌗 0.2.3: under an AbThemeModeProvider with no theme props, the button is the 3-state cycle on the SHARED state
   //    (same mode as the laptop toggles, no drift across 768px). Explicit props still win
   const shared = useAbThemeModeContext();
+  const hydrated = useHydrated(); // 🟢 0.2.3: the <details> fallback hands over to the sheet only once JS runs
+  const sheet = hydrated && !!onLanguage; // 📱 the globe opens the sheet
   const fromShared = !!shared && !onThemeModeChange && !onThemeChange; // 🧠
   const mode3 = fromShared ? (shared.mode as AbMobileHeaderThemeMode) : themeMode; // 🔗 the mode shown
   const set3 = fromShared ? shared.setMode : onThemeModeChange; // 🔗 the setter used
@@ -123,7 +141,31 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
   const bar = (
     <>
       <span className={kit.logoRow}>{logo}</span>
-      {languageHref != null ? (
+      {languages && languages.length > 0 ? (
+        // 🧩 0.2.3: <details> = a native disclosure of plain links: no JS needed. With JS + onLanguage, the summary
+        //    click is intercepted (no toggle) and opens the sheet; its popup ARIA only appears then
+        <details className={kit.langDetails} data-ab-part="mobile-header-languages">
+          <summary
+            ref={languageRef as Ref<HTMLElement>}
+            className={kit.ibtn}
+            aria-label={L.language}
+            aria-haspopup={sheet ? 'dialog' : undefined} // ♿
+            aria-controls={sheet ? languageControls : undefined} // 🔗
+            aria-expanded={sheet ? !!languageExpanded : undefined} // ♿ native <details> state otherwise
+            onClick={(e: MouseEvent<HTMLElement>) => { if (!sheet) return; e.preventDefault(); onLanguage!(); }} // 📱
+            data-ab-part="mobile-header-language"
+          >
+            <AbIcon name="language" size={24} />
+          </summary>
+          <ul className={kit.langList} aria-label={L.language}>
+            {languages.map((l) => (
+              <li key={l.locale}>
+                <a href={l.href} hrefLang={l.locale} lang={l.locale} aria-current={l.current ? 'true' : undefined}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : languageHref != null ? (
         // 🧩 0.2.3: a link first (no-JS / pre-hydration: navigates to the list), upgraded to the sheet by onLanguage
         <a
           ref={languageRef}
