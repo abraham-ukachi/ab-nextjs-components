@@ -63,6 +63,7 @@ import {
   type ReactElement,
   type ReactNode,
   type Ref,
+  type RefObject,
 } from 'react';
 // 🧵 class-name joiner
 import clsx from 'clsx';
@@ -483,6 +484,63 @@ export function AbCarouselStatus({ className }: { className?: string }) {
   const ctx = useContext(AbCarouselRegionContext); // 🔍
   if (!ctx) throw new Error('<AbCarouselStatus> must be used inside <AbCarouselProvider> or <AbCarousel>.'); // 💥
   return <div className={clsx(styles.srOnly, className)} aria-live="polite" aria-atomic="true" data-ab-part="status">{ctx.message}</div>;
+}
+
+// ===== 0.2.3 useAbCarouselKeys: arrow keys OUTSIDE the region ===== //
+
+// ⚙️ options
+export interface UseAbCarouselKeysOptions {
+  // 🎚️ bind or not (default true), e.g. false while a sheet is up
+  enabled?: boolean;
+  // ⏮️⏭️ Home / End too? Default false: on `document` they would steal the page's own Home / End scroll
+  homeEnd?: boolean;
+}
+
+// 🙅 focus places that own their keys, beyond the region's ignore list: an open dialog, editable text
+const AB_CAROUSEL_KEYS_SKIP = '[role="dialog"], [aria-modal="true"], [contenteditable=""], [contenteditable="true"]';
+
+/**
+ * ⌨️ useAbCarouselKeys — 0.2.3 (Joseph, Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on ANY element, or the
+ * whole document, not just inside the region. Call it under <AbCarouselProvider> (or <AbCarousel>):
+ *
+ *   useAbCarouselKeys('document')            // 🌍 the Welcome page: arrows work wherever focus is
+ *   useAbCarouselKeys(mainRef)               // 📄 only while focus is inside <main>
+ *
+ * 🧭 Why a hook (and not core passing the region props to <main>): core stays carousel-agnostic, the hook works
+ *    with any layout, and the region's own handler is untouched. Safety rules:
+ * - 🙈 skips the same targets the region skips (inputs, textareas, selects, tabs, radio groups, sliders…), plus
+ *   editable text and anything inside an open dialog / modal
+ * - 🎠 skips events from INSIDE a carousel region (its own handler already moved, so no double step)
+ * - ⌨️ never with Alt / Ctrl / Meta / Shift, and never an event someone already handled (defaultPrevented)
+ * - ⏮️⏭️ Home / End only with `homeEnd: true`
+ */
+export function useAbCarouselKeys(target: 'document' | RefObject<HTMLElement | null>, options: UseAbCarouselKeysOptions = {}): void {
+  const { enabled = true, homeEnd = false } = options;
+  const ctx = useAbCarousel(); // 🧠
+  const latest = useRef(ctx); // 🔁 the latest state for the listener (no re-binding per slide)
+  useEffect(() => { latest.current = ctx; });
+  useEffect(() => {
+    if (!enabled) return;
+    const el: HTMLElement | Document | null = target === 'document' ? document : target.current; // 🎯
+    if (!el) return;
+    const onKey = (event: Event) => {
+      const e = event as globalThis.KeyboardEvent; // ⌨️
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return; // 🙅
+      const from = e.target as Element | null; // 🎯
+      if (from?.closest?.(AB_CAROUSEL_KEY_IGNORE_SELECTOR) || from?.closest?.(AB_CAROUSEL_KEYS_SKIP)) return; // 🙈 owns its keys
+      if (from?.closest?.('[data-ab-part="carousel"]')) return; // 🎠 the region already handled it
+      const c = latest.current; // 🧠
+      const action = getAbCarouselKeyAction(e.key, c.dir); // 🗺️
+      if (!action || (!homeEnd && (action === 'first' || action === 'last'))) return; // 🙅
+      e.preventDefault(); // 🛑 no sideways scroll
+      if (action === 'next') c.next('key'); // ⏭️
+      else if (action === 'prev') c.prev('key'); // ⏮️
+      else if (action === 'first') c.goTo(0, 'key'); // ⏮️⏮️
+      else c.goTo(c.count - 1, 'key'); // ⏭️⏭️
+    };
+    el.addEventListener('keydown', onKey); // 🎧
+    return () => el.removeEventListener('keydown', onKey); // 🧹
+  }, [target, enabled, homeEnd]);
 }
 
 // ===== <AbCarouselTrack /> ===== //
