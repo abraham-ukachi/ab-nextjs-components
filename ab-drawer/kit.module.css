@@ -188,6 +188,11 @@
 /* 📱 the mobile main header: 56px row, logo left, 44px globe + theme buttons right */
 .mh { box-sizing: border-box; display: flex; align-items: center; block-size: 100%; min-block-size: 56px; padding: 0 4px 0 16px; gap: 0; background: transparent; }
 .mh > .logoRow { flex: 1 1 auto; }
+/* ➕ 0.2.3 (Joseph, Welcome 0.2.21): with a `row`, the header is a column: the 56px bar, then the extra row */
+.mhStack { flex-direction: column; align-items: stretch; padding: 0; block-size: auto; } /* 🧱 */
+.mhBar { box-sizing: border-box; display: flex; align-items: center; min-block-size: 56px; padding: 0 4px 0 16px; } /* 📏 the same bar */
+.mhBar > .logoRow { flex: 1 1 auto; } /* ↔️ */
+.mhRow { box-sizing: border-box; display: flex; align-items: center; gap: 8px; min-block-size: 0; padding: 0 16px 8px; } /* ➕ e.g. a counter row */
 .ibtn { flex: none; inline-size: 44px; block-size: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: var(--ab-color-text, #211a16); cursor: pointer; padding: 0; }
 .ibtn > svg { inline-size: 24px; block-size: 24px; }
 @media (hover: hover) { .ibtn:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } } /* 🖱️ 0.2.1 (Joseph): no sticky tap-hover on touch */
