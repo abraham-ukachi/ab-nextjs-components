@@ -68,6 +68,17 @@
   touch-action: pan-y; /* 👆 vertical scroll stays native; horizontal moves reach useAbSwipe */
 }
 
+/* 📏 0.2.3 (Joseph, Welcome 0.2.21) autoHeight: the track takes the ACTIVE slide's height (set inline from a
+   ResizeObserver); slides keep their own height (top-aligned, not stretched to the tallest) and the taller leaving
+   slide is clipped. 🎬 The height animation is ab-nextjs-animations' .ab-motion-size (added in JS), timed with the
+   carousel tokens; it snaps for prefers-reduced-motion AND for the region's data-ab-reduced-motion (the prop). */
+.track[data-auto-height='true'] {
+  overflow: hidden; /* ✂️ a taller inactive slide never spills */
+  align-items: start; /* ⬆️ each slide keeps its natural height (the measured one) */
+  --ab-motion-duration: var(--ab-carousel-duration, 280ms); /* ⏱️ = the slide step */
+  --ab-motion-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
+}
+
 /* 🖼️ slide (inactive by default; enter / leave motion = .ab-slide-step-in / -out from ab-nextjs-animations) */
 .slide {
   grid-area: 1 / 1; /* 🧱 stacked */

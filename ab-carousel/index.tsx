@@ -52,6 +52,7 @@ import {
   isValidElement,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -137,6 +138,9 @@ export interface AbCarouselProps {
   slideLabel?: (n: number, total: number) => string;
   // 📣 live-region text factory, or false to disable announcements (default "Slide 3 of 9: Title")
   announce?: ((n: number, total: number, title?: string) => string) | false;
+  // 📏 0.2.3 (Joseph, Welcome 0.2.21): size the track to the ACTIVE slide (animated, reduced-motion aware)
+  //    instead of the tallest one (default false: one grid cell, height = tallest, CLS 0)
+  autoHeight?: boolean;
   // 🧱 element for the region (default 'section')
   as?: 'section' | 'div';
   // 🆔 id of the region
@@ -187,6 +191,8 @@ export interface AbCarouselContextValue {
   trackId: string;
   // 🆔 id of slide i
   slideId: (i: number) => string;
+  // 📏 0.2.3: does the track follow the active slide's height?
+  autoHeight: boolean;
   // 👆 swipe settings (read by the track)
   swipe: { enabled: boolean; threshold?: number; ignore?: string };
 }
@@ -287,6 +293,7 @@ export function AbCarousel(props: AbCarouselProps) {
     swipeThreshold, // 📏
     swipeIgnore, // 🙈
     reducedMotion: reducedMotionMode = 'auto', // ♿
+    autoHeight = false, // 📏 0.2.3
     slideLabel = defaultAbCarouselSlideLabel, // 🏷️
     announce = defaultAbCarouselAnnouncement, // 📣
     as: Tag = 'section', // 🧱
@@ -373,9 +380,9 @@ export function AbCarousel(props: AbCarouselProps) {
 
   // 🧠 context value (memoised)
   const value = useMemo<AbCarouselContextValue>(() => ({
-    index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId,
+    index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, autoHeight,
     swipe: { enabled: swipe && count > 1, threshold: swipeThreshold, ignore: swipeIgnore },
-  }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, swipe, swipeThreshold, swipeIgnore]);
+  }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, autoHeight, swipe, swipeThreshold, swipeIgnore]);
 
   // 🖼️ render
   return (
@@ -411,6 +418,8 @@ export interface AbCarouselTrackProps {
   className?: string;
   // 🎨 inline style
   style?: CSSProperties;
+  // 📏 0.2.3: override the carousel's `autoHeight` for this track
+  autoHeight?: boolean;
   // 🎞️ <AbCarouselSlide> children (fragments / arrays are fine)
   children?: ReactNode;
 }
@@ -419,11 +428,25 @@ export interface AbCarouselTrackProps {
  * 🎞️ AbCarouselTrack — stacks the slides in one grid cell (height = tallest slide → no layout shift)
  * and owns the swipe gesture (`touch-action: pan-y` keeps vertical scrolling).
  */
-export function AbCarouselTrack({ className, style, children }: AbCarouselTrackProps) {
+export function AbCarouselTrack({ className, style, autoHeight: autoHeightProp, children }: AbCarouselTrackProps) {
   // 🧠 carousel state
   const ctx = useAbCarousel();
   // 🎯 element for the swipe hook
   const trackRef = useRef<HTMLDivElement>(null);
+  // 📏 0.2.3 autoHeight: the track's height follows the active slide (measured, so it also tracks content changes)
+  const autoHeight = autoHeightProp ?? ctx.autoHeight;
+  const [height, setHeight] = useState<number | null>(null); // 📐 px, null = not measured yet (SSR: tallest slide)
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!autoHeight || !track) return;
+    const active = track.querySelector<HTMLElement>(':scope > [data-ab-part="slide"][data-position="active"]'); // ✅ the slide in view
+    if (!active) return;
+    const measure = () => { const h = Math.ceil(active.getBoundingClientRect().height || active.offsetHeight); setHeight((p) => (p === h ? p : h)); }; // 🧮 no loop
+    measure(); // 📏 now
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null; // 👀 fonts, images, viewport
+    ro?.observe(active);
+    return () => ro?.disconnect(); // 🧹
+  }, [autoHeight, ctx.index, ctx.count]);
   // 👆 swipe → next / prev (RTL-aware via dir)
   useAbSwipe(trackRef, {
     onNext: () => ctx.next('swipe'), // ⏭️
@@ -437,7 +460,14 @@ export function AbCarouselTrack({ className, style, children }: AbCarouselTrackP
   const slides = flattenAbSlides(children);
   // 🖼️ render, giving each slide its index
   return (
-    <div ref={trackRef} id={ctx.trackId} className={clsx(styles.track, className)} style={style} data-ab-part="track">
+    <div
+      ref={trackRef}
+      id={ctx.trackId}
+      className={clsx(styles.track, autoHeight && AB_MOTION.size, className)} // 🎬 0.2.3: height motion from ab-nextjs-animations
+      style={autoHeight && height != null ? { ...style, height: `${height}px` } : style} // 📏 0.2.3: the active slide's height
+      data-ab-part="track"
+      data-auto-height={autoHeight ? 'true' : undefined} // 📏 CSS: top-aligned slides + the height transition
+    >
       {slides.map((slide, i) => (
         // 🔢 index provider per slide (keys come from the consumer, else the position)
         <AbCarouselSlideIndexContext.Provider key={slide.key ?? i} value={i}>{slide}</AbCarouselSlideIndexContext.Provider>
