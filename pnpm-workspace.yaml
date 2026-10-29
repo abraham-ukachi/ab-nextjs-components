@@ -9,3 +9,7 @@ minimumReleaseAgeStrict: true
 #    the suite fails after them.
 # 🧹 0.2.3: every exemption above expired (icons 0.2.4, hooks 0.1.7, theme 0.3.6 are all > 1 day old now),
 #    so the list is empty again. Add a new exact line (and its ALLOWED_EXCLUDES expiry) only for a fresh release.
+# 🆕 0.2.3 (Oct 29 2026): fresh theme 0.3.7 + animations 0.2.5 (expire 24h after publish, see ALLOWED_EXCLUDES)
+minimumReleaseAgeExclude:
+  - ab-nextjs-animations@0.2.5
+  - ab-nextjs-theme@0.3.7

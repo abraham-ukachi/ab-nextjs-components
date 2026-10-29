@@ -54,8 +54,8 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
  */
 const WANT: Record<string, string> = {
   'ab-nextjs-hooks': '^0.1.7',
-  'ab-nextjs-theme': '^0.3.6',
-  'ab-nextjs-animations': '^0.2.4',
+  'ab-nextjs-theme': '^0.3.7',
+  'ab-nextjs-animations': '^0.2.5',
   'ab-nextjs-icons': '^0.2.4',
 }
 
@@ -65,9 +65,8 @@ const WANT: Record<string, string> = {
  * so nobody forgets to remove it.
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
-  'ab-nextjs-icons@0.2.4': '2026-10-21T17:15:19.993Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:15:19.993Z
-  'ab-nextjs-hooks@0.1.7': '2026-10-21T17:28:56.662Z', // ⏰ TODO(remove after expiry): published 2026-10-20T17:28:56.662Z
-  'ab-nextjs-theme@0.3.6': '2026-10-22T00:14:50.731Z', // ⏰ TODO(remove after expiry): published 2026-10-21T00:14:50.731Z
+  'ab-nextjs-animations@0.2.5': '2026-10-30T22:54:29.614Z', // ⏰ TODO(remove after expiry): published 2026-10-29T22:54:29.614Z
+  'ab-nextjs-theme@0.3.7': '2026-10-30T22:49:34.458Z', // ⏰ TODO(remove after expiry): published 2026-10-29T22:49:34.458Z
 }
 
 // 📋 the list under `minimumReleaseAgeExclude:` (stops at the next top-level key)
