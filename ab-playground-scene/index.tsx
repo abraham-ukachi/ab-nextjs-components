@@ -67,8 +67,10 @@ export const AB_PLAYGROUND_FRAMES = {
 export interface AbPlaygroundSceneProps {
   /** 🗂️ which package scene (John's v6 1–7, and illustration 8 `i18n`). */
   name: AbPlaygroundSceneName;
-  /** 📐 `'full'` = 760×600 laptop scene, `'compact'` = 350×276 mobile scene. Default `'full'`. */
-  variant?: 'full' | 'compact';
+  /** 📐 `'full'` = 760×600 laptop scene, `'compact'` = 350×276 mobile scene. Default `'full'`.
+   *  🆕 0.2.3 (Joseph 02:55) `'auto'` = SSR-safe: BOTH are rendered and a CSS media query shows compact below 768px
+   *  and full from 768px, so phones never flash the full scene and there is no hydration mismatch (no JS decides). */
+  variant?: 'full' | 'compact' | 'auto';
   /** ▶️ animate only while its slide is active (default true); reduced motion is always respected. */
   active?: boolean;
   /** 🌍 translated words (merged over English). */
@@ -94,6 +96,16 @@ export interface AbPlaygroundSceneProps {
  * Server-compatible (AbFlowDiagram's tiny scale island is the only client code). One accessible image (translated alt).
  */
 export function AbPlaygroundScene(props: AbPlaygroundSceneProps): ReactElement {
+  // 📐 0.2.3 'auto': render both variants; styles.module.css `.auto` picks one by media query (display: none hides the
+  //    other from the a11y tree, and its animations never run)
+  if (props.variant === 'auto') {
+    return (
+      <div className={clsx('AbPlaygroundSceneAuto', styles.auto, props.className)} style={props.style} data-ab-part="playground-scene-auto">
+        <AbPlaygroundScene {...props} variant="full" className={styles.autoFull} style={undefined} />
+        <AbPlaygroundScene {...props} variant="compact" className={styles.autoCompact} style={undefined} />
+      </div>
+    );
+  }
   const { name, variant = 'full', active = true, labels, logo, loops, duration, className, style, reducedMotion = 'auto', locale } = props;
   const still = Math.max(0, AB_PLAYGROUND_LOCALES.indexOf((locale ?? 'en').slice(0, 2).toLowerCase() as never)); // 🖼️ the still locale
   const L = resolveAbPlaygroundSceneLabels(labels); // 🌍

@@ -152,3 +152,20 @@ describe('🎠 welcome + all scenes (v6 scenes.py welcome_nodes / scene 8)', () 
     }
   })
 })
+
+// 📐 Joseph 02:55: variant="auto" = SSR-safe, CSS picks compact (< 768px) or full, so phones never flash full
+describe('📐 variant="auto"', () => {
+  const css = readFileSync(join(root, 'ab-playground-scene/styles.module.css'), 'utf8') // 🎨
+  it('renders BOTH variants once each, in a no-box wrapper (same markup on server and client)', () => {
+    const h = render({ name: 'core', variant: 'auto' })
+    expect(h).toMatch(/^<div class="AbPlaygroundSceneAuto auto" data-ab-part="playground-scene-auto">/) // 🫥
+    expect(h.match(/data-variant="full"/g)).toHaveLength(1); expect(h.match(/data-variant="compact"/g)).toHaveLength(1) // 2️⃣
+    expect(h).toMatch(/class="[^"]*autoFull[^"]*"[\s\S]*class="[^"]*autoCompact/) // 🏷️
+    expect(render({ name: 'core', variant: 'auto' })).toBe(h) // 🔁 deterministic (no hydration mismatch)
+  })
+  it('CSS: compact hidden by default, swapped below 768px (no JS)', () => {
+    expect(css).toMatch(/\.autoCompact\.autoCompact \{ display: none; \}/) // 🖥️
+    const phone = css.slice(css.indexOf('@media (width < 768px)')) // 📱
+    expect(phone).toMatch(/\.autoFull\.autoFull \{ display: none; \}/); expect(phone).toMatch(/\.autoCompact\.autoCompact \{ display: block; \}/) // 📱
+  })
+})

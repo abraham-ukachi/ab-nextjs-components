@@ -97,3 +97,11 @@
 .pnode { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; width: 100%; padding: 0 14px; box-sizing: border-box; } /* 📦 v6 pnode */
 .swSm { display: block; width: 18px; height: 24px; border-radius: 5px; border: 1px solid var(--ab-flow-line, rgb(107 79 53 / 0.16)); box-sizing: border-box; } /* 🎨 */
 .mchip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; white-space: nowrap; } /* 💊 v6 .mchip */
+/* 📐 0.2.3 (Joseph 02:55) variant="auto": both scenes ship, CSS picks one (SSR-safe, no flash, no hydration mismatch) */
+.auto { display: contents; } /* 🫥 no extra box */
+.autoCompact.autoCompact { display: none; } /* 🖥️ ≥ 768px: full */
+@media (width < 768px) {
+  .autoFull.autoFull { display: none; } /* 📱 phones: compact only */
+  .autoCompact.autoCompact { display: block; } /* 📱 */
+}
+
