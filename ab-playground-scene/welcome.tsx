@@ -95,7 +95,7 @@ export function buildWelcomeCompact(N: Mk, L: AbPlaygroundSceneLabels, logo: Rea
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / 7; const w = Math.round(nm.length * 7 + 38); // 📐 v6 ring (rx 104, ry 80)
     return N(Math.round(175 + 104 * Math.cos(a) - w / 2), Math.round(160 + 80 * Math.sin(a) - 15), w, 30, <span className={s.mchip}><Ms n={ico} sz={13} col={BRONZE} />{nm}</span>);
   });
-  const wires = nodes.map((n): AbFlowPoint[] => [[n.x + n.w / 2, n.y + n.h / 2], [175, 156]]); // 〰️ spokes to the hub
+  const wires = nodes.map((n): AbFlowPoint[] => [[n.x + (n.w ?? 0) / 2, n.y + (n.h ?? 30) / 2], [175, 156]]); // 〰️ spokes to the hub (w/h always set by N(); `??` for strict consumers)
   return { nodes: [...nodes, N(141, 126, 68, 68, <span className={s.logo} style={{ height: 34 }}>{logo}</span>, '', true)], wires, edges: [], anchors: false };
 }
 
