@@ -103,8 +103,8 @@ describe('🖼️ AbFlowDiagram frame mode', () => {
 })
 
 describe('🎨 CSS', () => {
-  it('card = --ab-color-card (fallback surface-container)', () => {
-    expect(css).toMatch(/background: var\(--ab-color-card, var\(--ab-color-surface-container, transparent\)\)/) // 🃏
+  it('card = --ab-flow-card, then --ab-color-card (fallback surface-container)', () => {
+    expect(css).toMatch(/background: var\(--ab-flow-card, var\(--ab-color-card, var\(--ab-color-surface-container, transparent\)\)\)/) // 🃏
   })
   it('dots read theme --ab-dot-* with v6 fallbacks for light and dark', () => {
     expect(css).toMatch(/--ab-flow-dot: var\(--ab-dot-color, rgb\(107 79 53 \/ 0\.16\)\)/); expect(css).toMatch(/--ab-flow-dot: var\(--ab-dot-color, rgb\(245 235 225 \/ 0\.1\)\)/) // 🌞🌙

@@ -39,6 +39,10 @@
 /* ===== AB PLAYGROUND SCENE STYLES ===== */
 /* 🎨 John's welcome-v6 scene content classes (scenes.py css()), scoped to this module. No motion here:
    wires, pulses and the ease dot all ride ab-nextjs-animations' wire classes (reduced motion included). */
+/* 🎠 0.2.3 (God 02:26): the card is v6's ORIGINAL --card via theme ≥ 0.3.7 `--ab-color-welcome-card`, so the white /
+   warmer gapped-desktop card tokens never leak in (fallbacks = the v6 values) */
+.scene { --ab-flow-card: var(--ab-color-welcome-card, #fff); }
+:global(:is(.dark, [data-theme="dark"])) .scene { --ab-flow-card: var(--ab-color-welcome-card, #241a12); }
 .scene { --pg-bronze: #a67c52; --pg-sage: #8a9a88; --pg-chip: #f3e6da; --pg-card2: var(--ab-color-card2, #fbf3ec); }
 :global(:is(.dark, [data-theme="dark"])) .scene { --pg-chip: #3a2b1f; --pg-card2: var(--ab-color-card2, #2c2118); }
 .m { font-family: var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); font-size: 12px; } /* 💻 */

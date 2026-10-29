@@ -44,7 +44,7 @@
   aspect-ratio: 760 / 600; /* 📐 mock card */
   border-radius: 1.25rem; /* 🔲 */
   border: 1px solid var(--ab-color-border, var(--ab-color-outline-variant, rgb(0 0 0 / 0.12))); /* 🖊️ */
-  background: var(--ab-color-card, var(--ab-color-surface-container, transparent)); /* 🃏 0.2.3 (God, Welcome v5): the theme card (#fff · #fffcfa ≥1920 · #241a12 dark) */
+  background: var(--ab-flow-card, var(--ab-color-card, var(--ab-color-surface-container, transparent))); /* 🃏 0.2.3 (God, Welcome v5): the theme card (#fff · #fffcfa ≥1920 · #241a12 dark); `--ab-flow-card` overrides it (e.g. the Welcome card) */
   --ab-flow-dot: var(--ab-dot-color, rgb(107 79 53 / 0.16)); /* 🟤 v6 grid (theme ≥ 0.3.7, else the mock value) */
   overflow: hidden; /* ✂️ */
   color: var(--ab-color-on-surface, currentColor); /* 🎨 */
@@ -183,7 +183,7 @@
   border-color: var(--ab-flow-line, rgb(107 79 53 / 0.16)); /* ➖ v6 --line */
   box-shadow: 0 30px 80px -30px var(--ab-flow-shadow, rgb(107 79 53 / 0.25)); /* 🌫️ v6 */
   --ab-flow-line: rgb(107 79 53 / 0.16); /* ➖ */
-  --ab-flow-node: var(--ab-color-card, #fff); /* 🔵 v6 --node */
+  --ab-flow-node: var(--ab-flow-card, var(--ab-color-card, #fff)); /* 🔵 v6 --node */
   --ab-flow-muted: var(--ab-color-muted, rgb(33 26 22 / 0.62)); /* 🖋️ v6 --mut */
   --ab-flow-wire: #a67c52; /* 🥉 v6 wire */
   --ab-flow-pulse-core: #ffe6c7; /* ⚪ v6 .pt */
@@ -261,6 +261,6 @@
 .framed[data-variant='compact'] .nodeCaption { font-size: 10px; top: -16px; } /* 📱 */
 .anchor {
   position: absolute; width: 9px; height: 9px; border-radius: 50%; /* ⚓ v6 .anc */
-  background: var(--ab-flow-wire); box-shadow: 0 0 0 3px var(--ab-color-card, #fff); transform: translate(-50%, -50%);
+  background: var(--ab-flow-wire); box-shadow: 0 0 0 3px var(--ab-flow-card, var(--ab-color-card, #fff)); transform: translate(-50%, -50%);
 }
 .framed[data-variant='compact'] .anchor { width: 7px; height: 7px; } /* 📱 */

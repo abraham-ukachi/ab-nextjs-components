@@ -88,3 +88,16 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
     for (const f of ['index.tsx', 'scenes.tsx', 'icons.tsx', 'labels.ts']) expect(readFileSync(join(root, 'ab-playground-scene', f), 'utf8'), f).not.toMatch(/^['"]use client['"];?$/m) // 🖥️
   })
 })
+
+// 🎠 God 02:26: the Welcome card is v6's original surface (theme ≥ 0.3.7 --ab-color-welcome-card), never the gapped white
+describe('🎠 Welcome card surface', () => {
+  const flow = readFileSync(join(root, 'ab-flow-diagram/styles.module.css'), 'utf8') // 〰️
+  const scene = readFileSync(join(root, 'ab-playground-scene/styles.module.css'), 'utf8') // 🎨
+  it('AbFlowDiagram reads --ab-flow-card first for the card, the nodes and the anchor rings', () => {
+    expect(flow.match(/var\(--ab-flow-card, var\(--ab-color-card/g)).toHaveLength(3) // 🃏 🔵 ⚪
+  })
+  it('AbPlaygroundScene points it at --ab-color-welcome-card (v6 #fff / #241a12 fallbacks)', () => {
+    expect(scene).toContain('.scene { --ab-flow-card: var(--ab-color-welcome-card, #fff); }') // 🌞
+    expect(scene).toMatch(/\.scene \{ --ab-flow-card: var\(--ab-color-welcome-card, #241a12\); \}/) // 🌙
+  })
+})
