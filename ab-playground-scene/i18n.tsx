@@ -46,20 +46,23 @@ import { Ms } from './icons';
 import { AB_PLAYGROUND_LOCALES, type AbPlaygroundSceneLabels } from './labels';
 // 🎨 shared mock classes (.m, .br, .sg, .seg…)
 import s from './styles.module.css';
-// 🎬 the locale cycle (CSS keyframes, John's approved proposal) + its still frame
+// 🎬 0.2.3: the locale cycle now ships from ab-nextjs-animations ≥ 0.2.5 (keyframes, still frame, ♿, pause)
+import { AB_LOCALE_CYCLE_CHIP_CLASS, AB_LOCALE_CYCLE_WORD_CLASS } from 'ab-nextjs-animations/locale-cycle';
+import 'ab-nextjs-animations/locale-cycle/styles.css'; // 🌍 .ab-locale-cycle-word / .ab-locale-cycle-chip
+// 🎨 layout only (stacking, fonts, chip padding): no motion lives here any more
 import x from './i18n.module.css';
 
 // 🥉
 const BRONZE = '#A67C52';
 // ⏱️ each locale's slot in the 2.4s loop: index i is active during [i·0.6s, (i+1)·0.6s)
-const slot = (i: number): CSSProperties => ({ '--ab-pg-locale-index': String(i) }) as CSSProperties;
+const slot = (i: number): CSSProperties => ({ '--ab-locale-cycle-index': String(i) }) as CSSProperties;
 
 /** 👋 v6 `greet(sz)`: the 4 greetings stacked in one box; only the active one shows (cycle, or the still) */
 export function AbPgGreeting({ L, sz, still }: { L: AbPlaygroundSceneLabels; sz: number; still: number }): ReactElement {
   return (
     <span className={x.greet} style={{ height: Math.trunc(sz * 1.25), width: Math.trunc(sz * 3.9) }}>
       {AB_PLAYGROUND_LOCALES.map((loc, i) => (
-        <span key={loc} lang={loc} className={x.word} data-still={i === still ? '' : undefined} style={{ ...slot(i), fontSize: sz }}>{L.greetings[loc]}</span>
+        <span key={loc} lang={loc} className={clsx(x.word, AB_LOCALE_CYCLE_WORD_CLASS)} data-ab-still={i === still ? '' : undefined} style={{ ...slot(i), fontSize: sz }}>{L.greetings[loc]}</span>
       ))}
     </span>
   );
@@ -70,7 +73,7 @@ export function AbPgLocaleSeg({ fs, still, compact }: { fs: number; still: numbe
   return (
     <span className={clsx(s.seg, x.lseg, compact && x.ms)} style={{ fontSize: fs }}>
       {AB_PLAYGROUND_LOCALES.map((loc, i) => (
-        <span key={loc} className={x.chip} data-still={i === still ? '' : undefined} style={slot(i)}>{loc.toUpperCase()}</span>
+        <span key={loc} className={clsx(x.chip, AB_LOCALE_CYCLE_CHIP_CLASS)} data-ab-still={i === still ? '' : undefined} style={slot(i)}>{loc.toUpperCase()}</span>
       ))}
     </span>
   );
@@ -81,7 +84,7 @@ export function AbPgValue({ L, still }: { L: AbPlaygroundSceneLabels; still: num
   return (
     <span className={x.tv}>
       {AB_PLAYGROUND_LOCALES.map((loc, i) => (
-        <span key={loc} lang={loc} className={clsx(x.word, x.valueWord, s.sg, s.m)} data-still={i === still ? '' : undefined} style={slot(i)}>&quot;{L.greetings[loc]}&quot;</span>
+        <span key={loc} lang={loc} className={clsx(x.word, x.valueWord, s.sg, s.m, AB_LOCALE_CYCLE_WORD_CLASS)} data-ab-still={i === still ? '' : undefined} style={slot(i)}>&quot;{L.greetings[loc]}&quot;</span>
       ))}
     </span>
   );

@@ -48,7 +48,7 @@ const root = join(__dirname, '..')
 const css = readFileSync(join(root, 'ab-playground-scene/i18n.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🧹
 const L = resolveAbPlaygroundSceneLabels()
 const render = (p: Parameters<typeof AbPlaygroundScene>[0]) => renderToStaticMarkup(createElement(AbPlaygroundScene, p))
-const words = (h: string) => [...h.matchAll(/class="word[^"]*"(?: data-still="")?[^>]*>([^<]+)</g)].map((m) => (m[0].includes('data-still') ? `*${m[1]}` : m[1]).replace(/&quot;/g, '"')) // 🔍 * = still
+const words = (h: string) => [...h.matchAll(/class="word[^"]*"(?: data-ab-still="")?[^>]*>([^<]+)</g)].map((m) => (m[0].includes('data-ab-still') ? `*${m[1]}` : m[1]).replace(/&quot;/g, '"')) // 🔍 * = still
 
 describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
   it('full: John’s rects (hub 230,270 300×104 + 6 nodes) and captions', () => {
@@ -65,12 +65,12 @@ describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
     const h = render({ name: 'i18n' })
     expect(words(h)).toEqual(['*"Hello"', '"Bonjour"', '"Hola"', '"Привет"', '*Hello', 'Bonjour', 'Hola', 'Привет']) // 👋 the value node first, the hub renders last
     expect(h).toMatch(/lang="ru"/); expect(h).toMatch(/>EN<.*>FR<.*>ES<.*>RU</) // 🌍 🎚️
-    expect(h).toMatch(/--ab-pg-locale-index:3/) // ⏱️ slot 3 = 1.8s
+    expect(h).toMatch(/--ab-locale-cycle-index:3/) // ⏱️ slot 3 = 1.8s
   })
   it('locale= picks the still locale (spec: show the active locale only)', () => {
     const h = render({ name: 'i18n', locale: 'fr-FR' })
     expect(words(h).filter((w) => w.startsWith('*'))).toEqual(['*"Bonjour"', '*Bonjour']) // 🇫🇷
-    expect(h).toMatch(/class="chip[^"]*" data-still="" style="--ab-pg-locale-index:1">FR</) // 🥉
+    expect(h).toMatch(/class="chip[^"]*ab-locale-cycle-chip" data-ab-still="" style="--ab-locale-cycle-index:1">FR</) // 🥉
   })
   it('every word is translatable: alt, captions, prefix, Intl format, greetings', () => {
     const h = render({ name: 'i18n', labels: { alt: { i18n: 'Scène i18n' }, provider: 'fournisseur', prefix: 'préfixe', intlFormat: 'format Intl', greetings: { en: 'Hi' } } })
@@ -82,12 +82,13 @@ describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
     expect(css).toMatch(/font-family: var\(--ab-font-title, 'Mulish', sans-serif\); font-weight: 700/) // 🔤
     expect(css).toMatch(/var\(--ab-font-code, 'Roboto Mono'/) // 💻
   })
-  it('CSS: 2.4s loop, 0.6s slots, 0.24s ease-out-cubic fade + 8px rise, instant chip; only without reduced motion', () => {
-    expect(css).toMatch(/animation-delay: calc\(var\(--ab-pg-locale-index, 0\) \* 600ms - 2400ms\)/) // ⏱️
-    expect(css).toMatch(/0% \{ opacity: 0; transform: translateY\(8px\); animation-timing-function: cubic-bezier\(0\.33, 1, 0\.68, 1\); \}\s*10% \{ opacity: 1; transform: translateY\(0\); \}/) // 🌅
-    expect(css).toMatch(/step-end infinite/) // ⚡
-    expect(css).toMatch(/@media \(prefers-reduced-motion: no-preference\) \{\s*:global\(\.AbFlowDiagram:not\(\[data-ab-reduced-motion="true"\]\)\) \.word/) // ♿
-    expect(css).toMatch(/\.word\[data-still\] \{ opacity: 1; \}/); expect(css).toMatch(/\.chip\[data-still\] \{ background: #a67c52/) // 🖼️
+  it('motion comes from ab-nextjs-animations/locale-cycle (God 02:26): classes + slot index, no local keyframes', () => {
+    const h = render({ name: 'i18n' })
+    expect(h).toMatch(/class="word[^"]*ab-locale-cycle-word"/); expect(h).toMatch(/class="chip[^"]*ab-locale-cycle-chip"/) // 🎬
+    const tsx = readFileSync(join(root, 'ab-playground-scene/i18n.tsx'), 'utf8') // 📄
+    expect(tsx).toContain("import 'ab-nextjs-animations/locale-cycle/styles.css'") // 🎨
+    expect(css).not.toMatch(/@keyframes|animation/) // 🚫 no motion left in the module
+    expect(css).toMatch(/--ab-locale-cycle-duration: var\(--ab-wire-pulse-duration, 2400ms\)/) // ⏱️ follows `duration`
   })
 })
 
