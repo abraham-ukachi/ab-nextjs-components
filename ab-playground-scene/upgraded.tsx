@@ -236,7 +236,8 @@ export function buildIconsUp(N: AbPgMk, compact: boolean): AbFlowNode[] {
   const wts: Array<[number, number]> = [[100, 0.7], [200, 1.25], [400, 1.9], [700, 2.8]];
   return [
     N(220, 262, 320, 124, <span className={s.icGrid}>{names.map((n, i) => cell(n, i, 22, 38))}</span>, 'abIconNames', true),
-    N(40, 100, 210, 96, <span className={clsx(s.seg, s.segCycle, s.wts)}>{wts.map(([w, sw], i) => <span key={w} className={C.chip} data-ab-still={still(i)} style={slot(i)}><Ic n="star" sz={22} sw={sw} /><span className={s.m} style={{ fontSize: 9.5 }}>{w}</span></span>)}</span>, 'abIconWeights'),
+    // ⭐ John's weight picker steps with a soft highlight (his `[data-on]` has no chip fill here), same as the grid
+    N(40, 100, 210, 96, <span className={s.wts}>{wts.map(([w, sw], i) => <span key={w} {...hl(i, s.wt, 'transparent')}><Ic n="star" sz={22} sw={sw} /><span className={s.m} style={{ fontSize: 9.5 }}>{w}</span></span>)}</span>, 'abIconWeights'),
     N(290, 112, 180, 64, <M><Br>200</Br></M>, 'abIconDefaultWeight'),
     N(510, 104, 210, 84, <M><Br>getAbIconSvg</Br>(<Sg>&quot;anchor&quot;</Sg>)</M>, 'getAbIconSvg()'),
     N(40, 456, 210, 74, <M>&lt;<Br>AbIcon</Br> name=<Sg>&quot;bolt&quot;</Sg>/&gt;</M>, 'AbIcon (ab-nextjs-components)'),
