@@ -226,6 +226,48 @@ a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
   .abButton.abButton[data-size="md"] { height: var(--ab-button-height-touch, 44px); }
   .abButton.abButton[data-shape="rounded"][data-size="md"] { font-size: 14.5px; }
 }
+/* 📏 0.2.3 (God 04:12): size="lg" = the v6 Welcome CTA box (welcome-v6/_src/build.py `.btn` + `.lap .f8 .btn`):
+ *    mobile 52px · 0 24px · 16px/600 · radius 12px · gap 10px  →  laptop (≥ 1180px, core's laptop breakpoint) 56px · 0 30px · 17px.
+ *    Triple class (0,4,0) + later than shape="rounded", so it wins over rounded's padding / radius / font. */
+.abButton.abButton.abButton[data-size="lg"] {
+  box-sizing: border-box; /* 📦 */
+  height: var(--ab-button-height-lg, 52px); min-height: var(--ab-button-height-lg, 52px); /* 📏 */
+  padding: 0 var(--ab-button-padding-inline-lg, 24px); /* 📦 */
+  border-radius: var(--ab-button-radius-lg, 12px); /* 🔲 */
+  font-size: var(--ab-button-font-size-lg, 16px); font-weight: var(--ab-button-font-weight-lg, 600); line-height: 1; /* 🔤 */
+  gap: var(--ab-button-gap-lg, 10px); white-space: nowrap; /* 🧱 */
+}
+@media (width >= 1180px) {
+  .abButton.abButton.abButton[data-size="lg"] {
+    height: var(--ab-button-height-lg-laptop, 56px); min-height: var(--ab-button-height-lg-laptop, 56px); /* 💻 */
+    padding: 0 var(--ab-button-padding-inline-lg-laptop, 30px); font-size: var(--ab-button-font-size-lg-laptop, 17px); /* 💻 */
+  }
+}
+/* 🥉 0.2.3 (God 04:12): color="bronze" = v6 `.btn.p` (any type / shape). Same values in dark (v6 dark uses the same bronze).
+ *    Quad class (0,5,0) + later than rounded+filled, so it wins over the rounded primary paint. */
+.abButton.abButton.abButton.abButton[data-color="bronze"] {
+  background: var(--ab-button-bronze-background, var(--ab-color-bronze, #a67c52)); /* 🎨 */
+  color: var(--ab-button-bronze-text-color, var(--ab-color-on-bronze, #fff8f5)); /* 🖋️ */
+  border: 0; opacity: 1; /* ➖ */
+  box-shadow: var(--ab-button-bronze-shadow, 0 8px 24px rgba(166, 124, 82, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)); /* ✨ v6 exact */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: var(--ab-button-bronze-background-hover, color-mix(in srgb, var(--ab-color-bronze, #a67c52) 90%, #000)); /* 🖱️ */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:not(:disabled, [aria-disabled="true"]):active {
+  background: var(--ab-button-bronze-background-active, color-mix(in srgb, var(--ab-color-bronze, #a67c52) 82%, #000)); /* 👇 */
+  box-shadow: var(--ab-button-bronze-shadow-active, 0 4px 12px rgba(166, 124, 82, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2));
+  transform: translateY(1px);
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:focus-visible {
+  outline: 2px solid var(--ab-button-bronze-focus-ring, var(--ab-color-bronze-text, #8a6440)); outline-offset: 2px; /* ♿ AA ring (light #8a6440 / dark #d9ab7f) */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:is(:disabled, [aria-disabled="true"]) {
+  opacity: var(--ab-button-disabled-opacity, 0.5); box-shadow: none; cursor: not-allowed; /* 🚫 */
+}
+@media (prefers-reduced-motion: reduce) {
+  .abButton.abButton.abButton.abButton[data-color="bronze"]:active { transform: none; } /* ♿ */
+}
 @media (prefers-reduced-motion: reduce) {
   .abButton.abButton[data-shape="rounded"]:active { transform: none; } /* ♿ no nudge */
 }
