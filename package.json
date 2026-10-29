@@ -160,6 +160,7 @@
     "./ab-carousel": "./ab-carousel/index.tsx",
     "./ab-carousel/helpers": "./ab-carousel/helpers.ts",
     "./ab-theme-toggle": "./ab-theme-toggle/index.tsx",
+    "./ab-theme-mode": "./ab-theme-mode/index.tsx",
     "./ab-chip": "./ab-chip/index.tsx",
     "./ab-pill": "./ab-pill/index.tsx",
     "./ab-install-snippet": "./ab-install-snippet/index.tsx",
