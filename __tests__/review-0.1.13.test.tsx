@@ -109,7 +109,7 @@ describe('AbButton pass-through + link padding (Joseph #7) 🔘', () => {
     expect(html).toContain('data-testid="toc"') // 🗂️
   })
   it('the href variant gets real padding', () => {
-    expect(read('ab-button/styles.module.css')).toMatch(/a\.abButton\[data-type="contained"\][^{]*\{[^}]*padding: var\(--ab-button-padding/) // 📦
+    expect(read('ab-button/styles.module.css')).toMatch(/\.abButton\[data-type\] \{[^}]*padding: var\(--ab-button-padding/) // 📦 0.2.3: one rule for button + link
   })
 })
 

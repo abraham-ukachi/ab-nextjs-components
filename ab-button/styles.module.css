@@ -151,16 +151,36 @@
   border: 0; /* 🧹 */
 }
 
-/* 🔗 0.1.13 (Joseph #7): link mode. The theme paints `button[data-type]` and `a[role="button"][data-type]`,
- *    but a real link (no role=button: it navigates) matched neither, so it rendered at 20px with no padding.
- *    These mirror the theme's box rules for <a>, using the same --ab-button-* overrides. */
-a.abButton[data-type="contained"],
-a.abButton[data-type="text"] {
-  padding: var(--ab-button-padding, 6px 12px); /* 📦 */
-  border-radius: 8px; /* 🔲 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 40px tall */
+/* 📏 0.2.3 (Joseph 03:37): AbButton OWNS its box per type (button AND link), with the old theme values, because
+ *    theme ≥ 0.3.7 keeps its legacy button sizes off `.AbButton`. Every value is a --ab-button-* token:
+ *      --ab-button-padding         contained / text 6px 12px · filled 6px 16px · outlined 8px 16px (all 8px 16px ≥ 460px)
+ *      --ab-button-font-size       18px (20px ≥ 460px, as the theme did)
+ *      --ab-button-line-height     32px
+ *      --ab-button-height / -min-height   40px (border-box, like the theme's <button data-type>)
+ *      --ab-button-radius          8px (filled 999px)
+ *    shape="rounded" / size="md" (doubled class, below) keep their own box. */
+.abButton[data-type] {
+  box-sizing: border-box; /* 📦 */
+  padding: var(--ab-button-padding, 6px 12px); /* 📦 contained / text */
+  font-size: var(--ab-button-font-size, 18px); /* 🔤 */
+  line-height: var(--ab-button-line-height, 32px); /* 📏 */
+  height: var(--ab-button-height, 40px); /* 📏 40px tall */
+  min-height: var(--ab-button-min-height, 40px); /* 📏 */
+  border-radius: var(--ab-button-radius, 8px); /* 🔲 */
 }
+.abButton[data-type="filled"] { padding: var(--ab-button-padding, 6px 16px); border-radius: var(--ab-button-radius, 999px); } /* 💊 */
+.abButton[data-type="outlined"] {
+  padding: var(--ab-button-padding, 8px 16px); /* 📦 */
+  border: 2px solid var(--ab-button-outline-color, var(--outline-color)); /* ➖ */
+  opacity: var(--ab-button-opacity, var(--opacity-text-inactive, 1)); /* 🌫️ theme look (hover → 1 via the theme) */
+}
+.abButton[data-type="outlined"]:not(:disabled, [aria-disabled="true"]):is(:hover, :focus-visible) { opacity: 1; } /* 👀 */
+@media (width >= 460px) {
+  .abButton[data-type] { padding: var(--ab-button-padding, 8px 16px); font-size: var(--ab-button-font-size, 20px); } /* 📱→🖥️ the theme's ≥ 460px size */
+}
+
+/* 🔗 0.1.13 (Joseph #7): link mode colours. The theme paints `button[data-type]` and `a[role="button"][data-type]`,
+ *    but a real link (no role=button: it navigates) matches neither, so it takes the colours here (box: above). */
 a.abButton[data-type="contained"] {
   background: var(--ab-button-background-color, var(--primary-container-color)); /* 🎨 */
   color: var(--ab-button-text-color, var(--on-primary-container-color)); /* 🖋️ */
@@ -168,17 +188,6 @@ a.abButton[data-type="contained"] {
 a.abButton[data-type="filled"] {
   background: var(--ab-button-background-color, var(--md-sys-color-primary)); /* 🥉 */
   color: var(--ab-button-text-color, var(--md-sys-color-on-primary)); /* 🖋️ */
-  padding: var(--ab-button-padding, 6px 16px); /* 📦 */
-  border-radius: var(--ab-button-radius, 999px); /* 💊 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 */
-}
-a.abButton[data-type="outlined"] {
-  border: 2px solid var(--ab-button-outline-color, var(--outline-color)); /* ➖ */
-  border-radius: 8px; /* 🔲 */
-  padding: 8px 16px; /* 📦 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 */
 }
 a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
 
