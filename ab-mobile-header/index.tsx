@@ -111,6 +111,10 @@ export interface AbMobileHeaderProps {
   // 📏 0.2.3: 'compact' = a 48px bar with 18px start inset (the Welcome v6 mock: 48 + the counter row = 96px).
   //    Default 'default' (56px, John's drawers v2 frame)
   size?: 'default' | 'compact';
+  // 📱 0.2.3 (Joseph, Welcome 0.2.21): where the bar (logo · globe · theme) shows, from CSS only (no JS, SSR-safe):
+  //    'auto' (default) = hidden from 768px up ONLY inside a core mainHeaderAt="all" layout (there the app header
+  //    already has the logo, so just the `row` stays), else everywhere; 'all' = always; 'mobile' = below 768px only
+  barAt?: 'auto' | 'all' | 'mobile';
   className?: string; // 🏷️
 }
 
@@ -120,7 +124,7 @@ export interface AbMobileHeaderProps {
  * no menu button (the left drawer opens with an edge swipe). Put it in AbMainLayout's `mainHeader` with core
  * ≥ 0.2.1 `mobileHeader="main"`: the 56px row, its divider and the hidden app header come from core.
  */
-const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, languages, size = 'default', className }: AbMobileHeaderProps): ReactElement => {
+const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, languages, size = 'default', barAt = 'auto', className }: AbMobileHeaderProps): ReactElement => {
   const L = { language: 'Change language', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', toSystem: 'Use the system theme', header: 'Main header', ...labels }; // 🌍
   const name: Record<AbMobileHeaderThemeMode, string> = { light: L.toLight, dark: L.toDark, system: L.toSystem }; // ♿ "switch TO" names
   // 🌗 0.2.3: under an AbThemeModeProvider with no theme props, the button is the 3-state cycle on the SHARED state
@@ -216,6 +220,7 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
       role="group"
       aria-label={L.header}
       data-ab-part="mobile-header"
+      data-ab-bar-at={barAt} // 📱 0.2.3: kit CSS hides the bar from 768px up for 'mobile' (and 'auto' in mainHeaderAt="all")
       data-ab-header-size={size === 'compact' ? 'compact' : undefined} // 📏 0.2.3: core ≥ 0.2.3 sizes the slot to 48px
       data-ab-header-extra={row != null ? 'true' : undefined} // 📏 0.2.3: core ≥ 0.2.3 lets the 56px slot grow for it
     >

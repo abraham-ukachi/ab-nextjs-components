@@ -203,6 +203,15 @@
 .langList a { display: flex; align-items: center; min-block-size: 44px; padding: 0 12px; border-radius: 8px; color: var(--ab-color-text, #211a16); text-decoration: none; } /* 👆 44px targets */
 .langList a[aria-current='true'] { font-weight: 700; color: var(--ab-color-accent, #a67c52); } /* ✅ */
 .langList a:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+/* 📱 0.2.3 barAt (Joseph, Welcome 0.2.21): from 768px up the app header carries logo · globe · theme, so the bar would
+   repeat it. 'mobile' hides the bar there; 'auto' does so only inside core's mainHeaderAt="all" layout (the only
+   place the main header shows at that width next to the app header). The row stays. Pure CSS: no-JS + SSR safe. */
+@media (min-width: 768px) {
+  .mh[data-ab-bar-at='mobile'] > .mhBar,
+  [data-main-header-at='all'] .mh[data-ab-bar-at='auto'] > .mhBar { display: none; } /* 🙈 the row stays */
+  .mh[data-ab-bar-at='mobile']:not(.mhStack),
+  [data-main-header-at='all'] .mh[data-ab-bar-at='auto']:not(.mhStack) { display: none; } /* 🙈 no row: nothing left */
+}
 .mhCompact { min-block-size: 48px; padding-inline-start: 18px; } /* 📏 no row */
 .mhCompact.mhStack { padding-inline-start: 0; } /* 🧱 the stack itself has no inset */
 .mhCompact > .mhBar { min-block-size: 48px; padding-inline-start: 18px; } /* 📏 with a row */
