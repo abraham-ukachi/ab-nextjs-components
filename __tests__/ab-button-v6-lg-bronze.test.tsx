@@ -78,7 +78,7 @@ describe('color="bronze" 🥉', () => {
     expect(css).toMatch(/data-color="bronze"\]:not\(:disabled, \[aria-disabled="true"\]\):hover/)
     expect(css).toMatch(/data-color="bronze"\]:not\(:disabled, \[aria-disabled="true"\]\):active/)
     expect(css).toMatch(/data-color="bronze"\]:focus-visible \{\s*outline: 2px solid var\(--ab-button-bronze-focus-ring, var\(--ab-color-bronze-text/)
-    expect(css).toMatch(/prefers-reduced-motion: reduce\) \{\s*\.abButton\.abButton\.abButton\.abButton\[data-color="bronze"\]:active \{ transform: none; \}/)
+    expect(css).toMatch(/prefers-reduced-motion: reduce\) \{\s*\.abButton\.abButton\.abButton\.abButton:is\(\[data-color="bronze"\], \[data-color="card"\]\):active \{ transform: none; \}/)
   })
   it('beats rounded+filled: quad class, placed later', () => {
     expect(css.indexOf(BR + ' {')).toBeGreaterThan(css.indexOf('.abButton.abButton[data-shape="rounded"][data-type="filled"] {'))
@@ -88,5 +88,20 @@ describe('client + server render the same data-* 🧬', () => {
   for (const [name, C] of [['client', ClientButton], ['server', ServerButton]] as const) it(name, () => {
     const html = renderToStaticMarkup(createElement(C as any, { label: 'Get Started', type: 'filled', shape: 'rounded', size: 'lg', color: 'bronze' }))
     expect(html).toContain('data-size="lg"'); expect(html).toContain('data-color="bronze"')
+  })
+})
+describe('color="card" 🃏 (v6 .btn.s)', () => {
+  const CD = '.abButton.abButton.abButton.abButton[data-color="card"]'
+  it('1px --ab-color-line border, --ab-color-card bg, --ab-color-text fg, via tokens', () => {
+    const r = block(CD)
+    expect(r).toContain('var(--ab-button-outline-width, 1px) solid var(--ab-button-outline-color, var(--ab-color-line, rgb(107 79 53 / 16%)))')
+    expect(r).toContain('var(--ab-button-background, var(--ab-color-card, #fff))'); expect(r).toContain('var(--ab-button-text-color, var(--ab-color-text, #211a16))')
+  })
+  it('hover / active / focus / disabled, reduced motion', () => {
+    for (const s of [':not(:disabled, [aria-disabled="true"]):hover', ':not(:disabled, [aria-disabled="true"]):active', ':focus-visible', ':is(:disabled, [aria-disabled="true"])']) expect(css).toContain(CD + s)
+    expect(css).toContain(':is([data-color="bronze"], [data-color="card"]):active { transform: none; }')
+  })
+  it('opt-in: plain outlined keeps its 2px border', () => {
+    expect(block('.abButton[data-type="outlined"]')).toContain('border: 2px solid')
   })
 })

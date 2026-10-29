@@ -265,8 +265,23 @@ a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
 .abButton.abButton.abButton.abButton[data-color="bronze"]:is(:disabled, [aria-disabled="true"]) {
   opacity: var(--ab-button-disabled-opacity, 0.5); box-shadow: none; cursor: not-allowed; /* 🚫 */
 }
+/* 🃏 0.2.3 (God 04:16): color="card" = v6 `.btn.s` (Continue with GitHub): 1px --line border on --card, --fg text.
+ *    Opt-in only: plain outlined buttons are untouched. v6 → theme: --line → --ab-color-line, --card → --ab-color-card,
+ *    --fg → --ab-color-text. v6 has no hover for .btn.s, so hover = the secondary button's 8% bronze tint over the card. */
+.abButton.abButton.abButton.abButton[data-color="card"] {
+  border: var(--ab-button-outline-width, 1px) solid var(--ab-button-outline-color, var(--ab-color-line, rgb(107 79 53 / 16%))); /* ➖ */
+  background: var(--ab-button-background, var(--ab-color-card, #fff)); /* 🃏 */
+  color: var(--ab-button-text-color, var(--ab-color-text, #211a16)); /* 🖋️ */
+  opacity: 1; box-shadow: none; /* 🫥 no inactive fade, no shadow */
+}
+.abButton.abButton.abButton.abButton[data-color="card"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: var(--ab-button-background-hover, linear-gradient(var(--ab-color-hover, rgb(166 124 82 / 0.08)), var(--ab-color-hover, rgb(166 124 82 / 0.08))) var(--ab-color-card, #fff)); /* 🖱️ */
+}
+.abButton.abButton.abButton.abButton[data-color="card"]:not(:disabled, [aria-disabled="true"]):active { transform: translateY(1px); } /* 👇 */
+.abButton.abButton.abButton.abButton[data-color="card"]:focus-visible { outline: 2px solid var(--ab-color-bronze-text, #8a6440); outline-offset: 2px; } /* ♿ */
+.abButton.abButton.abButton.abButton[data-color="card"]:is(:disabled, [aria-disabled="true"]) { opacity: var(--ab-button-disabled-opacity, 0.5); cursor: not-allowed; } /* 🚫 */
 @media (prefers-reduced-motion: reduce) {
-  .abButton.abButton.abButton.abButton[data-color="bronze"]:active { transform: none; } /* ♿ */
+  .abButton.abButton.abButton.abButton:is([data-color="bronze"], [data-color="card"]):active { transform: none; } /* ♿ */
 }
 @media (prefers-reduced-motion: reduce) {
   .abButton.abButton[data-shape="rounded"]:active { transform: none; } /* ♿ no nudge */
