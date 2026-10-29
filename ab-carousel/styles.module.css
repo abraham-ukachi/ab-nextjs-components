@@ -54,7 +54,17 @@
   --ab-slide-step-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
   --ab-slide-step-distance: var(--ab-carousel-shift, 24px); /* ↔️ */
   --ab-slide-step-flip: 1; /* 🌍 LTR */
-  --_accent: var(--ab-carousel-accent, var(--ab-primary, #a67c52)); /* 🟤 bronze */
+  --_accent: var(--ab-carousel-accent, var(--ab-color-accent, var(--ab-primary, #a67c52))); /* 🟤 bronze (0.2.3: theme accent first) */
+}
+
+/* 🟤 0.2.3 (Joseph, Welcome 0.2.21): headless mode renders parts (dots, Prev / Next, counter) OUTSIDE the region,
+   where the region's `--_accent` doesn't exist and the bronze turned grey. Every part now resolves the accent ON ITS
+   OWN, with the same chain: --ab-carousel-accent, then the theme accent, then --ab-primary, then bronze. */
+.nav,
+.dots,
+.dot,
+.counter {
+  --_accent: var(--ab-carousel-accent, var(--ab-color-accent, var(--ab-primary, #a67c52))); /* 🟤 */
 }
 
 /* 🌍 RTL: mirror the slide offsets */
@@ -66,6 +76,17 @@
 .track {
   display: grid; /* 🧱 */
   touch-action: pan-y; /* 👆 vertical scroll stays native; horizontal moves reach useAbSwipe */
+}
+
+/* 📏 0.2.3 (Joseph, Welcome 0.2.21) autoHeight: the track takes the ACTIVE slide's height (set inline from a
+   ResizeObserver); slides keep their own height (top-aligned, not stretched to the tallest) and the taller leaving
+   slide is clipped. 🎬 The height animation is ab-nextjs-animations' .ab-motion-size (added in JS), timed with the
+   carousel tokens; it snaps for prefers-reduced-motion AND for the region's data-ab-reduced-motion (the prop). */
+.track[data-auto-height='true'] {
+  overflow: hidden; /* ✂️ a taller inactive slide never spills */
+  align-items: start; /* ⬆️ each slide keeps its natural height (the measured one) */
+  --ab-motion-duration: var(--ab-carousel-duration, 280ms); /* ⏱️ = the slide step */
+  --ab-motion-easing: var(--ab-carousel-ease, cubic-bezier(0.2, 0.8, 0.2, 1)); /* 📈 */
 }
 
 /* 🖼️ slide (inactive by default; enter / leave motion = .ab-slide-step-in / -out from ab-nextjs-animations) */

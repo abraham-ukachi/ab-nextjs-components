@@ -151,16 +151,36 @@
   border: 0; /* 🧹 */
 }
 
-/* 🔗 0.1.13 (Joseph #7): link mode. The theme paints `button[data-type]` and `a[role="button"][data-type]`,
- *    but a real link (no role=button: it navigates) matched neither, so it rendered at 20px with no padding.
- *    These mirror the theme's box rules for <a>, using the same --ab-button-* overrides. */
-a.abButton[data-type="contained"],
-a.abButton[data-type="text"] {
-  padding: var(--ab-button-padding, 6px 12px); /* 📦 */
-  border-radius: 8px; /* 🔲 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 40px tall */
+/* 📏 0.2.3 (Joseph 03:37): AbButton OWNS its box per type (button AND link), with the old theme values, because
+ *    theme ≥ 0.3.7 keeps its legacy button sizes off `.AbButton`. Every value is a --ab-button-* token:
+ *      --ab-button-padding         contained / text 6px 12px · filled 6px 16px · outlined 8px 16px (all 8px 16px ≥ 460px)
+ *      --ab-button-font-size       18px (20px ≥ 460px, as the theme did)
+ *      --ab-button-line-height     32px
+ *      --ab-button-height / -min-height   40px (border-box, like the theme's <button data-type>)
+ *      --ab-button-radius          8px (filled 999px)
+ *    shape="rounded" / size="md" (doubled class, below) keep their own box. */
+.abButton[data-type] {
+  box-sizing: border-box; /* 📦 */
+  padding: var(--ab-button-padding, 6px 12px); /* 📦 contained / text */
+  font-size: var(--ab-button-font-size, 18px); /* 🔤 */
+  line-height: var(--ab-button-line-height, 32px); /* 📏 */
+  height: var(--ab-button-height, 40px); /* 📏 40px tall */
+  min-height: var(--ab-button-min-height, 40px); /* 📏 */
+  border-radius: var(--ab-button-radius, 8px); /* 🔲 */
 }
+.abButton[data-type="filled"] { padding: var(--ab-button-padding, 6px 16px); border-radius: var(--ab-button-radius, 999px); } /* 💊 */
+.abButton[data-type="outlined"] {
+  padding: var(--ab-button-padding, 8px 16px); /* 📦 */
+  border: 2px solid var(--ab-button-outline-color, var(--outline-color)); /* ➖ */
+  opacity: var(--ab-button-opacity, var(--opacity-text-inactive, 1)); /* 🌫️ theme look (hover → 1 via the theme) */
+}
+.abButton[data-type="outlined"]:not(:disabled, [aria-disabled="true"]):is(:hover, :focus-visible) { opacity: 1; } /* 👀 */
+@media (width >= 460px) {
+  .abButton[data-type] { padding: var(--ab-button-padding, 8px 16px); font-size: var(--ab-button-font-size, 20px); } /* 📱→🖥️ the theme's ≥ 460px size */
+}
+
+/* 🔗 0.1.13 (Joseph #7): link mode colours. The theme paints `button[data-type]` and `a[role="button"][data-type]`,
+ *    but a real link (no role=button: it navigates) matches neither, so it takes the colours here (box: above). */
 a.abButton[data-type="contained"] {
   background: var(--ab-button-background-color, var(--primary-container-color)); /* 🎨 */
   color: var(--ab-button-text-color, var(--on-primary-container-color)); /* 🖋️ */
@@ -168,17 +188,6 @@ a.abButton[data-type="contained"] {
 a.abButton[data-type="filled"] {
   background: var(--ab-button-background-color, var(--md-sys-color-primary)); /* 🥉 */
   color: var(--ab-button-text-color, var(--md-sys-color-on-primary)); /* 🖋️ */
-  padding: var(--ab-button-padding, 6px 16px); /* 📦 */
-  border-radius: var(--ab-button-radius, 999px); /* 💊 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 */
-}
-a.abButton[data-type="outlined"] {
-  border: 2px solid var(--ab-button-outline-color, var(--outline-color)); /* ➖ */
-  border-radius: 8px; /* 🔲 */
-  padding: 8px 16px; /* 📦 */
-  font-size: 18px; /* 🔤 */
-  line-height: 32px; /* 📏 */
 }
 a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
 
@@ -216,6 +225,63 @@ a.abButton.abButtonRounded { border-radius: 9999px; } /* 💊 */
 @media (max-width: 767px) {
   .abButton.abButton[data-size="md"] { height: var(--ab-button-height-touch, 44px); }
   .abButton.abButton[data-shape="rounded"][data-size="md"] { font-size: 14.5px; }
+}
+/* 📏 0.2.3 (God 04:12): size="lg" = the v6 Welcome CTA box (welcome-v6/_src/build.py `.btn` + `.lap .f8 .btn`):
+ *    mobile 52px · 0 24px · 16px/600 · radius 12px · gap 10px  →  laptop (≥ 1180px, core's laptop breakpoint) 56px · 0 30px · 17px.
+ *    Triple class (0,4,0) + later than shape="rounded", so it wins over rounded's padding / radius / font. */
+.abButton.abButton.abButton[data-size="lg"] {
+  box-sizing: border-box; /* 📦 */
+  height: var(--ab-button-height-lg, 52px); min-height: var(--ab-button-height-lg, 52px); /* 📏 */
+  padding: 0 var(--ab-button-padding-inline-lg, 24px); /* 📦 */
+  border-radius: var(--ab-button-radius-lg, 12px); /* 🔲 */
+  font-size: var(--ab-button-font-size-lg, 16px); font-weight: var(--ab-button-font-weight-lg, 600); line-height: 1; /* 🔤 */
+  gap: var(--ab-button-gap-lg, 10px); white-space: nowrap; /* 🧱 */
+}
+@media (width >= 1180px) {
+  .abButton.abButton.abButton[data-size="lg"] {
+    height: var(--ab-button-height-lg-laptop, 56px); min-height: var(--ab-button-height-lg-laptop, 56px); /* 💻 */
+    padding: 0 var(--ab-button-padding-inline-lg-laptop, 30px); font-size: var(--ab-button-font-size-lg-laptop, 17px); /* 💻 */
+  }
+}
+/* 🥉 0.2.3 (God 04:12): color="bronze" = v6 `.btn.p` (any type / shape). Same values in dark (v6 dark uses the same bronze).
+ *    Quad class (0,5,0) + later than rounded+filled, so it wins over the rounded primary paint. */
+.abButton.abButton.abButton.abButton[data-color="bronze"] {
+  background: var(--ab-button-bronze-background, var(--ab-color-bronze, #a67c52)); /* 🎨 */
+  color: var(--ab-button-bronze-text-color, var(--ab-color-on-bronze, #fff8f5)); /* 🖋️ */
+  border: 0; opacity: 1; /* ➖ */
+  box-shadow: var(--ab-button-bronze-shadow, 0 8px 24px rgba(166, 124, 82, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)); /* ✨ v6 exact */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: var(--ab-button-bronze-background-hover, color-mix(in srgb, var(--ab-color-bronze, #a67c52) 90%, #000)); /* 🖱️ */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:not(:disabled, [aria-disabled="true"]):active {
+  background: var(--ab-button-bronze-background-active, color-mix(in srgb, var(--ab-color-bronze, #a67c52) 82%, #000)); /* 👇 */
+  box-shadow: var(--ab-button-bronze-shadow-active, 0 4px 12px rgba(166, 124, 82, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2));
+  transform: translateY(1px);
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:focus-visible {
+  outline: 2px solid var(--ab-button-bronze-focus-ring, var(--ab-color-bronze-text, #8a6440)); outline-offset: 2px; /* ♿ AA ring (light #8a6440 / dark #d9ab7f) */
+}
+.abButton.abButton.abButton.abButton[data-color="bronze"]:is(:disabled, [aria-disabled="true"]) {
+  opacity: var(--ab-button-disabled-opacity, 0.5); box-shadow: none; cursor: not-allowed; /* 🚫 */
+}
+/* 🃏 0.2.3 (God 04:16): color="card" = v6 `.btn.s` (Continue with GitHub): 1px --line border on --card, --fg text.
+ *    Opt-in only: plain outlined buttons are untouched. v6 → theme: --line → --ab-color-line, --card → --ab-color-card,
+ *    --fg → --ab-color-text. v6 has no hover for .btn.s, so hover = the secondary button's 8% bronze tint over the card. */
+.abButton.abButton.abButton.abButton[data-color="card"] {
+  border: var(--ab-button-outline-width, 1px) solid var(--ab-button-outline-color, var(--ab-color-line, rgb(107 79 53 / 16%))); /* ➖ */
+  background: var(--ab-button-background, var(--ab-color-card, #fff)); /* 🃏 */
+  color: var(--ab-button-text-color, var(--ab-color-text, #211a16)); /* 🖋️ */
+  opacity: 1; box-shadow: none; /* 🫥 no inactive fade, no shadow */
+}
+.abButton.abButton.abButton.abButton[data-color="card"]:not(:disabled, [aria-disabled="true"]):hover {
+  background: var(--ab-button-background-hover, linear-gradient(var(--ab-color-hover, rgb(166 124 82 / 0.08)), var(--ab-color-hover, rgb(166 124 82 / 0.08))) var(--ab-color-card, #fff)); /* 🖱️ */
+}
+.abButton.abButton.abButton.abButton[data-color="card"]:not(:disabled, [aria-disabled="true"]):active { transform: translateY(1px); } /* 👇 */
+.abButton.abButton.abButton.abButton[data-color="card"]:focus-visible { outline: 2px solid var(--ab-color-bronze-text, #8a6440); outline-offset: 2px; } /* ♿ */
+.abButton.abButton.abButton.abButton[data-color="card"]:is(:disabled, [aria-disabled="true"]) { opacity: var(--ab-button-disabled-opacity, 0.5); cursor: not-allowed; } /* 🚫 */
+@media (prefers-reduced-motion: reduce) {
+  .abButton.abButton.abButton.abButton:is([data-color="bronze"], [data-color="card"]):active { transform: none; } /* ♿ */
 }
 @media (prefers-reduced-motion: reduce) {
   .abButton.abButton[data-shape="rounded"]:active { transform: none; } /* ♿ no nudge */

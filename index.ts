@@ -116,6 +116,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbFlowDiagram)
   { name: 'AbFlowDiagram', file: 'ab-flow-diagram/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.2.3 Welcome v6 playground (AbPlaygroundScene)
+  { name: 'AbPlaygroundScene', file: 'ab-playground-scene/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbLink)
   { name: 'AbLink', file: 'ab-link/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbKbd) — server-safe, no hooks
@@ -137,6 +139,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbConfirmDrawer', file: 'ab-confirm-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBottomDrawer', file: 'ab-bottom-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbMobileHeader', file: 'ab-mobile-header/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
+  { name: 'AbThemeModeProvider', file: 'ab-theme-mode/index.tsx', kind: 'client', status: 'Done' }, // 🌗 0.2.3 shared theme mode
   { name: 'AbSearchDrawer', file: 'ab-search-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbTocDrawer', file: 'ab-toc-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
   { name: 'AbNavDrawer', file: 'ab-nav-drawer/index.tsx', kind: 'client', status: 'Done' }, // 🆕 0.2.0 drawers v2
@@ -204,9 +207,16 @@ export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
 export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
+// 👇 0.2.3 (Joseph, Welcome 0.2.21): swipe a bottom sheet down to close
+export { useAbSwipeDown, isAbScrolledInside } from './ab-bottom-drawer/use-ab-swipe-down.ts'
+export type { UseAbSwipeDownOptions } from './ab-bottom-drawer/use-ab-swipe-down.ts'
 // 🆕 0.2.0 drawers v2: AbMobileHeader
 export { default as AbMobileHeader } from './ab-mobile-header/index.tsx'
-export type { AbMobileHeaderProps } from './ab-mobile-header/index.tsx'
+export type { AbMobileHeaderProps, AbMobileHeaderThemeMode, AbMobileHeaderLanguage } from './ab-mobile-header/index.tsx'
+export { AB_MOBILE_HEADER_THEME_CYCLE } from './ab-mobile-header/index.tsx' // 🌗 0.2.3
+// 🌗 0.2.3 (Joseph, Welcome 0.2.21): one shared theme mode for every toggle
+export { AbThemeModeProvider, useAbThemeModeContext } from './ab-theme-mode/index.tsx'
+export type { AbThemeModeProviderProps, AbThemeModeContextValue } from './ab-theme-mode/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSearchDrawer
 export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY } from './ab-search-drawer/index.tsx'
 export type { AbSearchDrawerProps, AbSearchDrawerItem, AbSearchDrawerGroup, AbSearchDrawerLabels } from './ab-search-drawer/index.tsx'

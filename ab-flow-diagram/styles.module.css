@@ -44,7 +44,8 @@
   aspect-ratio: 760 / 600; /* 📐 mock card */
   border-radius: 1.25rem; /* 🔲 */
   border: 1px solid var(--ab-color-border, var(--ab-color-outline-variant, rgb(0 0 0 / 0.12))); /* 🖊️ */
-  background: var(--ab-color-surface-container, transparent); /* 🎨 */
+  background: var(--ab-flow-card, var(--ab-color-card, var(--ab-color-surface-container, transparent))); /* 🃏 0.2.3 (God, Welcome v5): the theme card (#fff · #fffcfa ≥1920 · #241a12 dark); `--ab-flow-card` overrides it (e.g. the Welcome card) */
+  --ab-flow-dot: var(--ab-dot-color, rgb(107 79 53 / 0.16)); /* 🟤 v6 grid (theme ≥ 0.3.7, else the mock value) */
   overflow: hidden; /* ✂️ */
   color: var(--ab-color-on-surface, currentColor); /* 🎨 */
   container-type: inline-size; /* 📦 nodes scale with the card width (cqi units below) */
@@ -156,3 +157,113 @@
 }
 
 /* 🧘 reduced motion: handled by ab-nextjs-animations (wires drawn, pulses frozen at --ab-wire-poster) */
+
+/* ===================================================================================================== */
+/* 🟤 0.2.3 dotted surface (Welcome v6 `.dots`): theme ≥ 0.3.7 --ab-dot-*, else John's values (light + dark) */
+:global(:is(.dark, [data-theme="dark"])) .root { --ab-flow-dot: var(--ab-dot-color, rgb(245 235 225 / 0.1)); } /* 🌙 */
+.root[data-ab-dotted='true']:not([data-ab-frame='true'])::before {
+  content: "";
+  position: absolute;
+  inset: var(--ab-flow-diagram-stage-top) 0 0; /* ⬇️ below the header band */
+  pointer-events: none; /* 🖱️ */
+  background-image: radial-gradient(var(--ab-flow-dot) var(--ab-dot-size, 1.3px), transparent calc(var(--ab-dot-size, 1.3px) + 0.1px));
+  background-size: var(--ab-dot-gap, 20px) var(--ab-dot-gap, 20px); /* 📏 */
+  background-position: calc(var(--ab-dot-gap, 20px) / 2) calc(var(--ab-dot-gap, 20px) / 2); /* 🎯 10px 10px */
+}
+.logo { display: inline-flex; align-items: center; height: 1.25rem; } /* 🅰️ */
+.logo :is(img, svg) { height: 100%; width: auto; } /* 🅰️ */
+
+/* ===================================================================================================== */
+/* 🖼️ 0.2.3 frame mode (Welcome v6): a fixed w×h px stage (John's rects 1:1), scaled to the card width.   */
+.framed {
+  aspect-ratio: var(--ab-flow-ratio); /* 📐 e.g. 760 / 600 */
+  flex: none; min-width: 0; /* 📏 a flex column (e.g. the aside scroller) must not squash the ratio */
+  height: auto; /* 📏 the ratio wins (compact too: 350 / 276) */
+  border-radius: 22px; /* 🔲 v6 .pg */
+  border-color: var(--ab-flow-line, rgb(107 79 53 / 0.16)); /* ➖ v6 --line */
+  box-shadow: 0 30px 80px -30px var(--ab-flow-shadow, rgb(107 79 53 / 0.25)); /* 🌫️ v6 */
+  --ab-flow-line: rgb(107 79 53 / 0.16); /* ➖ */
+  --ab-flow-node: var(--ab-color-welcome-node, var(--ab-flow-card, var(--ab-color-card, #fff))); /* 🔵 v6 --node (theme ≥ 0.3.7 token) */
+  --ab-flow-muted: var(--ab-color-muted, rgb(33 26 22 / 0.62)); /* 🖋️ v6 --mut */
+  --ab-flow-wire: #a67c52; /* 🥉 v6 wire */
+  --ab-flow-pulse-core: #ffe6c7; /* ⚪ v6 .pt */
+}
+.framed[data-variant='compact'] { border-radius: 18px; } /* 📱 v6 .mpg */
+:global(:is(.dark, [data-theme="dark"])) .framed {
+  --ab-flow-line: rgb(255 232 210 / 0.1); /* ➖ */
+  --ab-flow-node: var(--ab-color-welcome-node, #2a1f17); /* 🔵 v6 dark node (theme ≥ 0.3.7 token) */
+  --ab-flow-muted: rgb(245 235 225 / 0.62); /* 🖋️ */
+  --ab-flow-shadow: rgb(0 0 0 / 0.6); /* 🌫️ */
+}
+/* 📐 the stage: frame px, scaled from the top-left. Typed arithmetic (100cqw / px) where supported, then the island */
+.stage {
+  --ab-flow-scale-css: calc(100cqw / var(--ab-flow-w)); /* 📏 browsers with typed arithmetic */
+  position: absolute; left: 0; top: 0; /* 📍 */
+  width: var(--ab-flow-w); height: var(--ab-flow-h); /* 📐 */
+  transform-origin: 0 0; /* ↖️ */
+  transform: scale(var(--ab-flow-scale, var(--ab-flow-scale-css, 1))); /* 🔍 */
+  font-size: 13px; /* 🔡 v6 base */
+}
+.framed { container-type: inline-size; } /* 📦 100cqw = the card width */
+.dots {
+  position: absolute; inset: var(--ab-flow-header) 0 0; /* ⬇️ v6: inset 56px 0 0 */
+  background-image: radial-gradient(var(--ab-flow-dot) var(--ab-dot-size, 1.3px), transparent calc(var(--ab-dot-size, 1.3px) + 0.1px));
+  background-size: var(--ab-flow-dot-gap, var(--ab-dot-gap, 20px)) var(--ab-flow-dot-gap, var(--ab-dot-gap, 20px)); /* 📏 */
+  background-position: calc(var(--ab-flow-dot-gap, var(--ab-dot-gap, 20px)) / 2) calc(var(--ab-flow-dot-gap, var(--ab-dot-gap, 20px)) / 2); /* 🎯 */
+}
+.framed[data-variant='compact'] { --ab-flow-dot-gap: 16px; } /* 📱 v6 mobile 16px */
+.frameHeader {
+  position: absolute; inset: 0 0 auto; height: var(--ab-flow-header); /* 📍 v6 .hd */
+  display: flex; align-items: center; gap: 10px; padding: 0 22px; /* 📐 */
+  border-bottom: 1px solid var(--ab-flow-line); /* ➖ */
+  font-size: 15px; font-weight: 600; white-space: nowrap; /* 🔡 */
+}
+.frameHeader .logo { height: 20px; } /* 🅰️ */
+.pkg { font: 500 12px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); } /* 📦 v6 .pk */
+.frameLive {
+  display: inline-flex; align-items: center; gap: 6px; margin-left: auto; /* ➡️ */
+  font-size: 12px; font-weight: 500; color: var(--ab-color-sage, #8a9a88); /* 🌿 */
+}
+.frameLive::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; /* ⚪ */
+  background: var(--ab-color-sage, #8a9a88); box-shadow: 0 0 0 3px rgb(138 154 136 / 0.25); /* 🌿 */
+}
+.framed[data-variant='compact'] .frameHeader { padding: 0 14px; font-size: 12.5px; gap: 8px; } /* 📱 */
+.framed[data-variant='compact'] .frameHeader .logo { height: 14px; } /* 📱 */
+.framed[data-variant='compact'] .pkg { font-size: 10.5px; margin-left: auto; } /* 📱 */
+.framed[data-variant='compact'] .frameLive { display: none; } /* 📱 v6 hides "live" */
+.frameWires { position: absolute; inset: 0; overflow: visible; } /* 〰️ */
+.wireGlow, .frameWire, .dotHalo, .dotCore { fill: none; stroke-linecap: round; } /* ⚪ */
+.wireGlow { stroke: var(--ab-flow-wire); stroke-width: 7; opacity: 0.14; } /* 🌫️ */
+.frameWire { stroke: var(--ab-flow-wire); stroke-width: 1.8; opacity: 0.8; } /* 🖊️ */
+/* ✨ the pulse is ab-nextjs-animations' .ab-wire-pulse dash, shrunk to a zero-length dash = a round dot */
+.dotHalo.dotHalo { stroke: var(--ab-flow-wire); stroke-width: 12; stroke-dasharray: 0 100; filter: blur(2px); } /* 🔆 */
+.dotCore.dotCore { stroke: var(--ab-flow-pulse-core); stroke-width: 5.2; stroke-dasharray: 0 100; } /* ⚪ */
+.framed[data-variant='compact'] .wireGlow { stroke-width: 5; } /* 📱 */
+.framed[data-variant='compact'] .frameWire { stroke-width: 1.6; } /* 📱 */
+.framed[data-variant='compact'] .dotHalo { stroke-width: 10; } /* 📱 */
+.framed[data-variant='compact'] .dotCore { stroke-width: 4.4; } /* 📱 */
+.richNode {
+  position: absolute; box-sizing: border-box; /* 📍 v6 .n */
+  display: flex; align-items: center; justify-content: center; gap: 10px; /* 📐 */
+  background: var(--ab-flow-node); border: 1px solid var(--ab-flow-line); border-radius: 14px; /* 🔵 */
+  box-shadow: 0 0 0 1px rgb(166 124 82 / 0.12), 0 10px 30px -8px rgb(166 124 82 / 0.35); /* ✨ bronze glow */
+}
+.richNode[data-tone='hub'] {
+  border-color: rgb(166 124 82 / 0.55); /* 🥉 */
+  box-shadow: 0 0 0 1px rgb(166 124 82 / 0.45), 0 0 40px 5px rgb(166 124 82 / 0.32); /* 🔆 v6 hub glow (mid value) */
+}
+.framed[data-variant='compact'] .richNode { border-radius: 11px; font-size: 13px; font-weight: 600; gap: 7px; } /* 📱 */
+.nodeCaption {
+  position: absolute; top: -21px; left: 2px; /* 🏷️ v6 .lb */
+  font: 400 10.5px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); white-space: nowrap;
+  /* 🏷️ spec rev 2: the label sits on a small card chip, so wires pass BEHIND it (v6 let wires cross labels) */
+  background: var(--ab-flow-card, var(--ab-color-card, #fff)); padding: 0 4px; margin-left: -4px; border-radius: 4px; z-index: 1;
+}
+.nodeCaption[data-at='beside-centre'] { left: calc(50% + 9px); margin-left: 0; } /* 📱 spec rev 2: right of the centre wire */
+.framed[data-variant='compact'] .nodeCaption { font-size: 10px; top: -16px; } /* 📱 */
+.anchor {
+  position: absolute; width: 9px; height: 9px; border-radius: 50%; /* ⚓ v6 .anc */
+  background: var(--ab-flow-wire); box-shadow: 0 0 0 3px var(--ab-flow-card, var(--ab-color-card, #fff)); transform: translate(-50%, -50%);
+}
+.framed[data-variant='compact'] .anchor { width: 7px; height: 7px; } /* 📱 */

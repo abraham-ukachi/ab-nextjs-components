@@ -68,7 +68,7 @@ const files = walk(root) // 🗂️
 afterEach(cleanup)
 
 describe('all component motion comes from ab-nextjs-animations 🎬', () => {
-  it('no CSS module declares its own transition / animation / @keyframes (AbSplash 0s failsafe timers excepted)', () => {
+  it('no CSS module declares its own transition / animation / @keyframes (AbSplash failsafe timers excepted; 0.2.3: the i18n locale cycle now comes from ab-nextjs-animations/locale-cycle)', () => {
     for (const f of files.filter((x) => x.endsWith('.module.css'))) {
       // 🧹 strip comments, then look for real declarations
       const css = read(f).replace(/\/\*[\s\S]*?\*\//g, '') // ✂️

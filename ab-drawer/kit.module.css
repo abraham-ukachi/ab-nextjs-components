@@ -188,6 +188,33 @@
 /* 📱 the mobile main header: 56px row, logo left, 44px globe + theme buttons right */
 .mh { box-sizing: border-box; display: flex; align-items: center; block-size: 100%; min-block-size: 56px; padding: 0 4px 0 16px; gap: 0; background: transparent; }
 .mh > .logoRow { flex: 1 1 auto; }
+/* ➕ 0.2.3 (Joseph, Welcome 0.2.21): with a `row`, the header is a column: the 56px bar, then the extra row */
+.mhStack { flex-direction: column; align-items: stretch; padding: 0; block-size: auto; } /* 🧱 */
+.mhBar { box-sizing: border-box; display: flex; align-items: center; min-block-size: 56px; padding: 0 4px 0 16px; } /* 📏 the same bar */
+.mhBar > .logoRow { flex: 1 1 auto; } /* ↔️ */
+.mhRow { box-sizing: border-box; display: flex; align-items: center; gap: 8px; min-block-size: 0; padding: 0 16px 8px; } /* ➕ e.g. a counter row */
+/* 📏 0.2.3 compact (Welcome v6 mock `.mob .top{height:48px;padding:0 18px}`): a 48px bar, 18px start inset; the 44px
+   buttons keep their hit area and the end inset stays 4px so the last one lines up with the 44px grid */
+/* 🧩 0.2.3 no-JS language list: <details> around the globe; the list drops below it, end-aligned */
+.langDetails { position: relative; flex: none; } /* 📌 anchor */
+.langDetails > summary { list-style: none; } /* 🙈 no disclosure triangle */
+.langDetails > summary::-webkit-details-marker { display: none; } /* 🙈 Safari */
+.langList { position: absolute; inset-inline-end: 0; inset-block-start: 100%; z-index: 30; margin: 4px 0 0; padding: 6px; min-inline-size: 180px; list-style: none; background: var(--ab-color-card, #fff); border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: 12px; box-shadow: 0 8px 24px rgb(25 18 12 / 0.12); } /* 📋 */
+.langList a { display: flex; align-items: center; min-block-size: 44px; padding: 0 12px; border-radius: 8px; color: var(--ab-color-text, #211a16); text-decoration: none; } /* 👆 44px targets */
+.langList a[aria-current='true'] { font-weight: 700; color: var(--ab-color-accent, #a67c52); } /* ✅ */
+.langList a:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+/* 📱 0.2.3 barAt (Joseph, Welcome 0.2.21): from 768px up the app header carries logo · globe · theme, so the bar would
+   repeat it. 'mobile' hides the bar there; 'auto' does so only inside core's mainHeaderAt="all" layout (the only
+   place the main header shows at that width next to the app header). The row stays. Pure CSS: no-JS + SSR safe. */
+@media (min-width: 768px) {
+  .mh[data-ab-bar-at='mobile'] > .mhBar,
+  [data-main-header-at='all'] .mh[data-ab-bar-at='auto'] > .mhBar { display: none; } /* 🙈 the row stays */
+  .mh[data-ab-bar-at='mobile']:not(.mhStack),
+  [data-main-header-at='all'] .mh[data-ab-bar-at='auto']:not(.mhStack) { display: none; } /* 🙈 no row: nothing left */
+}
+.mhCompact { min-block-size: 48px; padding-inline-start: 18px; } /* 📏 no row */
+.mhCompact.mhStack { padding-inline-start: 0; } /* 🧱 the stack itself has no inset */
+.mhCompact > .mhBar { min-block-size: 48px; padding-inline-start: 18px; } /* 📏 with a row */
 .ibtn { flex: none; inline-size: 44px; block-size: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 8px; background: transparent; color: var(--ab-color-text, #211a16); cursor: pointer; padding: 0; }
 .ibtn > svg { inline-size: 24px; block-size: 24px; }
 @media (hover: hover) { .ibtn:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } } /* 🖱️ 0.2.1 (Joseph): no sticky tap-hover on touch */

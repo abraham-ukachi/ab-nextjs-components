@@ -44,9 +44,9 @@ export type AbButtonType = 'contained' | 'filled' | 'outlined' | 'text' | 'secon
 // 🔷 0.1.14 (P16): 'pill' = the legacy 999px look (default) · 'rounded' = the Home 10px button
 export type AbButtonShape = 'pill' | 'rounded';
 // 📏 0.1.14 (P16): 'md' = 40px (44px under 768px, the touch CTA); undefined keeps the legacy sizing
-export type AbButtonSize = 'md';
+export type AbButtonSize = 'md' | 'lg'; // 📏 'lg' = v6 CTA: 52px / 56px ≥ 1180px, radius 12px (0.2.3)
 // 🎨 colour roles
-export type AbButtonColor = 'primary' | 'secondary' | 'tertiary' | 'white' | 'black';
+export type AbButtonColor = 'primary' | 'secondary' | 'tertiary' | 'white' | 'black' | 'bronze' | 'card'; // 🥉 'bronze' = v6 Get Started · 🃏 'card' = v6 GitHub secondary (0.2.3)
 // 🏷️ badge tones (G22): neutral grey or bronze accent
 export type AbButtonBadgeTone = 'neutral' | 'accent';
 

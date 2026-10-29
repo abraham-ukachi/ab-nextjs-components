@@ -1,0 +1,54 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbPlaygroundScene - Styles (G38)
+* @file: ab-playground-scene/styles.module.css
+* @type: CSS module — transform/opacity/dash only (CLS 0)
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* ===== AB PLAYGROUND SCENE · I18N (illustration 8) ===== */
+/* 🎬 0.2.3 (God 02:26): NO motion here any more. The EN → FR → ES → RU cycle (keyframes, ease-out-cubic rise,
+   instant chip jumps, the [data-ab-still] frame, pause + reduced motion) ships from ab-nextjs-animations ≥ 0.2.5
+   (`ab-nextjs-animations/locale-cycle`). This module only lays the pieces out. */
+
+.greet, .tv, .lseg { --ab-locale-cycle-duration: var(--ab-wire-pulse-duration, 2400ms); } /* ⏱️ the loop follows the scene's `duration` prop */
+.greet { position: relative; display: block; } /* 📦 v6 .gr (size inline) */
+.word {
+  position: absolute; left: 0; right: 0; top: 0; text-align: center; white-space: nowrap; /* 📍 stacked, centred */
+  font-family: var(--ab-font-title, 'Mulish', sans-serif); font-weight: 700; letter-spacing: -0.01em; /* 🔤 Mulish 700 */
+}
+.tv { position: relative; display: inline-block; width: 66px; height: 16px; } /* 🏷️ v6 .tv */
+.valueWord.valueWord { right: auto; text-align: start; font-family: var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); font-weight: 400; letter-spacing: 0; } /* 💻 Roboto Mono */
+.lseg { --ab-locale-cycle-on-bg: #a67c52; --ab-locale-cycle-on-fg: #fff8f5; --ab-locale-cycle-off-fg: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); } /* 🥉 v6 .on / idle */
+.lseg .chip { padding: 6px 11px; border-radius: 7px; color: var(--ab-locale-cycle-off-fg); } /* 🎚️ v6 .seg span */
+.ms .chip { padding: 5px 6px; } /* 📱 v6 .ms span */

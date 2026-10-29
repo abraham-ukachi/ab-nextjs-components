@@ -41,7 +41,8 @@ import type { CSSProperties, ReactElement, ReactNode } from 'react';
 // 🧵 class joiner
 import clsx from 'clsx';
 // 🎨 styles (server copy)
-import styles from './styles.module.css';
+// 🧬 0.2.3 (Joseph 03:41): ONE source for the button box — the client module's CSS (no server copy to drift)
+import styles from '../../ab-button/styles.module.css';
 // 🧮 the SAME rules as the client twin
 import {
   getAbButtonDisabledMode,
@@ -96,7 +97,7 @@ const AbButton = ({
   const srReason = getAbButtonSrReason({ disabled, disabledReason });
 
   // 🏷️ classes
-  const classNames = clsx('AbButton', styles.abButton, className, rounded && styles.abButtonRounded, type === 'filled' && styles.isFilled /* 🥉 */, mode === 'native' && styles.isDisabled);
+  const classNames = clsx('AbButton', styles.abButton, className, rounded && styles.abButtonRounded, type === 'contained' && styles.isContained /* 🎨 mirrors client */, type === 'filled' && styles.isFilled /* 🥉 */, mode === 'native' && styles.isDisabled);
 
   // 🗂️ data attributes
   const dataAttrs = {

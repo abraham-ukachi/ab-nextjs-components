@@ -52,6 +52,8 @@ import { useAbThemeMode, AB_THEME_MODES, type AbThemeMode } from 'ab-nextjs-hook
 import AbIcon from '../ab-icon';
 // 🎨 styles
 import styles from './styles.module.css';
+// 🌗 0.2.3: the shared theme state (AbThemeModeProvider), when there is one
+import { useAbThemeModeContext, type AbThemeModeContextValue } from '../ab-theme-mode';
 import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
 import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*
 
@@ -105,12 +107,29 @@ export function getNextAbThemeMode(modes: readonly AbThemeMode[], current: AbThe
   return null; // 🙅
 }
 
+/**
+ * 🌗 AbThemeToggle — 0.2.3: under an AbThemeModeProvider every toggle reads and writes the ONE shared engine (no
+ * drift between the laptop and mobile toggles); without a provider it runs its own engine, as before. The branch is
+ * between two components, so each keeps a fixed hook order.
+ */
 export function AbThemeToggle(props: AbThemeToggleProps) {
+  const shared = useAbThemeModeContext(); // 🧠 the provider's state, or null
+  return shared ? <AbThemeToggleView {...props} engine={shared} /> : <AbThemeToggleOwn {...props} />;
+}
+
+// 🔧 no provider: this toggle's own engine (the pre-0.2.3 behaviour)
+function AbThemeToggleOwn(props: AbThemeToggleProps) {
+  const engine = useAbThemeMode(props.defaultMode ?? 'light'); // 🌗 persists + applies to <html>
+  return <AbThemeToggleView {...props} engine={engine} />;
+}
+
+// 🖼️ the markup, fed by either engine
+function AbThemeToggleView(props: AbThemeToggleProps & { engine: Pick<AbThemeModeContextValue, 'mode' | 'setMode'> }) {
   // 🧩 props
-  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, defaultMode = 'light', icons, size = 'md', appearance = 'fill', iconShows, className, style } = props;
+  const { labels, variant = 'segmented', modes = AB_THEME_MODES, value, onChange, icons, size = 'md', appearance = 'fill', iconShows, className, style } = props;
   const thumb = appearance === 'thumb'; // 🌗 P7
-  // 🌗 engine: persists + applies to <html>
-  const engine = useAbThemeMode(defaultMode);
+  // 🌗 engine: the shared one (provider) or this toggle's own; both persist + apply to <html>
+  const { engine } = props;
   // 🎛️ controlled or engine-driven
   const current = (value ?? engine.mode) as AbThemeMode;
   // 📍 refs to move focus with the selection

@@ -52,6 +52,7 @@ import {
   isValidElement,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useMemo,
   useRef,
@@ -62,6 +63,7 @@ import {
   type ReactElement,
   type ReactNode,
   type Ref,
+  type RefObject,
 } from 'react';
 // 🧵 class-name joiner
 import clsx from 'clsx';
@@ -137,6 +139,9 @@ export interface AbCarouselProps {
   slideLabel?: (n: number, total: number) => string;
   // 📣 live-region text factory, or false to disable announcements (default "Slide 3 of 9: Title")
   announce?: ((n: number, total: number, title?: string) => string) | false;
+  // 📏 0.2.3 (Joseph, Welcome 0.2.21): size the track to the ACTIVE slide (animated, reduced-motion aware)
+  //    instead of the tallest one (default false: one grid cell, height = tallest, CLS 0)
+  autoHeight?: boolean;
   // 🧱 element for the region (default 'section')
   as?: 'section' | 'div';
   // 🆔 id of the region
@@ -187,6 +192,8 @@ export interface AbCarouselContextValue {
   trackId: string;
   // 🆔 id of slide i
   slideId: (i: number) => string;
+  // 📏 0.2.3: does the track follow the active slide's height?
+  autoHeight: boolean;
   // 👆 swipe settings (read by the track)
   swipe: { enabled: boolean; threshold?: number; ignore?: string };
 }
@@ -204,7 +211,7 @@ export function useAbCarousel(): AbCarouselContextValue {
   // 🔍 nearest carousel
   const ctx = useContext(AbCarouselContext);
   // 💥 used outside → explain how to fix it
-  if (!ctx) throw new Error('useAbCarousel() must be used inside <AbCarousel>.');
+  if (!ctx) throw new Error('useAbCarousel() must be used inside <AbCarousel> or <AbCarouselProvider>.');
   // 📦
   return ctx;
 }
@@ -271,7 +278,31 @@ const readAbServerDir = (): AbCarouselDir => 'ltr';
  *
  * 🎬 Motion: slides cross-fade + shift 24px (280ms); reduced motion → 120ms fade, no transform.
  */
-export function AbCarousel(props: AbCarouselProps) {
+// ⚙️ 0.2.3: the provider takes the state props only (no element of its own)
+export type AbCarouselProviderProps = Omit<AbCarouselProps, 'as' | 'id' | 'className' | 'style' | 'ref'>;
+
+// 🧷 0.2.3: what the region element needs (spread by <AbCarousel>, or by the consumer in headless mode)
+export interface AbCarouselRegionProps {
+  className: string; // 🏷️ 'AbCarousel' + the module class (carries the slide-step tokens)
+  'aria-roledescription': 'carousel'; // ♿
+  'aria-label': string; // 🏷️
+  'data-ab-part': 'carousel'; // 🧩
+  'data-dir': AbCarouselDir; // 🌍
+  'data-reduced-motion': string; // ♿ CSS switch
+  'data-ab-reduced-motion': string; // ♿ ab-nextjs-animations switch
+  'data-ab-direction'?: AbSlideStepDirection; // 🧭
+  'data-hydrated': string; // 🟢
+  onKeyDown: (event: KeyboardEvent<HTMLElement>) => void; // ⌨️ ←/→ Home/End while focus is inside
+}
+
+// 🧠 0.2.3: region props + the live message, for headless consumers (null outside a provider)
+const AbCarouselRegionContext = createContext<{ regionProps: AbCarouselRegionProps; message: string } | null>(null);
+
+/**
+ * 🧠 the whole carousel brain (state, ids, keyboard, announcements), shared by <AbCarousel> and
+ * <AbCarouselProvider>. Internal: render either of those, not this.
+ */
+function useAbCarouselController(props: AbCarouselProviderProps): { value: AbCarouselContextValue; regionProps: AbCarouselRegionProps; message: string } {
   // 🧩 destructure with defaults
   const {
     label, // 🏷️
@@ -287,14 +318,10 @@ export function AbCarousel(props: AbCarouselProps) {
     swipeThreshold, // 📏
     swipeIgnore, // 🙈
     reducedMotion: reducedMotionMode = 'auto', // ♿
+    autoHeight = false, // 📏 0.2.3
     slideLabel = defaultAbCarouselSlideLabel, // 🏷️
     announce = defaultAbCarouselAnnouncement, // 📣
-    as: Tag = 'section', // 🧱
-    id, // 🆔
-    className, // 🏷️
-    style, // 🎨
-    ref, // 🔗
-    children, // 🧩
+    children, // 🧩 (only used to count the slides)
   } = props;
 
   // 🔢 slide count: explicit, else counted from the track
@@ -373,34 +400,155 @@ export function AbCarousel(props: AbCarouselProps) {
 
   // 🧠 context value (memoised)
   const value = useMemo<AbCarouselContextValue>(() => ({
-    index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId,
+    index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, autoHeight,
     swipe: { enabled: swipe && count > 1, threshold: swipeThreshold, ignore: swipeIgnore },
-  }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, swipe, swipeThreshold, swipeIgnore]);
+  }), [index, count, loop, dir, reducedMotion, hydrated, direction, previousIndex, goTo, next, prev, canPrev, canNext, titles, slideLabel, trackId, slideId, autoHeight, swipe, swipeThreshold, swipeIgnore]);
 
+  // 🧷 the region's attributes (memo-free: cheap, and onKeyDown closes over the latest state)
+  const regionProps: AbCarouselRegionProps = {
+    className: clsx('AbCarousel', styles.carousel), // 🏷️ + the slide-step tokens
+    'aria-roledescription': 'carousel', // ♿ "carousel" instead of "region"
+    'aria-label': label, // 🏷️ accessible name
+    'data-ab-part': 'carousel', // 🧩 part hook
+    'data-dir': dir, // 🌍
+    'data-reduced-motion': String(reducedMotion), // ♿ CSS switch
+    'data-ab-reduced-motion': String(reducedMotion), // ♿ ab-nextjs-animations switch (prop OR OS)
+    'data-ab-direction': direction ?? undefined, // 🧭 forward / back for .ab-slide-step-*
+    'data-hydrated': String(hydrated), // 🟢
+    onKeyDown, // ⌨️
+  };
+  return { value, regionProps, message }; // 📦
+}
+
+/**
+ * 🎠 AbCarousel — accessible slide carousel / walkthrough (Welcome v6, gap G31). See the a11y notes above
+ * `useAbCarouselController`. It renders the region element itself; for a layout where the carousel can't own one
+ * wrapper (e.g. it would have to wrap <main>), use <AbCarouselProvider> + useAbCarouselRegion() instead.
+ */
+export function AbCarousel(props: AbCarouselProps) {
+  const { as: Tag = 'section', id, className, style, ref, children } = props; // 🧱 element props
+  const { value, regionProps, message } = useAbCarouselController(props); // 🧠
   // 🖼️ render
   return (
     <AbCarouselContext.Provider value={value}>
-      <Tag
-        ref={ref as Ref<HTMLElement & HTMLDivElement>} // 🔗
-        id={id} // 🆔
-        className={clsx('AbCarousel', styles.carousel, className)} // 🏷️
-        style={style} // 🎨
-        aria-roledescription="carousel" // ♿ "carousel" instead of "region"
-        aria-label={label} // 🏷️ accessible name
-        data-ab-part="carousel" // 🧩 part hook
-        data-dir={dir} // 🌍
-        data-reduced-motion={String(reducedMotion)} // ♿ CSS switch
-        data-ab-reduced-motion={String(reducedMotion)} // ♿ ab-nextjs-animations switch (prop OR OS)
-        data-ab-direction={direction ?? undefined} // 🧭 forward / back for .ab-slide-step-*
-        data-hydrated={String(hydrated)} // 🟢
-        onKeyDown={onKeyDown} // ⌨️
-      >
-        {children}
-        {/* 📣 polite live region (visually hidden) */}
-        <div className={styles.srOnly} aria-live="polite" aria-atomic="true" data-ab-part="status">{message}</div>
-      </Tag>
+      <AbCarouselRegionContext.Provider value={{ regionProps, message }}>
+        <Tag
+          ref={ref as Ref<HTMLElement & HTMLDivElement>} // 🔗
+          id={id} // 🆔
+          {...regionProps} // ♿ roledescription / label / data-* / keyboard
+          className={clsx(regionProps.className, className)} // 🏷️
+          style={style} // 🎨
+        >
+          {children}
+          {/* 📣 polite live region (visually hidden) */}
+          <div className={styles.srOnly} aria-live="polite" aria-atomic="true" data-ab-part="status">{message}</div>
+        </Tag>
+      </AbCarouselRegionContext.Provider>
     </AbCarouselContext.Provider>
   );
+}
+
+// ===== 0.2.3 HEADLESS MODE: <AbCarouselProvider /> + useAbCarouselRegion() + <AbCarouselStatus /> ===== //
+
+/**
+ * 🧠 AbCarouselProvider — 0.2.3 (Joseph, Welcome 0.2.21): the carousel state WITHOUT an element, so it no longer
+ * has to wrap <main>. Put it high enough for every control (header counter, aside dots, main track), then mark
+ * ONE element as the region with `useAbCarouselRegion()` and drop <AbCarouselStatus /> inside it:
+ *
+ *   <AbCarouselProvider label="Welcome" count={9}>
+ *     <AbAppLayout mainHeader={<AbCarouselCounter />} main={<Slides />} />
+ *   </AbCarouselProvider>
+ *   function Slides() { const region = useAbCarouselRegion(); return (
+ *     <div {...region}><AbCarouselTrack>…</AbCarouselTrack><AbCarouselStatus /></div>) }
+ *
+ * 🔢 Pass `count` when the track isn't a direct (element-tree) descendant of the provider's children.
+ */
+export function AbCarouselProvider(props: AbCarouselProviderProps) {
+  const { value, regionProps, message } = useAbCarouselController(props); // 🧠
+  return (
+    <AbCarouselContext.Provider value={value}>
+      <AbCarouselRegionContext.Provider value={{ regionProps, message }}>{props.children}</AbCarouselRegionContext.Provider>
+    </AbCarouselContext.Provider>
+  );
+}
+
+/** 🧷 useAbCarouselRegion — 0.2.3: the attributes for YOUR region element (spread them; merge your own className). */
+export function useAbCarouselRegion(): AbCarouselRegionProps {
+  const ctx = useContext(AbCarouselRegionContext); // 🔍
+  if (!ctx) throw new Error('useAbCarouselRegion() must be used inside <AbCarouselProvider> or <AbCarousel>.'); // 💥
+  return ctx.regionProps; // 📦
+}
+
+/** 📣 AbCarouselStatus — 0.2.3: the polite live region ("Slide 3 of 9: Title"); render it once, inside the region. */
+export function AbCarouselStatus({ className }: { className?: string }) {
+  const ctx = useContext(AbCarouselRegionContext); // 🔍
+  if (!ctx) throw new Error('<AbCarouselStatus> must be used inside <AbCarouselProvider> or <AbCarousel>.'); // 💥
+  return <div className={clsx(styles.srOnly, className)} aria-live="polite" aria-atomic="true" data-ab-part="status">{ctx.message}</div>;
+}
+
+// ===== 0.2.3 useAbCarouselKeys: arrow keys OUTSIDE the region ===== //
+
+// ⚙️ options
+export interface UseAbCarouselKeysOptions {
+  // 🎚️ bind or not (default true), e.g. false while a sheet is up
+  enabled?: boolean;
+  // ⏮️⏭️ Home / End too? Default false: on `document` they would steal the page's own Home / End scroll
+  homeEnd?: boolean;
+}
+
+// 🙅 focus places that own their keys, beyond the region's ignore list: an open dialog, editable text
+const AB_CAROUSEL_KEYS_SKIP = '[role="dialog"], [aria-modal="true"], [contenteditable=""], [contenteditable="true"]';
+
+/**
+ * ⌨️ useAbCarouselKeys — 0.2.3 (Joseph, Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on a SCOPE element, not
+ * just inside the region. The listener sits on that element only, so keys act only while focus is within it.
+ * Call it under <AbCarouselProvider> (or <AbCarousel>):
+ *
+ *   useAbCarouselKeys('main')                // ✅ RECOMMENDED: the layout's <main> (core's [data-ab-part="main"], else <main>)
+ *   useAbCarouselKeys(slidesRef)             // 📌 any element you hold a ref to
+ *   useAbCarouselKeys('document')            // ⚠️ OPT-IN only: every key on the page (header, aside…) — a global
+ *                                            //    hijack; Joseph's e2e "no global hijack" forbids it on Welcome
+ *
+ * There is no default: the scope is always explicit.
+ *
+ * 🧭 Why a hook (and not core passing the region props to <main>): core stays carousel-agnostic, the hook works
+ *    with any layout, and the region's own handler is untouched. Safety rules:
+ * - 🙈 skips the same targets the region skips (inputs, textareas, selects, tabs, radio groups, sliders…), plus
+ *   editable text and anything inside an open dialog / modal
+ * - 🎠 skips events from INSIDE a carousel region (its own handler already moved, so no double step)
+ * - ⌨️ never with Alt / Ctrl / Meta / Shift, and never an event someone already handled (defaultPrevented)
+ * - ⏮️⏭️ Home / End only with `homeEnd: true`
+ */
+export function useAbCarouselKeys(target: 'main' | 'document' | RefObject<HTMLElement | null>, options: UseAbCarouselKeysOptions = {}): void {
+  const { enabled = true, homeEnd = false } = options;
+  const ctx = useAbCarousel(); // 🧠
+  const latest = useRef(ctx); // 🔁 the latest state for the listener (no re-binding per slide)
+  useEffect(() => { latest.current = ctx; });
+  useEffect(() => {
+    if (!enabled) return;
+    // 🎯 the scope: 'main' = core's main pane (AbMainLayout renders data-ab-part="main"), else the first <main>
+    const el: HTMLElement | Document | null = target === 'document' ? document
+      : target === 'main' ? document.querySelector<HTMLElement>('[data-ab-part="main"]') ?? document.querySelector('main')
+      : target.current;
+    if (!el) return;
+    const onKey = (event: Event) => {
+      const e = event as globalThis.KeyboardEvent; // ⌨️
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return; // 🙅
+      const from = e.target as Element | null; // 🎯
+      if (from?.closest?.(AB_CAROUSEL_KEY_IGNORE_SELECTOR) || from?.closest?.(AB_CAROUSEL_KEYS_SKIP)) return; // 🙈 owns its keys
+      if (from?.closest?.('[data-ab-part="carousel"]')) return; // 🎠 the region already handled it
+      const c = latest.current; // 🧠
+      const action = getAbCarouselKeyAction(e.key, c.dir); // 🗺️
+      if (!action || (!homeEnd && (action === 'first' || action === 'last'))) return; // 🙅
+      e.preventDefault(); // 🛑 no sideways scroll
+      if (action === 'next') c.next('key'); // ⏭️
+      else if (action === 'prev') c.prev('key'); // ⏮️
+      else if (action === 'first') c.goTo(0, 'key'); // ⏮️⏮️
+      else c.goTo(c.count - 1, 'key'); // ⏭️⏭️
+    };
+    el.addEventListener('keydown', onKey); // 🎧
+    return () => el.removeEventListener('keydown', onKey); // 🧹
+  }, [target, enabled, homeEnd]);
 }
 
 // ===== <AbCarouselTrack /> ===== //
@@ -411,6 +559,8 @@ export interface AbCarouselTrackProps {
   className?: string;
   // 🎨 inline style
   style?: CSSProperties;
+  // 📏 0.2.3: override the carousel's `autoHeight` for this track
+  autoHeight?: boolean;
   // 🎞️ <AbCarouselSlide> children (fragments / arrays are fine)
   children?: ReactNode;
 }
@@ -419,11 +569,25 @@ export interface AbCarouselTrackProps {
  * 🎞️ AbCarouselTrack — stacks the slides in one grid cell (height = tallest slide → no layout shift)
  * and owns the swipe gesture (`touch-action: pan-y` keeps vertical scrolling).
  */
-export function AbCarouselTrack({ className, style, children }: AbCarouselTrackProps) {
+export function AbCarouselTrack({ className, style, autoHeight: autoHeightProp, children }: AbCarouselTrackProps) {
   // 🧠 carousel state
   const ctx = useAbCarousel();
   // 🎯 element for the swipe hook
   const trackRef = useRef<HTMLDivElement>(null);
+  // 📏 0.2.3 autoHeight: the track's height follows the active slide (measured, so it also tracks content changes)
+  const autoHeight = autoHeightProp ?? ctx.autoHeight;
+  const [height, setHeight] = useState<number | null>(null); // 📐 px, null = not measured yet (SSR: tallest slide)
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!autoHeight || !track) return;
+    const active = track.querySelector<HTMLElement>(':scope > [data-ab-part="slide"][data-position="active"]'); // ✅ the slide in view
+    if (!active) return;
+    const measure = () => { const h = Math.ceil(active.getBoundingClientRect().height || active.offsetHeight); setHeight((p) => (p === h ? p : h)); }; // 🧮 no loop
+    measure(); // 📏 now
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null; // 👀 fonts, images, viewport
+    ro?.observe(active);
+    return () => ro?.disconnect(); // 🧹
+  }, [autoHeight, ctx.index, ctx.count]);
   // 👆 swipe → next / prev (RTL-aware via dir)
   useAbSwipe(trackRef, {
     onNext: () => ctx.next('swipe'), // ⏭️
@@ -437,7 +601,14 @@ export function AbCarouselTrack({ className, style, children }: AbCarouselTrackP
   const slides = flattenAbSlides(children);
   // 🖼️ render, giving each slide its index
   return (
-    <div ref={trackRef} id={ctx.trackId} className={clsx(styles.track, className)} style={style} data-ab-part="track">
+    <div
+      ref={trackRef}
+      id={ctx.trackId}
+      className={clsx(styles.track, autoHeight && AB_MOTION.size, className)} // 🎬 0.2.3: height motion from ab-nextjs-animations
+      style={autoHeight && height != null ? { ...style, height: `${height}px` } : style} // 📏 0.2.3: the active slide's height
+      data-ab-part="track"
+      data-auto-height={autoHeight ? 'true' : undefined} // 📏 CSS: top-aligned slides + the height transition
+    >
       {slides.map((slide, i) => (
         // 🔢 index provider per slide (keys come from the consumer, else the position)
         <AbCarouselSlideIndexContext.Provider key={slide.key ?? i} value={i}>{slide}</AbCarouselSlideIndexContext.Provider>

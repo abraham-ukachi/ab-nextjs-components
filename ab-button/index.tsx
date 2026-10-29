@@ -72,7 +72,7 @@ export interface AbButtonProps {
   iconStyle?: CSSProperties; // 🎨 Material icon style
   rounded?: boolean; // 💊
   shape?: AbButtonShape; // 🔷 0.1.14 (P16): 'rounded' = Home 10px radius (overrides `rounded`)
-  size?: AbButtonSize; // 📏 0.1.14 (P16): 'md' = 40px / 44px on touch widths
+  size?: AbButtonSize; // 📏 0.1.14 (P16): 'md' = 40px / 44px on touch widths · 0.2.3: 'lg' = v6 CTA 52px / 56px ≥ 1180px
   raised?: boolean; // 🏔️
   shrinks?: boolean; // 🤏
   expands?: boolean; // 🔍
