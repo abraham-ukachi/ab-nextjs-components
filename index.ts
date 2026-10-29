@@ -116,6 +116,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbLocaleSwitcher', file: 'ab-locale-switcher/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbFlowDiagram)
   { name: 'AbFlowDiagram', file: 'ab-flow-diagram/index.tsx', kind: 'server', status: 'Done' },
+  // 🆕 0.2.3 Welcome v6 playground (AbPlaygroundScene)
+  { name: 'AbPlaygroundScene', file: 'ab-playground-scene/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbLink)
   { name: 'AbLink', file: 'ab-link/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 0.1.13 docs shell (AbKbd) — server-safe, no hooks

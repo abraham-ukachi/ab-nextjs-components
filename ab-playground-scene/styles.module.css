@@ -1,0 +1,82 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbPlaygroundScene - Styles (G38)
+* @file: ab-playground-scene/styles.module.css
+* @type: CSS module — transform/opacity/dash only (CLS 0)
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* ===== AB PLAYGROUND SCENE STYLES ===== */
+/* 🎨 John's welcome-v6 scene content classes (scenes.py css()), scoped to this module. No motion here:
+   wires, pulses and the ease dot all ride ab-nextjs-animations' wire classes (reduced motion included). */
+.scene { --pg-bronze: #a67c52; --pg-sage: #8a9a88; --pg-chip: #f3e6da; --pg-card2: var(--ab-color-card2, #fbf3ec); }
+:global(:is(.dark, [data-theme="dark"])) .scene { --pg-chip: #3a2b1f; --pg-card2: var(--ab-color-card2, #2c2118); }
+.m { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 12px; } /* 💻 */
+.mut { color: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); } /* 🖋️ */
+.br { color: var(--pg-bronze); } /* 🥉 */
+.sg { color: var(--pg-sage); } /* 🌿 */
+.t13 { font-size: 13px; font-weight: 600; } /* 🔡 */
+.zs { font-family: var(--ab-font-display, 'Zilla Slab', serif); font-weight: 700; letter-spacing: -0.01em; } /* 🔤 */
+.col { display: flex; flex-direction: column; align-items: center; gap: 8px; } /* 📐 */
+.logo { display: inline-flex; align-items: center; } /* 🅰️ */
+.logo :is(img, svg) { height: 100%; width: auto; } /* 🅰️ */
+.b1, .b2 { height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; width: 112px; box-sizing: border-box; } /* 🔘 */
+.b1 { background: var(--pg-bronze); color: #fff8f5; } /* 🔘 */
+.b2 { border: 1px solid var(--pg-bronze); color: var(--pg-bronze); } /* 🔘 */
+.tog { width: 50px; height: 28px; border-radius: 999px; background: var(--pg-bronze); position: relative; flex: none; display: block; } /* 🔛 */
+.tog::after { content: ""; position: absolute; right: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff8f5; box-shadow: 0 1px 3px rgb(0 0 0 / 0.3); } /* ⚪ */
+.seg { display: flex; background: var(--pg-chip); border-radius: 9px; padding: 3px; font-size: 12px; font-weight: 600; } /* 🎚️ */
+.seg > span { padding: 6px 11px; border-radius: 7px; color: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); display: inline-flex; align-items: center; } /* 🎚️ */
+.seg > span.on { background: var(--pg-bronze); color: #fff8f5; } /* 🎚️ */
+.sw { display: flex; gap: 8px; } /* 🎨 */
+.sw > i { display: block; border: 1px solid var(--ab-flow-line, rgb(107 79 53 / 0.16)); box-sizing: border-box; } /* 🎨 */
+.focus { width: 110px; height: 34px; border-radius: 9px; border: 2px solid var(--pg-bronze); box-shadow: 0 0 0 4px rgb(166 124 82 / 0.25); display: flex; align-items: center; justify-content: center; box-sizing: border-box; } /* ♿ */
+.focusSm { border: 2px solid var(--pg-bronze); border-radius: 7px; padding: 3px 9px; } /* ♿ */
+.sheetMock { width: 190px; height: 104px; border-radius: 12px; background: var(--pg-card2); position: relative; overflow: hidden; } /* 📄 */
+.sheetPanel { position: absolute; inset: auto 0 0; height: 64px; background: var(--ab-flow-node, #fff); border-top: 1px solid var(--ab-flow-line, rgb(107 79 53 / 0.16)); border-radius: 12px 12px 0 0; padding: 8px 12px; box-sizing: border-box; } /* 📄 */
+.sheetHandle { display: block; width: 34px; height: 4px; border-radius: 2px; background: var(--ab-flow-line, rgb(107 79 53 / 0.16)); margin: 0 auto 8px; } /* ➖ */
+.navMock { width: 190px; height: 56px; border-radius: 12px; background: var(--pg-card2); display: flex; justify-content: space-around; align-items: center; } /* 🧭 */
+.aa { width: 80px; height: 80px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 650; box-sizing: border-box; } /* 🅰️ */
+.aaLight { background: #fff8f5; border: 1px solid rgb(107 79 53 / 0.2); color: #211a16; } /* 🌞 */
+.aaDark { background: #19120c; border: 1px solid rgb(255 232 210 / 0.2); color: #f5ebe1; } /* 🌙 */
+.chipScheme { border-radius: 7px; padding: 4px 10px; } /* 🎨 */
+.radius { display: block; width: 30px; height: 30px; border: 2px solid var(--pg-bronze); box-sizing: border-box; } /* 🔲 */
+.iconGrid { display: grid; grid-template-columns: repeat(6, 38px); gap: 8px 10px; } /* 🔣 */
+.iconGrid > span { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 9px; } /* 🔣 */
+.iconGrid > span.iconOn { background: var(--pg-bronze); color: #fff8f5; } /* 🔣 */
+.bigDot { display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--pg-bronze); } /* ⚪ */
+.axis { stroke: var(--ab-flow-line, rgb(107 79 53 / 0.16)); } /* 📈 */
+/* 🎬 the ease dot = ab-nextjs-animations' .ab-wire-pulse shrunk to a zero-length round dash (ring + dot) */
+.easeRing.easeRing, .easeDot.easeDot { fill: none; stroke-linecap: round; stroke-dasharray: 0 100; } /* ⚪ */
+.easeRing { stroke: #fff8f5; } /* ⚪ v6 stroke */
+.easeDot { stroke: var(--pg-bronze); } /* 🥉 */
