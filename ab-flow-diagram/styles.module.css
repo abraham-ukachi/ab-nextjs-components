@@ -219,7 +219,7 @@
   font-size: 15px; font-weight: 600; white-space: nowrap; /* 🔡 */
 }
 .frameHeader .logo { height: 20px; } /* 🅰️ */
-.pkg { font: 500 12px var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); } /* 📦 v6 .pk */
+.pkg { font: 500 12px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); } /* 📦 v6 .pk */
 .frameLive {
   display: inline-flex; align-items: center; gap: 6px; margin-left: auto; /* ➡️ */
   font-size: 12px; font-weight: 500; color: var(--ab-color-sage, #8a9a88); /* 🌿 */
@@ -256,7 +256,7 @@
 .framed[data-variant='compact'] .richNode { border-radius: 11px; font-size: 13px; font-weight: 600; gap: 7px; } /* 📱 */
 .nodeCaption {
   position: absolute; top: -21px; left: 2px; /* 🏷️ v6 .lb */
-  font: 400 11px var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); white-space: nowrap;
+  font: 400 11px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); white-space: nowrap;
 }
 .framed[data-variant='compact'] .nodeCaption { font-size: 10px; top: -16px; } /* 📱 */
 .anchor {

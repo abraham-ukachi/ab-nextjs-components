@@ -1,0 +1,87 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbPlaygroundScene - Styles (G38)
+* @file: ab-playground-scene/styles.module.css
+* @type: CSS module — transform/opacity/dash only (CLS 0)
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* ===== AB PLAYGROUND SCENE · I18N (illustration 8) ===== */
+/* 🎬 John's approved proposal: the locale cycle as CSS keyframes (spec §5 #9). Named exception to the
+   "motion comes from ab-nextjs-animations" rule (see __tests__/motion-from-animations): the 4-slot cycle is
+   specific to this one illustration.
+   ⏱️ one 2.4s loop = 4 locales × 0.6s (EN → FR → ES → RU). Locale i is active in [i·0.6s, (i+1)·0.6s):
+      the greeting + t("hello") value fade in over 0.24s (10% of the loop), ease-out-cubic, 8px → 0 rise;
+      the bronze chip jumps instantly at each boundary.
+   ♿ reduced motion (OS, or data-ab-reduced-motion="true" = reducedMotion="always"): no animation, the still
+      frame shows the ACTIVE locale only (data-still), spec §4. */
+
+.greet { position: relative; display: block; } /* 📦 v6 .gr (size inline) */
+.word {
+  position: absolute; left: 0; right: 0; top: 0; text-align: center; white-space: nowrap; /* 📍 stacked, centred */
+  font-family: var(--ab-font-title, 'Mulish', sans-serif); font-weight: 700; letter-spacing: -0.01em; /* 🔤 Mulish 700 */
+  opacity: 0; /* 🙈 only the active / still word shows */
+}
+.word[data-still] { opacity: 1; } /* 🖼️ the still frame (SSR, reduced motion) */
+.tv { position: relative; display: inline-block; width: 66px; height: 16px; } /* 🏷️ v6 .tv */
+.valueWord.valueWord { right: auto; text-align: start; font-family: var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); font-weight: 400; letter-spacing: 0; } /* 💻 Roboto Mono */
+.lseg .chip { padding: 6px 11px; border-radius: 7px; color: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); } /* 🎚️ v6 .seg span */
+.ms .chip { padding: 5px 6px; } /* 📱 v6 .ms span */
+.chip[data-still] { background: #a67c52; color: #fff8f5; } /* 🥉 v6 .on */
+
+/* ▶️ the cycle (only when motion is allowed) */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.AbFlowDiagram:not([data-ab-reduced-motion="true"])) .word {
+    animation: abPgLocaleWord var(--ab-wire-pulse-duration, 2400ms) linear infinite; /* 🔁 */
+    animation-delay: calc(var(--ab-pg-locale-index, 0) * 600ms - 2400ms); /* ⏱️ phase: slot i starts at i·0.6s, no blank first loop */
+  }
+  :global(.AbFlowDiagram:not([data-ab-reduced-motion="true"])) .chip {
+    animation: abPgLocaleChip var(--ab-wire-pulse-duration, 2400ms) step-end infinite; /* ⚡ instant jumps */
+    animation-delay: calc(var(--ab-pg-locale-index, 0) * 600ms - 2400ms); /* ⏱️ */
+  }
+}
+/* ⏸️ inactive slide: hold the frame */
+:global([data-ab-paused="true"]) .word,
+:global([data-ab-paused="true"]) .chip { animation-play-state: paused; }
+
+/* 🎞️ keyframes (one slot = 25% of the loop) */
+@keyframes abPgLocaleWord {
+  0% { opacity: 0; transform: translateY(8px); animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1); } /* 🌅 ease-out-cubic */
+  10% { opacity: 1; transform: translateY(0); } /* ✅ 0.24s */
+  24.99% { opacity: 1; transform: translateY(0); } /* 👀 held */
+  25%, 100% { opacity: 0; transform: translateY(0); } /* 🙈 next locale */
+}
+@keyframes abPgLocaleChip {
+  0% { background: #a67c52; color: #fff8f5; } /* 🥉 on */
+  25%, 100% { background: transparent; color: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); } /* ⚪ off */
+}

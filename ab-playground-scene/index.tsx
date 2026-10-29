@@ -45,7 +45,7 @@ import AbFlowDiagram from '../ab-flow-diagram';
 // 🧱 John's scene data
 import { AB_PLAYGROUND_SCENE_PACKAGES, buildAbPlaygroundCompactScene, buildAbPlaygroundFullScene } from './scenes';
 // 🌍 labels
-import { resolveAbPlaygroundSceneLabels, type AbPlaygroundSceneLabelsInput, type AbPlaygroundSceneName } from './labels';
+import { AB_PLAYGROUND_LOCALES, resolveAbPlaygroundSceneLabels, type AbPlaygroundSceneLabelsInput, type AbPlaygroundSceneName } from './labels';
 // 🎨 content classes
 import styles from './styles.module.css';
 
@@ -65,7 +65,7 @@ export const AB_PLAYGROUND_FRAMES = {
 
 // ⚙️ props
 export interface AbPlaygroundSceneProps {
-  /** 🗂️ which package scene (John's v6 1–7; `i18n` is a placeholder). */
+  /** 🗂️ which package scene (John's v6 1–7, and illustration 8 `i18n`). */
   name: AbPlaygroundSceneName;
   /** 📐 `'full'` = 760×600 laptop scene, `'compact'` = 350×276 mobile scene. Default `'full'`. */
   variant?: 'full' | 'compact';
@@ -75,6 +75,11 @@ export interface AbPlaygroundSceneProps {
   labels?: AbPlaygroundSceneLabelsInput;
   /** 🅰️ logo for the header and hubs (default: the shipped Ab mark). */
   logo?: ReactNode;
+  /** ♿ `'always'` forces the still frame (like the OS reduced-motion setting); default `'auto'` follows the OS. */
+  reducedMotion?: 'auto' | 'always';
+  /** 🌍 i18n scene: the locale shown in the still frame (reduced motion / before CSS), e.g. the app's locale.
+   *  One of en · fr · es · ru (anything else → en). */
+  locale?: string;
   /** 🔁 pulse loops (default infinite; phones get 3 via the AbFlowDiagram token). */
   loops?: number | 'infinite';
   /** ⏱️ pulse loop ms (default 2400). */
@@ -89,11 +94,12 @@ export interface AbPlaygroundSceneProps {
  * Server-compatible (AbFlowDiagram's tiny scale island is the only client code). One accessible image (translated alt).
  */
 export function AbPlaygroundScene(props: AbPlaygroundSceneProps): ReactElement {
-  const { name, variant = 'full', active = true, labels, logo, loops, duration, className, style } = props;
+  const { name, variant = 'full', active = true, labels, logo, loops, duration, className, style, reducedMotion = 'auto', locale } = props;
+  const still = Math.max(0, AB_PLAYGROUND_LOCALES.indexOf((locale ?? 'en').slice(0, 2).toLowerCase() as never)); // 🖼️ the still locale
   const L = resolveAbPlaygroundSceneLabels(labels); // 🌍
   // eslint-disable-next-line @next/next/no-img-element -- 🖼️ inline data-URI SVG mark, nothing for next/image to optimize
   const mark = logo ?? <img src={AB_PLAYGROUND_MARK_SRC} alt="" />; // 🅰️
-  const data = (variant === 'compact' ? buildAbPlaygroundCompactScene : buildAbPlaygroundFullScene)(name, L, mark); // 🧱
+  const data = (variant === 'compact' ? buildAbPlaygroundCompactScene : buildAbPlaygroundFullScene)(name, L, mark, still); // 🧱
   return (
     <AbFlowDiagram
       nodes={data.nodes}
@@ -106,6 +112,7 @@ export function AbPlaygroundScene(props: AbPlaygroundSceneProps): ReactElement {
       live={L.live} // 🟢
       logo={mark} // 🅰️
       active={active} // ▶️
+      reducedMotion={reducedMotion} // ♿
       loops={loops}
       duration={duration}
       className={clsx('AbPlaygroundScene', styles.scene, className)}

@@ -72,6 +72,9 @@ export interface AbFlowDiagramProps {
   logo?: ReactNode;
   /** ⚓ 0.2.3: anchor dots at both ends of every frame wire (v6 `.anc`). Default true. */
   anchors?: boolean;
+  /** ♿ 0.2.3: `'always'` = the reduced-motion still frame regardless of the OS (sets data-ab-reduced-motion,
+   *  which ab-nextjs-animations honours). Default `'auto'` (the OS setting). */
+  reducedMotion?: 'auto' | 'always';
   alt: string; // ♿ one-sentence description (Welcome.sNN.illustrationAlt)
   title?: string; // 🏷️ card title, e.g. "Live Playground" (visual)
   caption?: string; // 🏷️ PKG label, e.g. "ab-nextjs-core" (visual, mono)
@@ -174,7 +177,7 @@ type FrameProps = AbFlowDiagramProps & { frame: AbFlowFrame };
  *  (`100cqw / w`) and the AbFlowFrameScale island; wires auto-route node → hub like John's route(). */
 function AbFlowFrameDiagram(props: FrameProps): ReactElement {
   // 🧩 props
-  const { nodes, edges = 'auto', frame, wires = [], alt, title, caption, live = false, active = true, loops = 'infinite', variant = 'full', posterAt = 0.45, duration = 2400, className, style, children, dotted = true, logo, anchors = true } = props;
+  const { nodes, edges = 'auto', frame, wires = [], alt, title, caption, live = false, active = true, loops = 'infinite', variant = 'full', posterAt = 0.45, duration = 2400, className, style, children, dotted = true, logo, anchors = true, reducedMotion = 'auto' } = props;
   const header = frame.header ?? 0; // 🏷️ header band px
   const hub = nodes.find((n) => n.tone === 'hub'); // 🎯
   const byId = new Map(nodes.map((n) => [n.id, n])); // 🗺️
@@ -207,6 +210,7 @@ function AbFlowFrameDiagram(props: FrameProps): ReactElement {
       data-ab-paused={String(!active)} // ⏸️ ab-nextjs-animations
       data-variant={variant} // 📐
       data-ab-frame="true" // 🖼️
+      data-ab-reduced-motion={reducedMotion === 'always' ? 'true' : undefined} // ♿ forced still
       data-ab-header={String(hasHeader)} // 🏷️
       data-ab-dotted={String(dotted)} // 🟤
     >
@@ -224,7 +228,9 @@ function AbFlowFrameDiagram(props: FrameProps): ReactElement {
         <svg className={styles.frameWires} viewBox={`0 0 ${frame.w} ${frame.h}`} width={frame.w} height={frame.h} focusable="false">
           {all.map((pts, i) => {
             const d = getAbFlowRoundedPath(pts, radius); // 〰️ v6 rounded()
-            const idx = { '--ab-wire-index': String(i) } as CSSProperties; // ⏱️
+            // ⏱️ stagger + ♿ the still frame of THIS wire: spec §4 shows t = posterAt with each wire offset by i/n
+            const still = ((Math.min(1, Math.max(0, posterAt)) + i / n) % 1) * 100; // 📍 0–100 along the wire
+            const idx = { '--ab-wire-index': String(i), '--ab-wire-poster': String(+(100 - still).toFixed(2)) } as CSSProperties;
             return (
               <g key={i} style={idx}>
                 <path className={clsx(styles.wireGlow, AB_WIRE_DRAW_CLASS)} d={d} pathLength={100} />{/* 🌫️ 7px halo */}

@@ -39,8 +39,12 @@
 // 🌍 every visible WORD in the scenes (code, package names and file names stay as they are, like the mock).
 //    Pass `labels={{ ... }}` (e.g. from next-intl / the Welcome messages) to translate; missing keys fall back to English.
 
-/** 🗂️ the 8 scene names (`i18n` is a placeholder until John's scene lands) */
+/** 🗂️ the 8 scene names (John's v6 1–7 + illustration 8 `i18n`) */
 export type AbPlaygroundSceneName = 'core' | 'components' | 'theme' | 'icons' | 'fonts' | 'animations' | 'hooks' | 'i18n';
+
+/** 🌍 the 4 demo locales of the i18n scene, in cycle order (EN → FR → ES → RU, 0.6s each) */
+export const AB_PLAYGROUND_LOCALES = ['en', 'fr', 'es', 'ru'] as const;
+export type AbPlaygroundLocale = (typeof AB_PLAYGROUND_LOCALES)[number];
 
 /** 🇬🇧 English defaults */
 export const AB_PLAYGROUND_SCENE_LABELS = {
@@ -54,7 +58,7 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
     fonts: 'Live playground: ab-nextjs-fonts wired to Zilla Slab, Inter weights, Inter, Mulish, Quicksand and Roboto samples.',
     animations: 'Live playground: an ease-out curve with a moving dot, wired to spring, duration, preset, reduced motion, Animate and stagger nodes.',
     hooks: 'Live playground: ab-nextjs-hooks wired to useTheme, useMedia, useHotkey, useLocalStorage, useMounted and useClipboard.',
-    i18n: 'Live playground: translations wired from message files to the locale switcher.',
+    i18n: 'Live playground: the AbI18nProvider hub greets in English, French, Spanish and Russian, wired to messages, the locale switcher, translations, the locale prefix, Intl formatting and hreflang alternates.',
   } as Record<AbPlaygroundSceneName, string>,
   // 🧱 core
   providerHub: 'provider hub', primitive: 'primitive', a11y: 'a11y', locale: 'locale', focusRing: 'Focus ring', focus: 'Focus',
@@ -75,15 +79,18 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
   reduceAnimations: 'reduce animations', list: 'list', stagger: 'stagger', transition: 'transition', fadeSlide: 'fade · slide',
   // 🪝 hooks
   keyboard: 'keyboard', storage: 'storage', copy: 'copy', hooks: 'Hooks',
-  // 🌍 i18n (placeholder)
-  messages: 'messages', switcher: 'switcher', hello: 'Hello', bonjour: 'Bonjour', hallo: 'Hallo', translations: 'translations',
+  // 🌍 i18n (John's illustration 8)
+  messages: 'messages', switcher: 'switcher', translations: 'translations', provider: 'provider', prefix: 'prefix',
+  intlFormat: 'Intl format',
+  /** 👋 the cycling greeting, one per demo locale (each in its OWN language, so usually left as is) */
+  greetings: { en: 'Hello', fr: 'Bonjour', es: 'Hola', ru: 'Привет' } as Record<AbPlaygroundLocale, string>,
 };
 
 /** 🌍 the label dictionary (nested `alt` may be partial too) */
 export type AbPlaygroundSceneLabels = typeof AB_PLAYGROUND_SCENE_LABELS;
-export type AbPlaygroundSceneLabelsInput = Partial<Omit<AbPlaygroundSceneLabels, 'alt'>> & { alt?: Partial<AbPlaygroundSceneLabels['alt']> };
+export type AbPlaygroundSceneLabelsInput = Partial<Omit<AbPlaygroundSceneLabels, 'alt' | 'greetings'>> & { alt?: Partial<AbPlaygroundSceneLabels['alt']>; greetings?: Partial<AbPlaygroundSceneLabels['greetings']> };
 
 /** 🔀 merge app labels over the English defaults */
 export function resolveAbPlaygroundSceneLabels(labels?: AbPlaygroundSceneLabelsInput): AbPlaygroundSceneLabels {
-  return { ...AB_PLAYGROUND_SCENE_LABELS, ...labels, alt: { ...AB_PLAYGROUND_SCENE_LABELS.alt, ...labels?.alt } };
+  return { ...AB_PLAYGROUND_SCENE_LABELS, ...labels, alt: { ...AB_PLAYGROUND_SCENE_LABELS.alt, ...labels?.alt }, greetings: { ...AB_PLAYGROUND_SCENE_LABELS.greetings, ...labels?.greetings } };
 }

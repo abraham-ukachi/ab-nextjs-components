@@ -68,7 +68,7 @@ const files = walk(root) // 🗂️
 afterEach(cleanup)
 
 describe('all component motion comes from ab-nextjs-animations 🎬', () => {
-  it('no CSS module declares its own transition / animation / @keyframes (AbSplash 0s failsafe timers excepted)', () => {
+  it('no CSS module declares its own transition / animation / @keyframes (AbSplash failsafe timers + the i18n locale cycle excepted)', () => {
     for (const f of files.filter((x) => x.endsWith('.module.css'))) {
       // 🧹 strip comments, then look for real declarations
       const css = read(f).replace(/\/\*[\s\S]*?\*\//g, '') // ✂️
@@ -76,6 +76,15 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
         // ⏱️ only the two zero-length failsafe timers remain (they flip visibility / overflow, nothing moves)
         expect(css.match(/animation:[^;]*;/g)).toEqual(['animation: abSplashFailsafe 0s linear 1.2s forwards;', 'animation: abSplashUnlock 0s linear 1.2s forwards;']) // ✅
         expect(css).not.toMatch(/transition\s*:/) // 🚫
+        continue
+      }
+      if (f === 'ab-playground-scene/i18n.module.css') {
+        // 🌍 named exception (John's approved proposal, Welcome illustration 8): the EN → FR → ES → RU locale cycle,
+        //    two keyframes, only under prefers-reduced-motion: no-preference, and never with data-ab-reduced-motion
+        expect(css.match(/@keyframes [a-zA-Z]+/g)).toEqual(['@keyframes abPgLocaleWord', '@keyframes abPgLocaleChip']) // ☝️ just these
+        expect(css).not.toMatch(/transition\s*:/) // 🚫
+        const motionBlock = css.slice(css.indexOf('@media (prefers-reduced-motion: no-preference)'), css.indexOf('@keyframes')) // ♿
+        expect(css.match(/animation:[^;]*;/g)).toHaveLength(2); expect(motionBlock.match(/animation:[^;]*;/g)).toHaveLength(2) // ✅ both gated
         continue
       }
       expect(css, f).not.toMatch(/(^|[;{\s])(transition|animation)(-[a-z-]+)?\s*:/m) // 🚫 transitions / animations

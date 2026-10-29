@@ -48,6 +48,8 @@ import { AB_WIRE_PULSE_CLASS } from 'ab-nextjs-animations/wire';
 import { AB_PLAYGROUND_ICON_NAMES, Avatar, Moon, Ms, Sun } from './icons';
 // 🌍 labels
 import type { AbPlaygroundSceneLabels, AbPlaygroundSceneName } from './labels';
+// 🌍 illustration 8
+import { buildI18nCompact, buildI18nFull } from './i18n';
 // 🎨 mock content classes (.m, .seg, .tog…)
 import s from './styles.module.css';
 
@@ -81,20 +83,23 @@ const Sw = ({ w, h, r, colors }: { w: number; h: number; r: number; colors: stri
 );
 const PALETTE = ['#6B4F35', '#A67C52', '#D9BE9C', '#FFF8F5', '#19120C']; // 🎨
 
+/** ♿ the ease dot's still: spec t = 0.45 → 0.45 / 0.75 = 60% along the curve (dashoffset 40) */
+const EASE_STILL = (w: number): CSSProperties => ({ strokeWidth: w, '--ab-wire-poster': '40', '--ab-wire-index': '0' }) as CSSProperties;
+
 /** 🎬 v6 ease curve + the dot that runs along it (the dot = an ab-wire-pulse zero-length dash) */
 function Ease({ w, h, d, small }: { w: number; h: number; d: string; small?: boolean }): ReactElement {
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} aria-hidden="true" style={{ overflow: 'visible' }}>
       {!small ? <><path d={`M10 ${h - 10} H${w - 10}`} className={s.axis} /><path d={`M10 ${h - 10} V10`} className={s.axis} /></> : null}
       <path d={d} fill="none" stroke={BRONZE} strokeWidth={small ? 2.2 : 2.5} />
-      <path d={d} pathLength={100} className={clsx(s.easeRing, AB_WIRE_PULSE_CLASS)} style={{ strokeWidth: small ? 13 : 18 }} />
-      <path d={d} pathLength={100} className={clsx(s.easeDot, AB_WIRE_PULSE_CLASS)} style={{ strokeWidth: small ? 10 : 14 }} />
+      <path d={d} pathLength={100} className={clsx(s.easeRing, AB_WIRE_PULSE_CLASS)} style={EASE_STILL(small ? 13 : 18)} />
+      <path d={d} pathLength={100} className={clsx(s.easeDot, AB_WIRE_PULSE_CLASS)} style={EASE_STILL(small ? 10 : 14)} />
     </svg>
   );
 }
 
 /** 🖥️ the 760×600 scenes (scenes.py `scene_nodes` k = 1…7) */
-export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode): AbPlaygroundSceneData {
+export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode, still = 0): AbPlaygroundSceneData {
   seq = 0;
   switch (name) {
     case 'core': return { nodes: [
@@ -168,20 +173,12 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
         N(520, 460, 200, 64, hk('useClipboard'), L.copy),
       ] };
     }
-    default: return { nodes: [ // 🌍 i18n placeholder (same grid as Hooks; John's scene to come)
-      N(260, 282, 240, 76, <><Ms n="globe" sz={26} col={BRONZE} /><Seg items={['en', 'fr', 'de']} /></>, L.switcher, true),
-      N(40, 110, 200, 64, <M>en.json</M>, L.messages),
-      N(280, 110, 200, 64, <M>fr.json</M>, L.messages),
-      N(520, 110, 200, 64, <M>de.json</M>, L.messages),
-      N(40, 460, 200, 64, <span className={s.t13}>{L.hello}</span>, 'en'),
-      N(280, 460, 200, 64, <span className={s.t13}>{L.bonjour}</span>, 'fr'),
-      N(520, 460, 200, 64, <span className={s.t13}>{L.hallo}</span>, 'de'),
-    ] };
+    default: return { nodes: buildI18nFull(N, L, still) }; // 🌍 John's illustration 8 (`still` = the reduced-motion locale)
   }
 }
 
 /** 📱 the 350×276 scenes (scenes.py `mscene_nodes` k = 1…7) */
-export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode): AbPlaygroundSceneData {
+export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode, still = 0): AbPlaygroundSceneData {
   seq = 0;
   const top = (c: ReactNode, lb = ''): AbFlowNode => N(14, 62, 150, 52, c, lb);
   const top2 = (c: ReactNode, lb = ''): AbFlowNode => N(186, 62, 150, 52, c, lb);
@@ -196,6 +193,6 @@ export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: Ab
     case 'fonts': return sc(hubn(<><span className={s.zs} style={{ fontSize: 30 }}>Aa</span><span style={{ fontSize: 22, fontWeight: 600 }}>Aa</span></>), top(<span className={s.zs} style={{ fontSize: 16 }}>Zilla Slab</span>, L.headings), top2(<span style={{ fontSize: 15 }}>Inter</span>, L.uiBody), bot(<span style={{ fontFamily: "'Mulish', var(--ab-font-sans, sans-serif)", fontSize: 15 }}>Mulish</span>, L.altSans));
     case 'animations': return sc(hubn(<Ease w={150} h={44} d="M4 40 C 60 40, 70 4, 146 4" small />, 180), top(<M>{L.spring}</M>, L.preset), top2(<M>240<span className={s.mut}>ms</span></M>, L.duration), bot(<M>{L.fadeSlide}</M>, L.transition));
     case 'hooks': return sc(hubn(<><Logo logo={logo} h={18} />{L.hooks}</>), top(<M><Br>useTheme</Br>()</M>), top2(<M><Br>useMedia</Br>()</M>), bot(<M><Br>useHotkey</Br>()</M>));
-    default: return sc(hubn(<><Ms n="globe" sz={18} col={BRONZE} /><Seg items={['en', 'fr']} style={{ fontSize: 11 }} /></>), top(<span className={s.t13}>{L.hello}</span>, 'en'), top2(<span className={s.t13}>{L.bonjour}</span>, 'fr'), bot(<M>messages/*.json</M>, L.translations));
+    default: return sc(...buildI18nCompact(N, L, still)); // 🌍 illustration 8, mobile
   }
 }

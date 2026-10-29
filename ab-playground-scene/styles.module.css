@@ -41,7 +41,7 @@
    wires, pulses and the ease dot all ride ab-nextjs-animations' wire classes (reduced motion included). */
 .scene { --pg-bronze: #a67c52; --pg-sage: #8a9a88; --pg-chip: #f3e6da; --pg-card2: var(--ab-color-card2, #fbf3ec); }
 :global(:is(.dark, [data-theme="dark"])) .scene { --pg-chip: #3a2b1f; --pg-card2: var(--ab-color-card2, #2c2118); }
-.m { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 12px; } /* 💻 */
+.m { font-family: var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); font-size: 12px; } /* 💻 */
 .mut { color: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); } /* 🖋️ */
 .br { color: var(--pg-bronze); } /* 🥉 */
 .sg { color: var(--pg-sage); } /* 🌿 */
