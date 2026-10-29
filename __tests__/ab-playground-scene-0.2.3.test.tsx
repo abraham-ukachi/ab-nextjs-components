@@ -69,7 +69,7 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
   })
   it('renders the header (title, mono package, live), 6 auto wires, translated alt', () => {
     const html = render({ name: 'theme' })
-    expect(html).toMatch(/aria-label="Live playground: the ThemeProvider/) // ♿
+    expect(html).toMatch(/aria-label="Live playground: the AbThemeModeProvider/) // ♿
     expect(html).toMatch(/>Live Playground</); expect(html).toMatch(/>ab-nextjs-theme</); expect(html).toMatch(/>live</) // 🏷️
     expect(html.match(/class="frameWire ab-wire-draw"/g)).toHaveLength(6) // 〰️
   })
@@ -99,5 +99,26 @@ describe('🎠 Welcome card surface', () => {
   it('AbPlaygroundScene points it at --ab-color-welcome-card (v6 #fff / #241a12 fallbacks)', () => {
     expect(scene).toContain('.scene { --ab-flow-card: var(--ab-color-welcome-card, #fff); }') // 🌞
     expect(scene).toMatch(/\.scene \{ --ab-flow-card: var\(--ab-color-welcome-card, #241a12\); \}/) // 🌙
+  })
+})
+
+// 🏷️ God 02:24: code captions are REAL Ab export names (checked against core / components / hooks / animations /
+//    fonts / i18n exports on Oct 29), never v6's short names (useTheme, <Button/>, <AbProvider>…)
+describe('🏷️ captions use real Ab export names', () => {
+  const REAL = new Set([
+    'AbPageProvider', 'AbAppLayout', 'AbMainLayout', 'useAbAsideToggle', 'AbDottedSurface', 'AbAsideLayout', 'AbLinearProgress', // 🧱 core
+    'AbButton', 'AbThemeToggle', 'AbTabs', 'AbBottomDrawer', 'AbAvatar', 'AbNavbar', 'AbThemeModeProvider', 'AbIcon', 'AbLocaleSwitcher', // 🧩 components
+    'AB_WIRE_PULSE_CLASS', // 🎬 animations
+    'useAbTheme', 'useAbMedia', 'useAbReducedMotion', 'useAbLocalStorage', 'useAbScrollSpy', 'useAbClipboard', // 🪝 hooks
+    'AbI18nProvider', 'useAbTranslations', 'localizeAbPathname', 'getAbAlternates', // 🌍 i18n
+  ])
+  const code = (c?: string) => c?.match(/^<(\w+)\/>$|^(\w+)\(\)$|^([A-Z_]+)$/)?.slice(1).find(Boolean) // 🔍 <X/> · x() · X_Y
+  it.each(names)('%s: every code caption (full + compact) is a real export', (name) => {
+    for (const b of [buildAbPlaygroundFullScene, buildAbPlaygroundCompactScene])
+      for (const n of b(name, L, null).nodes) { const c = code(n.caption); if (c) expect(REAL.has(c), `${name}: ${n.caption}`).toBe(true) } // ✅
+  })
+  it('no v6 short names are left in any scene', () => {
+    const h = names.map((name) => render({ name }) + render({ name, variant: 'compact' })).join('') // 🖨️
+    expect(h).not.toMatch(/&lt;(AbProvider|Slot|Portal|Button|Switch|Tabs|Sheet|Avatar|BottomNav|ThemeProvider|Icon|Animate)\/?&gt;|>use(Theme|Media|Hotkey|LocalStorage|Mounted|Clipboard)</) // 🚫
   })
 })

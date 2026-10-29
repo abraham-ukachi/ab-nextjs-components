@@ -102,30 +102,31 @@ function Ease({ w, h, d, small }: { w: number; h: number; d: string; small?: boo
 export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode, still = 0): AbPlaygroundSceneData {
   seq = 0;
   switch (name) {
+    // 🧱 0.2.3 (God 02:24): every caption is a REAL ab-nextjs-core export (v6's AbProvider / Slot / Portal never existed)
     case 'core': return { nodes: [
-      N(250, 282, 260, 76, <><Logo logo={logo} h={26} /><M className={s.t13}>&lt;AbProvider&gt;</M></>, L.providerHub, true),
-      N(40, 104, 190, 92, <div className={s.m} style={{ lineHeight: 1.7 }}><Br>{L.config}</Br> = {'{'}<br />&nbsp;theme: <Sg>&quot;bronze&quot;</Sg>,<br />&nbsp;locale: <Sg>&quot;en&quot;</Sg> {'}'}</div>, 'ab.config.ts'),
-      N(300, 112, 160, 60, <><M>&lt;Slot/&gt;</M><Seg items={['asChild']} style={{ fontSize: 11 }} /></>, L.primitive),
-      N(530, 104, 190, 92, <div className={s.col}><Seg items={[L.client, L.server]} /><M className={s.mut}>{L.ssrSafe}</M></div>, '"use client"'),
-      N(40, 450, 200, 70, <span className={clsx(s.t13, s.focus)}>{L.focusRing}</span>, L.a11y),
-      N(290, 460, 180, 56, <><M>&lt;Portal/&gt;</M><M className={s.mut}>→ body</M></>, L.primitive),
-      N(530, 450, 190, 70, <><M><Br>dir</Br>=&quot;ltr&quot;</M><Seg items={['en', 'fr']} style={{ fontSize: 11 }} /></>, L.locale),
+      N(250, 282, 260, 76, <><Logo logo={logo} h={26} /><M className={s.t13}>&lt;AbPageProvider&gt;</M></>, L.providerHub, true),
+      N(40, 104, 190, 92, <div className={s.m} style={{ lineHeight: 1.7 }}>variant=<Sg>&quot;panes&quot;</Sg><br />mainHeaderAt=<Sg>&quot;all&quot;</Sg><br />asideBelow=<Sg>&quot;hidden&quot;</Sg></div>, '<AbAppLayout/>'),
+      N(300, 112, 160, 60, <div className={s.paneMock}><i className={s.paneHead} /><i className={s.paneBody} /></div>, '<AbMainLayout/>'),
+      N(530, 104, 190, 92, <div className={s.col}><Seg items={[L.open, L.closed]} /><M className={s.mut}>{L.drawerBelow}</M></div>, 'useAbAsideToggle()'),
+      N(40, 450, 200, 70, <span className={s.dotSwatch} />, '<AbDottedSurface/>'),
+      N(290, 460, 180, 56, <><M><Br>aria-label</Br></M><M className={s.mut}>{L.aside}</M></>, '<AbAsideLayout/>'),
+      N(530, 450, 190, 70, <span className={s.progress}><i /></span>, '<AbLinearProgress/>'),
     ] };
     case 'components': return { nodes: [
       N(250, 288, 260, 70, <><Logo logo={logo} h={24} /><M className={s.t13}>ab‑nextjs‑components</M></>, '', true),
-      N(40, 96, 150, 104, <div className={s.col}><span className={s.b1}>{L.primary}</span><span className={s.b2}>{L.outline}</span></div>, '<Button/>'),
-      N(240, 118, 140, 58, <><Tog /><span className={s.t13}>{L.dark}</span></>, '<Switch/>'),
-      N(430, 116, 290, 62, <Seg items={[L.preview, L.code, L.props]} style={{ background: 'transparent' }} />, '<Tabs/>'),
-      N(40, 430, 220, 130, <div className={s.sheetMock}><div className={s.sheetPanel}><i className={s.sheetHandle} /><div className={s.t13} style={{ fontSize: 12 }}>{L.shareSheet}</div></div></div>, '<Sheet/>'),
-      N(310, 450, 140, 90, <span style={{ width: 52, height: 52, display: 'block' }}><Avatar /></span>, '<Avatar/>'),
-      N(500, 440, 220, 110, <div className={s.navMock}><Ms n="home" col={BRONZE} /><Ms n="search" /><Ms n="heart" /><Ms n="user" /></div>, '<BottomNav/>'),
+      N(40, 96, 150, 104, <div className={s.col}><span className={s.b1}>{L.primary}</span><span className={s.b2}>{L.outline}</span></div>, '<AbButton/>'),
+      N(240, 118, 140, 58, <><Seg items={[<Sun key="s" />, <Moon key="m" />]} on={1} /><span className={s.t13}>{L.dark}</span></>, '<AbThemeToggle/>'),
+      N(430, 116, 290, 62, <Seg items={[L.preview, L.code, L.props]} style={{ background: 'transparent' }} />, '<AbTabs/>'),
+      N(40, 430, 220, 130, <div className={s.sheetMock}><div className={s.sheetPanel}><i className={s.sheetHandle} /><div className={s.t13} style={{ fontSize: 12 }}>{L.shareSheet}</div></div></div>, '<AbBottomDrawer/>'),
+      N(310, 450, 140, 90, <span style={{ width: 52, height: 52, display: 'block' }}><Avatar /></span>, '<AbAvatar/>'),
+      N(500, 440, 220, 110, <div className={s.navMock}><Ms n="home" col={BRONZE} /><Ms n="search" /><Ms n="heart" /><Ms n="user" /></div>, '<AbNavbar/>'),
     ] };
     case 'theme': return { nodes: [
-      N(230, 280, 300, 84, <Sw w={28} h={36} r={8} colors={PALETTE} />, '<ThemeProvider/>', true),
-      N(40, 100, 210, 104, <div className={s.m} style={{ lineHeight: 1.75 }}><Br>--color-primary</Br><br />#A67C52<br /><Br>--pane-dark</Br> #6B4F35</div>, 'tokens.css'),
+      N(230, 280, 300, 84, <Sw w={28} h={36} r={8} colors={PALETTE} />, '<AbThemeModeProvider/>', true),
+      N(40, 100, 210, 104, <div className={s.m} style={{ lineHeight: 1.75 }}><Br>--ab-color-bronze</Br><br />#A67C52<br /><Br>--ab-color-welcome-pane</Br></div>, 'ab-tokens.css'),
       N(300, 120, 160, 62, <Seg items={[<Sun key="s" />, <Moon key="m" />]} on={1} />, 'color-scheme'),
       N(510, 96, 210, 110, <div style={{ display: 'flex', gap: 10 }}><span className={clsx(s.aa, s.aaLight)}>Aa</span><span className={clsx(s.aa, s.aaDark)}>Aa</span></div>, L.lightDark),
-      N(40, 450, 210, 80, <div style={{ display: 'flex', gap: 10, alignItems: 'flex-end' }}>{[4, 10, 16].map((r) => <i key={r} className={s.radius} style={{ borderRadius: r }} />)}</div>, '--radius'),
+      N(40, 450, 210, 80, <div style={{ display: 'flex', gap: 10, alignItems: 'flex-end' }}>{[4, 10, 16].map((r) => <i key={r} className={s.radius} style={{ borderRadius: r }} />)}</div>, '--ab-radius-*'),
       N(300, 456, 160, 64, <M><Sg>AAA</Sg> 7.2 : 1</M>, L.contrast),
       N(510, 450, 210, 80, <><M>@theme {'{'} <Br>…</Br> {'}'}</M><M className={s.mut}>v4</M></>, 'tailwind'),
     ] };
@@ -133,20 +134,20 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
       N(220, 260, 320, 128, <div className={s.iconGrid}>{AB_PLAYGROUND_ICON_NAMES.map((n, i) => <span key={n} className={i === 5 ? s.iconOn : undefined}><Ms n={n} /></span>)}</div>, L.iconSet, true),
       N(40, 104, 200, 84, <div style={{ display: 'flex', gap: 16, alignItems: 'flex-end' }}><Ms n="star" sz={16} /><Ms n="star" sz={20} /><Ms n="star" sz={24} /><Ms n="star" sz={32} col={BRONZE} /></div>, L.size),
       N(290, 112, 180, 64, <Seg items={[L.outlined, L.rounded]} />, L.variant),
-      N(520, 104, 200, 84, <M>&lt;<Br>Icon</Br> name=<Sg>&quot;bolt&quot;</Sg>/&gt;</M>, '<Icon/>'),
+      N(520, 104, 200, 84, <M>&lt;<Br>AbIcon</Br> name=<Sg>&quot;bolt&quot;</Sg>/&gt;</M>, '<AbIcon/>'),
       N(40, 456, 200, 70, <><M>{L.treeShaken}</M><M className={s.br}>1.2 kB</M></>, L.bundle),
       N(290, 456, 180, 70, <><Ms n="heart" sz={26} col={BRONZE} /><M>fill=1</M></>, L.fillAxis),
-      N(520, 456, 200, 70, <><M className={s.mut}>{L.import}</M><M>{'{'} <Br>Home</Br> {'}'}</M></>, L.typed),
+      N(520, 456, 200, 70, <><M className={s.mut}>{L.import}</M><M>…/icons/<Br>home</Br></M></>, L.typed),
     ] };
     case 'fonts': {
       const sp = (fam: string, nm: string, w: number): ReactElement => (
-        <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span style={{ fontFamily: fam, fontSize: 22, fontWeight: w }}>{nm}</span><M className={s.mut}>{`font-${nm.toLowerCase()}-*`}</M></div>
+        <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span style={{ fontFamily: fam, fontSize: 22, fontWeight: w }}>{nm}</span><M className={s.mut}>{`${nm[0].toLowerCase()}${nm.slice(1)}Styles`}</M></div>
       );
       return { nodes: [
         N(250, 262, 260, 120, <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}><span className={s.zs} style={{ fontSize: 64, lineHeight: 1 }}>Aa</span><span style={{ fontSize: 40, fontWeight: 600 }}>Aa</span></div>, 'ab-nextjs-fonts', true),
-        N(40, 100, 210, 96, <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span className={s.zs} style={{ fontSize: 24 }}>Zilla Slab</span><M className={s.mut}>{L.headingsBold}</M></div>, L.display),
+        N(40, 100, 210, 96, <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span className={s.zs} style={{ fontSize: 24 }}>Zilla Slab</span><M className={s.mut}>zillaSlabStyles</M></div>, L.display),
         N(300, 112, 160, 64, <>{[400, 600, 700].map((w) => <span key={w} style={{ fontWeight: w, fontSize: 22 }}>a</span>)}</>, L.interWeights),
-        N(510, 100, 210, 96, <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span style={{ fontSize: 22, fontWeight: 600 }}>Inter</span><M className={s.mut}>{L.uiBody}</M></div>, L.sans),
+        N(510, 100, 210, 96, <div className={s.col} style={{ gap: 2, alignItems: 'flex-start' }}><span style={{ fontSize: 22, fontWeight: 600 }}>Inter</span><M className={s.mut}>interStyles</M></div>, L.sans),
         N(40, 456, 210, 74, sp("'Mulish', var(--ab-font-sans, sans-serif)", 'Mulish', 600), L.altSans),
         N(300, 456, 160, 74, sp("'Quicksand', var(--ab-font-sans, sans-serif)", 'Quicksand', 600), L.roundedFont),
         N(510, 456, 210, 74, sp("'Roboto', var(--ab-font-sans, sans-serif)", 'Roboto', 500), L.neutral),
@@ -158,19 +159,20 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
       N(300, 112, 160, 64, <M>240<span className={s.mut}>ms</span></M>, L.duration),
       N(510, 104, 210, 84, <Seg items={[L.fade, L.slide, L.scale]} />, L.preset),
       N(40, 456, 230, 74, <><M>{L.reduceAnimations}</M><Tog /></>, L.a11y),
-      N(320, 456, 140, 74, <span className={s.bigDot} />, '<Animate/>'),
+      N(320, 456, 140, 74, <span className={s.bigDot} />, 'AB_WIRE_PULSE_CLASS'),
       N(510, 456, 210, 74, <M>{L.stagger} <Br>40ms</Br></M>, L.list),
     ] };
     case 'hooks': {
       const hk = (a: string, b: ReactNode = ''): ReactElement => <M><Br>{a}</Br>({b})</M>;
       return { nodes: [
         N(260, 286, 240, 72, <><Logo logo={logo} h={24} /><M className={s.t13}>ab‑nextjs‑hooks</M></>, '', true),
-        N(40, 110, 200, 64, hk('useTheme'), '→ "dark"'),
-        N(280, 110, 200, 64, hk('useMedia', <Sg>&quot;md&quot;</Sg>), '→ true'),
-        N(520, 110, 200, 64, hk('useHotkey', <Sg>&quot;mod+k&quot;</Sg>), L.keyboard),
-        N(40, 460, 200, 64, hk('useLocalStorage', 'k'), L.storage),
-        N(280, 460, 200, 64, hk('useMounted'), L.ssrSafe),
-        N(520, 460, 200, 64, hk('useClipboard'), L.copy),
+        // 🪝 0.2.3 (God 02:24): real ab-nextjs-hooks exports (v6's useTheme / useHotkey / useMounted are not Ab names)
+        N(40, 110, 200, 64, hk('useAbTheme'), '→ "dark"'),
+        N(280, 110, 200, 64, hk('useAbMedia', <Sg>&quot;md&quot;</Sg>), '→ true'),
+        N(520, 110, 200, 64, hk('useAbReducedMotion'), L.a11y),
+        N(40, 460, 200, 64, hk('useAbLocalStorage', 'k'), L.storage),
+        N(280, 460, 200, 64, hk('useAbScrollSpy'), L.scrollSpy),
+        N(520, 460, 200, 64, hk('useAbClipboard'), L.copy),
       ] };
     }
     default: return { nodes: buildI18nFull(N, L, still) }; // 🌍 John's illustration 8 (`still` = the reduced-motion locale)
@@ -186,13 +188,13 @@ export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: Ab
   const hubn = (c: ReactNode, w = 170, h = 56): AbFlowNode => N(175 - w / 2, 136, w, h, c, '', true);
   const sc = (...n: AbFlowNode[]): AbPlaygroundSceneData => ({ nodes: n });
   switch (name) {
-    case 'core': return sc(hubn(<M>&lt;AbProvider&gt;</M>), top(<M><Br>{L.config}</Br></M>, 'ab.config'), top2(<M>&lt;Slot/&gt;</M>, L.primitive), bot(<span className={s.focusSm}>{L.focus}</span>, L.a11y));
-    case 'components': return sc(hubn(<><Logo logo={logo} h={18} />{L.components}</>), top(<span className={s.b1} style={{ width: 96, height: 30 }}>{L.button}</span>, '<Button/>'), top2(<Tog />, '<Switch/>'), bot(<Seg items={[L.tabs, L.code]} style={{ fontSize: 11 }} />, '<Tabs/>'));
-    case 'theme': return sc(hubn(<Sw w={20} h={26} r={6} colors={PALETTE} />), top(<span className={clsx(s.chipScheme, s.aaLight)}>{L.light}</span>, L.scheme), top2(<span className={clsx(s.chipScheme, s.aaDark)}>{L.darkChip}</span>, L.scheme), bot(<M>--radius</M>, 'tokens.css'));
-    case 'icons': return sc(hubn(<div style={{ display: 'flex', gap: 9 }}>{['home', 'search', 'heart', 'bolt', 'user'].map((n) => <Ms key={n} n={n} sz={20} />)}</div>, 190), top(<M>&lt;<Br>Icon</Br>/&gt;</M>, L.typed), top2(<><Ms n="star" sz={14} /><Ms n="star" sz={20} /><Ms n="star" sz={26} col={BRONZE} /></>, L.size), bot(<M>1.2 kB</M>, L.treeShaken));
+    case 'core': return sc(hubn(<><Logo logo={logo} h={18} /><M>&lt;AbPageProvider&gt;</M></>, 200), top(<M>variant=<Sg>&quot;panes&quot;</Sg></M>, '<AbAppLayout/>'), top2(<Seg items={[L.open, L.closed]} style={{ fontSize: 11 }} />, 'useAbAsideToggle()'), bot(<span className={s.dotSwatch} style={{ width: 110, height: 30 }} />, '<AbDottedSurface/>')); // 🧱 real core exports
+    case 'components': return sc(hubn(<><Logo logo={logo} h={18} />{L.components}</>), top(<span className={s.b1} style={{ width: 96, height: 30 }}>{L.button}</span>, '<AbButton/>'), top2(<Seg items={[<Sun key="s" />, <Moon key="m" />]} on={1} />, '<AbThemeToggle/>'), bot(<Seg items={[L.tabs, L.code]} style={{ fontSize: 11 }} />, '<AbTabs/>'));
+    case 'theme': return sc(hubn(<Sw w={20} h={26} r={6} colors={PALETTE} />), top(<span className={clsx(s.chipScheme, s.aaLight)}>{L.light}</span>, L.scheme), top2(<span className={clsx(s.chipScheme, s.aaDark)}>{L.darkChip}</span>, L.scheme), bot(<M>--ab-radius-card</M>, 'ab-tokens.css'));
+    case 'icons': return sc(hubn(<div style={{ display: 'flex', gap: 9 }}>{['home', 'search', 'heart', 'bolt', 'user'].map((n) => <Ms key={n} n={n} sz={20} />)}</div>, 190), top(<M>&lt;<Br>AbIcon</Br>/&gt;</M>, L.typed), top2(<><Ms n="star" sz={14} /><Ms n="star" sz={20} /><Ms n="star" sz={26} col={BRONZE} /></>, L.size), bot(<M>1.2 kB</M>, L.treeShaken));
     case 'fonts': return sc(hubn(<><span className={s.zs} style={{ fontSize: 30 }}>Aa</span><span style={{ fontSize: 22, fontWeight: 600 }}>Aa</span></>), top(<span className={s.zs} style={{ fontSize: 16 }}>Zilla Slab</span>, L.headings), top2(<span style={{ fontSize: 15 }}>Inter</span>, L.uiBody), bot(<span style={{ fontFamily: "'Mulish', var(--ab-font-sans, sans-serif)", fontSize: 15 }}>Mulish</span>, L.altSans));
     case 'animations': return sc(hubn(<Ease w={150} h={44} d="M4 40 C 60 40, 70 4, 146 4" small />, 180), top(<M>{L.spring}</M>, L.preset), top2(<M>240<span className={s.mut}>ms</span></M>, L.duration), bot(<M>{L.fadeSlide}</M>, L.transition));
-    case 'hooks': return sc(hubn(<><Logo logo={logo} h={18} />{L.hooks}</>), top(<M><Br>useTheme</Br>()</M>), top2(<M><Br>useMedia</Br>()</M>), bot(<M><Br>useHotkey</Br>()</M>));
+    case 'hooks': return sc(hubn(<><Logo logo={logo} h={18} />{L.hooks}</>), top(<M><Br>useAbTheme</Br>()</M>), top2(<M><Br>useAbMedia</Br>()</M>), bot(<M><Br>useAbClipboard</Br>()</M>)); // 🪝 real exports
     default: return sc(...buildI18nCompact(N, L, still)); // 🌍 illustration 8, mobile
   }
 }

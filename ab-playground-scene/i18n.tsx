@@ -109,7 +109,7 @@ export function buildI18nFull(N: Mk, L: AbPlaygroundSceneLabels, still: number) 
     N(40, 100, 210, 96, <div className={s.m} style={{ lineHeight: 1.7 }}>messages/<Br>en</Br>.json<br />{'{'} <Br>&quot;hello&quot;</Br>:<br />&nbsp;&nbsp;<Sg>&quot;{L.greetings.en}&quot;</Sg> {'}'}</div>, L.messages),
     N(290, 116, 180, 60, <AbPgLocaleSeg fs={11} still={still} />, '<AbLocaleSwitcher/>'),
     N(510, 104, 210, 84, <><M><Br>t</Br>(&quot;hello&quot;) →</M><AbPgValue L={L} still={still} /></>, 'useAbTranslations()'),
-    N(40, 456, 210, 74, <><M>/<Br>fr</Br>/docs</M><M className={s.mut}>{L.prefix}</M></>, '<AbLocalePrefix/>'),
+    N(40, 456, 210, 74, <><M>/<Br>fr</Br>/docs</M><M className={s.mut}>{L.prefix}</M></>, 'localizeAbPathname()'),
     N(290, 456, 180, 74, <M>1 234,5 €</M>, L.intlFormat),
     N(510, 456, 210, 74, <M>hreflang <Br>×4</Br></M>, 'getAbAlternates()'),
   ];

@@ -51,18 +51,19 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
   title: 'Live Playground', // 🏷️ header
   live: 'live', // 🟢 header
   alt: {
-    core: 'Live playground: the AbProvider hub wired to config, Slot, client/server, focus ring, Portal and locale nodes.',
-    components: 'Live playground: ab-nextjs-components wired to Button, Switch, Tabs, Sheet, Avatar and BottomNav previews.',
-    theme: 'Live playground: the ThemeProvider palette wired to tokens, colour scheme, light and dark, radius, contrast and Tailwind nodes.',
-    icons: 'Live playground: an icon set wired to size, variant, Icon, bundle, fill axis and typed import nodes.',
+    core: 'Live playground: the AbPageProvider hub wired to AbAppLayout, AbMainLayout, useAbAsideToggle, AbDottedSurface, AbAsideLayout and AbLinearProgress.',
+    components: 'Live playground: ab-nextjs-components wired to AbButton, AbThemeToggle, AbTabs, AbBottomDrawer, AbAvatar and AbNavbar previews.',
+    theme: 'Live playground: the AbThemeModeProvider palette wired to tokens, colour scheme, light and dark, radius, contrast and Tailwind nodes.',
+    icons: 'Live playground: an icon set wired to size, variant, AbIcon, bundle, fill axis and typed import nodes.',
     fonts: 'Live playground: ab-nextjs-fonts wired to Zilla Slab, Inter weights, Inter, Mulish, Quicksand and Roboto samples.',
-    animations: 'Live playground: an ease-out curve with a moving dot, wired to spring, duration, preset, reduced motion, Animate and stagger nodes.',
-    hooks: 'Live playground: ab-nextjs-hooks wired to useTheme, useMedia, useHotkey, useLocalStorage, useMounted and useClipboard.',
+    animations: 'Live playground: an ease-out curve with a moving dot, wired to spring, duration, preset, reduced motion, the wire pulse and stagger nodes.',
+    hooks: 'Live playground: ab-nextjs-hooks wired to useAbTheme, useAbMedia, useAbReducedMotion, useAbLocalStorage, useAbScrollSpy and useAbClipboard.',
     i18n: 'Live playground: the AbI18nProvider hub greets in English, French, Spanish and Russian, wired to messages, the locale switcher, translations, the locale prefix, Intl formatting and hreflang alternates.',
   } as Record<AbPlaygroundSceneName, string>,
   // 🧱 core
   providerHub: 'provider hub', primitive: 'primitive', a11y: 'a11y', locale: 'locale', focusRing: 'Focus ring', focus: 'Focus',
   client: 'client', server: 'server', ssrSafe: 'SSR‑safe', config: 'config',
+  open: 'open', closed: 'closed', drawerBelow: 'drawer ≤ 1179px', aside: 'aside landmark', // 🧱 0.2.3 real-export core scene
   // 🧩 components
   primary: 'Primary', outline: 'Outline', button: 'Button', dark: 'Dark', preview: 'Preview', code: 'Code', props: 'Props',
   shareSheet: 'Share sheet', tabs: 'Tabs', components: 'Components',
@@ -78,7 +79,7 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
   easeOut: 'ease‑out', spring: 'spring', duration: 'duration', preset: 'preset', fade: 'fade', slide: 'slide', scale: 'scale',
   reduceAnimations: 'reduce animations', list: 'list', stagger: 'stagger', transition: 'transition', fadeSlide: 'fade · slide',
   // 🪝 hooks
-  keyboard: 'keyboard', storage: 'storage', copy: 'copy', hooks: 'Hooks',
+  keyboard: 'keyboard', storage: 'storage', copy: 'copy', hooks: 'Hooks', scrollSpy: 'scroll spy',
   // 🌍 i18n (John's illustration 8)
   messages: 'messages', switcher: 'switcher', translations: 'translations', provider: 'provider', prefix: 'prefix',
   intlFormat: 'Intl format',

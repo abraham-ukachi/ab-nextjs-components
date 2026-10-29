@@ -54,7 +54,7 @@ describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
   it('full: John’s rects (hub 230,270 300×104 + 6 nodes) and captions', () => {
     const n = buildAbPlaygroundFullScene('i18n', L, null).nodes
     expect(n.map((x) => [x.x, x.y, x.w, x.h])).toEqual([[230, 270, 300, 104], [40, 100, 210, 96], [290, 116, 180, 60], [510, 104, 210, 84], [40, 456, 210, 74], [290, 456, 180, 74], [510, 456, 210, 74]]) // 🎯
-    expect(n.map((x) => x.caption)).toEqual(['provider', 'messages', '<AbLocaleSwitcher/>', 'useAbTranslations()', '<AbLocalePrefix/>', 'Intl format', 'getAbAlternates()']) // 🏷️
+    expect(n.map((x) => x.caption)).toEqual(['provider', 'messages', '<AbLocaleSwitcher/>', 'useAbTranslations()', 'localizeAbPathname()', 'Intl format', 'getAbAlternates()']) // 🏷️
   })
   it('compact: hub 80,136 190×56 + switcher / prefix / translations', () => {
     const n = buildAbPlaygroundCompactScene('i18n', L, null).nodes
