@@ -183,7 +183,7 @@
   border-color: var(--ab-flow-line, rgb(107 79 53 / 0.16)); /* ➖ v6 --line */
   box-shadow: 0 30px 80px -30px var(--ab-flow-shadow, rgb(107 79 53 / 0.25)); /* 🌫️ v6 */
   --ab-flow-line: rgb(107 79 53 / 0.16); /* ➖ */
-  --ab-flow-node: var(--ab-flow-card, var(--ab-color-card, #fff)); /* 🔵 v6 --node */
+  --ab-flow-node: var(--ab-color-welcome-node, var(--ab-flow-card, var(--ab-color-card, #fff))); /* 🔵 v6 --node (theme ≥ 0.3.7 token) */
   --ab-flow-muted: var(--ab-color-muted, rgb(33 26 22 / 0.62)); /* 🖋️ v6 --mut */
   --ab-flow-wire: #a67c52; /* 🥉 v6 wire */
   --ab-flow-pulse-core: #ffe6c7; /* ⚪ v6 .pt */
@@ -191,7 +191,7 @@
 .framed[data-variant='compact'] { border-radius: 18px; } /* 📱 v6 .mpg */
 :global(:is(.dark, [data-theme="dark"])) .framed {
   --ab-flow-line: rgb(255 232 210 / 0.1); /* ➖ */
-  --ab-flow-node: #2a1f17; /* 🔵 v6 dark node */
+  --ab-flow-node: var(--ab-color-welcome-node, #2a1f17); /* 🔵 v6 dark node (theme ≥ 0.3.7 token) */
   --ab-flow-muted: rgb(245 235 225 / 0.62); /* 🖋️ */
   --ab-flow-shadow: rgb(0 0 0 / 0.6); /* 🌫️ */
 }
@@ -256,8 +256,11 @@
 .framed[data-variant='compact'] .richNode { border-radius: 11px; font-size: 13px; font-weight: 600; gap: 7px; } /* 📱 */
 .nodeCaption {
   position: absolute; top: -21px; left: 2px; /* 🏷️ v6 .lb */
-  font: 400 11px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); white-space: nowrap;
+  font: 400 10.5px var(--ab-font-code, 'Roboto Mono', var(--ab-font-mono, ui-monospace, monospace)); color: var(--ab-flow-muted); white-space: nowrap;
+  /* 🏷️ spec rev 2: the label sits on a small card chip, so wires pass BEHIND it (v6 let wires cross labels) */
+  background: var(--ab-flow-card, var(--ab-color-card, #fff)); padding: 0 4px; margin-left: -4px; border-radius: 4px; z-index: 1;
 }
+.nodeCaption[data-at='beside-centre'] { left: calc(50% + 9px); margin-left: 0; } /* 📱 spec rev 2: right of the centre wire */
 .framed[data-variant='compact'] .nodeCaption { font-size: 10px; top: -16px; } /* 📱 */
 .anchor {
   position: absolute; width: 9px; height: 9px; border-radius: 50%; /* ⚓ v6 .anc */

@@ -248,7 +248,7 @@ function AbFlowFrameDiagram(props: FrameProps): ReactElement {
             data-tone={nd.tone ?? 'node'}
             style={{ left: nd.x, top: nd.y, width: nd.w, height: nd.h }} // 📍 v6 rect, px
           >
-            {nd.caption ? <span className={styles.nodeCaption}>{nd.caption}</span> : null}{/* 🏷️ v6 .lb */}
+            {nd.caption ? <span className={styles.nodeCaption} data-at={nd.captionAt ?? 'start'}>{nd.caption}</span> : null}{/* 🏷️ v6 .lb (spec rev 2: on a card chip) */}
             {nd.content ?? (<>{nd.icon ? <span className={styles.nodeIcon}>{nd.icon}</span> : null}{nd.label ? <span>{nd.label}</span> : null}</>)}
           </div>
         ))}

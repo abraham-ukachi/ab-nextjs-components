@@ -97,6 +97,47 @@
 .pnode { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; width: 100%; padding: 0 14px; box-sizing: border-box; } /* 📦 v6 pnode */
 .swSm { display: block; width: 18px; height: 24px; border-radius: 5px; border: 1px solid var(--ab-flow-line, rgb(107 79 53 / 0.16)); box-sizing: border-box; } /* 🎨 */
 .mchip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; white-space: nowrap; } /* 💊 v6 .mchip */
+/* 🎨 0.2.3 (God 03:02) John's Welcome v6 UPGRADED scenes (upgraded.tsx). Layout + colour only: every bit of motion is
+   ab-nextjs-animations' .ab-state-cycle-* (4 states × 600ms = 2.4s), which also owns the still frame + reduced motion. */
+.scene { --ab-state-cycle-on-fg: #fff8f5; --ab-state-cycle-off-fg: var(--ab-flow-muted, rgb(33 26 22 / 0.62)); --ab-state-cycle-switch-off: var(--pg-chip); --ab-state-cycle-knob-travel: 22px; }
+.ic { display: inline-flex; flex: none; } /* 🔣 real ab-nextjs-icons SVG */
+.ic > svg { display: block; } /* 🔣 */
+.cy { position: relative; display: inline-block; flex: none; } /* 🔁 v6 cyc(): a fixed box (no layout shift) */
+.cyItem { position: absolute; top: 0; left: 0; white-space: nowrap; } /* 🔁 stacked states */
+.cyCentre { right: 0; display: flex; justify-content: center; } /* ↔️ centred without transform (the cycle owns transform) */
+.segCycle > span { white-space: nowrap; } /* 🎚️ chips: colours come from .ab-state-cycle-chip */
+.wts { background: transparent; gap: 2px; padding: 0; } /* ⭐ weight picker */
+.wts > span { flex-direction: column; gap: 2px; padding: 3px 4px; } /* ⭐ */
+.tog2 { width: 50px; height: 28px; border-radius: 999px; position: relative; flex: none; display: block; } /* 🔀 track (colour = the cycle) */
+.knob { position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%; background: #fff8f5; box-shadow: 0 1px 3px rgb(0 0 0 / 0.3); } /* ⚪ */
+.lpTrack { display: block; height: 4px; border-radius: 2px; background: var(--pg-chip); overflow: hidden; } /* ➖ */
+.lpFill { display: block; width: 100%; height: 100%; border-radius: 2px; background: var(--pg-bronze); } /* 🥉 scaleX = the cycle */
+.popDot { display: block; border-radius: 50%; background: var(--pg-bronze); } /* 🎈 */
+.curveBox { position: relative; display: block; flex: none; } /* 📈 */
+.curveBox > svg { display: block; overflow: visible; } /* 📈 */
+.rideDot { position: absolute; left: 0; top: 0; box-sizing: border-box; border-radius: 50%; background: var(--pg-bronze); border: 2px solid #fff8f5; offset-anchor: center; } /* 🎢 rides offset-path */
+/* 🧱 core: nested layout (v6 lay()) */
+.layApp, .layScreen, .layMain, .layAside, .layMob { border: 1.5px solid var(--ab-flow-line); box-sizing: border-box; font: 500 10px var(--ab-font-code, 'Roboto Mono', monospace); color: var(--ab-flow-muted); } /* 🧱 */
+.layApp { position: relative; width: 276px; height: 92px; border-radius: 10px; } /* 🧱 AbAppLayout */
+.layLb { position: absolute; } /* 🏷️ */
+.layScreen { position: absolute; left: 8px; right: 8px; top: 20px; bottom: 8px; border-radius: 8px; } /* 🧱 AbScreenLayout */
+.layMain { position: absolute; left: 6px; top: 18px; bottom: 6px; width: 112px; border-radius: 6px; padding: 3px 6px; } /* 📄 */
+.layAsideWrap { position: absolute; right: 6px; top: 18px; bottom: 6px; width: 104px; display: block; } /* 🌫️ dims in the Screen state */
+.layAside { display: block; width: 100%; height: 100%; border-radius: 6px; padding: 3px 6px; } /* 🪟 */
+.mobLayers { display: flex; gap: 4px; } /* 📱 */
+.layMob { border-radius: 6px; padding: 8px 10px; } /* 📱 */
+/* 🧩 components */
+.searchMock { width: 170px; height: 34px; border-radius: 10px; border: 1px solid var(--ab-flow-line); display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--ab-flow-muted); box-sizing: border-box; } /* 🔎 */
+.sheetMock2 { width: 180px; height: 70px; border-radius: 10px; background: var(--pg-card2); position: relative; overflow: hidden; display: block; } /* 📄 */
+.sheetPanel2 { position: absolute; left: 0; right: 0; bottom: 0; height: 48px; background: var(--ab-flow-node, #fff); border-top: 1px solid var(--ab-flow-line); border-radius: 10px 10px 0 0; padding: 6px 10px; box-sizing: border-box; display: block; } /* ⬆️ rises = the cycle */
+.chip0 { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--ab-flow-line); border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 600; } /* 🌐 */
+/* 🎨 theme */
+.aaCard { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 10px; font: 700 15px 'Mulish', var(--ab-font-sans, sans-serif); box-sizing: border-box; border-style: solid; } /* 🅰️ */
+.aaLab { font: 500 8.5px var(--ab-font-code, 'Roboto Mono', monospace); } /* 🏷️ */
+.radiusTile { display: block; width: 30px; height: 28px; border: 2px solid var(--pg-bronze); box-sizing: border-box; } /* 🔲 */
+/* 🔣 icons */
+.icGrid { display: grid; grid-template-columns: repeat(6, 38px); gap: 8px 10px; } /* 🔣 */
+.icCell { display: flex; align-items: center; justify-content: center; border-radius: 9px; border: 1px solid transparent; box-sizing: border-box; } /* 🔣 */
 /* 📐 0.2.3 (Joseph 02:55) variant="auto": both scenes ship, CSS picks one (SSR-safe, no flash, no hydration mismatch) */
 .auto { display: contents; } /* 🫥 no extra box */
 .autoCompact.autoCompact { display: none; } /* 🖥️ ≥ 768px: full */

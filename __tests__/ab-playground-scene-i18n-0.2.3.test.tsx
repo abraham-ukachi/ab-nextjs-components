@@ -51,15 +51,15 @@ const render = (p: Parameters<typeof AbPlaygroundScene>[0]) => renderToStaticMar
 const words = (h: string) => [...h.matchAll(/class="word[^"]*"(?: data-ab-still="")?[^>]*>([^<]+)</g)].map((m) => (m[0].includes('data-ab-still') ? `*${m[1]}` : m[1]).replace(/&quot;/g, '"')) // 🔍 * = still
 
 describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
-  it('full: John’s rects (hub 230,270 300×104 + 6 nodes) and captions', () => {
+  it('full: John’s rects (hub 230,270 300×104 + 6 nodes) and rev-2 captions (real ab-nextjs-i18n exports)', () => {
     const n = buildAbPlaygroundFullScene('i18n', L, null).nodes
     expect(n.map((x) => [x.x, x.y, x.w, x.h])).toEqual([[230, 270, 300, 104], [40, 100, 210, 96], [290, 116, 180, 60], [510, 104, 210, 84], [40, 456, 210, 74], [290, 456, 180, 74], [510, 456, 210, 74]]) // 🎯
-    expect(n.map((x) => x.caption)).toEqual(['provider', 'messages', '<AbLocaleSwitcher/>', 'useAbTranslations()', 'localizeAbPathname()', 'Intl format', 'getAbAlternates()']) // 🏷️
+    expect(n.map((x) => x.caption)).toEqual(['AbI18nProvider', 'ab-nextjs-i18n/config', 'useAbLocaleSwitch()', 'useAbTranslations()', 'localizeAbPathname()', 'useAbFormatter()', 'getAbAlternates()']) // 🏷️
   })
-  it('compact: hub 80,136 190×56 + switcher / prefix / translations', () => {
+  it('compact (rev 2): hub 80,122 190×58 + useAbLocaleSwitch / localizeAbPathname / useAbTranslations', () => {
     const n = buildAbPlaygroundCompactScene('i18n', L, null).nodes
-    expect(n.map((x) => [x.x, x.y, x.w, x.h])).toEqual([[80, 136, 190, 56], [14, 62, 150, 52], [186, 62, 150, 52], [100, 212, 150, 50]]) // 📱
-    expect(n.map((x) => x.caption)).toEqual([undefined, 'switcher', 'prefix', 'translations']) // 🏷️
+    expect(n.map((x) => [x.x, x.y, x.w, x.h])).toEqual([[80, 122, 190, 58], [14, 62, 150, 52], [186, 62, 150, 52], [100, 212, 150, 50]]) // 📱
+    expect(n.map((x) => x.caption)).toEqual([undefined, 'useAbLocaleSwitch', 'localizeAbPathname', 'useAbTranslations']) // 🏷️
   })
   it('the greeting + t("hello") value cycle EN FR ES RU; the still frame is EN by default', () => {
     const h = render({ name: 'i18n' })
@@ -72,9 +72,11 @@ describe('🌍 i18n scene (John’s illustration 8, build_i18n.py)', () => {
     expect(words(h).filter((w) => w.startsWith('*'))).toEqual(['*"Bonjour"', '*Bonjour']) // 🇫🇷
     expect(h).toMatch(/class="chip[^"]*ab-locale-cycle-chip" data-ab-still="" style="--ab-locale-cycle-index:1">FR</) // 🥉
   })
-  it('every word is translatable: alt, captions, prefix, Intl format, greetings', () => {
-    const h = render({ name: 'i18n', labels: { alt: { i18n: 'Scène i18n' }, provider: 'fournisseur', prefix: 'préfixe', intlFormat: 'format Intl', greetings: { en: 'Hi' } } })
-    expect(h).toMatch(/aria-label="Scène i18n"/); expect(h).toMatch(/>fournisseur</); expect(h).toMatch(/>préfixe</); expect(h).toMatch(/>format Intl</); expect(h).toMatch(/>Hi</) // 🇫🇷
+  it('alt + greetings are translatable; path + Intl EUR values follow the locale (fixed strings: SSR-safe)', () => {
+    const h = render({ name: 'i18n', labels: { alt: { i18n: 'Scène i18n' }, greetings: { en: 'Hi' } } })
+    expect(h).toMatch(/aria-label="Scène i18n"/); expect(h).toMatch(/>Hi</) // 🇫🇷
+    for (const v of ['€1,234.50', '1 234,50 €', '1234,50 €']) expect(h).toContain(`>${v}<`) // 💶 spec rev 2 Intl output
+    expect(h).toMatch(/>ru<\/span>\/docs/) // 🛣️
     expect(h).not.toMatch(/placeholder|>de\.json</) // 🧹 the old placeholder is gone
   })
   it('reducedMotion="always" sets the forced-still switch; Mulish + Roboto Mono via the theme tokens', () => {
@@ -102,7 +104,8 @@ describe('♿ every scene’s reduced-motion still = spec t = 0.45 (wire i at 0.
   it('compact (3 wires): 55, 21.67, 88.33', () => {
     expect([...render({ name: 'hooks', variant: 'compact' }).matchAll(/<g style="--ab-wire-index:\d+;--ab-wire-poster:([\d.]+)"/g)].map((m) => +m[1])).toEqual([55, 21.67, 88.33]) // 📱
   })
-  it('animations: the ease dot stills at 60% of the curve (t 0.45 / 0.75), wires still drawn by ab-nextjs-animations', () => {
-    expect(render({ name: 'animations' })).toMatch(/class="easeDot ab-wire-pulse" style="stroke-width:14;--ab-wire-poster:40/) // 🎬
+  it('animations (rev 2): the ride dot stills at the curve end (ab-nextjs-animations .ab-state-cycle-ride rest = 100%)', () => {
+    const h = render({ name: 'animations', reducedMotion: 'always' })
+    expect(h).toMatch(/class="rideDot ab-state-cycle-ride"/); expect(h).not.toMatch(/easeDot/) // 🏁
   })
 })

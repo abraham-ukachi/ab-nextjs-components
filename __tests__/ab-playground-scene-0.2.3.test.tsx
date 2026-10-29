@@ -59,10 +59,12 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
       expect(c.filter((x) => x.tone === 'hub'), n).toHaveLength(1); expect(c, n).toHaveLength(4) // 📱
     }
   })
-  it('rects are the mock’s (Core hub 250,282 260×76; compact top 14,62 150×52; compact hub centred at 175)', () => {
-    expect(buildAbPlaygroundFullScene('core', L, null).nodes[0]).toMatchObject({ x: 250, y: 282, w: 260, h: 76, tone: 'hub', caption: 'provider hub' }) // 🎯
+  it('rects are the upgraded mock’s (Core hub 225,262 310×120; compact top 14,62 150×52; hub y 122 h 58)', () => {
+    // 🎨 God 03:02: John's UPGRADED rects (build_upgraded.py): core hub 225,262 310×120; mobile hub y 122 / h 58
+    expect(buildAbPlaygroundFullScene('core', L, null).nodes[0]).toMatchObject({ x: 225, y: 262, w: 310, h: 120, tone: 'hub', caption: 'ab-nextjs-core/ab-app-layout' }) // 🎯
     const c = buildAbPlaygroundCompactScene('icons', L, null).nodes
-    expect(c[0]).toMatchObject({ x: 80, y: 136, w: 190, h: 56 }); expect(c[1]).toMatchObject({ x: 14, y: 62, w: 150, h: 52 }) // 📱
+    expect(c[0]).toMatchObject({ x: 70, y: 122, w: 210, h: 58 }); expect(c[1]).toMatchObject({ x: 14, y: 62, w: 150, h: 52 }) // 📱
+    expect(c[3]).toMatchObject({ x: 100, y: 212, captionAt: 'beside-centre' }) // 🏷️ rev 2: right of the centre wire
   })
   it('frames: 760×600 / 56 and 350×276 / 36', () => {
     expect(AB_PLAYGROUND_FRAMES).toEqual({ full: { w: 760, h: 600, header: 56 }, compact: { w: 350, h: 276, header: 36 } }) // 📐
@@ -74,14 +76,14 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
     expect(html.match(/class="frameWire ab-wire-draw"/g)).toHaveLength(6) // 〰️
   })
   it('labels are translatable through props (missing keys stay English)', () => {
-    const html = render({ name: 'hooks', labels: { title: 'Terrain de jeu', live: 'en direct', storage: 'stockage', alt: { hooks: 'Les hooks' } } })
-    expect(html).toMatch(/aria-label="Les hooks"/); expect(html).toMatch(/>Terrain de jeu</); expect(html).toMatch(/>en direct</); expect(html).toMatch(/>stockage</) // 🇫🇷
-    expect(html).toMatch(/>copy</) // 🇬🇧 fallback
+    const html = render({ name: 'hooks', labels: { title: 'Terrain de jeu', live: 'en direct', alt: { hooks: 'Les hooks' } } })
+    expect(html).toMatch(/aria-label="Les hooks"/); expect(html).toMatch(/>Terrain de jeu</); expect(html).toMatch(/>en direct</) // 🇫🇷 (upgraded captions are code names: not translated)
+    expect(render({ name: 'hooks' })).toMatch(/aria-label="Live playground: /) // 🇬🇧 fallback
   })
-  it('active=false pauses; compact uses the mobile frame; animations scene has the ease dot on the wire pulse', () => {
+  it('active=false pauses; compact uses the mobile frame; animations scene: the dot rides the curve (state-cycle ride)', () => {
     expect(render({ name: 'core', active: false })).toMatch(/data-ab-paused="true"/) // ⏸️
     expect(render({ name: 'core', variant: 'compact' })).toMatch(/--ab-flow-w:350px;--ab-flow-h:276px;--ab-flow-header:36px/) // 📱
-    expect(render({ name: 'animations' })).toMatch(/class="easeDot ab-wire-pulse"/) // 🎬 reduced motion handled by ab-nextjs-animations
+    expect(render({ name: 'animations' })).toMatch(/class="rideDot ab-state-cycle-ride" style="offset-path:path\(&#x27;M10 90 C 66 90, 66 10, 270 10&#x27;\)/) // 🎢 the dot rides the emphasized curve (ab-nextjs-animations)
   })
   it('ships: files, exports, server-compatible (no use client)', () => {
     expect(pkg.files).toContain('ab-playground-scene'); expect(pkg.exports['./ab-playground-scene']).toBe('./ab-playground-scene/index.tsx') // 📦
@@ -94,7 +96,7 @@ describe('🎠 Welcome card surface', () => {
   const flow = readFileSync(join(root, 'ab-flow-diagram/styles.module.css'), 'utf8') // 〰️
   const scene = readFileSync(join(root, 'ab-playground-scene/styles.module.css'), 'utf8') // 🎨
   it('AbFlowDiagram reads --ab-flow-card first for the card, the nodes and the anchor rings', () => {
-    expect(flow.match(/var\(--ab-flow-card, var\(--ab-color-card/g)).toHaveLength(3) // 🃏 🔵 ⚪
+    expect(flow.match(/var\(--ab-flow-card, var\(--ab-color-card/g)).toHaveLength(4) // 🃏 🔵 ⚪ 🏷️ (rev 2: the caption chip)
   })
   it('AbPlaygroundScene points it at --ab-color-welcome-card (v6 #fff / #241a12 fallbacks)', () => {
     expect(scene).toContain('.scene { --ab-flow-card: var(--ab-color-welcome-card, #fff); }') // 🌞
@@ -111,8 +113,16 @@ describe('🏷️ captions use real Ab export names', () => {
     'AB_WIRE_PULSE_CLASS', // 🎬 animations
     'useAbTheme', 'useAbMedia', 'useAbReducedMotion', 'useAbLocalStorage', 'useAbScrollSpy', 'useAbClipboard', // 🪝 hooks
     'AbI18nProvider', 'useAbTranslations', 'localizeAbPathname', 'getAbAlternates', // 🌍 i18n
+    // 🎨 God 03:02 upgraded scenes: names verified in the npm tarballs (playground-spec.md rev 2 §3)
+    'AB_ASIDE_DURATION', 'supportedCore', 'AB_ASIDE_SHEET_QUERY', // 🧱 core
+    'supportedComponents', 'AbSearchbar', 'AbVersionSwitcher', // 🧩 components
+    'abIconNames', 'abIconWeights', 'abIconDefaultWeight', 'getAbIconSvg', // 🔣 icons (deep ab-icons/)
+    'mulishStyles', 'interStyles', 'robotoMonoStyles', // 🔤 fonts
+    'AB_MOTION_TOKENS', 'AB_REDUCED_MOTION_QUERY', // 🎬 animations
+    'AbThemeMode', 'AbSwipeDirection', 'useAbThemeMode', 'useAbSwipe', // 🪝 hooks
+    'useAbLocaleSwitch', 'useAbFormatter', // 🌍 i18n
   ])
-  const code = (c?: string) => c?.match(/^<(\w+)\/>$|^(\w+)\(\)$|^([A-Z_]+)$/)?.slice(1).find(Boolean) // 🔍 <X/> · x() · X_Y
+  const code = (c?: string) => c?.match(/^<(\w+)\/>$|^(\w+)\(\)$|^([A-Z_]+)$|^((?:Ab|useAb|ab|supported|get|localize)[A-Za-z]+|[a-z]+Styles)$/)?.slice(1).find(Boolean) // 🔍 <X/> · x() · X_Y · bare export (rev 2)
   it.each(names)('%s: every code caption (full + compact) is a real export', (name) => {
     for (const b of [buildAbPlaygroundFullScene, buildAbPlaygroundCompactScene])
       for (const n of b(name, L, null).nodes) { const c = code(n.caption); if (c) expect(REAL.has(c), `${name}: ${n.caption}`).toBe(true) } // ✅

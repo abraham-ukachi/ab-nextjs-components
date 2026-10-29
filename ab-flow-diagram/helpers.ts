@@ -54,6 +54,9 @@ export interface AbFlowNode {
   h?: number;
   /** 🏷️ 0.2.3: the small mono label ABOVE the node (v6 `.lb`, e.g. "ab.config.ts"). */
   caption?: string;
+  /** 🏷️ 0.2.3 (spec rev 2): frame mode caption spot. `'start'` (default) = top-left; `'beside-centre'` = just right of
+   *  the node's centre, so a wire entering the top centre never crosses it (the mobile bottom node). */
+  captionAt?: 'start' | 'beside-centre';
 }
 
 // 🖼️ 0.2.3: a fixed design frame (John's v6 scene = 760×600 with a 56px header); scales to the card width

@@ -89,7 +89,7 @@ describe('🖼️ AbFlowDiagram frame mode', () => {
     expect(html).toContain('d="M135.0 196.0 L135.0 227.0 Q135.0 239.0 147.0 239.0') // 〰️ the v6 path
   })
   it('rich nodes: px rect, caption label, content; the hub renders last (on top)', () => {
-    expect(html).toMatch(/style="left:40px;top:104px;width:190px;height:92px"><span class="nodeCaption">ab.config.ts<\/span>config/) // 📍
+    expect(html).toMatch(/style="left:40px;top:104px;width:190px;height:92px"><span class="nodeCaption" data-at="start">ab.config.ts<\/span>config/) // 📍 (spec rev 2: caption spot)
     expect(html.lastIndexOf('data-tone="hub"')).toBeGreaterThan(html.lastIndexOf('data-tone="node"')) // 🎯
   })
   it('dotted={false} and anchors={false} turn them off; the island marker is rendered', () => {
