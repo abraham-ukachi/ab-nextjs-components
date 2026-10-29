@@ -110,6 +110,9 @@ describe('🎨 CSS', () => {
     expect(css).toMatch(/--ab-flow-dot: var\(--ab-dot-color, rgb\(107 79 53 \/ 0\.16\)\)/); expect(css).toMatch(/--ab-flow-dot: var\(--ab-dot-color, rgb\(245 235 225 \/ 0\.1\)\)/) // 🌞🌙
     expect(css).toMatch(/inset: var\(--ab-flow-header\) 0 0/) // ⬇️ below the header
   })
+  it('frame card keeps its ratio inside a flex column (no shrink)', () => {
+    expect(css).toMatch(/\.framed \{[^}]*flex: none; min-width: 0;/) // 📏
+  })
   it('stage scales by 100cqw / frame width, the island overrides with --ab-flow-scale', () => {
     expect(css).toMatch(/--ab-flow-scale-css: calc\(100cqw \/ var\(--ab-flow-w\)\)/); expect(css).toMatch(/transform: scale\(var\(--ab-flow-scale, var\(--ab-flow-scale-css, 1\)\)\)/) // 🔍
   })
