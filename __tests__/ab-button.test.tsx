@@ -152,7 +152,7 @@ describe('AbButton 0.1.14: shape="rounded" · size="md" · type="secondary" (P16
       expect(renderToStaticMarkup(<Btn label="Go" />)).not.toContain('data-shape') // 🫥 legacy untouched
     })
   }
-  for (const f of ['ab-button/styles.module.css', 'server/ab-button/styles.module.css']) {
+  for (const f of ['ab-button/styles.module.css'] /* 🧬 server imports this same file */) {
     it(`${f}: mock values (40/44px, radius 10, 14/650, shadow, hover, ring)`, () => {
       const css = readFileSync(join(__dirname, '..', f), 'utf8')
       expect(css).toMatch(/border-radius: var\(--ab-radius-button, 10px\);/)

@@ -24,8 +24,8 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: 0.1.13 review + integration fixes (James, Joseph)
-* @file: __tests__/review-0.1.13.test.tsx
+* @name: AbButton self-sizing tokens (Joseph 03:37)
+* @file: __tests__/ab-button-sizing.test.ts
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */

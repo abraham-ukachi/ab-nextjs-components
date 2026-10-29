@@ -52,3 +52,6 @@
   font-size: 0.875rem;
   opacity: 0.5;
 }
+.abTestHelloSrc:hover {
+  opacity: 0.9;
+}
