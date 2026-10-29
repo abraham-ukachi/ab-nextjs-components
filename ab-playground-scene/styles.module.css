@@ -93,3 +93,7 @@
 .progress { display: block; width: 150px; height: 6px; border-radius: 999px; background: var(--pg-chip); overflow: hidden; } /* ➖ track */
 .progress > i { display: block; width: 62%; height: 100%; border-radius: inherit; background: var(--pg-bronze); } /* 🥉 value */
 
+/* 🎠 0.2.3 welcome + all scenes (v6 s01 / s09) */
+.pnode { display: flex; flex-direction: column; gap: 9px; align-items: flex-start; width: 100%; padding: 0 14px; box-sizing: border-box; } /* 📦 v6 pnode */
+.swSm { display: block; width: 18px; height: 24px; border-radius: 5px; border: 1px solid var(--ab-flow-line, rgb(107 79 53 / 0.16)); box-sizing: border-box; } /* 🎨 */
+.mchip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; white-space: nowrap; } /* 💊 v6 .mchip */

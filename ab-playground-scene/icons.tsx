@@ -54,6 +54,14 @@ const MS: Record<string, ReactElement> = {
   cart: <><path d="M3 4h2l2.5 11h11L21 7H6" /><circle cx="9" cy="19" r="1.5" /><circle cx="18" cy="19" r="1.5" /></>,
   share: <><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="6" r="2.5" /><circle cx="18" cy="18" r="2.5" /><path d="m8.2 11 7.6-4M8.2 13l7.6 4" /></>,
   globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></>,
+  // 📦 0.2.3 package marks for the Welcome + All scenes (v5 common.py ICON stand-ins, line style)
+  pkgCore: <><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><path d="M16.5 13v7M13 16.5h7" /></>,
+  pkgComponents: <><path d="m12 3 4 4-4 4-4-4z" /><path d="m7 8 4 4-4 4-4-4z" /><path d="m17 8 4 4-4 4-4-4z" /><path d="m12 13 4 4-4 4-4-4z" /></>,
+  pkgTheme: <><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-1.3-1-1.6-1-2.6 0-.9.7-1.5 1.6-1.5H17a4 4 0 0 0 4-4c0-4.5-4-8.2-9-8.2z" /><circle cx="7.5" cy="11" r="1" /><circle cx="10" cy="7" r="1" /><circle cx="15" cy="7.5" r="1" /></>,
+  pkgIcons: <><circle cx="8" cy="8" r="4" /><path d="m16 4 4.5 8h-9z" /><rect x="4" y="14" width="7" height="7" rx="1" /><path d="m17.5 14 1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z" /></>,
+  pkgFonts: <><path d="M3 19 8.5 5h1L15 19M5.3 14h7.4" /><path d="M21 19v-6.5a2.5 2.5 0 0 0-5 0M21 15.5c-3.5 0-5 .8-5 2s1 1.5 2 1.5c1.8 0 3-1.3 3-3.5" /></>,
+  pkgAnimations: <><path d="M3 17c3 0 4-10 9-10s6 10 9 10" /><circle cx="12" cy="7" r="2" /></>,
+  pkgHooks: <><path d="M15 4v8a5 5 0 0 1-10 0v-2" /><path d="m3 12 2-2 2 2" /><circle cx="15" cy="4" r="1.6" /></>,
 };
 
 /** 🔣 the 12 grid icon names (Icons scene) */

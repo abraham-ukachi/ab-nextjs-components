@@ -104,6 +104,8 @@ export function AbPlaygroundScene(props: AbPlaygroundSceneProps): ReactElement {
     <AbFlowDiagram
       nodes={data.nodes}
       wires={data.wires}
+      edges={data.edges} // 🎠 0.2.3: welcome compact = spokes only
+      anchors={data.anchors} // ⚓ 0.2.3
       frame={AB_PLAYGROUND_FRAMES[variant]} // 📐
       variant={variant}
       alt={L.alt[name]} // ♿

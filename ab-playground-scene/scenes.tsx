@@ -50,6 +50,8 @@ import { AB_PLAYGROUND_ICON_NAMES, Avatar, Moon, Ms, Sun } from './icons';
 import type { AbPlaygroundSceneLabels, AbPlaygroundSceneName } from './labels';
 // 🌍 illustration 8
 import { buildI18nCompact, buildI18nFull } from './i18n';
+// 🎠 0.2.3: v6 s01 (welcome) + s09 (all)
+import { buildAllCompact, buildAllFull, buildWelcomeCompact, buildWelcomeFull } from './welcome';
 // 🎨 mock content classes (.m, .seg, .tog…)
 import s from './styles.module.css';
 
@@ -59,10 +61,11 @@ const BRONZE = '#A67C52';
 export const AB_PLAYGROUND_SCENE_PACKAGES: Record<AbPlaygroundSceneName, string> = {
   core: 'ab-nextjs-core', components: 'ab-nextjs-components', theme: 'ab-nextjs-theme', icons: 'ab-nextjs-icons',
   fonts: 'ab-nextjs-fonts', animations: 'ab-nextjs-animations', hooks: 'ab-nextjs-hooks', i18n: 'ab-nextjs-i18n',
+  welcome: 'ab-elements', all: 'ab-elements', // 🎠 0.2.3 v6 PKG[0] / PKG[8]
 };
 
 /** 🧱 a built scene: nodes (hub included) + optional extra wires */
-export interface AbPlaygroundSceneData { nodes: AbFlowNode[]; wires?: AbFlowPoint[][] }
+export interface AbPlaygroundSceneData { nodes: AbFlowNode[]; wires?: AbFlowPoint[][]; /** 🎠 0.2.3: `[]` = no auto routing */ edges?: []; /** ⚓ 0.2.3: false = no anchor dots */ anchors?: boolean }
 
 // 🔵 v6 N(x, y, w, h, html, lb, cls)
 let seq = 0;
@@ -109,7 +112,7 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
       N(300, 112, 160, 60, <div className={s.paneMock}><i className={s.paneHead} /><i className={s.paneBody} /></div>, '<AbMainLayout/>'),
       N(530, 104, 190, 92, <div className={s.col}><Seg items={[L.open, L.closed]} /><M className={s.mut}>{L.drawerBelow}</M></div>, 'useAbAsideToggle()'),
       N(40, 450, 200, 70, <span className={s.dotSwatch} />, '<AbDottedSurface/>'),
-      N(290, 460, 180, 56, <><M><Br>aria-label</Br></M><M className={s.mut}>{L.aside}</M></>, '<AbAsideLayout/>'),
+      N(290, 460, 180, 56, <div className={s.col} style={{ gap: 2 }}><M style={{ whiteSpace: 'nowrap' }}><Br>aria-label</Br></M><M className={s.mut} style={{ whiteSpace: 'nowrap' }}>{L.aside}</M></div>, '<AbAsideLayout/>'), // 🪟 stacked: 180px node
       N(530, 450, 190, 70, <span className={s.progress}><i /></span>, '<AbLinearProgress/>'),
     ] };
     case 'components': return { nodes: [
@@ -175,6 +178,8 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
         N(520, 460, 200, 64, hk('useAbClipboard'), L.copy),
       ] };
     }
+    case 'welcome': return buildWelcomeFull(N, L, logo); // 🎠 v6 s01
+    case 'all': return buildAllFull(N, L, logo); // 🎠 v6 s09
     default: return { nodes: buildI18nFull(N, L, still) }; // 🌍 John's illustration 8 (`still` = the reduced-motion locale)
   }
 }
@@ -195,6 +200,8 @@ export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: Ab
     case 'fonts': return sc(hubn(<><span className={s.zs} style={{ fontSize: 30 }}>Aa</span><span style={{ fontSize: 22, fontWeight: 600 }}>Aa</span></>), top(<span className={s.zs} style={{ fontSize: 16 }}>Zilla Slab</span>, L.headings), top2(<span style={{ fontSize: 15 }}>Inter</span>, L.uiBody), bot(<span style={{ fontFamily: "'Mulish', var(--ab-font-sans, sans-serif)", fontSize: 15 }}>Mulish</span>, L.altSans));
     case 'animations': return sc(hubn(<Ease w={150} h={44} d="M4 40 C 60 40, 70 4, 146 4" small />, 180), top(<M>{L.spring}</M>, L.preset), top2(<M>240<span className={s.mut}>ms</span></M>, L.duration), bot(<M>{L.fadeSlide}</M>, L.transition));
     case 'hooks': return sc(hubn(<><Logo logo={logo} h={18} />{L.hooks}</>), top(<M><Br>useAbTheme</Br>()</M>), top2(<M><Br>useAbMedia</Br>()</M>), bot(<M><Br>useAbClipboard</Br>()</M>)); // 🪝 real exports
+    case 'welcome': return buildWelcomeCompact(N, L, logo); // 🎠 v6 s01, mobile
+    case 'all': return buildAllCompact(N, L, logo); // 🎠 v6 s09, mobile
     default: return sc(...buildI18nCompact(N, L, still)); // 🌍 illustration 8, mobile
   }
 }

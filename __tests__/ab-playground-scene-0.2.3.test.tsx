@@ -122,3 +122,33 @@ describe('🏷️ captions use real Ab export names', () => {
     expect(h).not.toMatch(/&lt;(AbProvider|Slot|Portal|Button|Switch|Tabs|Sheet|Avatar|BottomNav|ThemeProvider|Icon|Animate)\/?&gt;|>use(Theme|Media|Hotkey|LocalStorage|Mounted|Clipboard)</) // 🚫
   })
 })
+
+// 🎠 Joseph 02:35: v6 s01 (welcome) + s09 (all), same full treatment, so the app can drop its stopgap hubs
+describe('🎠 welcome + all scenes (v6 scenes.py welcome_nodes / scene 8)', () => {
+  const wires = (h: string) => (h.match(/<g style="--ab-wire-index:/g) ?? []).length // 〰️
+  it('welcome full: v6 rects (7 packages + the 160×122 hub) and 7 auto + 3 extra = 10 wires, anchors on', () => {
+    const n = buildAbPlaygroundFullScene('welcome', L, null)
+    expect(n.nodes.map((x) => [x.x, x.y, x.w, x.h])).toEqual([[24, 84, 200, 100], [280, 84, 200, 100], [536, 84, 200, 100], [24, 264, 180, 118], [556, 264, 180, 118], [120, 452, 210, 104], [430, 452, 210, 104], [300, 262, 160, 122]]) // 🎯
+    expect(n.wires).toHaveLength(3) // ➕
+    const h = render({ name: 'welcome' }); expect(wires(h)).toBe(10); expect(h).toMatch(/class="anchor"/) // 〰️ ⚓
+    expect(h).toMatch(/>ab-elements</); expect(h).toMatch(/AbPageProvider/); expect(h).toMatch(/useAb<\/span>Media\(\)/) // 📦 real names
+  })
+  it('welcome compact: 7 chips on the v6 ring, 7 straight spokes, no anchors', () => {
+    const h = render({ name: 'welcome', variant: 'compact' })
+    expect(wires(h)).toBe(7); expect(h).not.toMatch(/class="anchor"/) // 〰️ 🚫⚓
+    expect(buildAbPlaygroundCompactScene('welcome', L, null).nodes.at(-1)).toMatchObject({ x: 141, y: 126, w: 68, h: 68, tone: 'hub' }) // 🅰️
+  })
+  it('all full: AbElements hub (300,262 160×124) + 7 packages = 7 wires; compact: 4 v6 facts', () => {
+    const f = buildAbPlaygroundFullScene('all', L, null).nodes
+    expect(f.at(-1)).toMatchObject({ x: 300, y: 262, w: 160, h: 124, caption: 'AbElements', tone: 'hub' }) // 🅰️
+    expect(wires(render({ name: 'all' }))).toBe(7) // 〰️
+    const c = render({ name: 'all', variant: 'compact' })
+    for (const t of ['7 packages', 'MIT · free', 'Live docs', 'One PWA']) expect(c).toContain(`>${t}<`) // 📱
+  })
+  it('both: package header, translated alt, reduced-motion still, translatable package names', () => {
+    for (const name of ['welcome', 'all'] as const) {
+      const h = render({ name, reducedMotion: 'always', labels: { pkgCore: 'Noyau' } })
+      expect(h).toMatch(/data-ab-reduced-motion="true"/); expect(h).toMatch(/aria-label="Live playground: /); expect(h).toContain('>Noyau<') // ♿ 🌍
+    }
+  })
+})

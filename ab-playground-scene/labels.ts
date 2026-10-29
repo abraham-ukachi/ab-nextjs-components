@@ -40,7 +40,8 @@
 //    Pass `labels={{ ... }}` (e.g. from next-intl / the Welcome messages) to translate; missing keys fall back to English.
 
 /** 🗂️ the 8 scene names (John's v6 1–7 + illustration 8 `i18n`) */
-export type AbPlaygroundSceneName = 'core' | 'components' | 'theme' | 'icons' | 'fonts' | 'animations' | 'hooks' | 'i18n';
+/** 🗂️ 0.2.3 (Joseph 02:35): + `welcome` (v6 s01, every package around the Ab mark) and `all` (v6 s09, the final slide) */
+export type AbPlaygroundSceneName = 'core' | 'components' | 'theme' | 'icons' | 'fonts' | 'animations' | 'hooks' | 'i18n' | 'welcome' | 'all';
 
 /** 🌍 the 4 demo locales of the i18n scene, in cycle order (EN → FR → ES → RU, 0.6s each) */
 export const AB_PLAYGROUND_LOCALES = ['en', 'fr', 'es', 'ru'] as const;
@@ -59,6 +60,8 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
     animations: 'Live playground: an ease-out curve with a moving dot, wired to spring, duration, preset, reduced motion, the wire pulse and stagger nodes.',
     hooks: 'Live playground: ab-nextjs-hooks wired to useAbTheme, useAbMedia, useAbReducedMotion, useAbLocalStorage, useAbScrollSpy and useAbClipboard.',
     i18n: 'Live playground: the AbI18nProvider hub greets in English, French, Spanish and Russian, wired to messages, the locale switcher, translations, the locale prefix, Intl formatting and hreflang alternates.',
+    welcome: 'Live playground: the Ab mark wired to Theme, Components, Icons, Fonts, Hooks, Animations and Core, each with a small preview.',
+    all: 'Live playground: AbElements wired to all seven packages: Core, Components, Theme, Icons, Fonts, Animations and Hooks.',
   } as Record<AbPlaygroundSceneName, string>,
   // 🧱 core
   providerHub: 'provider hub', primitive: 'primitive', a11y: 'a11y', locale: 'locale', focusRing: 'Focus ring', focus: 'Focus',
@@ -83,6 +86,9 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
   // 🌍 i18n (John's illustration 8)
   messages: 'messages', switcher: 'switcher', translations: 'translations', provider: 'provider', prefix: 'prefix',
   intlFormat: 'Intl format',
+  // 🎠 welcome + all (v6 s01 / s09)
+  pkgCore: 'Core', pkgComponents: 'Components', pkgTheme: 'Theme', pkgIcons: 'Icons', pkgFonts: 'Fonts', pkgAnimations: 'Animations', pkgHooks: 'Hooks',
+  abElements: 'AbElements', sevenPackages: '7 packages', mitFree: 'MIT · free', liveDocs: 'Live docs', onePwa: 'One PWA',
   /** 👋 the cycling greeting, one per demo locale (each in its OWN language, so usually left as is) */
   greetings: { en: 'Hello', fr: 'Bonjour', es: 'Hola', ru: 'Привет' } as Record<AbPlaygroundLocale, string>,
 };
