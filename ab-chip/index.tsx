@@ -63,11 +63,16 @@ export interface AbChipProps {
   shape?: 'pill' | 'rounded'; // 🔷 0.1.14: 'rounded' = 6px radius (default pill)
   mono?: boolean; // ⌨️ 0.1.14: Roboto Mono 11/600 (versions, package names)
   tone?: AbChipTone; // 🎨 0.1.14 (default 'neutral' = the legacy outline chip)
+  // ===== 404 gaps: long text =====
+  overflow?: 'ellipsis' | 'wrap'; // ✂️ NEW: 'ellipsis' (default) clips to the parent width with "…"; 'wrap' breaks onto lines
+  title?: string; // 💬 NEW: tooltip; defaults to the text itself when `children` is a string (so clipped text stays readable)
 }
 
 /** 🏷️ Static chip: plain text, never interactive (use AbButton for actions). */
-export function AbChip({ children, dot, icon, as: Tag = 'span', className, style, size = 'md', shape = 'pill', mono = false, tone = 'neutral' }: AbChipProps): ReactElement {
+export function AbChip({ children, dot, icon, as: Tag = 'span', className, style, size = 'md', shape = 'pill', mono = false, tone = 'neutral', overflow = 'ellipsis', title }: AbChipProps): ReactElement {
   const dotTone = dot === true ? 'bronze' : dot || undefined; // 🎨 resolve dot colour
+  // 💬 404 gaps: full text as a tooltip while ellipsing (only when we know it: a plain string/number child)
+  const tip = title ?? (overflow === 'ellipsis' && (typeof children === 'string' || typeof children === 'number') ? String(children) : undefined);
   return (
     <Tag
       className={clsx('AbChip', styles.chip, mono && styles.mono, className)} style={style} data-ab-part="chip"
@@ -75,10 +80,12 @@ export function AbChip({ children, dot, icon, as: Tag = 'span', className, style
       data-shape={shape === 'rounded' ? 'rounded' : undefined} // 🔷
       data-tone={tone === 'neutral' ? undefined : tone} // 🎨
       data-mono={mono ? 'true' : undefined} // ⌨️
+      data-overflow={overflow} // ✂️ 404 gaps: ellipsis | wrap
+      title={tip} // 💬 404 gaps: the full text on hover
     >
       {dotTone ? <span className={styles.dot} data-tone={dotTone} aria-hidden="true" /> : null /* 🟢 decorative */}
       {icon ? <span className={styles.icon} aria-hidden="true">{icon}</span> : null /* 🖼️ decorative */}
-      <span>{children}</span>
+      <span className={styles.text}>{children}</span>{/* ✂️ 404 gaps: the part that ellipses / wraps */}
     </Tag>
   );
 }

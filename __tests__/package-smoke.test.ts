@@ -54,6 +54,7 @@ const componentFiles = [
   'ab-card/index.tsx',
   'ab-package-card/index.tsx',
   'ab-toc/index.tsx',
+  'ab-error-hero/index.tsx', // 🚧 404 gaps
   'ab-drawer/index.tsx',
   'ab-drawer/use-ab-drawer.ts',
   'ab-drawer-list/index.tsx',
@@ -120,12 +121,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (83 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene)', async () => {
+  it('exports supportedComponents catalog (83 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene, 404 gaps add AbErrorHero)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(76) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene
+    expect(mod.supportedComponents).toHaveLength(77) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
     expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(52) // 🌗 0.2.3: + AbThemeModeProvider (client)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(24) // 🎨 0.2.3: + AbPlaygroundScene
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(25) // 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero (server-safe)
   })
 
   it('ships component entry files', () => {
@@ -151,6 +152,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-card/styles.module.css',
       'ab-package-card/styles.module.css',
       'ab-toc/styles.module.css',
+      'ab-error-hero/styles.module.css', // 🚧 404 gaps
       'ab-drawer/styles.module.css',
       'ab-drawer-list/styles.module.css',
       'ab-confirm-drawer/styles.module.css',

@@ -48,6 +48,8 @@
 import type { ReactElement, ReactNode } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
+// 🔗 404 gaps: provider-aware link for the `links` variant (locale prefix via AbLinkProvider)
+import AbLink from '../ab-link';
 // 🎨 styles
 import styles from './styles.module.css';
 
@@ -73,6 +75,10 @@ export interface AbTocItem {
   id: string; // 🆔 the heading id (link target)
   label: string; // 🏷️
   level?: 2 | 3 | 4; // 📏 indent (default 2)
+  // ===== 404 gaps: variant="links" =====
+  href?: string; // 🔗 NEW: a page link (links variant); falls back to `#id`
+  description?: ReactNode; // 📝 NEW: a small second line, e.g. "Getting started" (links variant)
+  icon?: ReactNode; // 🔣 NEW: a leading icon (links variant, decorative)
 }
 
 /** ⚙️ props */
@@ -84,6 +90,7 @@ export interface AbTocProps {
   onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection(id, { container }) (hooks 0.1.7); without it a plain #id jump, which scrolls the nearest scroller (the main pane in core 0.1.6 panes)
   id?: string; // 🆔 root id (default "ab-toc"); the title gets `${id}-title`
   className?: string; // 🏷️
+  variant?: 'toc' | 'links'; // 🔗 404 gaps: 'links' = a plain link list (e.g. "Popular pages"), no rail, no scroll spy (default 'toc')
   footer?: ReactNode; // 🧩 0.1.14 (P14): below the list after a 1px rule (Edit this page · Changelog · a promo card); links get the 12.5px Home style
 }
 
@@ -92,12 +99,32 @@ export interface AbTocProps {
  * aria-current="location". Pair with `useAbScrollSpy` from ab-nextjs-hooks 0.1.7 for `activeId`.
  * No hooks here, so it also renders on the server.
  */
-const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavigate, id = 'ab-toc', className, footer }: AbTocProps): ReactElement | null => {
+const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavigate, id = 'ab-toc', className, footer, variant = 'toc' }: AbTocProps): ReactElement | null => {
   if (!items.length) return null; // 🙈 nothing to list
   const headingId = `${id}-title`; // 🆔
   return (
-    <nav id={id} className={clsx('AbToc', styles.abToc, className)} data-ab-part="toc" aria-labelledby={headingId}>
+    <nav id={id} className={clsx('AbToc', styles.abToc, className)} data-ab-part="toc" data-variant={variant === 'links' ? 'links' : undefined /* 🔗 404 gaps */} aria-labelledby={headingId}>
       <p id={headingId} className={styles.abTocTitle}>{title}</p>
+      {variant === 'links' ? (
+        // 🔗 404 gaps: plain link list (mock .pops / .pop): icon · bold label · small description
+        <ul className={styles.abTocLinks}>
+          {items.map((it) => (
+            <li key={it.id}>
+              <AbLink
+                href={it.href ?? `#${it.id}`} // 🔗 page link (provider adds the locale) or in-page anchor
+                className={styles.abTocLinksItem} // 🎨
+                aria-current={it.id === activeId ? 'page' : undefined} // ♿ the current page, if any
+              >
+                {it.icon != null && <span className={styles.abTocLinksIcon} aria-hidden="true">{it.icon}</span> /* 🔣 decorative */}
+                <span className={styles.abTocLinksText}>
+                  <b className={styles.abTocLinksLabel}>{it.label}</b>{/* 🏷️ */}
+                  {it.description != null && <small className={styles.abTocLinksDesc}>{it.description}</small> /* 📝 */}
+                </span>
+              </AbLink>
+            </li>
+          ))}
+        </ul>
+      ) : (
       <ol className={styles.abTocList}>
         {items.map((it) => {
           const on = it.id === activeId; // 🎯
@@ -116,6 +143,7 @@ const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavi
           );
         })}
       </ol>
+      )}
       {footer != null && (
         <>
           <hr className={styles.abTocSep} />{/* ➖ mock .toc-sep */}

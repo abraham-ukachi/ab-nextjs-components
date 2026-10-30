@@ -125,6 +125,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   // 🆕 0.1.13 docs shell (AbToc) — server-safe, no hooks
   { name: 'AbToc', file: 'ab-toc/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbTocPromo', file: 'ab-toc/promo.tsx', kind: 'server', status: 'Done' }, // 🆕 0.2.1 the aside "New" card
+  // 🚧 404 gaps: AbErrorHero (big code + badge tile, title, message, actions) — server-safe, no hooks
+  { name: 'AbErrorHero', file: 'ab-error-hero/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 0.1.14 (G53): AbDrawer + presets
   { name: 'AbDrawer', file: 'ab-drawer/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDrawerList', file: 'ab-drawer-list/index.tsx', kind: 'client', status: 'Done' },
@@ -186,6 +188,9 @@ export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from '
 export { default as AbTocPromo } from './ab-toc/promo.tsx'
 export type { AbTocPromoProps } from './ab-toc/promo.tsx'
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
+// 🚧 404 gaps: the 404 / error hero (also at `ab-nextjs-components/ab-error-hero`)
+export { default as AbErrorHero } from './ab-error-hero/index.tsx'
+export type { AbErrorHeroProps } from './ab-error-hero/index.tsx'
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
 export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION, AB_DRAWER_RETURN_FOCUS } from './ab-drawer/index.tsx'
 // 🤏 0.2.0 drawers v2: edge swipes + the swipe / snap rules

@@ -43,7 +43,9 @@
 
 // ⚛️ React types + forwardRef
 import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, Ref } from 'react';
-import { forwardRef } from 'react';
+import { createElement, forwardRef } from 'react';
+// 🔌 404 gaps: the link in effect (AbLinkProvider's, e.g. the i18n Link, or next/link) → locale prefix ✅
+import { useAbLink } from '../ab-link';
 // 🧵 class joiner
 import clsx from 'clsx';
 // 🎨 styles
@@ -148,6 +150,8 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
   const srReason = getAbButtonSrReason({ disabled, isLoading, disabledReason });
   // 🚫 any kind of blocked?
   const blocked = mode !== 'none';
+  // 🔌 404 gaps: link mode goes through AbLinkProvider (hooks run unconditionally, rules-of-hooks ✅)
+  const Link = useAbLink();
 
   // 🏷️ classes: pointer-events:none only for native mode (aria mode must stay focusable/hoverable)
   const classNames = clsx(
@@ -230,9 +234,12 @@ const AbButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, AbButtonProps
     }
     // ✅ live link (no role=button: it navigates, so it is a link)
     return (
-      <a ref={ref as Ref<HTMLAnchorElement>} id={id} href={href} className={classNames} style={style} hidden={hidden} onClick={guardClick} {...dataAttrs}>
-        {content}
-      </a>
+      // 🔌 404 gaps: the provided Link (locale-aware) instead of a bare <a>, so `/docs` → `/fr/docs` 🌍
+      createElement(
+        Link, // 🔗 AbLinkProvider's component (default next/link)
+        { ref: ref as Ref<HTMLAnchorElement>, id, href, className: classNames, style, hidden, onClick: guardClick, ...dataAttrs }, // 🧾 same attrs as before
+        content, // 🧱 label, icons, badge
+      )
     );
   }
 

@@ -97,3 +97,18 @@
 
 /* 📱 0.1.15: the short label is hidden unless a compact AbAppBar (< 768px) swaps it in */
 .abSearchTriggerShort { display: none; }
+
+/* ===== 🔍 404 gaps: size="lg" (mock .e-search: 440×44, radius 12, 14.5px) ===== */
+.abSearchTrigger[data-size='lg'] {
+  display: inline-flex; align-items: center; gap: 8px; /* 📐 */
+  width: min(440px, 100%); height: 44px; padding: 0 8px 0 14px; /* 📏 full width on narrow screens */
+  border: 1px solid var(--ab-color-border, #e8dcd2); border-radius: 12px; /* 🔷 */
+  background: var(--ab-color-card, #fff); color: var(--ab-color-faint, #807062); /* 🎨 */
+  font-size: 14.5px; line-height: 1; box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🔤 🌗 */
+  text-decoration: none; box-sizing: border-box; /* 🔗 📦 */
+}
+.abSearchTrigger[data-size='lg']:hover { border-color: color-mix(in srgb, var(--ab-color-accent, #a67c52) 40%, transparent); } /* 🖱️ */
+.abSearchTrigger[data-size='lg']:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
+.abSearchTrigger[data-size='lg'] .abSearchTriggerCap { margin-left: auto; } /* ⌨️ key cap pinned right */
+.abSearchTrigger[data-size='lg'][aria-disabled='true'] { opacity: 1; } /* 🚧 same look while coming soon */
+

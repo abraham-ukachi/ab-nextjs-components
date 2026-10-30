@@ -67,7 +67,8 @@ export interface AbSearchTriggerProps {
   /** 📱 0.1.15 (God 00:08): a shorter label (e.g. "Search") that a compact AbAppBar shows below 768px instead of `label`
    *  (CSS picks; only one is ever displayed, so the accessible name stays single). Home field only. */
   compactLabel?: string;
-  size?: 'md' | 'sm'; // 📱 0.1.14 (P6): 'sm' = the mobile 34px "Search ⌘K" pill (label + key cap stay visible)
+  size?: 'md' | 'sm' | 'lg'; // 📱 0.1.14 (P6): 'sm' = the mobile 34px "Search ⌘K" pill (label + key cap stay visible)
+  //  🔍 404 gaps: 'lg' = the 404 page's big 44px field (440px wide, full width on mobile; Home field look)
   className?: string; // 🏷️
 }
 
@@ -107,13 +108,13 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
   }, [listen, onOpen]);
 
   // 🏠 P6: the Home looks (field / sm pill) show ONE key cap ("⌘ K" / "⌘K") and keep "coming soon" out of the field
-  const home = variant === 'field' || size === 'sm';
+  const home = variant === 'field' || size === 'sm' || size === 'lg'; // 🔍 404 gaps: lg is a (bigger) Home field
   // ⌨️ mock: "⌘ K" (field) · "⌘K" (sm). The gap is its own span so a compact app bar can drop it (0.1.15)
   const keyCap = <>{apple ? '⌘' : 'Ctrl'}{size === 'sm' ? null : <span data-ab-part="key-gap"> </span>}K</>;
   // 🧩 inner content
   const inner = home ? (
     <>
-      <AbIcon name="search" size={size === 'sm' ? 17 : 18} className={styles.abSearchTriggerIcon} />
+      <AbIcon name="search" size={size === 'sm' ? 17 : size === 'lg' ? 20 : 18 /* 🔍 lg: 20px glyph (mock) */} className={styles.abSearchTriggerIcon} />
       <span className={styles.abSearchTriggerLabel} data-ab-part="search-label">{label}</span>
       {compactLabel != null && <span className={clsx(styles.abSearchTriggerLabel, styles.abSearchTriggerShort)} data-ab-part="search-label-compact">{compactLabel}</span> /* 📱 0.1.15 */}
       {/* 🚧 coming soon: tooltip + announced, never painted inside the field (spec §4) */}
@@ -135,7 +136,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
     'aria-keyshortcuts': listen ? 'Meta+K Control+K' : undefined, // ♿ only announced when bound (James #3)
     'data-compact': compact ? 'true' : undefined, // 📱
     'data-variant': variant === 'field' ? 'field' : undefined, // 🔎 P6
-    'data-size': size === 'sm' ? 'sm' : undefined, // 📱 P6
+    'data-size': size === 'sm' || size === 'lg' ? size : undefined, // 📱 P6 · 🔍 404 gaps: lg
     title: home && comingSoon ? comingSoonLabel : undefined, // 💬 P6: "coming soon" lives in the tooltip
   };
 

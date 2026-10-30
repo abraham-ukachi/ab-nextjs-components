@@ -1,6 +1,6 @@
 {
   "name": "ab-nextjs-components",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "🚀 A lightweight collection of server & client React components created by Abraham Ukachi, and optimized for Next.js applications 😎.",
   "type": "module",
   "main": "index.ts",
@@ -42,7 +42,7 @@
   "peerDependencies": {
     "ab-nextjs-animations": "^0.2.5",
     "ab-nextjs-hooks": "^0.1.7",
-    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-icons": "^0.2.6",
     "ab-nextjs-theme": "^0.3.7",
     "clsx": "^2",
     "next": "^16.3.4",
@@ -55,7 +55,7 @@
     "@types/react": "^19",
     "ab-nextjs-animations": "^0.2.5",
     "ab-nextjs-hooks": "^0.1.7",
-    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-icons": "^0.2.6",
     "ab-nextjs-theme": "^0.3.7",
     "clsx": "^2.1.1",
     "esbuild": "^0.28.2",
@@ -140,7 +140,8 @@
     "ab-app-bar",
     "ab-card",
     "ab-package-card",
-    "ab-toc"
+    "ab-toc",
+    "ab-error-hero"
   ],
   "exports": {
     ".": {
@@ -238,6 +239,7 @@
     "./ab-card": "./ab-card/index.tsx",
     "./ab-package-card": "./ab-package-card/index.tsx",
     "./ab-toc": "./ab-toc/index.tsx",
+    "./ab-error-hero": "./ab-error-hero/index.tsx",
     "./ab-sidebar/view": "./ab-sidebar/view.tsx",
     "./ab-navbar/view": "./ab-navbar/view.tsx"
   },

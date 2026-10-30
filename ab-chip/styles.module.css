@@ -96,3 +96,12 @@
 .chip[data-mono='true'] { font-family: var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); } /* ⌨️ */
 .chip[data-tone='accent'] { background: var(--ab-color-tint, #f4e7db); color: var(--ab-color-accent-text, #88603d); border-color: transparent; } /* 🥉 */
 .chip[data-tone='sage'] { background: rgb(119 141 121 / 0.12); color: var(--ab-color-sage-accent, #566a58); border-color: transparent; } /* 🌿 beta ♿ AA (John): fallback = theme 0.3.5 light value */
+
+/* ===== ✂️ 404 gaps: long text (overflow="ellipsis" default · "wrap") ===== */
+.chip { max-width: 100%; box-sizing: border-box; } /* 📏 never wider than the parent */
+.text { min-width: 0; } /* 📐 lets the flex child shrink */
+.chip[data-overflow='ellipsis'] .text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* ✂️ "…" */
+.chip[data-overflow='wrap'] { white-space: normal; } /* ↩️ */
+.chip[data-overflow='wrap'] .text { overflow-wrap: anywhere; } /* ↩️ long paths like /docs/packages/button break too */
+.chip[data-overflow='wrap'][data-size='sm'] { height: auto; min-height: var(--ab-chip-height, 20px); padding-block: 3px; line-height: 1.3; } /* 📏 grow with lines */
+
