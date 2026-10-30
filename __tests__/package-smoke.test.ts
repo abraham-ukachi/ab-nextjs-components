@@ -94,13 +94,8 @@ const componentFiles = [
   'ab-navbar/index.tsx',
   'ab-sidebar/index.tsx',
   'ab-text/index.tsx',
-  'ab-test-hello/index.tsx',
-  'ab-key-feature/index.tsx',
-  'ab-main-headline/index.tsx',
-  'ab-preview/index.tsx',
   'ab-product/index.tsx',
   'ab-product-item/index.tsx',
-  'ab-switch-back/index.tsx',
   'ab-demo-box/index.tsx',
   'ab-demo-code/index.tsx',
   'server/ab-brand/index.tsx',
@@ -109,9 +104,6 @@ const componentFiles = [
   'server/ab-sidebar/index.tsx',
   'server/ab-nav-link/index.tsx',
   'server/ab-text/index.tsx',
-  'server/ab-test-hello/index.tsx',
-  'server/ab-key-feature/index.tsx',
-  'server/ab-switch-back/index.tsx',
 ]
 
 describe('ab-nextjs-components package smoke', () => {
@@ -130,10 +122,10 @@ describe('ab-nextjs-components package smoke', () => {
 
   it('exports supportedComponents catalog (83 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(84) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene
+    expect(mod.supportedComponents).toHaveLength(76) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(57) // 🌗 0.2.3: + AbThemeModeProvider (client)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(27) // 🎨 0.2.3: + AbPlaygroundScene
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(52) // 🌗 0.2.3: + AbThemeModeProvider (client)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(24) // 🎨 0.2.3: + AbPlaygroundScene
   })
 
   it('ships component entry files', () => {
@@ -193,22 +185,14 @@ describe('ab-nextjs-components package smoke', () => {
   'ab-navbar/styles.module.css',
   'ab-sidebar/styles.module.css',
   'ab-text/styles.module.css',
-  'ab-test-hello/styles.module.css',
-  'ab-key-feature/styles.module.css',
-  'ab-main-headline/styles.module.css',
-  'ab-preview/styles.module.css',
   'ab-product/styles.module.css',
   'ab-product-item/styles.module.css',
-  'ab-switch-back/styles.module.css',
   'ab-demo-box/styles.module.css',
   'ab-demo-code/styles.module.css',
   'server/ab-brand/styles.module.css',
   'server/ab-name/styles.module.css',
   'server/ab-nav-link/styles.module.css',
   'server/ab-text/styles.module.css',
-  'server/ab-test-hello/styles.module.css',
-  'server/ab-key-feature/styles.module.css',
-  'server/ab-switch-back/styles.module.css',
 ]
     for (const file of cssFiles) {
       const css = readFileSync(join(root, file), 'utf8')
