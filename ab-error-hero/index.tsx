@@ -43,13 +43,15 @@
 import type { ComponentType, ReactElement, ReactNode } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
+// 🔣 the default badge glyph (link_off, ab-nextjs-icons ^0.2.6, as in the mock)
+import AbIcon from '../ab-icon';
 // 🎨 styles (static only: NO motion here, all motion lives in ab-nextjs-animations)
 import styles from './styles.module.css';
 
 /** ⚙️ props */
 export interface AbErrorHeroProps {
   code?: ReactNode; // 🔢 the big number / word, e.g. "404" (default), "500", "Oops"
-  badge?: ReactNode; // 🟫 a small tilted tile pinned to the code, e.g. <AbIcon name="link_off" /> (decorative)
+  badge?: ReactNode; // 🟫 a small tilted tile pinned to the code, default <AbIcon name="link_off" /> (the mock); pass null to hide (decorative)
   title: ReactNode; // 🏷️ the h1, e.g. "Page not found"
   message?: ReactNode; // 📝 the lede under the title
   hint?: ReactNode; // 💡 an optional row under the message, e.g. the bad path + "Did you mean …" (an AbChip)
@@ -67,7 +69,7 @@ export interface AbErrorHeroProps {
  * The code is decorative (aria-hidden) and announced once via a visually hidden prefix on the title.
  * No hooks, no state, no motion: renders on the server.
  */
-const AbErrorHero = ({ code = '404', badge, title, message, hint, actions, children, headingLevel = 1, grid = true, id, className }: AbErrorHeroProps): ReactElement => {
+const AbErrorHero = ({ code = '404', badge = <AbIcon name="link_off" /> /* 🔗🚫 mock default */, title, message, hint, actions, children, headingLevel = 1, grid = true, id, className }: AbErrorHeroProps): ReactElement => {
   const H = `h${headingLevel}` as unknown as ComponentType<{ className?: string; children?: ReactNode }>; // ♿ h1 / h2
   return (
     <section id={id} className={clsx('AbErrorHero', styles.abErrorHero, className)} data-ab-part="error-hero">

@@ -46,6 +46,9 @@ import { join } from 'node:path'
 // 🚧 under test (subpath + barrel)
 import AbErrorHero from '../ab-error-hero'
 import { AbErrorHero as BarrelHero, supportedComponents } from '../index'
+// 🔗🚫 the default badge glyph (ab-nextjs-icons ^0.2.6), registered like an app would
+import { registerAbIcons } from '../ab-icon/helpers'
+import linkOff from 'ab-nextjs-icons/ab-icons/icons/link_off'
 
 describe('AbErrorHero 🚧', () => {
   it('renders the decorative code, an h1 title (with the code read once), message, hint and actions', () => {
@@ -61,12 +64,18 @@ describe('AbErrorHero 🚧', () => {
     expect(html).toContain('data-ab-part="error-actions"><button>Home</button>') // 🔘
   })
   it('optional parts are omitted; headingLevel and grid are honoured', () => {
-    const html = renderToStaticMarkup(<AbErrorHero code="500" title="Oops" headingLevel={2} grid={false} />) // 🧩
+    const html = renderToStaticMarkup(<AbErrorHero code="500" title="Oops" badge={null} headingLevel={2} grid={false} />) // 🧩
     expect(html).toContain('<h2') // ♿
     expect(html).not.toContain('error-grid') // ⠿ off
     expect(html).not.toContain('error-badge') // 🟫 off
     expect(html).not.toContain('error-actions') // 🔘 off
     expect(html).toContain('500') // 🔢
+  })
+  it('defaults the badge tile to <AbIcon name="link_off"> (mock ai-mocks/404)', () => {
+    registerAbIcons({ link_off: linkOff }) // 🗂️ register link_off (no font fallback)
+    const html = renderToStaticMarkup(<AbErrorHero title="Page not found" />) // 🔗🚫 no badge prop
+    expect(html).toMatch(/data-ab-part="error-badge"><span class="AbIcon[^"]*"[^>]*data-icon="link_off"[^>]*><svg /) // 🟫 an AbIcon svg in the tile
+    expect(html).toContain('M4.5 5 L19.5 20') // 🔣 the link_off slash (real svg, no font fallback)
   })
   it('is exported from the barrel and listed in supportedComponents', () => {
     expect(BarrelHero).toBe(AbErrorHero) // 📦

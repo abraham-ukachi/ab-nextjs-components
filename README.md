@@ -98,7 +98,7 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
 
 ### 404 gaps (unreleased) 🚧
 
-* **`<AbErrorHero>`** (`ab-nextjs-components/ab-error-hero`, also in the barrel): the 404 / error hero from the 404 mocks. A big gradient `code` (default `"404"`) over a faded dot grid, a tilted `badge` tile (e.g. `<AbIcon name="link_off" />`), the `title` (h1, the code is read once), `message`, an optional `hint` row and an `actions` slot. Server-safe, no motion.
+* **`<AbErrorHero>`** (`ab-nextjs-components/ab-error-hero`, also in the barrel): the 404 / error hero from the 404 mocks. A big gradient `code` (default `"404"`) over a faded dot grid, a tilted `badge` tile (default `<AbIcon name="link_off" />`, needs ab-nextjs-icons ^0.2.6 and `registerAbIcons({ link_off })`; pass `badge={null}` to hide it), the `title` (h1, the code is read once), `message`, an optional `hint` row and an `actions` slot. Server-safe, no motion.
   ```tsx
   <AbErrorHero badge={<AbIcon name="link_off" />} title="Page not found" message="This page moved or never existed."
     hint={<AbChip mono>/docs/packages/button</AbChip>}
