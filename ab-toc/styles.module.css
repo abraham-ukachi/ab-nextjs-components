@@ -80,3 +80,19 @@
 .abTocPromoLink { color: inherit; text-decoration: none; } /* 🔗 */
 .abTocPromoLink::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* 🖱️ whole card */
 .abTocPromo:has(.abTocPromoLink:focus-visible) { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
+
+/* 🔗 404 gaps: variant="links" (mock .pops / .pop), a plain link list without the rail */
+.abTocLinks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; } /* 📋 */
+.abTocLinksItem {
+  display: flex; align-items: center; gap: 10px; /* 📐 icon · text */
+  margin: 0 -8px; padding: 7px 8px; border-radius: 9px; /* 📦 mock */
+  color: var(--ab-color-text, var(--ab-color-on-surface, inherit)); text-decoration: none; /* 🖋️ */
+}
+.abTocLinksItem:hover, .abTocLinksItem[aria-current='page'] { background: var(--ab-color-tint, rgb(166 124 82 / 0.1)); } /* 🖱️ 🎯 */
+.abTocLinksItem:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+.abTocLinksIcon { display: inline-flex; flex: none; color: var(--ab-color-accent-text, var(--ab-color-primary, inherit)); } /* 🔣 */
+.abTocLinksIcon svg { width: 17px; height: 17px; } /* 📏 */
+.abTocLinksText { min-width: 0; } /* 📐 */
+.abTocLinksLabel { display: block; font-size: 13px; font-weight: 600; line-height: 1.3; } /* 🏷️ */
+.abTocLinksDesc { display: block; margin-top: 1px; font-size: 11.5px; color: var(--ab-color-faint, var(--ab-color-on-surface-variant, inherit)); } /* 📝 */
+
