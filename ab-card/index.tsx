@@ -45,6 +45,8 @@ import type { ComponentType, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 // 🔗 G42 link
 import Link from '../ab-link';
+// 🔣 404 gaps: the trailing arrow glyph
+import AbIcon from '../ab-icon';
 // 🎬 hover colours + transform timing from the package (reduced motion → no transition)
 import 'ab-nextjs-animations/motion/styles.css';
 // 🎨 styles
@@ -62,20 +64,26 @@ export interface AbCardProps {
   className?: string; // 🏷️
   as?: 'article' | 'div' | 'li'; // 🧱 default article
   id?: string; // 🆔 0.1.13: e.g. an in-page anchor target
+  // ===== 404 gaps (additive) =====
+  iconTile?: ReactNode; // 🟫 NEW: a leading icon in a tinted square (e.g. <AbIcon name="rocket_launch" />)
+  arrow?: boolean; // ➡️ NEW: a decorative trailing arrow, top-right (the 404 "Suggested" cards)
+  boldTitle?: boolean; // 🅱️ NEW: a bolder (700) title
 }
 
 /**
  * 🃏 AbCard (G45): ONE link (the title) stretched over the card, so screen readers hear one link, not a
  * nested block of them. Hover lift is 2px, laptop and up only, and none under prefers-reduced-motion.
  */
-const AbCard = ({ title, href, description, eyebrow, media, footer, headingLevel = 3, className, as = 'article', id }: AbCardProps): ReactElement => {
+const AbCard = ({ title, href, description, eyebrow, media, footer, headingLevel = 3, className, as = 'article', id, iconTile, arrow = false, boldTitle = false }: AbCardProps): ReactElement => {
   const H = `h${headingLevel}` as unknown as ComponentType<{ className?: string; children?: ReactNode }>; // ♿
   const Root = as as unknown as ComponentType<Record<string, unknown>>; // 🧱
   return (
-    <Root id={id} className={clsx('AbCard', styles.abCard, 'ab-motion-interactive', className)} data-ab-part="card" data-linked={href ? 'true' : 'false'}>
+    <Root id={id} className={clsx('AbCard', styles.abCard, 'ab-motion-interactive', className)} data-ab-part="card" data-linked={href ? 'true' : 'false'} data-arrow={arrow ? 'true' : undefined /* ➡️ room for the arrow */}>
+      {iconTile && <span className={styles.abCardIconTile} data-ab-part="icon-tile" aria-hidden="true">{iconTile}</span> /* 🟫 decorative tile */}
+      {arrow && <AbIcon name="arrow_forward" size={17} className={styles.abCardArrow} /> /* ➡️ decorative (AbIcon is aria-hidden) */}
       {media && <div className={styles.abCardMedia} aria-hidden="true">{media}</div>}
       {eyebrow && <p className={styles.abCardEyebrow}>{eyebrow}</p>}
-      <H className={styles.abCardTitle}>
+      <H className={clsx(styles.abCardTitle, boldTitle && styles.abCardTitleBold /* 🅱️ */)}>
         {href ? <Link href={href} className={styles.abCardLink}>{title}</Link> : title}
       </H>
       {description && <p className={styles.abCardDescription}>{description}</p>}

@@ -66,3 +66,23 @@
 @media (min-width: 1024px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
   .abCard[data-linked='true']:hover { transform: translateY(-2px); } /* 🎈 */
 }
+
+/* ===== 404 gaps (additive) ===== */
+/* 🟫 leading icon tile: icon in a tinted square (mock .pkg-ic) */
+.abCardIconTile {
+  display: inline-flex; /* 📐 */
+  align-items: center; /* ↕️ */
+  justify-content: center; /* ↔️ */
+  width: 34px; /* 📏 */
+  height: 34px; /* 📏 */
+  border-radius: 9px; /* 🔷 */
+  background: var(--ab-color-tint, rgb(166 124 82 / 0.14)); /* 🎨 tint (mock .pkg-ic) */
+  color: var(--ab-color-accent-text, var(--ab-color-primary, inherit)); /* 🖋️ accent glyph */
+  flex: none; /* 🚫 no shrink */
+}
+/* ➡️ trailing arrow, top-right (mock .sg-go) */
+.abCardArrow { position: absolute; top: 14px; right: 12px; color: var(--ab-color-on-surface-variant, inherit); opacity: 0.7; } /* ➡️ */
+.abCard[data-arrow='true'] .abCardTitle, .abCard[data-arrow='true'] .abCardDescription { padding-right: 22px; } /* 🧱 keep text off the arrow */
+/* 🅱️ bold title */
+.abCardTitleBold { font-weight: 700; } /* 🅱️ */
+
