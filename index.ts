@@ -78,13 +78,8 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbNavbar', file: 'ab-navbar/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbSidebar', file: 'ab-sidebar/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbText', file: 'ab-text/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbTestHello', file: 'ab-test-hello/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbKeyFeature', file: 'ab-key-feature/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbMainHeadline', file: 'ab-main-headline/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbPreview', file: 'ab-preview/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbProduct', file: 'ab-product/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbProductItem', file: 'ab-product-item/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbSwitchBack', file: 'ab-switch-back/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'client', status: 'Done' },
 
@@ -101,9 +96,6 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbSidebar', file: 'server/ab-sidebar/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbNavLink', file: 'server/ab-nav-link/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbText', file: 'server/ab-text/index.tsx', kind: 'server', status: 'Done' },
-  { name: 'AbTestHello', file: 'server/ab-test-hello/index.tsx', kind: 'server', status: 'Done' },
-  { name: 'AbKeyFeature', file: 'server/ab-key-feature/index.tsx', kind: 'server', status: 'Done' },
-  { name: 'AbSwitchBack', file: 'server/ab-switch-back/index.tsx', kind: 'server', status: 'Done' },
   // 🆕 Welcome v6 (AbThemeToggle)
   { name: 'AbThemeToggle', file: 'ab-theme-toggle/index.tsx', kind: 'client', status: 'Done' },
   // 🆕 Welcome v6 (AbChip)
@@ -242,13 +234,8 @@ export type { AbBreadcrumbItem, AbBreadcrumbsProps } from './ab-breadcrumbs/inde
 export { default as AbList, AbListItem } from './ab-list/index.tsx'
 export type { AbListProps, AbListItemProps } from './ab-list/index.tsx'
 export { default as AbText } from './ab-text/index.tsx'
-export { default as AbTestHello } from './ab-test-hello/index.tsx'
-export { default as AbKeyFeature } from './ab-key-feature/index.tsx'
-export { default as AbMainHeadline } from './ab-main-headline/index.tsx'
-export { default as AbPreview } from './ab-preview/index.tsx'
 export { default as AbProduct } from './ab-product/index.tsx'
 export { default as AbProductItem } from './ab-product-item/index.tsx'
-export { default as AbSwitchBack } from './ab-switch-back/index.tsx'
 export { default as AbDemoBox } from './ab-demo-box/index.tsx'
 export { default as AbDemoCode } from './ab-demo-code/index.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'

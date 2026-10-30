@@ -192,15 +192,10 @@ A list of all the **client components** and their current status:
 | 25 | *`AbNavbar`* | **ab-navbar/index.tsx** | Done |
 | 26 | *`AbSidebar`* | **ab-sidebar/index.tsx** | Done |
 | 27 | *`AbText`* | **ab-text/index.tsx** | Done |
-| 28 | *`AbTestHello`* | **ab-test-hello/index.tsx** | Done |
-| 29 | *`AbKeyFeature`* | **ab-key-feature/index.tsx** | Done |
-| 30 | *`AbMainHeadline`* | **ab-main-headline/index.tsx** | Done |
-| 31 | *`AbPreview`* | **ab-preview/index.tsx** | Done |
-| 32 | *`AbProduct`* | **ab-product/index.tsx** | Done |
-| 33 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
-| 34 | *`AbSwitchBack`* | **ab-switch-back/index.tsx** | Done |
-| 35 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
-| 36 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
+| 28 | *`AbProduct`* | **ab-product/index.tsx** | Done |
+| 29 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
+| 30 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
+| 31 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
 
 ## Server Components
 
@@ -220,9 +215,6 @@ A list of all the **server components** and their current status:
 | 10 | *`AbSidebar`* | **server/ab-sidebar/index.tsx** | Done |
 | 11 | *`AbNavLink`* | **server/ab-nav-link/index.tsx** | Done |
 | 12 | *`AbText`* | **server/ab-text/index.tsx** | Done |
-| 13 | *`AbTestHello`* | **server/ab-test-hello/index.tsx** | Done |
-| 14 | *`AbKeyFeature`* | **server/ab-key-feature/index.tsx** | Done |
-| 15 | *`AbSwitchBack`* | **server/ab-switch-back/index.tsx** | Done |
 
 
 ## Learn More abElements

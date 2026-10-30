@@ -131,13 +131,8 @@ export type { AbBreadcrumbItem, AbBreadcrumbsProps } from '../ab-breadcrumbs/ind
 export { default as AbList, AbListItem } from '../ab-list/index.tsx';
 export type { AbListProps, AbListItemProps } from '../ab-list/index.tsx';
 export { default as AbText } from '../ab-text/index.tsx';
-export { default as AbTestHello } from '../ab-test-hello/index.tsx';
-export { default as AbKeyFeature } from '../ab-key-feature/index.tsx';
-export { default as AbMainHeadline } from '../ab-main-headline/index.tsx';
-export { default as AbPreview } from '../ab-preview/index.tsx';
 export { default as AbProduct } from '../ab-product/index.tsx';
 export { default as AbProductItem } from '../ab-product-item/index.tsx';
-export { default as AbSwitchBack } from '../ab-switch-back/index.tsx';
 export { default as AbDemoBox } from '../ab-demo-box/index.tsx';
 export { default as AbDemoCode } from '../ab-demo-code/index.tsx';
 export { default as AbPolygon } from '../server/ab-polygon/index.tsx';
