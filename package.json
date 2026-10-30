@@ -42,7 +42,7 @@
   "peerDependencies": {
     "ab-nextjs-animations": "^0.2.5",
     "ab-nextjs-hooks": "^0.1.7",
-    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-icons": "^0.2.6",
     "ab-nextjs-theme": "^0.3.7",
     "clsx": "^2",
     "next": "^16.3.4",
@@ -55,7 +55,7 @@
     "@types/react": "^19",
     "ab-nextjs-animations": "^0.2.5",
     "ab-nextjs-hooks": "^0.1.7",
-    "ab-nextjs-icons": "^0.2.4",
+    "ab-nextjs-icons": "^0.2.6",
     "ab-nextjs-theme": "^0.3.7",
     "clsx": "^2.1.1",
     "esbuild": "^0.28.2",
