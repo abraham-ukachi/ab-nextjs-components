@@ -40,6 +40,8 @@
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 // 🧵 class joiner
 import clsx from 'clsx';
+// 🔗 404 gaps: the provider-aware link (client component, fine to render from a server twin)
+import AbLink from '../../ab-link';
 // 🎨 styles (server copy)
 // 🧬 0.2.3 (Joseph 03:41): ONE source for the button box — the client module's CSS (no server copy to drift)
 import styles from '../../ab-button/styles.module.css';
@@ -141,7 +143,8 @@ const AbButton = ({
       return <span id={id} role="link" aria-disabled="true" tabIndex={mode === 'aria' ? 0 : -1} className={classNames} style={style} hidden={hidden} {...dataAttrs}>{content}</span>;
     }
     // ✅ a link is a link (no role=button)
-    return <a id={id} href={href} className={classNames} style={style} hidden={hidden} {...dataAttrs}>{content}</a>;
+    // 🔌 404 gaps: AbLink (a client leaf) reads AbLinkProvider from the client tree → locale prefix 🌍
+    return <AbLink id={id} href={href} className={classNames} style={style} hidden={hidden} {...dataAttrs}>{content}</AbLink>;
   }
 
   // 🔘 button: aria mode is type="button" so a disabled CTA can never submit, even without JS
