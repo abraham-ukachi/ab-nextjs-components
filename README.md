@@ -96,6 +96,20 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   registerAbIcons({ code })
   ```
 
+### 404 gaps (unreleased) 🚧
+
+* **`<AbErrorHero>`** (`ab-nextjs-components/ab-error-hero`, also in the barrel): the 404 / error hero from the 404 mocks. A big gradient `code` (default `"404"`) over a faded dot grid, a tilted `badge` tile (e.g. `<AbIcon name="link_off" />`), the `title` (h1, the code is read once), `message`, an optional `hint` row and an `actions` slot. Server-safe, no motion.
+  ```tsx
+  <AbErrorHero badge={<AbIcon name="link_off" />} title="Page not found" message="This page moved or never existed."
+    hint={<AbChip mono>/docs/packages/button</AbChip>}
+    actions={<><AbSearchTrigger size="lg" onOpen={open} /><AbButton type="filled" label="Back to home" href="/" /></>} />
+  ```
+* **`<AbButton href>`** now renders through `AbLinkProvider`'s link (client and server twins), so links get the locale prefix.
+* **`<AbCard>`**: `iconTile` (a leading icon in a tinted square), `arrow` (a decorative trailing arrow) and `boldTitle`.
+* **`<AbSearchTrigger size="lg">`**: the 44px, up-to-440px search field of the 404 page.
+* **`<AbToc variant="links">`**: a plain link list ("Popular pages"); items take `href`, `description` and `icon`, and links go through `AbLinkProvider`.
+* **`<AbChip overflow>`**: `'ellipsis'` (default, adds the full text as `title`) or `'wrap'`.
+
 ### Home fidelity (0.1.14, unreleased) 🏠
 
 These match the approved Home mocks (`home-fidelity-spec.md` §4/§5). Colours come from the `ab-nextjs-theme` ≥ 0.3.5 Home tokens, with the light mock values as fallbacks. Each component also has its own `--ab-list-*` / `--ab-crumbs-*` / `--ab-version-*` / `--ab-bottom-drawer-*` knobs.
