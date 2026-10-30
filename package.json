@@ -140,7 +140,8 @@
     "ab-app-bar",
     "ab-card",
     "ab-package-card",
-    "ab-toc"
+    "ab-toc",
+    "ab-error-hero"
   ],
   "exports": {
     ".": {
@@ -238,6 +239,7 @@
     "./ab-card": "./ab-card/index.tsx",
     "./ab-package-card": "./ab-package-card/index.tsx",
     "./ab-toc": "./ab-toc/index.tsx",
+    "./ab-error-hero": "./ab-error-hero/index.tsx",
     "./ab-sidebar/view": "./ab-sidebar/view.tsx",
     "./ab-navbar/view": "./ab-navbar/view.tsx"
   },
