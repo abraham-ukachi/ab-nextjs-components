@@ -73,6 +73,24 @@
   height: 32px; /* 📏 */
 }
 
+/* 👆 0.3.2 (God): every radio segment and the sm icon button get an invisible 44×44 hit area centred on them, so
+   the 40/32/28px visuals stay while the tap target is ≥ 44px (WCAG 2.5.5). Neighbouring areas overlap by a few px;
+   the later segment wins there, which is fine for adjacent radios */
+.segment,
+.icon {
+  position: relative; /* 📌 anchors the hit area */
+}
+.segment::after,
+.icon[data-size='sm']::after {
+  content: ''; /* 🫥 invisible */
+  position: absolute; /* 📌 */
+  left: 50%; /* ↔️ centred */
+  top: 50%; /* ↕️ centred */
+  width: 44px; /* 👆 */
+  height: 44px; /* 👆 */
+  transform: translate(-50%, -50%); /* 🎯 */
+}
+
 /* ✅ selected */
 .segment[aria-checked='true'] {
   color: var(--ab-color-on-primary, #fff); /* 🎨 */

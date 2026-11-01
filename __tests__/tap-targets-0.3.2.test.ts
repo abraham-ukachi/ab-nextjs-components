@@ -70,7 +70,7 @@ describe('👆 44px tap targets', () => {
   })
   it('AbThemeToggle variant="icon": 44×44 (was 40), default and thumb', () => {
     const src = css('ab-theme-toggle/styles.module.css') // 📖
-    const base = rule(src, '.icon', true) // 🔘 the icon button's own 0.3.2 rule
+    const base = src.slice(src.indexOf('\n.icon {\n  width'), src.indexOf('}', src.indexOf('\n.icon {\n  width'))) // 🔘 the icon button's own 0.3.2 size rule
     expect(px(base, 'width')).toBe(44); expect(px(base, 'height')).toBe(44) // 📏
     const thumb = rule(src, ".icon[data-appearance='thumb']") // 🌗 P7
     expect(px(thumb, 'width')).toBe(44); expect(px(thumb, 'height')).toBe(44) // 📏
@@ -78,5 +78,24 @@ describe('👆 44px tap targets', () => {
   it("AbMobileHeader's own buttons stay 44×44 (the reference size)", () => {
     const ib = rule(css('ab-drawer/kit.module.css'), '.ibtn') // 🔘
     expect(px(ib, 'inline-size')).toBe(44); expect(px(ib, 'block-size')).toBe(44) // 📏
+  })
+})
+
+// 👆 0.3.2 (God): the sm toggle + every segmented radio get an invisible 44×44 hit area (visuals unchanged)
+describe('👆 AbThemeToggle hit areas', () => {
+  const src = css('ab-theme-toggle/styles.module.css') // 📖
+  const hit = src.slice(src.indexOf('.segment::after,'), src.indexOf('}', src.indexOf('.segment::after,'))) // 🫥 the shared ::after rule
+  it('covers the segments and the sm icon button', () => {
+    expect(hit).toContain(".icon[data-size='sm']::after") // 🔘 sm
+    expect(px(hit, 'width')).toBe(44); expect(px(hit, 'height')).toBe(44) // 📏 44×44
+    expect(hit).toContain('transform: translate(-50%, -50%)') // 🎯 centred
+    expect(hit).toContain("content: ''") // 🫥 drawn, but empty
+  })
+  it('the segments are positioned so the area anchors to them', () => {
+    expect(src).toMatch(/\.segment,\s*\.icon \{\s*position: relative;/) // 📌
+  })
+  it('the visuals keep their sizes (40 / 32 / 28px)', () => {
+    expect(src).toMatch(/\[data-size='sm'\] \.segment,\s*\.icon\[data-size='sm'\] \{\s*width: 32px;/) // 📏 sm
+    expect(src).toMatch(/\.group\[data-appearance='thumb'\] \.segment \{ width: 28px; height: 28px;/) // 📏 thumb
   })
 })
