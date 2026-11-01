@@ -118,7 +118,7 @@
 
 /* ⬅️ the nav drawer: logo header, the version chip, a scrolling nav (44px rows, 15px) with a 72px fade, a pinned footer */
 .logoRow { display: flex; align-items: center; min-inline-size: 0; }
-.logoRow a { display: flex; align-items: center; color: inherit; }
+.logoRow a { display: flex; align-items: center; color: inherit; min-block-size: 44px; } /* 👆 0.3.2 (God, 0.2.23 gaps): the logo link is a 44px-tall tap target (was 25px); the glyph keeps its size */
 .ver { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; block-size: 32px; padding: 0 8px 0 10px; margin: 0 0 8px 8px; box-sizing: border-box; border-radius: 8px; border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); background: var(--ab-dr-card); color: var(--ab-color-muted, #6b5b50); font: 500 13px/1 var(--ab-font-body, 'Inter', inherit); }
 .ver b { font-family: var(--ab-font-mono, 'Roboto Mono', monospace); color: var(--ab-color-accent-text, #8b6340); font-weight: 600; }
 .ver > svg { inline-size: 18px; block-size: 18px; }
@@ -197,6 +197,8 @@
    buttons keep their hit area and the end inset stays 4px so the last one lines up with the 44px grid */
 /* 🧩 0.2.3 no-JS language list: <details> around the globe; the list drops below it, end-aligned */
 .langDetails { position: relative; flex: none; } /* 📌 anchor */
+/* 🔎 0.3.2 (Joseph): AbMobileHeader `search` slot, before the theme button; never shrinks, 4px from its neighbours */
+.mhSearch { flex: none; display: inline-flex; align-items: center; margin-inline: 4px; } /* 📐 */
 .langDetails > summary { list-style: none; } /* 🙈 no disclosure triangle */
 .langDetails > summary::-webkit-details-marker { display: none; } /* 🙈 Safari */
 .langList { position: absolute; inset-inline-end: 0; inset-block-start: 100%; z-index: 30; margin: 4px 0 0; padding: 6px; min-inline-size: 180px; list-style: none; background: var(--ab-color-card, #fff); border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: 12px; box-shadow: 0 8px 24px rgb(25 18 12 / 0.12); } /* 📋 */

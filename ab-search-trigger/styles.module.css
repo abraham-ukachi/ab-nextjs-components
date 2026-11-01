@@ -78,11 +78,15 @@
   font-size: 13.5px; line-height: 1; box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🔤 🌗 */
 }
 .abSearchTrigger[data-size='sm'] {
-  flex: none; width: auto; max-width: none; height: 34px; /* 📏 */
+  flex: none; width: auto; max-width: none; height: 34px; /* 📏 the pill still LOOKS 34px (mock) */
+  position: relative; /* 📌 0.3.2: anchors the invisible hit area below */
   gap: 6px; padding: 0 6px 0 10px; /* 📦 */
   border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-pill, 999px); /* 💊 */
   background: var(--ab-color-card, #fff); color: var(--ab-color-faint, #807062); font-size: 13px; line-height: 1; /* 🎨 🔤 */
 }
+/* 👆 0.3.2 (God, 0.2.23 gaps): an invisible 44px-tall hit area around the 34px pill (5px above + below), so the
+   tap target is ≥ 44px (WCAG 2.5.5) without changing the look */
+.abSearchTrigger[data-size='sm']::after { content: ''; position: absolute; inset: -5px 0; } /* 🫥 hit area */
 .abSearchTrigger[data-variant='field']:hover, .abSearchTrigger[data-size='sm']:hover { border-color: color-mix(in srgb, var(--ab-color-accent, #a67c52) 40%, transparent); } /* 🖱️ */
 .abSearchTrigger[data-variant='field']:focus-visible, .abSearchTrigger[data-size='sm']:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
 /* ⌨️ the single key cap (mock `kbd`): 20px, radius 5, 2px bottom border, 11/600 --muted */

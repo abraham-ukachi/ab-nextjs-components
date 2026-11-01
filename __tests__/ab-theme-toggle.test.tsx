@@ -100,10 +100,23 @@ describe('AbThemeToggle (segmented)', () => {
 
 describe('AbThemeToggle (icon)', () => {
   it('cycles modes and names the current one', () => {
-    const { getByRole } = render(<AbThemeToggle labels={labels} variant="icon" />) // 🖼️
+    const { getByRole } = render(<AbThemeToggle labels={labels} variant="icon" iconShows="current" />) // 🖼️ 0.3.2: opt into 'current'
     const button = getByRole('button') // 🔘
     expect(button.getAttribute('aria-label')).toBe('Theme: Light') // ♿
     fireEvent.click(button) // 🔁
     expect(button.getAttribute('aria-label')).toBe('Theme: Dark') // ✅
+  })
+})
+
+// 🎯 0.3.2 (God): the icon button shows (and names) the mode a tap switches TO by default, like AbMobileHeader
+describe('AbThemeToggle (icon) target default 0.3.2', () => {
+  it('fill appearance: light shows dark_mode, then dark shows brightness_auto', () => {
+    const { getByRole } = render(<AbThemeToggle labels={labels} variant="icon" />) // 🖼️ no iconShows
+    const button = getByRole('button') // 🔘
+    expect(button.getAttribute('data-shows')).toBe('target') // 🎯
+    expect(button.getAttribute('aria-label')).toBe('Theme: Dark') // ♿ the target (no switchTo → fallback name)
+    expect(button.innerHTML).toContain('data-icon="dark_mode"') // 🌙
+    fireEvent.click(button) // 🔁 → dark
+    expect(button.innerHTML).toContain('data-icon="brightness_auto"') // 🌗🅰️ next is system
   })
 })

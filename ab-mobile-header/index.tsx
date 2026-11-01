@@ -59,14 +59,14 @@ import AbIcon from '../ab-icon';
 // 🎨 the drawers v2 kit
 import kit from '../ab-drawer/kit.module.css';
 // 🌗 0.2.3: the shared theme state (AbThemeModeProvider)
-import { useAbThemeModeContext } from '../ab-theme-mode';
+import { useAbThemeModeContext, AB_THEME_MODE_ICONS, AB_THEME_ICON_BUTTON_GLYPH } from '../ab-theme-mode';
 
 /** 🌗 0.2.3: the three theme modes (same names as ab-nextjs-hooks' AbThemeMode) */
 export type AbMobileHeaderThemeMode = 'light' | 'dark' | 'system';
 /** 🔁 0.2.3: the 3-state cycle order */
 export const AB_MOBILE_HEADER_THEME_CYCLE: readonly AbMobileHeaderThemeMode[] = ['light', 'dark', 'system'];
-// 🔣 the glyph of each mode
-const THEME_ICON: Record<AbMobileHeaderThemeMode, string> = { light: 'light_mode', dark: 'dark_mode', system: 'computer' };
+// 🔣 the glyph of each mode: 0.3.2 the shared map, the same one AbThemeToggle uses
+const THEME_ICON: Readonly<Record<AbMobileHeaderThemeMode, string>> = AB_THEME_MODE_ICONS;
 
 /** 🌍 0.2.3: one entry of the no-JS language list */
 export interface AbMobileHeaderLanguage {
@@ -87,6 +87,9 @@ export interface AbMobileHeaderProps {
   theme?: 'light' | 'dark'; // 🌗 the resolved theme now
   onThemeChange?: (next: 'light' | 'dark') => void; // 🌗 the toggle (it shows the mode it switches TO: a moon in light)
   actions?: ReactNode; // ➕ more 44px buttons after the two (none in John's frame)
+  // 🔎 0.3.2 (Joseph, 0.2.23 gaps): a search pill (e.g. <AbSearchTrigger size="sm" />) placed after the globe and
+  //    BEFORE the theme button
+  search?: ReactNode;
   labels?: { language?: string; toDark?: string; toLight?: string; toSystem?: string; header?: string }; // 🌍 "Change language", "Switch to dark theme", "Switch to light theme", (0.2.3) "Use the system theme", "Main header"
   languageExpanded?: boolean; // ♿ aria-expanded on the globe while its sheet is open
   // 🌗 0.2.3: the 3-state theme (light → dark → system → light). When `onThemeModeChange` is set it replaces the
@@ -124,7 +127,7 @@ export interface AbMobileHeaderProps {
  * no menu button (the left drawer opens with an edge swipe). Put it in AbMainLayout's `mainHeader` with core
  * ≥ 0.2.1 `mobileHeader="main"`: the 56px row, its divider and the hidden app header come from core.
  */
-const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, languages, size = 'default', barAt = 'auto', className }: AbMobileHeaderProps): ReactElement => {
+const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, themeMode = 'system', onThemeModeChange, actions, search, row, labels = {}, languageExpanded, languageControls, languageRef, languageHref, languages, size = 'default', barAt = 'auto', className }: AbMobileHeaderProps): ReactElement => {
   const L = { language: 'Change language', toDark: 'Switch to dark theme', toLight: 'Switch to light theme', toSystem: 'Use the system theme', header: 'Main header', ...labels }; // 🌍
   const name: Record<AbMobileHeaderThemeMode, string> = { light: L.toLight, dark: L.toDark, system: L.toSystem }; // ♿ "switch TO" names
   // 🌗 0.2.3: under an AbThemeModeProvider with no theme props, the button is the 3-state cycle on the SHARED state
@@ -141,7 +144,7 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
     ? AB_MOBILE_HEADER_THEME_CYCLE[(Math.max(0, AB_MOBILE_HEADER_THEME_CYCLE.indexOf(mode3)) + 1) % AB_MOBILE_HEADER_THEME_CYCLE.length] // 🔁
     : theme === 'dark' ? 'light' : 'dark'; // 🌗 the target
   const showTheme = three || !!onThemeChange; // 👀
-  // 🧱 the 56px bar: logo · globe · theme · actions
+  // 🧱 the 56px bar: logo · globe · (0.3.2) search · theme · actions
   const bar = (
     <>
       <span className={kit.logoRow}>{logo}</span>
@@ -199,6 +202,10 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
           <AbIcon name="language" size={24} />
         </button>
       )}
+      {search != null && (
+        // 🔎 0.3.2: the search pill slot, right before the theme button
+        <span className={kit.mhSearch} data-ab-part="mobile-header-search">{search}</span>
+      )}
       {showTheme && (
         <button
           type="button"
@@ -208,7 +215,7 @@ const AbMobileHeader = ({ logo, onLanguage, theme = 'light', onThemeChange, them
           data-ab-part="mobile-header-theme"
           data-theme-mode={three ? mode3 : undefined} // 🧪 0.2.3: the current mode (3-state only)
         >
-          <AbIcon name={THEME_ICON[next]} size={24} />
+          <AbIcon name={THEME_ICON[next]} size={AB_THEME_ICON_BUTTON_GLYPH} />
         </button>
       )}
       {actions}

@@ -279,9 +279,9 @@ describe('AbThemeToggle icon shows the target mode 🎯', () => {
     expect(b2.getAttribute('aria-label')).toBe('Switch to light theme') // ♿
     expect(b2.innerHTML).toContain('light_mode') // 🌞
   })
-  it('fill appearance keeps showing the current mode unless iconShows="target"', () => {
-    const a = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="light" variant="icon" />)
-    expect(a.getByRole('button').getAttribute('aria-label')).toBe('Theme: Light') // ✅ unchanged
+  it('0.3.2 (God): fill appearance also shows the target by default; iconShows="current" opts back out', () => {
+    const a = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="light" variant="icon" iconShows="current" />)
+    expect(a.getByRole('button').getAttribute('aria-label')).toBe('Theme: Light') // ✅ explicit opt-out
     a.unmount()
     const b = render(<AbThemeToggle labels={{ group: 'Theme', light: 'Light', dark: 'Dark', system: 'System' }} modes={['light', 'dark']} value="light" variant="icon" iconShows="target" />)
     expect(b.getByRole('button').getAttribute('aria-label')).toBe('Theme: Dark') // 🔙 fallback name

@@ -61,10 +61,34 @@
   cursor: pointer; /* 👆 */
   --ab-motion-duration: var(--ab-motion-duration-short, 160ms); /* 🎞️ colour fade = .ab-motion-colors (ab-nextjs-animations) */
 }
+/* 👆 0.3.2 (God, 0.2.23 gaps): the single icon button is a 44px tap target (was 40px), the same 44×44 as
+   AbMobileHeader's theme button; the segments keep 40/32px (radios inside one pill) */
+.icon {
+  width: 44px; /* 📏 */
+  height: 44px; /* 📏 */
+}
 [data-size='sm'] .segment,
 .icon[data-size='sm'] {
   width: 32px; /* 📏 */
   height: 32px; /* 📏 */
+}
+
+/* 👆 0.3.2 (God): every radio segment and the sm icon button get an invisible 44×44 hit area centred on them, so
+   the 40/32/28px visuals stay while the tap target is ≥ 44px (WCAG 2.5.5). Neighbouring areas overlap by a few px;
+   the later segment wins there, which is fine for adjacent radios */
+.segment,
+.icon {
+  position: relative; /* 📌 anchors the hit area */
+}
+.segment::after,
+.icon[data-size='sm']::after {
+  content: ''; /* 🫥 invisible */
+  position: absolute; /* 📌 */
+  left: 50%; /* ↔️ centred */
+  top: 50%; /* ↕️ centred */
+  width: 44px; /* 👆 */
+  height: 44px; /* 👆 */
+  transform: translate(-50%, -50%); /* 🎯 */
 }
 
 /* ✅ selected */
@@ -100,5 +124,5 @@
 }
 .group[data-appearance='thumb'] .segment[aria-checked='false']:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); } /* 🖱️ */
 .group[data-appearance='thumb'] .segment:focus-visible, .icon[data-appearance='thumb']:focus-visible { outline-color: var(--ab-color-accent, #a67c52); } /* ♿ */
-.icon[data-appearance='thumb'] { width: 40px; height: 40px; border-radius: var(--ab-radius-button, 10px); color: var(--ab-color-muted, #6b5b50); } /* 📱 mobile 40×40, 22px glyph */
+.icon[data-appearance='thumb'] { width: 44px; height: 44px; border-radius: var(--ab-radius-button, 10px); color: var(--ab-color-muted, #6b5b50); } /* 📱 0.3.2: 44×44 (was 40), 24px glyph like the header */
 .icon[data-appearance='thumb']:hover { background: var(--ab-color-hover, rgb(166 124 82 / 0.08)); }

@@ -52,7 +52,7 @@ describe('🌗 AbMobileHeader: 3-state theme (Joseph, Welcome 0.2.21)', () => {
     expect(AB_MOBILE_HEADER_THEME_CYCLE).toEqual(['light', 'dark', 'system']) // 🔁
     const cases: Array<[ 'light' | 'dark' | 'system', 'light' | 'dark' | 'system', string, string ]> = [
       ['light', 'dark', 'dark_mode', 'Switch to dark theme'],
-      ['dark', 'system', 'computer', 'Use the system theme'],
+      ['dark', 'system', 'brightness_auto', 'Use the system theme'],
       ['system', 'light', 'light_mode', 'Switch to light theme'],
     ]
     for (const [mode, next, icon, label] of cases) {

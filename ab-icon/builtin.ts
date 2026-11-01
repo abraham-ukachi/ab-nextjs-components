@@ -42,6 +42,7 @@ import arrowForward from 'ab-nextjs-icons/ab-icons/icons/arrow_forward'; // ⏭�
 import lightMode from 'ab-nextjs-icons/ab-icons/icons/light_mode'; // 🌞 AbThemeToggle
 import darkMode from 'ab-nextjs-icons/ab-icons/icons/dark_mode'; // 🌙 AbThemeToggle
 import computer from 'ab-nextjs-icons/ab-icons/icons/computer'; // 🖥️ AbThemeToggle (system)
+import brightnessAuto from 'ab-nextjs-icons/ab-icons/icons/brightness_auto'; // 🌗🅰️ 0.3.2: system theme (AbThemeToggle, AbMobileHeader, AbSettingsDrawer; icons ≥ 0.2.7)
 import language from 'ab-nextjs-icons/ab-icons/icons/language'; // 🌐 AbLocaleSwitcher
 import contentCopy from 'ab-nextjs-icons/ab-icons/icons/content_copy'; // 📋 AbInstallSnippet
 import check from 'ab-nextjs-icons/ab-icons/icons/check'; // ✅ AbInstallSnippet (copied)
@@ -63,7 +64,8 @@ export const AB_ICON_BUILTINS: Record<string, AbIconSvgData> = {
   arrow_forward: arrowForward, // ⏭️
   light_mode: lightMode, // 🌞
   dark_mode: darkMode, // 🌙
-  computer, // 🖥️
+  computer, // 🖥️ (kept for apps that still ask for it)
+  brightness_auto: brightnessAuto, // 🌗🅰️ 0.3.2: the system theme glyph
   language, // 🌐
   content_copy: contentCopy, // 📋
   check, // ✅

@@ -75,7 +75,7 @@ describe('AbErrorHero 🚧', () => {
     registerAbIcons({ link_off: linkOff }) // 🗂️ register link_off (no font fallback)
     const html = renderToStaticMarkup(<AbErrorHero title="Page not found" />) // 🔗🚫 no badge prop
     expect(html).toMatch(/data-ab-part="error-badge"><span class="AbIcon[^"]*"[^>]*data-icon="link_off"[^>]*><svg /) // 🟫 an AbIcon svg in the tile
-    expect(html).toContain('M4.5 5 L19.5 20') // 🔣 the link_off slash (real svg, no font fallback)
+    expect(html).toContain('M3.2 4.8 L19.5 20.2') // 🔣 the link_off slash (icons 0.2.7: same as visibility_off) (real svg, no font fallback)
   })
   it('is exported from the barrel and listed in supportedComponents', () => {
     expect(BarrelHero).toBe(AbErrorHero) // 📦

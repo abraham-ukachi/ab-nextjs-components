@@ -68,3 +68,20 @@ describe('🆕 AbTocPromo, the aside "New" box (God 02:44, mock .toc-card)', () 
     expect(pkg.AbTocPromo).toBe(AbTocPromo) // 📦
   })
 })
+
+// ♿ 0.3.2 (God, 0.2.23 gaps): no unnamed nested <aside> inside the page aside
+describe('♿ AbTocPromo landmark (0.3.2)', () => {
+  it('defaults to a plain <div>: no <aside>, no landmark role', () => {
+    const h = renderToStaticMarkup(<AbTocPromo title="T" />) // 🖨️
+    expect(h).toMatch(/^<div class="AbTocPromo/) // 🧱 a non-landmark root
+    expect(h).not.toContain('<aside') // 🚫 nested complementary landmark
+    expect(h).not.toContain('aria-label') // 🚫 nothing to name
+  })
+  it('with `label` it is a NAMED <aside>', () => {
+    const h = renderToStaticMarkup(<AbTocPromo title="T" label="What is new" />) // 🖨️
+    expect(h).toMatch(/^<aside class="AbTocPromo[^"]*" aria-label="What is new"/) // 🏷️ named landmark
+  })
+  it('an empty label falls back to the <div>', () => {
+    expect(renderToStaticMarkup(<AbTocPromo title="T" label="" />)).toMatch(/^<div /) // 🧱
+  })
+})
