@@ -212,7 +212,7 @@ export { default as AbMobileHeader } from './ab-mobile-header/index.tsx'
 export type { AbMobileHeaderProps, AbMobileHeaderThemeMode, AbMobileHeaderLanguage } from './ab-mobile-header/index.tsx'
 export { AB_MOBILE_HEADER_THEME_CYCLE } from './ab-mobile-header/index.tsx' // 🌗 0.2.3
 // 🌗 0.2.3 (Joseph, Welcome 0.2.21): one shared theme mode for every toggle
-export { AbThemeModeProvider, useAbThemeModeContext } from './ab-theme-mode/index.tsx'
+export { AbThemeModeProvider, useAbThemeModeContext, AB_THEME_MODE_ICONS, AB_THEME_ICON_BUTTON_GLYPH } from './ab-theme-mode/index.tsx' // 🔣 0.3.2: + the shared theme glyphs
 export type { AbThemeModeProviderProps, AbThemeModeContextValue } from './ab-theme-mode/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSearchDrawer
 export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY } from './ab-search-drawer/index.tsx'

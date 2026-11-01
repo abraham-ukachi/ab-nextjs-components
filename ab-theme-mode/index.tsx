@@ -79,4 +79,12 @@ export function useAbThemeModeContext(): AbThemeModeContextValue | null {
 }
 
 // 📦 exports
+/**
+ * 🔣 0.3.2 (Joseph, 0.2.23 gaps): the ONE glyph per theme mode, shared by AbMobileHeader's theme button and
+ * AbThemeToggle, so the two never drift apart (AbIcons names)
+ */
+export const AB_THEME_MODE_ICONS: Readonly<Record<AbThemeMode, string>> = { light: 'light_mode', dark: 'dark_mode', system: 'computer' }; // 🌞 🌙 🖥️
+/** 📏 0.3.2: the glyph size of a single theme icon button (AbMobileHeader + AbThemeToggle variant="icon") */
+export const AB_THEME_ICON_BUTTON_GLYPH = 24; // 📐 px
+
 export default AbThemeModeProvider;
