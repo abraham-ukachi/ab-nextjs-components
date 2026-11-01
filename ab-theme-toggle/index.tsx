@@ -83,7 +83,7 @@ export interface AbThemeToggleProps {
   size?: 'sm' | 'md'; // 📏 sm = 32px, md = 40px segments (hit area ≥ 24px either way)
   appearance?: 'fill' | 'thumb'; // 🌗 0.1.14 (P7): 'thumb' = the Home pill (28px segments, raised card thumb, filled active glyph). Default 'fill'
   // 🎯 0.1.14 (John): icon variant only. 'target' = glyph + name of the mode a click switches TO
-  //    (moon in light, sun in dark, like the Home mock). Default 'target' with appearance="thumb", else 'current' (unchanged)
+  //    (moon in light, sun in dark, like the Home mock). 0.3.2 (God): default 'target' for every appearance (was 'current' for fill)
   iconShows?: 'current' | 'target';
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
@@ -152,7 +152,7 @@ function AbThemeToggleView(props: AbThemeToggleProps & { engine: Pick<AbThemeMod
   // 🔘 single cycling button variant
   if (variant === 'icon') {
     const next = modes[(Math.max(0, modes.indexOf(current)) + 1) % modes.length]; // ⏭️
-    const target = (iconShows ?? (thumb ? 'target' : 'current')) === 'target'; // 🎯 John: Home mock shows the target
+    const target = (iconShows ?? 'target') === 'target'; // 🎯 0.3.2 (God): always the target by default, like AbMobileHeader (was 'current' for fill)
     const name = target ? (labels.switchTo?.[next] ?? `${labels.group}: ${labels[next]}`) : `${labels.group}: ${labels[current]}`; // ♿
     return (
       <button
