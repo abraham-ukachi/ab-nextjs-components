@@ -45,7 +45,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 // 🔣 twins under test
-import AbIcon, { AB_ICON_WEIGHT_STROKE, getAbIconStroke, registerAbIcons } from '../ab-icon'
+import AbIcon, { AB_ICON_WEIGHT_STROKE, getAbIconStroke, registerAbIcons, AB_ICON_BUILTINS } from '../ab-icon'
 // 🗺️ the real table (test-only import of the full map)
 import { abIconWeightStroke } from 'ab-nextjs-icons/ab-icons'
 import ServerAbIcon from '../server/ab-icon'
@@ -111,5 +111,14 @@ describe('AbIcon server (G2)', () => {
     expect(html).toContain('data-icon="arrow_back"') // 🗂️
     expect(html).not.toContain('material-symbols') // 🚫 no font
     expect(renderToStaticMarkup(<ServerAbIcon name="computer" variant="filled" />)).toContain('<svg') // ⬛
+  })
+})
+
+// 🌗🅰️ 0.3.2 (God): brightness_auto is a builtin, so AbSettingsDrawer's system option (and the toggles) render it
+describe('AbIcon builtin brightness_auto 0.3.2', () => {
+  it('is registered and renders an svg; computer stays for older apps', () => {
+    expect(AB_ICON_BUILTINS.brightness_auto).toBeDefined() // 🗂️
+    expect(AB_ICON_BUILTINS.computer).toBeDefined() // 🕰️ kept
+    expect(renderToStaticMarkup(<AbIcon name="brightness_auto" />)).toContain('<svg') // 🖼️
   })
 })

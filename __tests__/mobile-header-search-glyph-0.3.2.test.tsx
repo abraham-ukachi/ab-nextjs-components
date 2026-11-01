@@ -71,7 +71,7 @@ describe('🔎 AbMobileHeader `search` slot (0.3.2)', () => {
 // 🌗 Joseph (0.2.23 gaps): AbThemeToggle's icon button shows the same glyph as the header's theme button
 describe('🌗 theme glyph parity (0.3.2)', () => {
   it('one shared map; exported', () => {
-    expect(AB_THEME_MODE_ICONS).toEqual({ light: 'light_mode', dark: 'dark_mode', system: 'computer' }) // 🔣
+    expect(AB_THEME_MODE_ICONS).toEqual({ light: 'light_mode', dark: 'dark_mode', system: 'brightness_auto' }) // 🔣
     expect(AB_THEME_ICON_BUTTON_GLYPH).toBe(24) // 📏
     expect(pkg.AB_THEME_MODE_ICONS).toBe(AB_THEME_MODE_ICONS) // 📦
   })
