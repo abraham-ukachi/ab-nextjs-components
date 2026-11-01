@@ -54,6 +54,9 @@ export interface AbTocPromoProps {
   children?: ReactNode; // 📝 the 11.5px muted subtitle (a `<code>` inside is 10.5px)
   badge?: ReactNode; // 🆕 the small chip (default "New"; `null` = none)
   href?: string; // 🔗 makes the title a link (the whole card clicks)
+  // ♿ 0.3.2 (God, 0.2.23 gaps): the card sits INSIDE the page aside, so by default its root is a plain <div> (no
+  //    unnamed nested <aside> landmark). With `label` it becomes a NAMED <aside aria-label={label}> instead
+  label?: string;
   className?: string; // 🏷️
 }
 
@@ -61,13 +64,20 @@ export interface AbTocPromoProps {
  * 🆕 AbTocPromo — the aside's "New" card (mock `.toc-card`): a rounded (12px), evenly padded (12px) container on
  * the card colour with a 1px border; a small "New" chip, a smaller title and a relatively smaller subtitle.
  */
-const AbTocPromo = ({ title, children, badge = 'New', href, className }: AbTocPromoProps): ReactElement => (
-  <aside className={clsx('AbTocPromo', styles.abTocPromo, className)} data-ab-part="toc-promo">
-    {badge != null && <span className={styles.abTocPromoChip}>{badge}</span> /* 🆕 */}
-    <b className={styles.abTocPromoTitle}>{href ? <Link href={href} className={styles.abTocPromoLink}>{title}</Link> : title}</b> {/* 🏷️ */}
-    {children != null && <small className={styles.abTocPromoText}>{children}</small> /* 📝 */}
-  </aside>
-);
+const AbTocPromo = ({ title, children, badge = 'New', href, label, className }: AbTocPromoProps): ReactElement => {
+  const Root = label ? 'aside' : 'div'; // ♿ 0.3.2: a landmark only when it has a name
+  return (
+    <Root
+      className={clsx('AbTocPromo', styles.abTocPromo, className)} // 🎨
+      aria-label={label || undefined} // 🏷️ 0.3.2: names the <aside> (absent on the <div>)
+      data-ab-part="toc-promo" // 🗂️
+    >
+      {badge != null && <span className={styles.abTocPromoChip}>{badge}</span> /* 🆕 */}
+      <b className={styles.abTocPromoTitle}>{href ? <Link href={href} className={styles.abTocPromoLink}>{title}</Link> : title}</b> {/* 🏷️ */}
+      {children != null && <small className={styles.abTocPromoText}>{children}</small> /* 📝 */}
+    </Root>
+  );
+};
 
 // 📦 exports
 export default AbTocPromo;
