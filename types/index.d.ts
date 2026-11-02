@@ -142,3 +142,8 @@ export { default as AbPolygon } from '../server/ab-polygon/index.tsx';
 // 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from '../ab-callout/index.tsx';
 export type { AbCalloutProps, AbCalloutVariant } from '../ab-callout/index.tsx';
+// 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
+export { default as AbCodeBlock } from '../ab-code-block/index.tsx';
+export { default as AbCodeBlockCopy } from '../ab-code-block/copy.tsx';
+export type { AbCodeBlockCopyProps } from '../ab-code-block/copy.tsx';
+export type { AbCodeBlockProps } from '../ab-code-block/index.tsx';

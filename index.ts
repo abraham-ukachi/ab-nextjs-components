@@ -142,6 +142,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbProfileAvatar', file: 'ab-profile-avatar/index.tsx', kind: 'server', status: 'Done' }, // 🆕 0.2.1 initials / photo / glyph circle (no hooks: client + server)
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbCodeBlock', file: 'ab-code-block/index.tsx', kind: 'server', status: 'Done' }, // 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
   { name: 'AbCallout', file: 'ab-callout/index.tsx', kind: 'server', status: 'Done' }, // 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
 ]
@@ -248,3 +249,8 @@ export { default as AbPolygon } from './server/ab-polygon/index.tsx'
 // 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'
 export type { AbCalloutProps, AbCalloutVariant } from './ab-callout/index.tsx'
+// 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
+export { default as AbCodeBlock } from './ab-code-block/index.tsx'
+export { default as AbCodeBlockCopy } from './ab-code-block/copy.tsx'
+export type { AbCodeBlockCopyProps } from './ab-code-block/copy.tsx'
+export type { AbCodeBlockProps } from './ab-code-block/index.tsx'
