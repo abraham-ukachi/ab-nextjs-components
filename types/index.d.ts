@@ -150,3 +150,6 @@ export type { AbCodeBlockProps } from '../ab-code-block/index.tsx';
 // 🗂️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
 export { default as AbContentTabs, AbContentTab } from '../ab-content-tabs/index.tsx';
 export type { AbContentTabsProps, AbContentTabProps } from '../ab-content-tabs/index.tsx';
+// ⏮️⏭️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbDocPager
+export { default as AbDocPager } from '../ab-doc-pager/index.tsx';
+export type { AbDocPagerProps, AbDocPagerLink } from '../ab-doc-pager/index.tsx';

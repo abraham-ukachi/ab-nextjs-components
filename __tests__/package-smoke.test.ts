@@ -123,10 +123,10 @@ describe('ab-nextjs-components package smoke', () => {
 
   it('exports supportedComponents catalog (83 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene, 404 gaps add AbErrorHero)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(81) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4 MDX docs: + AbCallout, AbCodeBlock, AbContentTabs + Tab
+    expect(mod.supportedComponents).toHaveLength(82) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4 MDX docs: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
     expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(54) // 🌗 0.2.3: + AbThemeModeProvider (client)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(27) // 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab (server-safe ones)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(28) // 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager (server-safe ones)
   })
 
   it('ships component entry files', () => {
