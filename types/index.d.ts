@@ -139,3 +139,6 @@ export { default as AbProductItem } from '../ab-product-item/index.tsx';
 export { default as AbDemoBox } from '../ab-demo-box/index.tsx';
 export { default as AbDemoCode } from '../ab-demo-code/index.tsx';
 export { default as AbPolygon } from '../server/ab-polygon/index.tsx';
+// 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
+export { default as AbCallout, AB_CALLOUT_ICONS } from '../ab-callout/index.tsx';
+export type { AbCalloutProps, AbCalloutVariant } from '../ab-callout/index.tsx';
