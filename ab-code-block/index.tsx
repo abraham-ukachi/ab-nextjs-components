@@ -41,13 +41,40 @@
 */
 
 // ⚛️ React
-import type { ReactElement, ReactNode } from 'react';
+import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 📋 the copy button (the only client part)
 import AbCodeBlockCopy from './copy';
 // 🎨 styles
 import styles from './styles.module.css';
+
+// 🔤 escape a name for an HTML attribute (the `html` path)
+const escAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); // 🧹
+
+/**
+ * ⌨️ 0.4.0 (God): a plain <pre> gets tabIndex 0 (keyboard users can scroll long lines with the arrow keys) and a name.
+ * Shiki's <pre tabindex="0"> keeps its own tabindex (never doubled); an existing aria-label is never replaced.
+ */
+function withAbFocusablePre(children: ReactNode, name?: string): ReactNode {
+  return Children.map(children, (c) => {
+    if (!isValidElement<Record<string, unknown>>(c) || c.type !== 'pre') return c; // 🙅 only a direct <pre>
+    const extra: Record<string, unknown> = {}; // 🧩 what we add
+    if (c.props.tabIndex == null && c.props.tabindex == null) extra.tabIndex = 0; // ⌨️ focusable
+    if (name && c.props['aria-label'] == null && c.props['aria-labelledby'] == null) extra['aria-label'] = name; // 🏷️ named
+    return Object.keys(extra).length ? cloneElement(c, extra) : c; // ✅
+  });
+}
+
+/** 🧾 the same for an `html` string: patch the FIRST <pre …> tag only */
+function withAbFocusablePreHtml(html: string, name?: string): string {
+  return html.replace(/<pre\b([^>]*)>/i, (tag, attrs: string) => {
+    let a = attrs; // 🧩
+    if (!/\stabindex\s*=/i.test(a)) a += ' tabindex="0"'; // ⌨️ Shiki already has one → untouched
+    if (name && !/\saria-label(ledby)?\s*=/i.test(a)) a += ` aria-label="${escAttr(name)}"`; // 🏷️
+    return `<pre${a}>`; // ✅
+  });
+}
 
 /** ⚙️ props */
 export interface AbCodeBlockProps {
@@ -66,12 +93,14 @@ export interface AbCodeBlockProps {
 /**
  * 💻 AbCodeBlock — a server-rendered code block for MDX docs: an optional header (title / filename · language),
  * the highlighted code (children or an `html` string, both from Shiki), and a small client copy button. It is a
- * <figure> (with a <figcaption> when there is a header), so the caption names the code for assistive tech; Shiki's
- * <pre tabindex="0"> stays focusable, so keyboard users can scroll long lines.
+ * <figure> (with a <figcaption> when there is a header), so the caption names the code for assistive tech; the
+ * <pre> is focusable (Shiki's tabindex kept, a plain one gets tabIndex 0) and named, so keyboard users can scroll it.
  */
 const AbCodeBlock = ({ children, html, code, title, filename, language, copyLabel = 'Copy code', copiedLabel = 'Copied', copy = true, className }: AbCodeBlockProps): ReactElement => {
   const hasHeader = title != null || !!filename || !!language; // 🏷️ a header bar?
   const caption = (title ?? filename) != null; // 💬 a visible name for the figure
+  // 🏷️ the scroller's name: the title (if text), else the filename, else "<language> code"
+  const preName = typeof title === 'string' ? title : filename || (language ? `${language} code` : undefined);
   return (
     <figure
       className={clsx('AbCodeBlock', 'ab-prose-none', styles.abCodeBlock, className)} // 🎨 (opts out of theme .ab-prose)
@@ -88,8 +117,8 @@ const AbCodeBlock = ({ children, html, code, title, filename, language, copyLabe
       )}
       <div className={styles.abCodeBlockBody}>
         {html != null
-          ? <div className={styles.abCodeBlockCode} data-ab-part="code-block-code" dangerouslySetInnerHTML={{ __html: html }} /> // 🧾 Shiki string
-          : <div className={styles.abCodeBlockCode} data-ab-part="code-block-code">{children}</div> /* 🖍️ Shiki children */}
+          ? <div className={styles.abCodeBlockCode} data-ab-part="code-block-code" dangerouslySetInnerHTML={{ __html: withAbFocusablePreHtml(html, preName) }} /> // 🧾 Shiki string (+ a focusable, named <pre>)
+          : <div className={styles.abCodeBlockCode} data-ab-part="code-block-code">{withAbFocusablePre(children, preName)}</div> /* 🖍️ Shiki children (+ a focusable, named <pre>) */}
         {copy && <AbCodeBlockCopy code={code} label={copyLabel} copiedLabel={copiedLabel} /> /* 📋 client island */}
       </div>
     </figure>
