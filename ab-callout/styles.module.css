@@ -49,12 +49,23 @@
   border-inline-start-color: var(--ab-callout-accent); /* 🎨 */
   border-radius: var(--ab-radius-row, 8px); /* 🟢 */
   background: var(--ab-callout-tint); /* 🎨 */
-  color: var(--ab-color-text, #211a16); /* 🖋️ AA on every tint */
+  color: var(--ab-callout-text, var(--ab-color-text, #211a16)); /* 🖋️ AA on every tint (warning/danger: their on-container token) */
 }
 .abCallout[data-variant='tip'] { --ab-callout-accent: var(--ab-color-sage-accent, #4f7a4a); --ab-callout-tint: color-mix(in srgb, var(--ab-color-sage-accent, #4f7a4a) 10%, var(--ab-color-card, #fff)); } /* 🌿 */
-.abCallout[data-variant='warning'] { --ab-callout-accent: #b7791f; --ab-callout-tint: color-mix(in srgb, #b7791f 12%, var(--ab-color-card, #fff)); } /* ⚠️ amber (no theme token yet) */
-.abCallout[data-variant='danger'] { --ab-callout-accent: var(--md-sys-color-error, #ba1a1a); --ab-callout-tint: color-mix(in srgb, var(--md-sys-color-error, #ba1a1a) 10%, var(--ab-color-card, #fff)); } /* 🛑 Material error */
-.abCalloutIcon { flex: none; display: inline-flex; padding-top: 2px; color: var(--ab-callout-accent); } /* 🔣 */
+/* ⚠️ 0.4.0: theme ≥ 0.3.8 status tokens (AA in every scheme, AAA in high contrast); fallbacks = the light values */
+.abCallout[data-variant='warning'] {
+  --ab-callout-accent: var(--ab-color-warning, #8a5300); /* ⚠️ the start bar (≥ 4.5:1 on the page) */
+  --ab-callout-tint: var(--ab-color-warning-container, #ffddb3); /* 🎨 soft fill */
+  --ab-callout-icon: var(--ab-color-on-warning-container, #2b1700); /* 🔣 ♿ on-container: ≥ 4.5:1 on the fill in every scheme (the accent is not, in high contrast) */
+  --ab-callout-text: var(--ab-color-on-warning-container, #2b1700); /* 🖋️ text on the fill */
+}
+.abCallout[data-variant='danger'] {
+  --ab-callout-accent: var(--ab-color-danger, #904a43); /* 🛑 the start bar (≥ 4.5:1 on the page) */
+  --ab-callout-tint: var(--ab-color-danger-container, #ffdad6); /* 🎨 soft fill */
+  --ab-callout-icon: var(--ab-color-on-danger-container, #3b0907); /* 🔣 ♿ on-container: ≥ 4.5:1 on the fill in every scheme (the accent is not, in high contrast) */
+  --ab-callout-text: var(--ab-color-on-danger-container, #3b0907); /* 🖋️ text on the fill */
+}
+.abCalloutIcon { flex: none; display: inline-flex; padding-top: 2px; color: var(--ab-callout-icon, var(--ab-callout-accent)); } /* 🔣 */
 .abCalloutBody { flex: 1 1 auto; min-width: 0; } /* 📝 */
 .abCalloutTitle { margin: 0 0 4px; font-weight: 700; } /* 🏷️ */
 .abCalloutText > :first-child { margin-top: 0; } /* ⬆️ */

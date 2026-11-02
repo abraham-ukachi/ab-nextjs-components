@@ -44,6 +44,9 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import AbCallout, { AB_CALLOUT_ICONS } from '../ab-callout'
 import { AB_ICON_BUILTINS } from '../ab-icon'
 import * as pkg from '../index'
+// 📁 fs: the CSS module as text
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 // 💡 Joseph (0.2.24 MDX docs): note / tip / warning / danger admonitions
 describe('💡 AbCallout', () => {
@@ -79,3 +82,24 @@ describe('💡 AbCallout', () => {
     expect(pkg.AB_CALLOUT_ICONS).toBe(AB_CALLOUT_ICONS) // 📦
   })
 })
+
+// ⚠️🛑 0.4.0 (God): warning + danger use theme ≥ 0.3.8 status tokens, with the light values as fallbacks
+describe('⚠️🛑 AbCallout status tokens', () => {
+  const css = readFileSync(join(__dirname, '..', 'ab-callout/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 📖
+  const rule = (v: string) => { const i = css.indexOf(`.abCallout[data-variant='${v}'] {`); expect(i, v).toBeGreaterThanOrEqual(0); return css.slice(i, css.indexOf('}', i)) } // 🎯
+  for (const [v, fb] of [['warning', { a: '#8a5300', t: '#ffddb3', o: '#2b1700' }], ['danger', { a: '#904a43', t: '#ffdad6', o: '#3b0907' }]] as const) {
+    it(`${v}: accent / tint / icon / text from --ab-color-${v}*, each with a fallback`, () => {
+      const r = rule(v) // 🧱
+      expect(r).toContain(`--ab-callout-accent: var(--ab-color-${v}, ${fb.a});`) // ▌
+      expect(r).toContain(`--ab-callout-tint: var(--ab-color-${v}-container, ${fb.t});`) // 🎨
+      expect(r).toContain(`--ab-callout-icon: var(--ab-color-on-${v}-container, ${fb.o});`) // 🔣 readable on the fill
+      expect(r).toContain(`--ab-callout-text: var(--ab-color-on-${v}-container, ${fb.o});`) // 🖋️
+    })
+  }
+  it('no hard-coded amber left; the root + icon read the knobs', () => {
+    expect(css).not.toContain('#b7791f') // 🧹
+    expect(css).toContain('color: var(--ab-callout-text, var(--ab-color-text') // 🖋️
+    expect(css).toContain('color: var(--ab-callout-icon, var(--ab-callout-accent))') // 🔣
+  })
+})
+
