@@ -143,7 +143,8 @@
     "ab-toc",
     "ab-error-hero",
     "ab-callout",
-    "ab-code-block"
+    "ab-code-block",
+    "ab-content-tabs"
   ],
   "exports": {
     ".": {
@@ -246,7 +247,8 @@
     "./ab-navbar/view": "./ab-navbar/view.tsx",
     "./ab-callout": "./ab-callout/index.tsx",
     "./ab-code-block": "./ab-code-block/index.tsx",
-    "./ab-code-block/copy": "./ab-code-block/copy.tsx"
+    "./ab-code-block/copy": "./ab-code-block/copy.tsx",
+    "./ab-content-tabs": "./ab-content-tabs/index.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {
