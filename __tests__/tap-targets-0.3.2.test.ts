@@ -59,14 +59,15 @@ describe('👆 44px tap targets', () => {
   it('AbMobileHeader logo link: 44px tall (was 25px)', () => {
     expect(px(rule(css('ab-drawer/kit.module.css'), '.logoRow a'), 'min-block-size')).toBeGreaterThanOrEqual(44) // 📏
   })
-  it('AbSearchTrigger size="sm": the 34px pill gets a 44px hit area (5px above + below)', () => {
+  it('AbSearchTrigger size="sm": the 34px pill gets a 44px hit area (6px above + below, 0.3.3)', () => {
     const src = css('ab-search-trigger/styles.module.css') // 📖
     const sm = rule(src, ".abSearchTrigger[data-size='sm']") // 🎯
     expect(px(sm, 'height')).toBe(34) // 👀 the look is unchanged
     expect(sm).toContain('position: relative') // 📌 anchors the hit area
     const hit = rule(src, ".abSearchTrigger[data-size='sm']::after") // 🫥
     const [block] = hit.match(/inset:\s*(-?[\d.]+)px/)!.slice(1).map(Number) // ↕️ the block inset
-    expect(34 - 2 * block).toBeGreaterThanOrEqual(44) // ✅ 34 + 5 + 5
+    expect(block).toBe(-6) // 📏 0.3.3: 6px above + below (was 5)
+    expect(34 - 2 * block).toBeGreaterThanOrEqual(44) // ✅ 34 + 6 + 6 = 46
   })
   it('AbThemeToggle variant="icon": 44×44 (was 40), default and thumb', () => {
     const src = css('ab-theme-toggle/styles.module.css') // 📖
