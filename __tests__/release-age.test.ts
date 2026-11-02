@@ -66,7 +66,7 @@ const WANT: Record<string, string> = {
  */
 const ALLOWED_EXCLUDES: Record<string, string> = {
   // 🧹 0.3.2 (Nov 1 2026): theme@0.3.7, animations@0.2.5 and icons@0.2.6 expired and were removed (empty again)
-  'ab-nextjs-icons@0.2.7': '2026-11-02T03:43:05.148Z', // ⏰ TODO(remove after expiry): published 2026-11-01T03:43:05.148Z
+  // 🧹 0.3.3 (Nov 3 2026): icons@0.2.7 expired (2026-11-02T03:43Z) and was removed (empty again)
 }
 
 // 📋 the list under `minimumReleaseAgeExclude:` (stops at the next top-level key)
