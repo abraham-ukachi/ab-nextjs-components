@@ -43,6 +43,10 @@ import lightMode from 'ab-nextjs-icons/ab-icons/icons/light_mode'; // 🌞 AbThe
 import darkMode from 'ab-nextjs-icons/ab-icons/icons/dark_mode'; // 🌙 AbThemeToggle
 import computer from 'ab-nextjs-icons/ab-icons/icons/computer'; // 🖥️ AbThemeToggle (system)
 import brightnessAuto from 'ab-nextjs-icons/ab-icons/icons/brightness_auto'; // 🌗🅰️ 0.3.2: system theme (AbThemeToggle, AbMobileHeader, AbSettingsDrawer; icons ≥ 0.2.7)
+import info from 'ab-nextjs-icons/ab-icons/icons/info'; // ℹ️ 0.3.4 AbCallout note
+import lightbulb from 'ab-nextjs-icons/ab-icons/icons/lightbulb'; // 💡 0.3.4 AbCallout tip
+import warning from 'ab-nextjs-icons/ab-icons/icons/warning'; // ⚠️ 0.3.4 AbCallout warning
+import error from 'ab-nextjs-icons/ab-icons/icons/error'; // 🛑 0.3.4 AbCallout danger
 import language from 'ab-nextjs-icons/ab-icons/icons/language'; // 🌐 AbLocaleSwitcher
 import contentCopy from 'ab-nextjs-icons/ab-icons/icons/content_copy'; // 📋 AbInstallSnippet
 import check from 'ab-nextjs-icons/ab-icons/icons/check'; // ✅ AbInstallSnippet (copied)
@@ -67,6 +71,10 @@ export const AB_ICON_BUILTINS: Record<string, AbIconSvgData> = {
   computer, // 🖥️ (kept for apps that still ask for it)
   brightness_auto: brightnessAuto, // 🌗🅰️ 0.3.2: the system theme glyph
   language, // 🌐
+  info, // ℹ️ 0.3.4 AbCallout
+  lightbulb, // 💡 0.3.4 AbCallout
+  warning, // ⚠️ 0.3.4 AbCallout
+  error, // 🛑 0.3.4 AbCallout
   content_copy: contentCopy, // 📋
   check, // ✅
   chevron_left: chevronLeft, // ◀️

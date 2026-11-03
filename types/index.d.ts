@@ -139,3 +139,17 @@ export { default as AbProductItem } from '../ab-product-item/index.tsx';
 export { default as AbDemoBox } from '../ab-demo-box/index.tsx';
 export { default as AbDemoCode } from '../ab-demo-code/index.tsx';
 export { default as AbPolygon } from '../server/ab-polygon/index.tsx';
+// 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
+export { default as AbCallout, AB_CALLOUT_ICONS } from '../ab-callout/index.tsx';
+export type { AbCalloutProps, AbCalloutVariant } from '../ab-callout/index.tsx';
+// 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
+export { default as AbCodeBlock } from '../ab-code-block/index.tsx';
+export { default as AbCodeBlockCopy } from '../ab-code-block/copy.tsx';
+export type { AbCodeBlockCopyProps } from '../ab-code-block/copy.tsx';
+export type { AbCodeBlockProps } from '../ab-code-block/index.tsx';
+// 🗂️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
+export { default as AbContentTabs, AbContentTab } from '../ab-content-tabs/index.tsx';
+export type { AbContentTabsProps, AbContentTabProps } from '../ab-content-tabs/index.tsx';
+// ⏮️⏭️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbDocPager
+export { default as AbDocPager } from '../ab-doc-pager/index.tsx';
+export type { AbDocPagerProps, AbDocPagerLink } from '../ab-doc-pager/index.tsx';

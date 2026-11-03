@@ -1,0 +1,59 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbCodeBlock styles (0.3.4)
+* @file: ab-code-block/styles.module.css
+* @type: CSS module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 💻 the block: dark code surface tokens (theme ≥ 0.3.4), rounded, clipped */
+.abCodeBlock {
+  margin: 0 0 1.25em; /* ↕️ prose rhythm */
+  overflow: hidden; /* ✂️ rounded corners clip the header + code */
+  border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); /* 🔲 */
+  border-radius: var(--ab-radius-code, 12px); /* 🟢 */
+  background: var(--ab-color-code-surface, #231a14); /* 🎨 */
+  color: var(--ab-color-on-code-surface, #f4ece5); /* 🖋️ */
+}
+/* 🏷️ header: title · filename · language badge */
+.abCodeBlockHead { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px 0 16px; border-bottom: 1px solid rgb(255 255 255 / 0.08); font: 500 12.5px/1.2 var(--ab-font-body, system-ui, sans-serif); } /* 📐 */
+.abCodeBlockTitle { font-weight: 600; } /* 🏷️ */
+.abCodeBlockFile { font-family: var(--ab-font-code, ui-monospace, monospace); opacity: 0.85; } /* 📄 */
+.abCodeBlockLang { margin-inline-start: auto; padding: 2px 6px; border-radius: 4px; background: rgb(255 255 255 / 0.08); font: 600 11px/1 var(--ab-font-code, ui-monospace, monospace); text-transform: lowercase; } /* 🔤 badge */
+/* 🧱 body: the code + the copy button in its top-end corner */
+.abCodeBlockBody { position: relative; } /* 📌 */
+.abCodeBlockCode :where(pre) { margin: 0; padding: 14px 56px 14px 16px; overflow-x: auto; background: transparent !important; font: 13.5px/1.6 var(--ab-font-code, ui-monospace, monospace); } /* ↔️ scrolls; room for the button; Shiki's inline bg yields to ours */
+.abCodeBlockCode :where(pre):focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+.abCodeBlockCode :where(code) { font: inherit; } /* 🔤 */
+.abCodeBlockCopy { position: absolute; inset-block-start: 4px; inset-inline-end: 4px; color: inherit; } /* 📋 44px button (AbIconButton) */
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */
