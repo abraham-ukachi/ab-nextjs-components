@@ -12,4 +12,4 @@ minimumReleaseAgeStrict: true
 # 🧹 0.3.2 (Nov 1 2026): theme 0.3.7, animations 0.2.5 and icons 0.2.6 are all > 1 day old, so the list is empty again
 # 🧹 0.3.3 (Nov 3 2026): icons 0.2.7 is > 1 day old, so its exemption is gone and the list is empty again
 minimumReleaseAgeExclude:
-  - ab-nextjs-theme@0.3.8
+  - ab-nextjs-theme@0.3.9
