@@ -89,3 +89,20 @@ describe('🔠 gap 1: AbCallout text inherits its size', () => {
     expect(rule).toMatch(/line-height: inherit;/) // ↕️
   })
 })
+
+// ✂️ gap 4 v3: a squeezed crumb reads "Installa…", not "stallatio"
+describe('✂️ gap 4 v3: crumbs ellipsize on the right', () => {
+  const crumbs = read('ab-breadcrumbs/styles.module.css') // 🍞
+  it('the label text box ellipsizes from the start edge', () => {
+    const rule = ruleOf(crumbs, '.abCrumbText') // 🔍
+    for (const d of ['display: block;', 'min-width: 0;', 'overflow: hidden;', 'text-overflow: ellipsis;', 'white-space: nowrap;']) expect(rule).toContain(d) // ✂️
+  })
+  it('the target box centres safely (start on overflow), never plain centre', () => {
+    expect(crumbs).toContain('justify-content: safe center;') // 🛟
+    expect(crumbs).not.toMatch(/justify-content: center;/) // 🚫
+  })
+  it('every crumb label is wrapped in the text span', () => {
+    const tsx = readFileSync(join(__dirname, '..', 'ab-breadcrumbs/index.tsx'), 'utf8') // 📖
+    expect(tsx.match(/className=\{styles\.abCrumbText\}>\{it\.label\}/g)?.length).toBe(3) // 🏷️
+  })
+})

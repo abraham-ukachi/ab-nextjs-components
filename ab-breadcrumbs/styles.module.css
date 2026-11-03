@@ -65,10 +65,13 @@
 .abCrumbCurrent {
   display: inline-flex; /* 📐 */
   align-items: center; /* ↕️ */
-  justify-content: center; /* ↔️ short labels ("Docs") centre in the 24px box */
+  justify-content: safe center; /* ↔️ short labels ("Docs") centre in the 24px box; 0.4.1 v3: `safe` falls back to start on overflow (plain centre clipped both ends: "stallatio") */
   min-width: 24px; /* 👆 */
   min-height: 24px; /* 👆 */
   box-sizing: border-box; /* 📦 */
 }
 .abCrumbLink:hover { color: var(--ab-crumbs-hover); } /* 🖱️ */
 .abCrumbLink:focus-visible { outline: 2px solid var(--ab-crumbs-ring); outline-offset: 2px; } /* ♿ */
+
+/* ✂️ 0.4.1 (Joseph 0.2.24, gap 4 v3): the label's own box ellipsizes on the right, anchored at the start */
+.abCrumbText { display: block; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* ✂️ */
