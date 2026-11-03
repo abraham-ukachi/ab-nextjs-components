@@ -76,7 +76,7 @@
   border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-button, 10px); /* 🔲 */
   background: var(--ab-color-card, #fff); color: var(--ab-color-faint, #807062); /* 🎨 */
   font-size: 13.5px; line-height: 1; box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🔤 🌗 */
-  flex: 0 1 auto; min-width: var(--ab-search-trigger-min-width, 160px); /* 🔎 0.4.1 (Joseph 0.2.24, gap 4): its own space in a flex row; shrinks to 160px, never under */
+  flex: 0 8 auto; min-width: var(--ab-search-trigger-min-width, 160px); /* 🔎 0.4.1 (Joseph 0.2.24, gap 4): its own space in a flex row; v2: shrinks first (flex-shrink 8) down to 160px, never under */
 }
 .abSearchTrigger[data-size='sm'] {
   flex: none; width: auto; max-width: none; height: 34px; /* 📏 the pill still LOOKS 34px (mock) */

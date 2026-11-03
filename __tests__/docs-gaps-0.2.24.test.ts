@@ -58,10 +58,15 @@ describe('🌑 gap 3: AbCodeBlock color-scheme', () => {
 describe('🍞 gap 4: breadcrumbs + search share a row without overlap', () => {
   const crumbs = read('ab-breadcrumbs/styles.module.css') // 🍞
   const search = read('ab-search-trigger/styles.module.css') // 🔎
-  it('the trail takes the leftover space and can shrink to 0', () => {
+  it('the trail takes the leftover space but never collapses to 0 (v2)', () => {
     const nav = ruleOf(crumbs, '.abCrumbs') // 🔍
-    expect(nav).toMatch(/min-width: 0;/) // 🗜️
+    expect(nav).not.toMatch(/min-width: 0;/) // 🚫 the 0px collapse Joseph rendered
+    expect(nav).toMatch(/min-width: var\(--ab-crumbs-min-width, 96px\);/) // 📏
     expect(nav).toMatch(/flex: 1 1 auto;/) // ↔️
+  })
+  it('the first crumb never shrinks, the others clip in their own box (v2)', () => {
+    expect(crumbs).toMatch(/\.abCrumb:first-child \{ flex: none; \}/) // 🏠
+    expect(crumbs).toMatch(/\.abCrumb:not\(:first-child\) \{ overflow: hidden; \}/) // ✂️
   })
   it('the list clips instead of painting under its neighbour, crumbs shrink', () => {
     expect(crumbs).toMatch(/\.abCrumbsList \{[^}]*overflow: clip;/) // ✂️
@@ -71,7 +76,7 @@ describe('🍞 gap 4: breadcrumbs + search share a row without overlap', () => {
   })
   it('the search field keeps its own minimum width', () => {
     const field = ruleOf(search, ".abSearchTrigger[data-variant='field']") // 🔍
-    expect(field).toMatch(/flex: 0 1 auto;/) // ↔️
+    expect(field).toMatch(/flex: 0 8 auto;/) // ↔️ v2: search shrinks first
     expect(field).toMatch(/min-width: var\(--ab-search-trigger-min-width, 160px\);/) // 📏
   })
 })

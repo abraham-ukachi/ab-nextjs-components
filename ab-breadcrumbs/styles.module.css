@@ -43,8 +43,10 @@
   --ab-crumbs-current: var(--ab-color-text, var(--ab-color-on-surface, #211a16)); /* 🖋️ --text */
   --ab-crumbs-hover: var(--ab-color-accent-text, var(--ab-color-bronze-text, #8b6340)); /* 🖱️ --accent-t */
   --ab-crumbs-ring: var(--ab-color-accent, var(--ab-color-bronze, #a67c52)); /* ♿ --accent */
-  min-width: 0; font-size: 13px; color: var(--ab-crumbs-color); /* 🔤 */
-  flex: 1 1 auto; /* ↔️ 0.4.1 (Joseph 0.2.24, gap 4): in a header row it takes the space left, and gives it up first */
+  font-size: 13px; color: var(--ab-crumbs-color); /* 🔤 */
+  flex: 1 1 auto; /* ↔️ 0.4.1 (Joseph 0.2.24, gap 4): in a header row it takes the space left */
+  min-width: var(--ab-crumbs-min-width, 96px); /* 📏 0.4.1 v2: never collapses to 0, so the first crumb always fits */
+  flex-shrink: 1; /* 🗜️ a neighbour with a bigger flex-shrink (the search field) gives way first */
 }
 .abCrumbsList { display: flex; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; min-width: 0; } /* 📐 */
 /* ✂️ 0.4.1 (Joseph 0.2.24, gap 4): at 768px the trail ran under the search field. Now it never paints past its own box:
@@ -52,6 +54,8 @@
 .abCrumbsList { overflow: clip; overflow-clip-margin: 4px; flex-wrap: nowrap; } /* ✂️ */
 .abCrumb { display: inline-flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; } /* 🍞 */
 .abCrumb { flex: 0 1 auto; } /* 🗜️ 0.4.1: crumbs shrink (min-width: 0 above) rather than overflow */
+.abCrumb:first-child { flex: none; } /* 🏠 0.4.1 v2: the first crumb (e.g. Docs) never shrinks: full 24px target */
+.abCrumb:not(:first-child) { overflow: hidden; } /* ✂️ middle + current crumbs clip inside their own box */
 .abCrumbLink { overflow: hidden; } /* ✂️ a squeezed parent crumb clips inside its own box */
 .abCrumbSep { width: 16px; height: 16px; flex: none; } /* › */
 .abCrumbCurrent { color: var(--ab-crumbs-current); font-weight: 650; overflow: hidden; text-overflow: ellipsis; } /* 🎯 */
