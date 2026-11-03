@@ -67,6 +67,9 @@
 }
 .abCalloutIcon { flex: none; display: inline-flex; padding-top: 2px; color: var(--ab-callout-icon, var(--ab-callout-accent)); } /* 🔣 */
 .abCalloutBody { flex: 1 1 auto; min-width: 0; } /* 📝 */
+/* 🔠 0.4.1 (Joseph 0.2.24, gap 1): theme's base `body, p { font-size: 24px }` hit the title + text <p>s, even outside
+   .ab-prose. They inherit the callout's own size + leading instead (theme ≥ 0.3.8 .ab-prose fix covers prose pages). */
+.abCalloutBody :where(p) { font-size: inherit; line-height: inherit; letter-spacing: inherit; word-spacing: inherit; } /* 🔠 */
 .abCalloutTitle { margin: 0 0 4px; font-weight: 700; } /* 🏷️ */
 .abCalloutText > :first-child { margin-top: 0; } /* ⬆️ */
 .abCalloutText > :last-child { margin-bottom: 0; } /* ⬇️ */

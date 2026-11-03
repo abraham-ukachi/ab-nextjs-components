@@ -75,3 +75,12 @@ describe('🍞 gap 4: breadcrumbs + search share a row without overlap', () => {
     expect(field).toMatch(/min-width: var\(--ab-search-trigger-min-width, 160px\);/) // 📏
   })
 })
+
+// 🔠 gap 1 (components side): callout text ignores the theme's base 24px <p> size
+describe('🔠 gap 1: AbCallout text inherits its size', () => {
+  it('title + text paragraphs inherit font-size + line-height', () => {
+    const rule = ruleOf(read('ab-callout/styles.module.css'), '.abCalloutBody :where(p)') // 🔍
+    expect(rule).toMatch(/font-size: inherit;/) // 🔠
+    expect(rule).toMatch(/line-height: inherit;/) // ↕️
+  })
+})
