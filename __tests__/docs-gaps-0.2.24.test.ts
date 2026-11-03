@@ -53,3 +53,25 @@ describe('🌑 gap 3: AbCodeBlock color-scheme', () => {
     expect(rule).toMatch(/color-scheme: dark;/) // 🌑
   })
 })
+
+// 🍞 gap 4: at 768px the search field covered the breadcrumb trail
+describe('🍞 gap 4: breadcrumbs + search share a row without overlap', () => {
+  const crumbs = read('ab-breadcrumbs/styles.module.css') // 🍞
+  const search = read('ab-search-trigger/styles.module.css') // 🔎
+  it('the trail takes the leftover space and can shrink to 0', () => {
+    const nav = ruleOf(crumbs, '.abCrumbs') // 🔍
+    expect(nav).toMatch(/min-width: 0;/) // 🗜️
+    expect(nav).toMatch(/flex: 1 1 auto;/) // ↔️
+  })
+  it('the list clips instead of painting under its neighbour, crumbs shrink', () => {
+    expect(crumbs).toMatch(/\.abCrumbsList \{[^}]*overflow: clip;/) // ✂️
+    expect(crumbs).toMatch(/\.abCrumbsList \{[^}]*overflow-clip-margin: 4px;/) // ♿ focus ring room
+    expect(crumbs).toMatch(/\.abCrumb \{ flex: 0 1 auto; \}/) // 🗜️
+    expect(crumbs).toMatch(/\.abCrumbLink \{ overflow: hidden; \}/) // ✂️
+  })
+  it('the search field keeps its own minimum width', () => {
+    const field = ruleOf(search, ".abSearchTrigger[data-variant='field']") // 🔍
+    expect(field).toMatch(/flex: 0 1 auto;/) // ↔️
+    expect(field).toMatch(/min-width: var\(--ab-search-trigger-min-width, 160px\);/) // 📏
+  })
+})
