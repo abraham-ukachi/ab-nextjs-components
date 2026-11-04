@@ -81,7 +81,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbProduct', file: 'ab-product/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbProductItem', file: 'ab-product-item/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'server', status: 'Done' },
-  { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'server', status: 'Done' },
 
   // SERVER
   { name: 'AbIcon', file: 'server/ab-icon/index.tsx', kind: 'server', status: 'Done' },
@@ -252,6 +252,7 @@ export { default as AbProductItem } from './ab-product-item/index.tsx'
 export { default as AbDemoBox } from './ab-demo-box/index.tsx'
 export type { AbDemoBoxProps, AbDemoBoxScheme } from './ab-demo-box/index.tsx'
 export { default as AbDemoCode } from './ab-demo-code/index.tsx'
+export type { AbDemoCodeProps } from './ab-demo-code/index.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'
 // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'
