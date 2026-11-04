@@ -1,3 +1,48 @@
+## Unreleased (proposed 0.4.3)
+
+* ✅ **G59, stacked drawers and Escape (confirmed, regression test added):** with two drawers open, Escape closes only the topmost one, and focus returns to that drawer's trigger. A second Escape closes the next one. This works across scopes (app, main, aside). An Escape an inner widget already handled closes nothing. The shared open-drawer stack in `AbDrawer` already did this, so there is no runtime change.
+
+## [0.4.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.4.1...v0.4.2) (2026-11-04)
+
+* 📌 **Theme pin dropped ([#23](https://github.com/abraham-ukachi/ab-nextjs-components/pull/23)):** the D33 release-age pin for `ab-nextjs-theme@0.3.9` expired, so it's removed. The range stays `^0.3.9`.
+
+## [0.4.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.4.0...v0.4.1) (2026-11-03)
+
+* 🌙 **AbCodeBlock ([#22](https://github.com/abraham-ukachi/ab-nextjs-components/pull/22)):** the dark surface sets `color-scheme: dark`, so scrollbars and form controls match.
+* 📱 **Breadcrumbs at 768px:** the trail gets a real width and is clipped before the search field, so the search field no longer covers it and the Docs crumb stays clear (24px target).
+* ✂️ **Current crumb:** it ellipsizes on its own box ("Insta…") instead of being clipped at both ends.
+* 🔤 **AbCallout:** the callout text size no longer follows global `body, p` font sizes.
+* ⬆️ **Theme:** `ab-nextjs-theme` **^0.3.9**.
+
+## [0.4.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.3...v0.4.0) (2026-11-03)
+
+* ✨ **MDX docs components ([#21](https://github.com/abraham-ukachi/ab-nextjs-components/pull/21)):** `AbCallout`, `AbCodeBlock` + `AbCodeBlockCopy`, `AbContentTabs` and `AbDocPager`.
+* 🎯 **Breadcrumbs:** 24px crumb targets.
+* ♿ **Code blocks:** the `pre` is focusable, so keyboard users can scroll it.
+* ⬆️ **Theme:** `ab-nextjs-theme` **^0.3.8**.
+
+## [0.3.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.2...v0.3.3) (2026-11-03)
+
+* 📌 **Icons pin dropped ([#20](https://github.com/abraham-ukachi/ab-nextjs-components/pull/20)):** the release-age pin for `ab-nextjs-icons` is removed.
+* 🎯 **AbSearchTrigger:** the small size is 46px.
+
+## [0.3.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.1...v0.3.2) (2026-11-01)
+
+* 🎯 **44px tap targets ([#19](https://github.com/abraham-ukachi/ab-nextjs-components/pull/19))** across the touch controls.
+* ♿ **AbTocPromo:** renders as a `div` with a label.
+* 🔍 **AbMobileHeader:** a `search` slot.
+* ✨ **`AB_THEME_MODE_ICONS`:** the theme mode glyphs, with `brightness_auto` for system mode.
+* 🎯 **AbThemeToggle:** `iconShows` target fix.
+* ⬆️ **Icons:** `ab-nextjs-icons` **^0.2.7**.
+
+## [0.3.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.0...v0.3.1) (2026-10-30)
+
+* 🧱 **404 gaps ([#18](https://github.com/abraham-ukachi/ab-nextjs-components/pull/18)):** new `AbErrorHero`, plus the other 404 page fixes.
+
+## [0.3.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.3...v0.3.0) (2026-10-30)
+
+* 🔥 **Prune ([#17](https://github.com/abraham-ukachi/ab-nextjs-components/pull/17)):** 5 unused components are removed: `AbKeyFeature`, `AbMainHeadline`, `AbPreview`, `AbSwitchBack` and `AbTestHello` (and their server twins). ⚠️ Breaking if you imported them.
+
 ## 0.2.2 (Unreleased, proposed)
 
 - 🌍 AbPackagePreviewComponents `labels` ({ button, chip, switch }); English defaults unchanged, the 0.2.1 `button` / `chip` props still work
