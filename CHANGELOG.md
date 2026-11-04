@@ -1,3 +1,18 @@
+## [0.6.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.5.0...v0.6.0) (2026-11-04)
+
+* ⚠️ **Breaking: `html` is now `trustedHtml`** on AbCodeBlock, AbDemoCode and AbPreviewCode. The string goes into `dangerouslySetInnerHTML` **without sanitizing**, so pass only HTML you render yourself (e.g. Shiki `codeToHtml`), never user input. Prefer `highlighted` / children. Rename the prop to upgrade.
+* ⚠️ **Breaking (markup): code-block focus moved.** The focusable, named element is now the scroll wrapper (`[data-ab-part="code-block-code"]`, `role="group"`), not the `<pre>`. The old regex that patched `tabindex` / `aria-label` into the `<pre>` HTML (it broke on `>` inside attributes) is removed; it was internal, so no export changes.
+* 🔐 **`warnAbRiskyHtml`:** a dev-only `console.warn` when `trustedHtml` contains `<script`, an `on…=` handler, `javascript:`, `<iframe` or `srcdoc`. Silent in production. It is not a sanitizer.
+* ✨ **AbPreviewCode (server component):** a docs Preview / Code pair. AbContentTabs over an AbDemoBox preview and an AbDemoCode source block; both panels are in the server HTML. Nothing is parsed or evaluated from `code`.
+* 🧰 **Preview toolbar (`AbPreviewStage`, a small client island):** a `role="toolbar"` with one tab stop (←/→/Home/End), a light/dark toggle (`aria-pressed`) for that preview only, a reload button that remounts the preview, and an open-in-new-tab link with `href` (`target="_blank" rel="noopener noreferrer"`). 44px targets; names via `labels.toolbar`, `labels.dark`, `labels.reload`, `labels.open`. New AbPreviewCode props: `toolbar` (default `true`) and `href`. Exported: `AbPreviewStage`, `AbPreviewStageProps`, `AbPreviewStageLabels`.
+* 🧪 **AbDemoBox:** server-safe, with `scheme` (`'inherit' | 'light' | 'dark'`), a scoped `align` and an optional `label` (a named region).
+* 🗄️ **Drawers inside the preview scope:** AbDrawer hosts its layer in the nearest `[data-ab-preview-scope]`, so a drawer demo stays inside its box. The selector is exported as `AB_PREVIEW_SCOPE_SELECTOR`.
+* 💻 **AbDemoCode is built on AbCodeBlock:** escaped `<pre>`, SVG copy button, polite "Copied".
+* 🔣 **Icons:** `refresh` and `open_in_new` (ab-nextjs-icons) join `AB_ICON_BUILTINS`.
+* ⌨️ **One tab stop per code block:** the scroll wrapper is the stop, so arrow keys scroll long lines. A Shiki `<pre tabindex="0">` from children is dropped; inside a `trustedHtml` string it is set to `-1` after hydration (the string is never edited, so before hydration it is still a second stop).
+* 📋 **Copy-button gutter:** the code scroller ends 48px short of the copy button, so long lines never run under it (390px phones too).
+* ♿ **AbContentTabs:** a tabpanel is a tab stop only when it has no focusable content (checked after mount and on changes). The server render keeps `tabIndex 0` on every panel, so hydration matches. `AB_FOCUSABLE_SELECTOR` is exported.
+
 ## [0.5.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.4.2...v0.5.0) (2026-11-04)
 
 * ⚠️ **Heads-up (default change, not breaking):** AbSidebar and AbNavDrawer now light only the **deepest** matching item, so `/docs` no longer lights up alongside `/docs/x` on `/docs/x`. A parent still lights on routes that have no listed child (`/docs/y`). Pass `activeMatch="prefix"` for the old look.
