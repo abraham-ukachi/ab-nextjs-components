@@ -43,11 +43,11 @@
 
 * 🔥 **Prune ([#17](https://github.com/abraham-ukachi/ab-nextjs-components/pull/17)):** 5 unused components are removed: `AbKeyFeature`, `AbMainHeadline`, `AbPreview`, `AbSwitchBack` and `AbTestHello` (and their server twins). ⚠️ Breaking if you imported them.
 
-## 0.2.2 (Unreleased, proposed)
+## [0.2.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.1...v0.2.2) (2026-10-21)
 
 - 🌍 AbPackagePreviewComponents `labels` ({ button, chip, switch }); English defaults unchanged, the 0.2.1 `button` / `chip` props still work
 
-## 0.2.1
+## [0.2.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.0...v0.2.1) (2026-10-21)
 
 ### Sidebar profile (God 02:44)
 - ✨ AbSidebar `profile` prop (opt-in): a 40px profile button at the bottom left opens AbSettingsDrawer. Signed out it shows the profile glyph; signed in the initials ("AU") on the container colour, or the photo masked to a circle, plus the name when expanded. Rendered on the server and hidden by CSS below 1180px (no flash); the collapsed rail names it with an AbBalloon tooltip. Label via `labels.profile` (default "Profile and settings")
@@ -61,7 +61,7 @@
 - 🐛 Drawer rows: hover tints only on hover-capable pointers, so the nav drawer opens with no highlighted row (Joseph)
 - ✨ AbSettingsDrawer: the Account section is back on top (`account`, `onAccount`, `onSignIn`), plus `onHelp` / `onAbout` rows after Language (labels `account`, `signIn`, `help`, `about`)
 
-## 0.2.0 (Unreleased, proposed)
+## [0.2.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.14...v0.2.0) (2026-10-21)
 
 Includes everything planned for 0.1.15, which is not released separately.
 
