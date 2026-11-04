@@ -54,7 +54,7 @@ export type AbSidebarProps = AbSidebarBaseProps;
 /** 🧭 AbSidebar (server, G40): same markup as the client twin; active state from `activeHref` / legacy `page`. */
 const AbSidebar = (props: AbSidebarProps): ReactElement => {
   const { page, activeHref } = props;
-  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref && stripAbLocalePrefix(activeHref, props.locales), props.activeMatch); // 🥇 0.4.3: deepest match by default
+  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref && stripAbLocalePrefix(activeHref, props.locales), props.activeMatch); // 🥇 0.5.0: deepest match by default
   const active = (href: string, value?: string) => (page ? page === value : isOn(href)); // 🎯
   return <AbSidebarView props={props} Icon={AbIcon} active={active} />;
 };

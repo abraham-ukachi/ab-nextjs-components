@@ -55,7 +55,7 @@ import AbDrawer from '../ab-drawer';
 import AbIcon from '../ab-icon';
 // 🔗 the app's link (AbLinkProvider: next/link, or a locale-aware one)
 import Link from '../ab-link';
-// 🎯 the same active rule as the laptop sidebar (0.4.3: shared helper, deepest match by default)
+// 🎯 the same active rule as the laptop sidebar (0.5.0: shared helper, deepest match by default)
 import { getAbActiveHrefs, normalizeAbHref, type AbActiveMatch } from '../ab-sidebar/active';
 // 🎨 the drawers v2 kit
 import kit from '../ab-drawer/kit.module.css';
@@ -66,7 +66,7 @@ export interface AbNavDrawerItem {
   label: string; // 🏷️
   icon?: string; // 🔣 an AbIcons name
   meta?: string; // 🏷️ trailing mono text, e.g. a version
-  exact?: boolean; // 🎯 0.4.3: true = active on its own href only; false = allow parent matching under activeMatch="exact"
+  exact?: boolean; // 🎯 0.5.0: true = active on its own href only; false = allow parent matching under activeMatch="exact"
 }
 /** 🗂️ one group: an optional uppercase label (a heading for its list) + rows */
 export interface AbNavDrawerSection { id: string; label?: string; items: readonly AbNavDrawerItem[] }
@@ -80,8 +80,8 @@ export interface AbNavDrawerProps {
   onVersionClick?: () => void; // 🔽 the chip as a button (e.g. open a version menu)
   sections: readonly AbNavDrawerSection[]; // 🗂️ same content as the laptop sidebar
   activeHref?: string; // 🎯 the current route (query, hash and a trailing slash are ignored; "/" only matches itself)
-  activeMatch?: AbActiveMatch; // 🎯 0.4.3: 'best' (default, deepest match only), 'prefix' (every parent too) or 'exact'
-  locales?: readonly string[]; // 🌍 0.4.3: stripped from `activeHref` first (`/fr/docs` → `/docs`)
+  activeMatch?: AbActiveMatch; // 🎯 0.5.0: 'best' (default, deepest match only), 'prefix' (every parent too) or 'exact'
+  locales?: readonly string[]; // 🌍 0.5.0: stripped from `activeHref` first (`/fr/docs` → `/docs`)
   footer?: readonly AbNavDrawerItem[]; // 📌 pinned 48px rows (e.g. Changelog)
   onSettings?: () => void; // ⚙️ adds a "Settings ›" row; close this drawer, then open the Settings sheet
   onNavigate?: (href: string) => void; // 🔔 after a link is chosen (the drawer closes either way)
@@ -105,7 +105,7 @@ export interface AbNavDrawerProps {
 const AbNavDrawer = ({ open, onClose, logo, version, onVersionClick, sections, activeHref, activeMatch, locales, footer = [], onSettings, onNavigate, labels = {}, returnFocus, id = 'ab-nav-drawer', className }: AbNavDrawerProps): ReactElement => {
   const L = { title: 'Site navigation', close: 'Close navigation', settings: 'Settings', version: 'Version', ...labels }; // 🌍
   const choose = (href: string) => (e: MouseEvent) => { if (e.defaultPrevented) return; onNavigate?.(href); onClose(); }; // 🔗 then close
-  // 🥇 0.4.3: resolve the active href once, across sections + footer, so a parent never lights with its child
+  // 🥇 0.5.0: resolve the active href once, across sections + footer, so a parent never lights with its child
   const activeSet = getAbActiveHrefs([...sections.flatMap((s) => s.items), ...footer], activeHref, { match: activeMatch, locales });
   const row = (it: AbNavDrawerItem, cls: string) => {
     const on = activeSet.has(normalizeAbHref(it.href)); // 🎯

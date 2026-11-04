@@ -46,7 +46,7 @@ import Link from '../ab-link';
 import AbBalloon from '../ab-balloon';
 // 🎨 styles
 import styles from './styles.module.css';
-// 🎯 0.4.3: one active-matching rule for AbSidebar + AbNavDrawer (longest match by default)
+// 🎯 0.5.0: one active-matching rule for AbSidebar + AbNavDrawer (longest match by default)
 import { flattenAbNavItems, getAbActiveHrefs, matchAbHref, normalizeAbHref, type AbActiveMatch } from './active';
 
 /** 🔗 One sidebar destination (G40). `items` = one level of children, shown under the parent. */
@@ -58,7 +58,7 @@ export interface AbSidebarItem {
   labelText?: string; // ♿ plain-text name for the rail tooltip/aria-label when `label` isn't a string
   badge?: ReactNode; // 🔴 e.g. "New" or a count
   items?: AbSidebarItem[]; // 🌳 children
-  exact?: boolean; // 🎯 0.4.3: true = active on its own href only (never as a parent); false = allow parent matching even under activeMatch="exact"
+  exact?: boolean; // 🎯 0.5.0: true = active on its own href only (never as a parent); false = allow parent matching even under activeMatch="exact"
 }
 
 /** 🗂️ A labelled group of items. */
@@ -94,7 +94,7 @@ export interface AbSidebarBaseProps {
   id?: string; // 🆔 the list id (aria-controls target), default "ab-sidebar-list"
   sections?: AbSidebarSection[]; // 🗂️ G40
   activeHref?: string; // 🎯 current route (query, hash and a trailing slash are ignored)
-  activeMatch?: AbActiveMatch; // 🎯 0.4.3: 'best' (default, deepest match only), 'prefix' (every parent too) or 'exact'
+  activeMatch?: AbActiveMatch; // 🎯 0.5.0: 'best' (default, deepest match only), 'prefix' (every parent too) or 'exact'
   collapsed?: boolean; // 🚪 icon rail
   header?: ReactNode; // 🏷️ top slot (brand, workspace switcher…)
   labels?: AbSidebarLabels; // 🌍
@@ -117,10 +117,10 @@ export interface AbSidebarBaseProps {
 
 /** 🎯 Is `href` the current route, or a parent of it? (single-item prefix check; lists use `getAbActiveHrefs`) */
 export function isAbSidebarActive(href: string, activeHref?: string): boolean {
-  return !!activeHref && matchAbHref(href, activeHref); // 🌳 query / hash / trailing slash tolerant since 0.4.3
+  return !!activeHref && matchAbHref(href, activeHref); // 🌳 query / hash / trailing slash tolerant since 0.5.0
 }
 
-/** 🎯 0.4.3: an `active(href)` checker for a whole sidebar, using `activeMatch` + each item's `exact` */
+/** 🎯 0.5.0: an `active(href)` checker for a whole sidebar, using `activeMatch` + each item's `exact` */
 export function createAbSidebarActive(groups: AbSidebarSection[], current: string | undefined, match?: AbActiveMatch): (href: string) => boolean {
   const on = getAbActiveHrefs(groups.flatMap((g) => flattenAbNavItems(g.items)), current, { match }); // 🥇 resolved once per render
   return (href) => on.has(normalizeAbHref(href)); // ✅

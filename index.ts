@@ -184,7 +184,7 @@ export { default as AbBrand } from './ab-brand/index.tsx'
 export { default as AbName } from './ab-name/index.tsx'
 export { default as AbNavbar } from './ab-navbar/index.tsx'
 export { default as AbSidebar } from './ab-sidebar/index.tsx'
-// 🎯 0.4.3: active-item matching shared by AbSidebar + AbNavDrawer (`activeMatch`, per-item `exact`)
+// 🎯 0.5.0: active-item matching shared by AbSidebar + AbNavDrawer (`activeMatch`, per-item `exact`)
 export { getAbActiveHrefs, matchAbHref, normalizeAbHref, flattenAbNavItems } from './ab-sidebar/active.ts'
 export type { AbActiveMatch, AbActiveMatchable, AbActiveMatchOptions } from './ab-sidebar/active.ts'
 // 👤 0.2.1: the bottom-left sidebar profile button → AbSettingsDrawer (laptop + wide)

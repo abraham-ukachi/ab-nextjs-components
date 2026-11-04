@@ -1,4 +1,4 @@
-## [0.4.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.4.2...v0.4.3) (2026-11-04)
+## [0.5.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.4.2...v0.5.0) (2026-11-04)
 
 * ⚠️ **Heads-up (default change, not breaking):** AbSidebar and AbNavDrawer now light only the **deepest** matching item, so `/docs` no longer lights up alongside `/docs/x` on `/docs/x`. A parent still lights on routes that have no listed child (`/docs/y`). Pass `activeMatch="prefix"` for the old look.
 * 🐛 **One active item in AbSidebar and AbNavDrawer:** new `activeMatch?: 'best' | 'prefix' | 'exact'` (default `'best'`) on both, plus a per-item `exact?: boolean` override (`true` = never a parent match, `false` = parent matching allowed under `'exact'`). Query strings, hashes and trailing slashes are ignored. AbNavDrawer also gets `locales`, and both share one helper.

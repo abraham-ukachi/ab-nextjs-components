@@ -62,7 +62,7 @@ import AbSidebarProfileButton, { type AbSidebarProfileButtonProps } from './prof
 // 📦 re-export the shared types
 export type { AbSidebarItem, AbSidebarSection, AbSidebarLink, AbSidebarLabels } from './view';
 export { isAbSidebarActive, toAbSidebarSections, createAbSidebarActive } from './view';
-// 🎯 0.4.3: the shared active-matching helpers + types (AbNavDrawer uses them too)
+// 🎯 0.5.0: the shared active-matching helpers + types (AbNavDrawer uses them too)
 export { getAbActiveHrefs, matchAbHref, normalizeAbHref, flattenAbNavItems } from './active';
 export type { AbActiveMatch, AbActiveMatchable, AbActiveMatchOptions } from './active';
 export { AbSidebarProfileButton, type AbSidebarProfileButtonProps } from './profile-button';
@@ -95,7 +95,7 @@ const AbSidebar = (props: AbSidebarProps): ReactElement => {
     onCollapsedChange?.(next); // 🔔
   };
   // 🎯 legacy `page` wins, then activeHref, then the pathname
-  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref ?? pathname, props.activeMatch); // 🥇 0.4.3: deepest match by default
+  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref ?? pathname, props.activeMatch); // 🥇 0.5.0: deepest match by default
   const active = (href: string, value?: string) => (page ? page === value : isOn(href));
   // 🔘 the toggle
   const showToggle = collapsible ?? !!props.sections?.length;

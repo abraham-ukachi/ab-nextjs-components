@@ -25,7 +25,7 @@
 *
 *
 * @project: ab-nextjs-components
-* @name: Active nav item matching (0.4.3)
+* @name: Active nav item matching (0.5.0)
 * @file: ab-sidebar/active.ts
 * @type: Pure helpers (client + server)
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -51,7 +51,7 @@ import { stripAbLocalePrefix } from '../ab-link/locale';
  *
  * - `'best'` (default): prefix matching, but only the **longest** matching href wins, so `/docs` and
  *   `/docs/x` never light up together on `/docs/x`. On `/docs/y` (not in the list) `/docs` still lights.
- * - `'prefix'`: every parent of the route is active (the pre-0.4.3 behaviour; can double-highlight).
+ * - `'prefix'`: every parent of the route is active (the pre-0.5.0 behaviour; can double-highlight).
  * - `'exact'`: only the item whose href equals the route.
  */
 export type AbActiveMatch = 'best' | 'prefix' | 'exact';

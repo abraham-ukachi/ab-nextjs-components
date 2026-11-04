@@ -25,8 +25,8 @@
 *
 *
 * @project: ab-nextjs-components
-* @name: Active nav matching (0.4.3)
-* @file: __tests__/active-match-0.4.3.test.tsx
+* @name: Active nav matching (0.5.0)
+* @file: __tests__/active-match-0.5.0.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
