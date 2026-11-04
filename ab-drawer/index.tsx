@@ -122,8 +122,16 @@ const SCOPE_SELECTOR: Record<AbDrawerScope, string> = {
  */
 export function getAbDrawerHost(scope: AbDrawerScope, from?: Element | null): HTMLElement {
   const sel = SCOPE_SELECTOR[scope]; // 🔎
-  return from?.closest<HTMLElement>(sel) ?? document.querySelector<HTMLElement>(sel) ?? document.body; // 🎯
+  const own = from?.closest<HTMLElement>(sel) ?? null; // 🎯 the nearest scope box around the drawer
+  // 🧪 0.6.0 (G16): inside a docs preview (AbDemoBox / AbPreviewCode) the preview box is the app: a drawer never
+  //    escapes to the real page layout. A scope box that is itself INSIDE the preview (a layout demo) still wins.
+  const preview = from?.closest<HTMLElement>(AB_PREVIEW_SCOPE_SELECTOR) ?? null;
+  if (preview && (!own || !preview.contains(own))) return preview; // 📦 clipped by the preview
+  return own ?? document.querySelector<HTMLElement>(sel) ?? document.body; // 🎯
 }
+
+/** 🧪 0.6.0 (G16): the attribute that marks a preview scope (AbDemoBox sets it); drawers inside stay inside */
+export const AB_PREVIEW_SCOPE_SELECTOR = '[data-ab-preview-scope]';
 
 // ♿ everything that can take focus inside the panel
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), [contenteditable="true"]';

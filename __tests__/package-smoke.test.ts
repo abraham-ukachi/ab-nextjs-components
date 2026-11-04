@@ -125,8 +125,8 @@ describe('ab-nextjs-components package smoke', () => {
     const mod = await import('../index')
     expect(mod.supportedComponents).toHaveLength(82) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4 MDX docs: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(54) // 🌗 0.2.3: + AbThemeModeProvider (client)
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(28) // 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager (server-safe ones)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(53) // 🌗 0.2.3: + AbThemeModeProvider (client) · 🧪 0.6.0: AbDemoBox moves to server-safe
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(29) // 🧪 0.6.0: + AbDemoBox · 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager (server-safe ones)
   })
 
   it('ships component entry files', () => {
