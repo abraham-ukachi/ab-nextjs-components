@@ -47,8 +47,10 @@ import type { ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 // 🗂️ WAI-ARIA tabs (client island)
 import AbContentTabs, { AbContentTab } from '../ab-content-tabs';
-// 🧪 the preview scope
-import AbDemoBox, { type AbDemoBoxScheme } from '../ab-demo-box';
+// 🧪 the preview scope's scheme type
+import type { AbDemoBoxScheme } from '../ab-demo-box';
+// 🧰 0.6.0: the toolbar + preview (a small client island; this file stays server-safe)
+import AbPreviewStage from './stage';
 // 💻 the source half
 import AbDemoCode from '../ab-demo-code';
 // 🎨 styles
@@ -60,6 +62,10 @@ export interface AbPreviewCodeLabels {
   code?: string; // 💻 the Code tab (default "Code")
   copy?: string; // 📋 the copy button (default "Copy code")
   copied?: string; // ✅ announced after a copy (default "Copied")
+  toolbar?: string; // 🧰 0.6.0: names the preview toolbar (default "Preview tools")
+  dark?: string; // 🌙 0.6.0: the scheme toggle (default "Dark preview", aria-pressed = dark)
+  reload?: string; // 🔄 0.6.0: the remount button (default "Reload preview")
+  open?: string; // ↗️ 0.6.0: the open-in-new-tab link (default "Open preview in a new tab")
 }
 
 /** ⚙️ props */
@@ -75,6 +81,8 @@ export interface AbPreviewCodeProps {
   defaultTab?: 'preview' | 'code'; // 🎯 default 'preview'
   scheme?: AbDemoBoxScheme; // 🌗 force the preview's scheme (default: follow the page)
   align?: 'center' | 'start' | 'stretch'; // 📐 the preview's alignment (default 'center')
+  toolbar?: boolean; // 🧰 0.6.0: the preview toolbar (light/dark toggle + reload [+ open]); default true
+  href?: string; // ↗️ 0.6.0: a standalone page for this example → an open-in-new-tab link in the toolbar
   className?: string; // 🏷️
 }
 
@@ -84,14 +92,15 @@ export interface AbPreviewCodeProps {
  * markup and the code are crawlable and work before hydration. The preview is the children you pass, rendered
  * as-is: nothing is parsed or evaluated from `code`, so keep the two in sync (a test can compare them).
  */
-const AbPreviewCode = ({ children, code, trustedHtml, highlighted, language = 'tsx', filename, label = 'Example', labels = {}, defaultTab = 'preview', scheme, align, className }: AbPreviewCodeProps): ReactElement => {
+const AbPreviewCode = ({ children, code, trustedHtml, highlighted, language = 'tsx', filename, label = 'Example', labels = {}, defaultTab = 'preview', scheme, align, toolbar = true, href, className }: AbPreviewCodeProps): ReactElement => {
   const L = { preview: 'Preview', code: 'Code', copy: 'Copy code', copied: 'Copied', ...labels }; // 🌍
+  const stageLabels = { toolbar: L.toolbar, dark: L.dark, reload: L.reload, open: L.open }; // 🧰 undefined → the island's defaults
   return (
     <div className={clsx('AbPreviewCode', styles.abPreviewCode, className)} data-ab-part="preview-code">
       <AbContentTabs label={label} defaultValue={defaultTab}>
         <AbContentTab label={L.preview} value="preview">
           {/* 🧪 the tabpanel already names it (aria-labelledby the tab), so the box needs no region role */}
-          <AbDemoBox scheme={scheme} align={align} className={styles.abPreviewCodeBox}>{children}</AbDemoBox>
+          <AbPreviewStage scheme={scheme} align={align} href={href} toolbar={toolbar} labels={stageLabels} className={styles.abPreviewCodeBox}>{children}</AbPreviewStage>
         </AbContentTab>
         <AbContentTab label={L.code} value="code">
           <AbDemoCode code={code} trustedHtml={trustedHtml} language={language} filename={filename} copyLabel={L.copy} copiedLabel={L.copied}>{highlighted}</AbDemoCode>

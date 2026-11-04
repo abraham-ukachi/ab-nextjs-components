@@ -59,6 +59,8 @@ import close from 'ab-nextjs-icons/ab-icons/icons/close'; // ✖️ AbPage aside
 import expandMore from 'ab-nextjs-icons/ab-icons/icons/expand_more'; // 🔽 AbLocaleSwitcher no-JS list (0.1.13)
 import doubleLeft from 'ab-nextjs-icons/ab-icons/icons/keyboard_double_arrow_left'; // ⏪ AbSidebar outlined collapse (0.1.14, P9)
 import doubleRight from 'ab-nextjs-icons/ab-icons/icons/keyboard_double_arrow_right'; // ⏩ AbSidebar outlined expand (0.1.14, P9)
+import refresh from 'ab-nextjs-icons/ab-icons/icons/refresh'; // 🔄 0.6.0 AbPreviewCode reload
+import openInNew from 'ab-nextjs-icons/ab-icons/icons/open_in_new'; // ↗️ 0.6.0 AbPreviewCode open in a new tab
 // 🧾 shape
 import type { AbIconSvgData } from './helpers';
 
@@ -86,4 +88,6 @@ export const AB_ICON_BUILTINS: Record<string, AbIconSvgData> = {
   expand_more: expandMore, // 🔽
   keyboard_double_arrow_left: doubleLeft, // ⏪
   keyboard_double_arrow_right: doubleRight, // ⏩
+  refresh, // 🔄 0.6.0
+  open_in_new: openInNew, // ↗️ 0.6.0
 };

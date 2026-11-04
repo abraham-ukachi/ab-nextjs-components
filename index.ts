@@ -257,6 +257,8 @@ export type { AbDemoCodeProps } from './ab-demo-code/index.tsx'
 // 🧪💻 0.6.0 (G16): the docs Preview / Code pair (AbContentTabs + AbDemoBox + AbDemoCode)
 export { default as AbPreviewCode } from './ab-preview-code/index.tsx'
 export type { AbPreviewCodeProps, AbPreviewCodeLabels } from './ab-preview-code/index.tsx'
+export { default as AbPreviewStage } from './ab-preview-code/stage.tsx' // 🧰 0.6.0: the preview toolbar island
+export type { AbPreviewStageProps, AbPreviewStageLabels } from './ab-preview-code/stage.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'
 // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'
