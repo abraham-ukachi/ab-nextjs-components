@@ -39,8 +39,8 @@
 // 🌍 every visible WORD in the scenes (code, package names and file names stay as they are, like the mock).
 //    Pass `labels={{ ... }}` (e.g. from next-intl / the Welcome messages) to translate; missing keys fall back to English.
 
-/** 🗂️ the 8 scene names (John's v6 1–7 + illustration 8 `i18n`) */
-/** 🗂️ 0.2.3 (Joseph 02:35): + `welcome` (v6 s01, every package around the Ab mark) and `all` (v6 s09, the final slide) */
+/** 🗂️ the 8 scene names (the v6 1–7 + illustration 8 `i18n`) */
+/** 🗂️ 0.2.3: + `welcome` (v6 s01, every package around the Ab mark) and `all` (v6 s09, the final slide) */
 export type AbPlaygroundSceneName = 'core' | 'components' | 'theme' | 'icons' | 'fonts' | 'animations' | 'hooks' | 'i18n' | 'welcome' | 'all';
 
 /** 🌍 the 4 demo locales of the i18n scene, in cycle order (EN → FR → ES → RU, 0.6s each) */
@@ -83,7 +83,7 @@ export const AB_PLAYGROUND_SCENE_LABELS = {
   reduceAnimations: 'reduce animations', list: 'list', stagger: 'stagger', transition: 'transition', fadeSlide: 'fade · slide',
   // 🪝 hooks
   keyboard: 'keyboard', storage: 'storage', copy: 'copy', hooks: 'Hooks', scrollSpy: 'scroll spy',
-  // 🌍 i18n (John's illustration 8)
+  // 🌍 i18n (the illustration 8)
   messages: 'messages', switcher: 'switcher', translations: 'translations', provider: 'provider', prefix: 'prefix',
   intlFormat: 'Intl format',
   // 🎠 welcome + all (v6 s01 / s09)

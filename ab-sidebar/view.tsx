@@ -46,16 +46,19 @@ import Link from '../ab-link';
 import AbBalloon from '../ab-balloon';
 // 🎨 styles
 import styles from './styles.module.css';
+// 🎯 0.5.0: one active-matching rule for AbSidebar + AbNavDrawer (longest match by default)
+import { flattenAbNavItems, getAbActiveHrefs, matchAbHref, normalizeAbHref, type AbActiveMatch } from './active';
 
 /** 🔗 One sidebar destination (G40). `items` = one level of children, shown under the parent. */
 export interface AbSidebarItem {
-  id?: string; // 🆔 0.1.13 (James nit): stable React key when two items share an href (default: `href`)
+  id?: string; // 🆔 0.1.13 (nit): stable React key when two items share an href (default: `href`)
   href: string; // 🔗
   icon?: string; // 🔣 AbIcons name: outlined, filled when active
-  label: ReactNode; // 🏷️ 0.1.13: any node (Joseph #15), e.g. a mono package name
+  label: ReactNode; // 🏷️ 0.1.13: any node (#15), e.g. a mono package name
   labelText?: string; // ♿ plain-text name for the rail tooltip/aria-label when `label` isn't a string
   badge?: ReactNode; // 🔴 e.g. "New" or a count
   items?: AbSidebarItem[]; // 🌳 children
+  exact?: boolean; // 🎯 0.5.0: true = active on its own href only (never as a parent); false = allow parent matching even under activeMatch="exact"
 }
 
 /** 🗂️ A labelled group of items. */
@@ -90,7 +93,8 @@ export interface AbSidebarBaseProps {
   className?: string; // 🏷️
   id?: string; // 🆔 the list id (aria-controls target), default "ab-sidebar-list"
   sections?: AbSidebarSection[]; // 🗂️ G40
-  activeHref?: string; // 🎯 current route (exact or a parent prefix)
+  activeHref?: string; // 🎯 current route (query, hash and a trailing slash are ignored)
+  activeMatch?: AbActiveMatch; // 🎯 0.5.0: 'best' (default, deepest match only), 'prefix' (every parent too) or 'exact'
   collapsed?: boolean; // 🚪 icon rail
   header?: ReactNode; // 🏷️ top slot (brand, workspace switcher…)
   labels?: AbSidebarLabels; // 🌍
@@ -99,7 +103,7 @@ export interface AbSidebarBaseProps {
   density?: 'comfortable' | 'compact'; // 📏 'compact' = 32px rows, 13.5/500, 18px icons, 11px group labels
   activeShape?: 'pill' | 'rounded'; // 🔷 'rounded' = 8px-radius --tint row (default 'pill')
   badgeVariant?: 'chip' | 'text'; // 🏷️ 'text' = plain mono 10.5 --faint meta (e.g. a version), no chip
-  // 🏷️ 0.1.15 (God 00:08): a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
+  // 🏷️ 0.1.15: a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
   //    where the app header is hidden (tabletHeader="main" at 768–1179); elsewhere it always shows
   logo?: ReactNode;
   footer?: ReactNode; // 🦶 0.2.1: a bottom slot pinned to the bottom left (e.g. AbSidebarProfileButton)
@@ -111,11 +115,15 @@ export interface AbSidebarBaseProps {
   brandLabel?: string;
 }
 
-/** 🎯 Is `href` the current route, or a parent of it? */
+/** 🎯 Is `href` the current route, or a parent of it? (single-item prefix check; lists use `getAbActiveHrefs`) */
 export function isAbSidebarActive(href: string, activeHref?: string): boolean {
-  if (!activeHref) return false; // 🚫
-  if (href === activeHref) return true; // ✅ exact
-  return href !== '/' && activeHref.startsWith(`${href.replace(/\/$/, '')}/`); // 🌳 parent
+  return !!activeHref && matchAbHref(href, activeHref); // 🌳 query / hash / trailing slash tolerant since 0.5.0
+}
+
+/** 🎯 0.5.0: an `active(href)` checker for a whole sidebar, using `activeMatch` + each item's `exact` */
+export function createAbSidebarActive(groups: AbSidebarSection[], current: string | undefined, match?: AbActiveMatch): (href: string) => boolean {
+  const on = getAbActiveHrefs(groups.flatMap((g) => flattenAbNavItems(g.items)), current, { match }); // 🥇 resolved once per render
+  return (href) => on.has(normalizeAbHref(href)); // ✅
 }
 
 /** 🗂️ sections, or the legacy links as one unlabelled section. */

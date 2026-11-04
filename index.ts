@@ -142,11 +142,11 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbProfileAvatar', file: 'ab-profile-avatar/index.tsx', kind: 'server', status: 'Done' }, // 🆕 0.2.1 initials / photo / glyph circle (no hooks: client + server)
   { name: 'AbVersionSwitcher', file: 'ab-version-switcher/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbBreadcrumbs', file: 'ab-breadcrumbs/index.tsx', kind: 'server', status: 'Done' },
-  { name: 'AbDocPager', file: 'ab-doc-pager/index.tsx', kind: 'server', status: 'Done' }, // ⏮️⏭️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbDocPager
-  { name: 'AbContentTabs', file: 'ab-content-tabs/index.tsx', kind: 'client', status: 'Done' }, // 🗂️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
-  { name: 'AbContentTab', file: 'ab-content-tabs/index.tsx', kind: 'client', status: 'Done' }, // 🗂️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
-  { name: 'AbCodeBlock', file: 'ab-code-block/index.tsx', kind: 'server', status: 'Done' }, // 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
-  { name: 'AbCallout', file: 'ab-callout/index.tsx', kind: 'server', status: 'Done' }, // 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
+  { name: 'AbDocPager', file: 'ab-doc-pager/index.tsx', kind: 'server', status: 'Done' }, // ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
+  { name: 'AbContentTabs', file: 'ab-content-tabs/index.tsx', kind: 'client', status: 'Done' }, // 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
+  { name: 'AbContentTab', file: 'ab-content-tabs/index.tsx', kind: 'client', status: 'Done' }, // 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
+  { name: 'AbCodeBlock', file: 'ab-code-block/index.tsx', kind: 'server', status: 'Done' }, // 💻 0.3.4 (0.2.24 MDX docs): AbCodeBlock (+ its copy island)
+  { name: 'AbCallout', file: 'ab-callout/index.tsx', kind: 'server', status: 'Done' }, // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
 ]
 
@@ -184,12 +184,15 @@ export { default as AbBrand } from './ab-brand/index.tsx'
 export { default as AbName } from './ab-name/index.tsx'
 export { default as AbNavbar } from './ab-navbar/index.tsx'
 export { default as AbSidebar } from './ab-sidebar/index.tsx'
-// 👤 0.2.1 (God 02:44): the bottom-left sidebar profile button → AbSettingsDrawer (laptop + wide)
+// 🎯 0.5.0: active-item matching shared by AbSidebar + AbNavDrawer (`activeMatch`, per-item `exact`)
+export { getAbActiveHrefs, matchAbHref, normalizeAbHref, flattenAbNavItems } from './ab-sidebar/active.ts'
+export type { AbActiveMatch, AbActiveMatchable, AbActiveMatchOptions } from './ab-sidebar/active.ts'
+// 👤 0.2.1: the bottom-left sidebar profile button → AbSettingsDrawer (laptop + wide)
 export { default as AbSidebarProfileButton } from './ab-sidebar/profile-button.tsx'
 export type { AbSidebarProfileButtonProps } from './ab-sidebar/profile-button.tsx'
-// 📑 0.1.13 (Joseph): AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
+// 📑 0.1.13: AbToc + the panes main-scroller helpers (also at `ab-nextjs-components/ab-toc`)
 export { default as AbToc, getAbMainScroller, AB_MAIN_SCROLLER_SELECTOR } from './ab-toc/index.tsx'
-// 🆕 0.2.1 (God 02:44): the aside "New" card
+// 🆕 0.2.1: the aside "New" card
 export { default as AbTocPromo } from './ab-toc/promo.tsx'
 export type { AbTocPromoProps } from './ab-toc/promo.tsx'
 export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
@@ -209,14 +212,14 @@ export type { AbConfirmDrawerProps } from './ab-confirm-drawer/index.tsx'
 // 📱 0.1.14 (D40): AbBottomDrawer, the mobile bottom drawer
 export { default as AbBottomDrawer } from './ab-bottom-drawer/index.tsx'
 export type { AbBottomDrawerProps } from './ab-bottom-drawer/index.tsx'
-// 👇 0.2.3 (Joseph, Welcome 0.2.21): swipe a bottom sheet down to close
+// 👇 0.2.3 (Welcome 0.2.21): swipe a bottom sheet down to close
 export { useAbSwipeDown, isAbScrolledInside } from './ab-bottom-drawer/use-ab-swipe-down.ts'
 export type { UseAbSwipeDownOptions } from './ab-bottom-drawer/use-ab-swipe-down.ts'
 // 🆕 0.2.0 drawers v2: AbMobileHeader
 export { default as AbMobileHeader } from './ab-mobile-header/index.tsx'
 export type { AbMobileHeaderProps, AbMobileHeaderThemeMode, AbMobileHeaderLanguage } from './ab-mobile-header/index.tsx'
 export { AB_MOBILE_HEADER_THEME_CYCLE } from './ab-mobile-header/index.tsx' // 🌗 0.2.3
-// 🌗 0.2.3 (Joseph, Welcome 0.2.21): one shared theme mode for every toggle
+// 🌗 0.2.3 (Welcome 0.2.21): one shared theme mode for every toggle
 export { AbThemeModeProvider, useAbThemeModeContext, AB_THEME_MODE_ICONS, AB_THEME_ICON_BUTTON_GLYPH } from './ab-theme-mode/index.tsx' // 🔣 0.3.2: + the shared theme glyphs
 export type { AbThemeModeProviderProps, AbThemeModeContextValue } from './ab-theme-mode/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSearchDrawer
@@ -249,17 +252,17 @@ export { default as AbProductItem } from './ab-product-item/index.tsx'
 export { default as AbDemoBox } from './ab-demo-box/index.tsx'
 export { default as AbDemoCode } from './ab-demo-code/index.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'
-// 💡 0.3.4 (Joseph, 0.2.24 MDX docs): AbCallout
+// 💡 0.3.4 (0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'
 export type { AbCalloutProps, AbCalloutVariant } from './ab-callout/index.tsx'
-// 💻 0.3.4 (Joseph, 0.2.24 MDX docs): AbCodeBlock (+ its copy island)
+// 💻 0.3.4 (0.2.24 MDX docs): AbCodeBlock (+ its copy island)
 export { default as AbCodeBlock } from './ab-code-block/index.tsx'
 export { default as AbCodeBlockCopy } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockCopyProps } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockProps } from './ab-code-block/index.tsx'
-// 🗂️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
+// 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
 export { default as AbContentTabs, AbContentTab } from './ab-content-tabs/index.tsx'
 export type { AbContentTabsProps, AbContentTabProps } from './ab-content-tabs/index.tsx'
-// ⏮️⏭️ 0.3.4 (Joseph, 0.2.24 MDX docs): AbDocPager
+// ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
 export { default as AbDocPager } from './ab-doc-pager/index.tsx'
 export type { AbDocPagerProps, AbDocPagerLink } from './ab-doc-pager/index.tsx'

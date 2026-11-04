@@ -90,7 +90,7 @@ export interface AbDrawerProps {
   closeLabel?: string; // 🌍 default "Close"
   noJsFallback?: boolean; // 🧩 D41: without JS, render the content in flow (default `true`)
   initialFocus?: 'first' | 'panel' | (string & {}); // 🎯 on open: the first control (default), the panel itself, or (0.2.0) a CSS selector inside the panel, e.g. `[role=radio][aria-checked=true]`
-  // 🆕 0.2.0 drawers v2 (John, God 01:22): all opt-in, the defaults keep the old drawer
+  // 🆕 0.2.0 drawers v2 (01:22): all opt-in, the defaults keep the old drawer
   tier?: AbDrawerTier; // 🥞 stacking tier: 'aside' (z 60) < 'nav' (61) < 'sheet' (62)
   swipe?: boolean; // 🤏 side drawers: swipe the sheet back toward its edge to close (30% of the width or ≥ 0.5px/ms)
   snapPoints?: boolean; // 🧲 bottom only, below 768px: snaps at 70% (S1) and full height (S2) with a handle; gestures per the spec
@@ -146,7 +146,7 @@ const isTopDrawer = (token: symbol): boolean => openStack[openStack.length - 1] 
 
 // ♿ reduced-motion check, read once per open / close on purpose: it only picks the unmount delay for THAT
 // toggle (the slide itself is CSS, which follows the media query live), so a listener would buy nothing
-/** ↩️ 0.2.1 (Joseph): where focus goes after a drawer that had no focusable opener closes (an edge swipe): the
+/** ↩️ 0.2.1: where focus goes after a drawer that had no focusable opener closes (an edge swipe): the
  *  mobile header's logo link, else AbAppBar's brand link, else AbSidebar's logo row link. `returnFocus` overrides it. */
 export const AB_DRAWER_RETURN_FOCUS = '[data-ab-part="mobile-header"] a[href], [data-ab-part="app-bar-brand"] a[href], [data-ab-part="sidebar-logo"] a[href]';
 const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -237,7 +237,7 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
       const had = opener.current as HTMLElement | null; // ↩️
       const usable = had && had !== document.body && had.isConnected ? had : null; // 🤏 a swipe has no opener
       // ↩️ 0.2.0 fallback: the first VISIBLE match (an app often renders the logo twice, one hidden per breakpoint)
-      const pool = Array.from(document.querySelectorAll<HTMLElement>(returnFocus ?? AB_DRAWER_RETURN_FOCUS)).filter((el) => !node.contains(el)); // 🏷️ 0.2.1 (Joseph): default = the header / brand logo
+      const pool = Array.from(document.querySelectorAll<HTMLElement>(returnFocus ?? AB_DRAWER_RETURN_FOCUS)).filter((el) => !node.contains(el)); // 🏷️ 0.2.1: default = the header / brand logo
       const back = usable ?? pool.find((el) => el.getClientRects().length > 0) ?? pool[0] ?? null; // 👀 the visible one, else the first
       // ⏭️ a microtask later: the inert cleanup below runs after this one, and an inert opener can't take focus
       queueMicrotask(() => { if (back && back.isConnected && typeof back.focus === 'function') back.focus({ preventScroll: true }); });

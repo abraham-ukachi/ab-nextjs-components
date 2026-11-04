@@ -38,7 +38,7 @@
 
 
 // @vitest-environment happy-dom
-// 🏠 God 00:08 / Joseph fidelity-2: the four Home gaps. Every block lands in the same commit as its change.
+// 🏠 approved / QA fidelity-2: the four Home gaps. Every block lands in the same commit as its change.
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
@@ -79,7 +79,7 @@ describe('AbLocaleSwitcher presentation="inline" 🧩', () => {
   })
   it('CSS: 48px rows, --tint active, motion-free', () => {
     const s = css('ab-locale-switcher/styles.module.css') // 🎨
-    expect(s).toMatch(/\.inlineItem \{[^}]*block-size: 48px; min-block-size: 44px;/) // 👆 John: exactly 48, ≥ 44 hit area
+    expect(s).toMatch(/\.inlineItem \{[^}]*block-size: 48px; min-block-size: 44px;/) // 👆 exactly 48, ≥ 44 hit area
     expect(s).toMatch(/\.inlineItem\[data-active='true'\] \{ background: var\(--ab-color-tint, #f4e7db\); color: var\(--ab-color-accent-text, #88603d\)/) // 🎯
   })
 })
@@ -128,7 +128,7 @@ describe('AbSidebar logo row 🏷️', () => {
   })
 })
 
-// ✓ John 00:20 #1: the check is an 18px, 2px-stroke bronze glyph
+// ✓ design 00:20 #1: the check is an 18px, 2px-stroke bronze glyph
 describe('inline language list: check mark ✓', () => {
   it('18px svg, stroke 2, currentColor; --ab-color-btn light, --ab-color-accent dark', () => {
     const { container } = render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" onSelect={() => {}} />)
@@ -141,7 +141,7 @@ describe('inline language list: check mark ✓', () => {
   })
 })
 
-// 📏 John 00:20 #2: rows exactly 48px, 8px apart
+// 📏 design 00:20 #2: rows exactly 48px, 8px apart
 describe('inline language list: row rhythm 📏', () => {
   it('48px rows (44px floor), 20px line box, 8px list gap, bare <li>', () => {
     const s = css('ab-locale-switcher/styles.module.css')
@@ -151,7 +151,7 @@ describe('inline language list: row rhythm 📏', () => {
   })
 })
 
-// 🏷️ John 00:20 #3: the bottom-drawer title (package-owned h2) is Mulish 16/800; #5: 16px + safe-area bottom padding stays
+// 🏷️ design 00:20 #3: the bottom-drawer title (package-owned h2) is Mulish 16/800; #5: 16px + safe-area bottom padding stays
 describe('AbBottomDrawer title + padding 🏷️', () => {
   it('h2 = --ab-font-title (Mulish) 16/800; padding-bottom 16px + safe area', () => {
     const s = css('ab-bottom-drawer/styles.module.css')
@@ -160,7 +160,7 @@ describe('AbBottomDrawer title + padding 🏷️', () => {
   })
 })
 
-// ➖ John 00:20 #4: last-with-divider when mixed; no uppercase label when it's the only content
+// ➖ design 00:20 #4: last-with-divider when mixed; no uppercase label when it's the only content
 describe('inline language list: showLabel + divider ➖', () => {
   it('showLabel={false}: no label row, the group keeps its name via aria-label', () => {
     const { container, getByRole } = render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" showLabel={false} onSelect={() => {}} />)
@@ -176,7 +176,7 @@ describe('inline language list: showLabel + divider ➖', () => {
   })
 })
 
-// 🔁 James 00:22: switching presentation at runtime must not break the hook order
+// 🔁 switching presentation at runtime must not break the hook order
 describe('AbLocaleSwitcher presentation switch 🔁', () => {
   it('menu → inline → menu re-renders without a hooks error', () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {}) // 🤫 catch React warnings
@@ -192,7 +192,7 @@ describe('AbLocaleSwitcher presentation switch 🔁', () => {
   })
 })
 
-// 🔗 God 00:37 #1: the mobile pill is a 114px link to /docs, no ⌘K, no hotkey
+// 🔗 approved #1: the mobile pill is a 114px link to /docs, no ⌘K, no hotkey
 describe('AbAppBar searchCompact 🔗', () => {
   it('renders both slots (CSS picks); the compact one is an <a href="/docs"> with no key cap or shortcut', () => {
     const { container } = render(<AbAppBar density="compact" search={<AbSearchTrigger variant="field" label="Search docs…" onOpen={() => {}} />} searchCompact={<AbSearchTrigger size="sm" href="/docs" label="Search" />} />)
@@ -215,7 +215,7 @@ describe('AbAppBar searchCompact 🔗', () => {
   })
 })
 
-// ♿ God 00:37 #3: the inline list has its own aria-label (default from `label`)
+// ♿ approved #3: the inline list has its own aria-label (default from `label`)
 describe('inline language list: ariaLabel ♿', () => {
   it('defaults to the label (visible or not) and can be overridden', () => {
     const r = (p: object) => render(<AbLocaleSwitcher locales={LOCALES} current="en" label="Language" presentation="inline" onSelect={() => {}} {...p} />)
@@ -228,7 +228,7 @@ describe('inline language list: ariaLabel ♿', () => {
   })
 })
 
-// 📝 James P2 (round 3): the double-⌘K pitfall is documented on `searchCompact`
+// 📝 review P2 (round 3): the double-⌘K pitfall is documented on `searchCompact`
 describe('AbAppBar searchCompact docs', () => {
   it('warns that a hotkey trigger in both slots registers ⌘K twice', () => {
     const src = readFileSync(join(__dirname, '..', 'ab-app-bar', 'index.tsx'), 'utf8') // 📄
@@ -237,7 +237,7 @@ describe('AbAppBar searchCompact docs', () => {
   })
 })
 
-// ✂️ James P2 (round 3): a longer translated label ellipsizes inside the 114px pill
+// ✂️ review P2 (round 3): a longer translated label ellipsizes inside the 114px pill
 describe('AbAppBar compact pill label ellipsis', () => {
   it('the pill labels get min-width 0, overflow hidden, ellipsis, nowrap', () => {
     const s = readFileSync(join(__dirname, '..', 'ab-app-bar', 'styles.module.css'), 'utf8') // 📄

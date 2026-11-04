@@ -64,7 +64,7 @@
 .abSearchTriggerIcon { flex: none; } /* 🔣 */
 .abSearchTriggerSoon { font-size: 12px; opacity: 0.8; } /* 🚧 */
 
-/* 📱 compact (Joseph #3/#16): icon-only round pill for small app bars, no overflow at 390px */
+/* 📱 compact (#3/#16): icon-only round pill for small app bars, no overflow at 390px */
 .abSearchTrigger[data-compact='true'] { flex: none; width: 40px; min-width: 40px; padding: 0; justify-content: center; } /* 🔘 */
 /* 🕶️ visually hidden, still read by screen readers */
 .abSearchTriggerSrOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; flex: none; }
@@ -76,7 +76,7 @@
   border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-button, 10px); /* 🔲 */
   background: var(--ab-color-card, #fff); color: var(--ab-color-faint, #807062); /* 🎨 */
   font-size: 13.5px; line-height: 1; box-shadow: var(--ab-shadow-card, 0 1px 2px rgb(33 26 22 / 0.05)); /* 🔤 🌗 */
-  flex: 0 8 auto; min-width: var(--ab-search-trigger-min-width, 160px); /* 🔎 0.4.1 (Joseph 0.2.24, gap 4): its own space in a flex row; v2: shrinks first (flex-shrink 8) down to 160px, never under */
+  flex: 0 8 auto; min-width: var(--ab-search-trigger-min-width, 160px); /* 🔎 0.4.1 (0.2.24, gap 4): its own space in a flex row; v2: shrinks first (flex-shrink 8) down to 160px, never under */
 }
 .abSearchTrigger[data-size='sm'] {
   flex: none; width: auto; max-width: none; height: 34px; /* 📏 the pill still LOOKS 34px (mock) */
@@ -85,7 +85,7 @@
   border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-pill, 999px); /* 💊 */
   background: var(--ab-color-card, #fff); color: var(--ab-color-faint, #807062); font-size: 13px; line-height: 1; /* 🎨 🔤 */
 }
-/* 👆 0.3.2 (God, 0.2.23 gaps): an invisible 44px-tall hit area around the 34px pill (0.3.3: 6px above + below), so the
+/* 👆 0.3.2 (0.2.23 gaps): an invisible 44px-tall hit area around the 34px pill (0.3.3: 6px above + below), so the
    tap target is ≥ 44px (WCAG 2.5.5) without changing the look */
 .abSearchTrigger[data-size='sm']::after { content: ''; position: absolute; inset: -6px 0; } /* 🫥 hit area: 0.3.3 6px above + below → 46px, safely ≥ 44 */
 .abSearchTrigger[data-variant='field']:hover, .abSearchTrigger[data-size='sm']:hover { border-color: color-mix(in srgb, var(--ab-color-accent, #a67c52) 40%, transparent); } /* 🖱️ */

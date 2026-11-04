@@ -39,7 +39,7 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-// 🌍 0.1.13 (Joseph #10): no 'use client', so server twins can import it too
+// 🌍 0.1.13 (#10): no 'use client', so server twins can import it too
 
 /**
  * 🌍 stripAbLocalePrefix — `/fr/docs/core` → `/docs/core` when `fr` is one of `locales`; `/fr` → `/`.

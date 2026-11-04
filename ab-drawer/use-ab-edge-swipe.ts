@@ -52,7 +52,7 @@ export interface UseAbEdgeSwipeOptions {
   enabled?: boolean; // 🎚️ e.g. false while that drawer is open, or when the page has no aside (default true)
   width?: number; // 📏 the drawer width the 30% rule uses (default 320)
   pointerTypes?: readonly string[]; // 🖐️ default touch + pen (a mouse never edge-swipes)
-  // 📐 0.2.1 (God 02:47): only swipe while the viewport is at most this wide, e.g. AB_ASIDE_DRAWER_MAX_WIDTH (1179) for
+  // 📐 0.2.1: only swipe while the viewport is at most this wide, e.g. AB_ASIDE_DRAWER_MAX_WIDTH (1179) for
   //    the right drawer: mobile AND tablet hide the aside and open it as the right drawer; from 1180px it's a column
   maxWidth?: number;
 }
@@ -112,7 +112,7 @@ export function useAbEdgeSwipe({ edge, onOpen, enabled = true, width = 320, poin
       const cur = d; d = null;
       if (!cur || cur.axis !== 1) return;
       if (resolveAbSideRelease({ distance: (x - cur.x) * sign, velocity: cur.v.velocity() * sign, width })) {
-        (document.activeElement as HTMLElement | null)?.blur?.(); // ↩️ 0.2.1 (Joseph): a swipe has no opener, so the drawer returns focus to the logo, not a stale element
+        (document.activeElement as HTMLElement | null)?.blur?.(); // ↩️ 0.2.1: a swipe has no opener, so the drawer returns focus to the logo, not a stale element
         latest.current(); // ✅
       }
     };

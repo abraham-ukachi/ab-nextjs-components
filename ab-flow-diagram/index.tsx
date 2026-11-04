@@ -62,7 +62,7 @@ export interface AbFlowDiagramProps {
   nodes: readonly AbFlowNode[]; // 🔵 nodes in 0–100 coordinates
   edges?: readonly AbFlowEdge[] | 'auto'; // 〰️ wires between node ids; `'auto'` (default with `frame`) = v6 route() every node → the hub
   /** 🖼️ 0.2.3 (Welcome v6): a fixed design frame, e.g. `{ w: 760, h: 600, header: 56 }`. Node x/y/w/h are then frame px
-   *  (John's rects 1:1) and the whole stage scales with the card width. */
+   *  (the rects 1:1) and the whole stage scales with the card width. */
   frame?: AbFlowFrame;
   /** 〰️ 0.2.3: extra wires as frame-px polylines (v6 `extras`), drawn with rounded corners. */
   wires?: readonly (readonly AbFlowPoint[])[];
@@ -174,7 +174,7 @@ export function AbFlowDiagram(props: AbFlowDiagramProps): ReactElement {
 type FrameProps = AbFlowDiagramProps & { frame: AbFlowFrame };
 
 /** 🖼️ 0.2.3 (Welcome v6): the pixel-frame scene. A fixed w×h stage (v6 px), scaled to the card width by CSS
- *  (`100cqw / w`) and the AbFlowFrameScale island; wires auto-route node → hub like John's route(). */
+ *  (`100cqw / w`) and the AbFlowFrameScale island; wires auto-route node → hub like the route(). */
 function AbFlowFrameDiagram(props: FrameProps): ReactElement {
   // 🧩 props
   const { nodes, edges = 'auto', frame, wires = [], alt, title, caption, live = false, active = true, loops = 'infinite', variant = 'full', posterAt = 0.45, duration = 2400, className, style, children, dotted = true, logo, anchors = true, reducedMotion = 'auto' } = props;

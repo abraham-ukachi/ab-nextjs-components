@@ -44,7 +44,7 @@
   border-radius: var(--ab-radius-code, 12px); /* 🟢 */
   background: var(--ab-color-code-surface, #231a14); /* 🎨 */
   color: var(--ab-color-on-code-surface, #f4ece5); /* 🖋️ */
-  color-scheme: dark; /* 🌑 0.4.1 (Joseph 0.2.24, gap 3): scrollbars, selection + the copy button match the dark surface in every page scheme */
+  color-scheme: dark; /* 🌑 0.4.1 (0.2.24, gap 3): scrollbars, selection + the copy button match the dark surface in every page scheme */
 }
 /* 🏷️ header: title · filename · language badge */
 .abCodeBlockHead { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px 0 16px; border-bottom: 1px solid rgb(255 255 255 / 0.08); font: 500 12.5px/1.2 var(--ab-font-body, system-ui, sans-serif); } /* 📐 */

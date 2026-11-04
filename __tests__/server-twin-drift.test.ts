@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: server/client twin drift guard (Joseph 03:41)
+* @name: server/client twin drift guard
 * @file: __tests__/server-twin-drift.test.ts
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -39,7 +39,7 @@
 // @vitest-environment happy-dom
 
 // 🧪 vitest
-// 🧪 0.2.3 (Joseph 03:41): client/server twins must not drift.
+// 🧪 0.2.3: client/server twins must not drift.
 import { describe, expect, it } from 'vitest'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'

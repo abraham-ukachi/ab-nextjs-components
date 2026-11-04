@@ -36,7 +36,7 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; overflow-wrap: anywhere; word-break: normal; hyphens: none; display: block; min-width: 0; max-width: 100%; } /* 📦 0.1.13 (Joseph): wraps at the <wbr> after a hyphen first (ab-nextjs-/components); `anywhere` only splits a part that alone is wider than a very narrow card (animations at ~70px), so it never overflows */
+.abPackageCardName { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); font-size: 16px; overflow-wrap: anywhere; word-break: normal; hyphens: none; display: block; min-width: 0; max-width: 100%; } /* 📦 0.1.13: wraps at the <wbr> after a hyphen first (ab-nextjs-/components); `anywhere` only splits a part that alone is wider than a very narrow card (animations at ~70px), so it never overflows */
 .abPackageCardVersion { font-family: var(--ab-font-code, var(--ab-font-mono, ui-monospace, monospace)); opacity: 0.8; } /* 🏷️ */
 .abPackageCardTag { padding: 0 8px; border-radius: 999px; line-height: 20px; background: var(--ab-color-surface-container-high, rgb(0 0 0 / 0.06)); } /* 🏷️ */
 
@@ -80,7 +80,7 @@
 }
 @media (prefers-reduced-motion: reduce) { .home:hover { transform: none; } } /* ♿ no lift */
 
-/* ===== 🖼️ 0.2.1 (God 02:44): Home preview tiles, John's mock `.pv-*` (theme tokens, fallbacks = the mock) ===== */
+/* ===== 🖼️ 0.2.1: Home preview tiles, the mock `.pv-*` (theme tokens, fallbacks = the mock) ===== */
 .homePreview > * { flex: none; } /* 🚫 no child stretches; the tile centres them both ways */
 /* 〰️ Animations */
 .pvAnim { position: relative; display: block; box-sizing: border-box; width: 100%; height: 100%; padding: 6px 10px; } /* 📐 */

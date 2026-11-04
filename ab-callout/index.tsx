@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbCallout (0.3.4, Joseph 0.2.24 MDX docs)
+* @name: AbCallout (0.3.4, QA 0.2.24 MDX docs)
 * @file: ab-callout/index.tsx
 * @type: Server component
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>

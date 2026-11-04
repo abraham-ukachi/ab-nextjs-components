@@ -49,7 +49,7 @@ afterEach(() => cleanup())
 const css = readFileSync(join(__dirname, '..', 'ab-drawer/kit.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🧹
 const block = css.slice(css.indexOf('@media (min-width: 768px) {\n  .mh[data-ab-bar-at')) // 📐 the barAt block
 
-describe('📱 AbMobileHeader barAt (Joseph, Welcome 0.2.21)', () => {
+describe('📱 AbMobileHeader barAt (Welcome 0.2.21)', () => {
   it('server HTML carries data-ab-bar-at (default "auto"), so CSS decides without JS', () => {
     expect(renderToStaticMarkup(<AbMobileHeader logo="x" row={<span>1</span>} />)).toMatch(/data-ab-bar-at="auto"/) // 🖨️
     expect(renderToStaticMarkup(<AbMobileHeader logo="x" barAt="mobile" row={<span>1</span>} />)).toMatch(/data-ab-bar-at="mobile"/)

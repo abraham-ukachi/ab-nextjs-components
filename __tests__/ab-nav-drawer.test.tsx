@@ -47,7 +47,7 @@ import * as pkg from '../index'
 beforeEach(() => { vi.useFakeTimers(); vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0)); vi.stubGlobal('cancelAnimationFrame', (id: number) => clearTimeout(id)) })
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); document.body.innerHTML = '' })
 const flush = () => act(() => { vi.advanceTimersByTime(AB_DRAWER_DURATION + 50) })
-// 🗂️ God 01:22 + 01:27: Home · GETTING STARTED (Introduction, Packages, Guides) · Changelog; no Docs item
+// 🗂️ approved: Home · GETTING STARTED (Introduction, Packages, Guides) · Changelog; no Docs item
 const SECTIONS = [
   { id: 'top', items: [{ href: '/', label: 'Home', icon: 'home' }] },
   { id: 'gs', label: 'Getting started', items: [{ href: '/introduction', label: 'Introduction', icon: 'description' }, { href: '/packages', label: 'Packages', icon: 'package_2' }, { href: '/guides', label: 'Guides', icon: 'menu_book' }] },
@@ -77,7 +77,7 @@ describe('AbNavDrawer (drawers v2 §2) ⬅️', () => {
     expect(dlg.querySelector('[aria-current="page"]')!.textContent).toContain('Home') // 🎯
     const h = dlg.querySelector('h3')!; expect(h.textContent).toBe('Getting started')
     expect(dlg.querySelector(`ul[aria-labelledby="${h.id}"]`)!.querySelectorAll('li')).toHaveLength(3) // ♿
-    expect(Array.from(dlg.querySelectorAll('a')).map((a) => a.textContent)).not.toContain('Docs') // 🚫 God 01:27
+    expect(Array.from(dlg.querySelectorAll('a')).map((a) => a.textContent)).not.toContain('Docs') // 🚫 approved
   })
   it('choosing a link closes; Settings › closes first, then opens Settings', () => {
     const p = mount()

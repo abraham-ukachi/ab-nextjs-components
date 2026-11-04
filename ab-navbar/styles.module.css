@@ -59,7 +59,7 @@
   align-items: center; /* ↔️ */
   gap: 4px; /* ↕️ */
   min-width: 64px; /* 👆 */
-  min-height: 44px; /* 👆 0.3.2 (God, 0.2.23 gaps): a 44px tap target (WCAG 2.5.5), was ~42px with indicator="none" */
+  min-height: 44px; /* 👆 0.3.2 (0.2.23 gaps): a 44px tap target (WCAG 2.5.5), was ~42px with indicator="none" */
   justify-content: center; /* 🎯 0.3.2: the pill + label stay centred in the taller target */
   box-sizing: border-box; /* 📦 0.3.2: the 44px counts the padding */
   border: 0; /* 🚫 (buttons) */

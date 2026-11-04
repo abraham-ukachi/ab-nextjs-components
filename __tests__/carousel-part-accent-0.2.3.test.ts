@@ -45,7 +45,7 @@ import { join } from 'node:path'
 const css = readFileSync(join(__dirname, '..', 'ab-carousel/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🧹
 const CHAIN = 'var(--ab-carousel-accent, var(--ab-color-accent, var(--ab-primary, #a67c52)))' // 🟤
 
-// 🟤 Joseph (Welcome 0.2.21): headless parts outside the region turned grey (no --_accent there)
+// 🟤 QA (Welcome 0.2.21): headless parts outside the region turned grey (no --_accent there)
 describe('🟤 every carousel part defines its own accent', () => {
   it('nav, dots, dot and counter set --_accent from --ab-carousel-accent → theme accent → --ab-primary → bronze', () => {
     const m = css.match(/\.nav,\s*\.dots,\s*\.dot,\s*\.counter \{\s*--_accent: ([^;]+);/) // 🔎

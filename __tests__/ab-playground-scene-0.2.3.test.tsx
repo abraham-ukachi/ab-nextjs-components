@@ -50,7 +50,7 @@ const L = resolveAbPlaygroundSceneLabels()
 const names: AbPlaygroundSceneName[] = ['core', 'components', 'theme', 'icons', 'fonts', 'animations', 'hooks', 'i18n']
 const render = (p: Parameters<typeof AbPlaygroundScene>[0]) => renderToStaticMarkup(createElement(AbPlaygroundScene, p))
 
-describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
+describe('🎨 AbPlaygroundScene: the v6 scenes', () => {
   it('every scene: one hub + 6 nodes (full), one hub + 3 nodes (compact)', () => {
     for (const n of names) {
       const f = buildAbPlaygroundFullScene(n, L, null).nodes
@@ -60,7 +60,7 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
     }
   })
   it('rects are the upgraded mock’s (Core hub 225,262 310×120; compact top 14,62 150×52; hub y 122 h 58)', () => {
-    // 🎨 God 03:02: John's UPGRADED rects (build_upgraded.py): core hub 225,262 310×120; mobile hub y 122 / h 58
+    // 🎨 The UPGRADED rects (build_upgraded.py): core hub 225,262 310×120; mobile hub y 122 / h 58
     expect(buildAbPlaygroundFullScene('core', L, null).nodes[0]).toMatchObject({ x: 225, y: 262, w: 310, h: 120, tone: 'hub', caption: 'ab-nextjs-core/ab-app-layout' }) // 🎯
     const c = buildAbPlaygroundCompactScene('icons', L, null).nodes
     expect(c[0]).toMatchObject({ x: 70, y: 122, w: 210, h: 58 }); expect(c[1]).toMatchObject({ x: 14, y: 62, w: 150, h: 52 }) // 📱
@@ -91,7 +91,7 @@ describe('🎨 AbPlaygroundScene: John’s v6 scenes', () => {
   })
 })
 
-// 🎠 God 02:26: the Welcome card is v6's original surface (theme ≥ 0.3.7 --ab-color-welcome-card), never the gapped white
+// 🎠 the Welcome card is v6's original surface (theme ≥ 0.3.7 --ab-color-welcome-card), never the gapped white
 describe('🎠 Welcome card surface', () => {
   const flow = readFileSync(join(root, 'ab-flow-diagram/styles.module.css'), 'utf8') // 〰️
   const scene = readFileSync(join(root, 'ab-playground-scene/styles.module.css'), 'utf8') // 🎨
@@ -104,7 +104,7 @@ describe('🎠 Welcome card surface', () => {
   })
 })
 
-// 🏷️ God 02:24: code captions are REAL Ab export names (checked against core / components / hooks / animations /
+// 🏷️ code captions are REAL Ab export names (checked against core / components / hooks / animations /
 //    fonts / i18n exports on Oct 29), never v6's short names (useTheme, <Button/>, <AbProvider>…)
 describe('🏷️ captions use real Ab export names', () => {
   const REAL = new Set([
@@ -113,7 +113,7 @@ describe('🏷️ captions use real Ab export names', () => {
     'AB_WIRE_PULSE_CLASS', // 🎬 animations
     'useAbTheme', 'useAbMedia', 'useAbReducedMotion', 'useAbLocalStorage', 'useAbScrollSpy', 'useAbClipboard', // 🪝 hooks
     'AbI18nProvider', 'useAbTranslations', 'localizeAbPathname', 'getAbAlternates', // 🌍 i18n
-    // 🎨 God 03:02 upgraded scenes: names verified in the npm tarballs (playground-spec.md rev 2 §3)
+    // 🎨 approved upgraded scenes: names verified in the npm tarballs (playground-spec.md rev 2 §3)
     'AB_ASIDE_DURATION', 'supportedCore', 'AB_ASIDE_SHEET_QUERY', // 🧱 core
     'supportedComponents', 'AbSearchbar', 'AbVersionSwitcher', // 🧩 components
     'abIconNames', 'abIconWeights', 'abIconDefaultWeight', 'getAbIconSvg', // 🔣 icons (deep ab-icons/)
@@ -133,7 +133,7 @@ describe('🏷️ captions use real Ab export names', () => {
   })
 })
 
-// 🎠 Joseph 02:35: v6 s01 (welcome) + s09 (all), same full treatment, so the app can drop its stopgap hubs
+// 🎠 v6 s01 (welcome) + s09 (all), same full treatment, so the app can drop its stopgap hubs
 describe('🎠 welcome + all scenes (v6 scenes.py welcome_nodes / scene 8)', () => {
   const wires = (h: string) => (h.match(/<g style="--ab-wire-index:/g) ?? []).length // 〰️
   it('welcome full: v6 rects (7 packages + the 160×122 hub) and 7 auto + 3 extra = 10 wires, anchors on', () => {
@@ -163,7 +163,7 @@ describe('🎠 welcome + all scenes (v6 scenes.py welcome_nodes / scene 8)', () 
   })
 })
 
-// 📐 Joseph 02:55: variant="auto" = SSR-safe, CSS picks compact (< 768px) or full, so phones never flash full
+// 📐 variant="auto" = SSR-safe, CSS picks compact (< 768px) or full, so phones never flash full
 describe('📐 variant="auto"', () => {
   const css = readFileSync(join(root, 'ab-playground-scene/styles.module.css'), 'utf8') // 🎨
   it('renders BOTH variants once each, in a no-box wrapper (same markup on server and client)', () => {

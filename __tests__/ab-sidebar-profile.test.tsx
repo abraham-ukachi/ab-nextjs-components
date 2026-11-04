@@ -60,7 +60,7 @@ const tree = (p: Record<string, unknown> = {}) => <div className="AbAppLayout"><
 const btn = () => document.querySelector<HTMLButtonElement>('[data-ab-part="sidebar-profile"]') // 🔘
 const css = readFileSync(join(__dirname, '../ab-sidebar/styles.module.css'), 'utf8') // 🎨
 
-describe('👤 AbSidebar profile button (God 02:44)', () => {
+describe('👤 AbSidebar profile button', () => {
   it('🖥️ renders on the server (no JS gating), inside the <nav> footer slot', () => {
     const html = renderToString(tree()) // 🖥️ SSR
     expect(html).toContain('data-ab-part="sidebar-profile"') // ✅ in the first paint

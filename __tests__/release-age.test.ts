@@ -107,7 +107,7 @@ describe('release age + sibling ranges 📦', () => {
     expect(read('pnpm-workspace.yaml')).not.toMatch(/^minimumReleaseAge:\s*0\b/m) // 🛡️
   })
 
-  it('.npmrc has no minimum-release-age setting (pnpm 11 ignores it there; James review)', () => {
+  it('.npmrc has no minimum-release-age setting (pnpm 11 ignores it there; review)', () => {
     let npmrc = '' // 📄 a missing .npmrc is fine
     try { npmrc = read('.npmrc') } catch { /* 🙅 none */ }
     expect(npmrc).not.toMatch(/^\s*minimum-?release-?age/im) // 🚫 minimumReleaseAge / minimum-release-age

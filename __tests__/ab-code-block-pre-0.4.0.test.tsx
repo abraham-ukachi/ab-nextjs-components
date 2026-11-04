@@ -50,7 +50,7 @@ afterEach(cleanup) // 🧹
 const shiki = '<pre class="shiki" tabindex="0"><code>x</code></pre>' // 🖍️ Shiki already sets tabindex
 const count = (h: string, re: RegExp) => (h.match(/<pre\b[^>]*>/gi) ?? []).join("").match(re)?.length ?? 0 // 🔢 within the <pre> tags only (the copy button has its own)
 
-// ⌨️ 0.4.0 (God): a plain <pre> is focusable + named; Shiki's tabindex is never doubled
+// ⌨️ 0.4.0: a plain <pre> is focusable + named; Shiki's tabindex is never doubled
 describe('⌨️ AbCodeBlock focusable <pre>', () => {
   it('plain <pre> children: tabIndex 0, named by the title', () => {
     const { container } = render(<AbCodeBlock title="Install"><pre><code>pnpm i</code></pre></AbCodeBlock>) // 🖍️

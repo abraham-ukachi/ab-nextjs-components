@@ -51,7 +51,7 @@ const rule = (src: string, sel: string, last = false): string => {
 }
 const px = (decls: string, prop: string) => Number(decls.match(new RegExp(`(?:^|[\\s;{])${prop}:\\s*(-?[\\d.]+)px`))?.[1]) // 🔢 a px value
 
-// 👆 God (0.2.23 gaps): every tap target in the mobile chrome is at least 44px (WCAG 2.5.5)
+// 👆 0.2.23 gaps: every tap target in the mobile chrome is at least 44px (WCAG 2.5.5)
 describe('👆 44px tap targets', () => {
   it('AbNavbar items: min-height 44px (was ~42px with indicator="none")', () => {
     expect(px(rule(css('ab-navbar/styles.module.css'), '.abNavbarLink'), 'min-height')).toBeGreaterThanOrEqual(44) // 📏
@@ -82,7 +82,7 @@ describe('👆 44px tap targets', () => {
   })
 })
 
-// 👆 0.3.2 (God): the sm toggle + every segmented radio get an invisible 44×44 hit area (visuals unchanged)
+// 👆 0.3.2: the sm toggle + every segmented radio get an invisible 44×44 hit area (visuals unchanged)
 describe('👆 AbThemeToggle hit areas', () => {
   const src = css('ab-theme-toggle/styles.module.css') // 📖
   const hit = src.slice(src.indexOf('.segment::after,'), src.indexOf('}', src.indexOf('.segment::after,'))) // 🫥 the shared ::after rule

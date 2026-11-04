@@ -55,7 +55,7 @@ const rule = (selector: string): string => {
   return css.slice(i, css.indexOf('}', i)) // ✂️
 }
 
-// 🪐 Joseph's repro: s04 (theme tokens) and s07 (animations) orbit long labels round a hub
+// 🪐 the repro: s04 (theme tokens) and s07 (animations) orbit long labels round a hub
 const orbit = (labels: string[], r: number) =>
   labels.map((label, i) => {
     const a = (i / labels.length) * 2 * Math.PI - Math.PI / 2 // 🧭 start at 12 o'clock

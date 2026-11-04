@@ -37,7 +37,7 @@
 */
 
 /* ===== AB PLAYGROUND SCENE · I18N (illustration 8) ===== */
-/* 🎬 0.2.3 (God 02:26): NO motion here any more. The EN → FR → ES → RU cycle (keyframes, ease-out-cubic rise,
+/* 🎬 0.2.3: NO motion here any more. The EN → FR → ES → RU cycle (keyframes, ease-out-cubic rise,
    instant chip jumps, the [data-ab-still] frame, pause + reduced motion) ships from ab-nextjs-animations ≥ 0.2.5
    (`ab-nextjs-animations/locale-cycle`). This module only lays the pieces out. */
 

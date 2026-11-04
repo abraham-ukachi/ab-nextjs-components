@@ -51,7 +51,7 @@ const next = { href: '/docs/theme', title: 'Theme' } // ➡️
 // 🔗 a fake app link (as AbLinkProvider would get from ab-nextjs-i18n)
 const AppLink = ({ href, children, ...rest }: { href: string; children?: ReactNode }) => <a data-app-link="" href={`/fr${href}`} {...rest}>{children}</a>
 
-// ⏮️⏭️ Joseph (0.2.24 MDX docs): prev / next at the end of a docs page
+// ⏮️⏭️ QA (0.2.24 MDX docs): prev / next at the end of a docs page
 describe('⏮️⏭️ AbDocPager', () => {
   it('a named nav with rel=prev / rel=next links whose names read "Previous: Install"', () => {
     const h = renderToStaticMarkup(<AbDocPager prev={prev} next={next} />) // 🖨️

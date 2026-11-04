@@ -42,7 +42,7 @@ import type { CSSProperties, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 // 〰️ the engine: AbFlowDiagram's v6 frame mode
 import AbFlowDiagram from '../ab-flow-diagram';
-// 🧱 John's scene data
+// 🧱 the scene data
 import { AB_PLAYGROUND_SCENE_PACKAGES, buildAbPlaygroundCompactScene, buildAbPlaygroundFullScene } from './scenes';
 // 🌍 labels
 import { AB_PLAYGROUND_LOCALES, resolveAbPlaygroundSceneLabels, type AbPlaygroundSceneLabelsInput, type AbPlaygroundSceneName } from './labels';
@@ -65,10 +65,10 @@ export const AB_PLAYGROUND_FRAMES = {
 
 // ⚙️ props
 export interface AbPlaygroundSceneProps {
-  /** 🗂️ which package scene (John's v6 1–7, and illustration 8 `i18n`). */
+  /** 🗂️ which package scene (the v6 1–7, and illustration 8 `i18n`). */
   name: AbPlaygroundSceneName;
   /** 📐 `'full'` = 760×600 laptop scene, `'compact'` = 350×276 mobile scene. Default `'full'`.
-   *  🆕 0.2.3 (Joseph 02:55) `'auto'` = SSR-safe: BOTH are rendered and a CSS media query shows compact below 768px
+   *  🆕 0.2.3 `'auto'` = SSR-safe: BOTH are rendered and a CSS media query shows compact below 768px
    *  and full from 768px, so phones never flash the full scene and there is no hydration mismatch (no JS decides). */
   variant?: 'full' | 'compact' | 'auto';
   /** ▶️ animate only while its slide is active (default true); reduced motion is always respected. */
@@ -91,7 +91,7 @@ export interface AbPlaygroundSceneProps {
 }
 
 /**
- * 🎨 AbPlaygroundScene — the Welcome "Live Playground" scenes from John's welcome-v6 mock, faithfully: same rects,
+ * 🎨 AbPlaygroundScene — the Welcome "Live Playground" scenes from the welcome-v6 mock, faithfully: same rects,
  * same auto-routed wires (route() + rounded()), dotted surface, anchors, travelling pulses, card + header.
  * Server-compatible (AbFlowDiagram's tiny scale island is the only client code). One accessible image (translated alt).
  */

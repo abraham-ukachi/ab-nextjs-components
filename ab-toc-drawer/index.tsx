@@ -77,7 +77,7 @@ export interface AbTocDrawerProps {
 }
 
 /**
- * ➡️ AbTocDrawer — John's right drawer (drawers v2 §3): the page aside ("On this page") on mobile.
+ * ➡️ AbTocDrawer — the right drawer (drawers v2 §3): the page aside ("On this page") on mobile.
  *
  * - 🧭 Only for routes whose layout has an aside: render it (and enable the right edge swipe) there, nowhere else
  * - 📐 296px, 16 0 0 16 radius, title Mulish 800 20px; 44px outline rows on a 2px rail, level 3 indented 16px,

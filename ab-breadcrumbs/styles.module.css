@@ -39,17 +39,17 @@
 
 /* 🎚️ knobs (mock .crumb; theme tokens from ab-nextjs-theme 0.3.5) */
 .abCrumbs {
-  --ab-crumbs-color: var(--ab-color-faint, #807062); /* 🖋️ --faint ♿ AA fallback (James) */
+  --ab-crumbs-color: var(--ab-color-faint, #807062); /* 🖋️ --faint ♿ AA fallback */
   --ab-crumbs-current: var(--ab-color-text, var(--ab-color-on-surface, #211a16)); /* 🖋️ --text */
   --ab-crumbs-hover: var(--ab-color-accent-text, var(--ab-color-bronze-text, #8b6340)); /* 🖱️ --accent-t */
   --ab-crumbs-ring: var(--ab-color-accent, var(--ab-color-bronze, #a67c52)); /* ♿ --accent */
   font-size: 13px; color: var(--ab-crumbs-color); /* 🔤 */
-  flex: 1 1 auto; /* ↔️ 0.4.1 (Joseph 0.2.24, gap 4): in a header row it takes the space left */
+  flex: 1 1 auto; /* ↔️ 0.4.1 (0.2.24, gap 4): in a header row it takes the space left */
   min-width: var(--ab-crumbs-min-width, 96px); /* 📏 0.4.1 v2: never collapses to 0, so the first crumb always fits */
   flex-shrink: 1; /* 🗜️ a neighbour with a bigger flex-shrink (the search field) gives way first */
 }
 .abCrumbsList { display: flex; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; min-width: 0; } /* 📐 */
-/* ✂️ 0.4.1 (Joseph 0.2.24, gap 4): at 768px the trail ran under the search field. Now it never paints past its own box:
+/* ✂️ 0.4.1 (0.2.24, gap 4): at 768px the trail ran under the search field. Now it never paints past its own box:
    it clips (with 4px of room so the focus ring still shows) and each crumb may shrink instead of pushing out. */
 .abCrumbsList { overflow: clip; overflow-clip-margin: 4px; flex-wrap: nowrap; } /* ✂️ */
 .abCrumb { display: inline-flex; align-items: center; gap: 4px; min-width: 0; white-space: nowrap; } /* 🍞 */
@@ -60,7 +60,7 @@
 .abCrumbSep { width: 16px; height: 16px; flex: none; } /* › */
 .abCrumbCurrent { color: var(--ab-crumbs-current); font-weight: 650; overflow: hidden; text-overflow: ellipsis; } /* 🎯 */
 .abCrumbLink { color: inherit; text-decoration: none; border-radius: 4px; } /* 🔗 */
-/* 👆 0.3.4 (Joseph, 0.2.24 docs): every crumb is at least 24×24 (WCAG 2.5.8 target size), centred in its box */
+/* 👆 0.3.4 (0.2.24 docs): every crumb is at least 24×24 (WCAG 2.5.8 target size), centred in its box */
 .abCrumbLink,
 .abCrumbCurrent {
   display: inline-flex; /* 📐 */
@@ -73,5 +73,5 @@
 .abCrumbLink:hover { color: var(--ab-crumbs-hover); } /* 🖱️ */
 .abCrumbLink:focus-visible { outline: 2px solid var(--ab-crumbs-ring); outline-offset: 2px; } /* ♿ */
 
-/* ✂️ 0.4.1 (Joseph 0.2.24, gap 4 v3): the label's own box ellipsizes on the right, anchored at the start */
+/* ✂️ 0.4.1 (0.2.24, gap 4 v3): the label's own box ellipsizes on the right, anchored at the start */
 .abCrumbText { display: block; flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* ✂️ */

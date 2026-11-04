@@ -47,7 +47,7 @@ import type { AbPlaygroundSceneLabels } from './labels';
 // 🎨 shared mock classes (.m, .br, .b1, .tog, .t13…)
 import s from './styles.module.css';
 
-// 🥉 John's bronze
+// 🥉 the bronze
 const BRONZE = '#A67C52';
 // 🎨 v6 palette (theme swatches)
 const PALETTE = ['#6B4F35', '#A67C52', '#D9BE9C', '#FFF8F5', '#19120C'];

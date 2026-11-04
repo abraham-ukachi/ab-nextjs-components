@@ -39,7 +39,7 @@
 // ⚛️ types
 import type { ReactElement } from 'react';
 
-// 🖼️ John's tiny line icons (welcome-v6 scenes.py `MS` + v5 common.py package icons), decorative only
+// 🖼️ the tiny line icons (welcome-v6 scenes.py `MS` + v5 common.py package icons), decorative only
 const MS: Record<string, ReactElement> = {
   home: <path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z" />,
   search: <><circle cx="11" cy="11" r="6" /><path d="m20 20-4.5-4.5" /></>,

@@ -56,7 +56,7 @@ import styles from './styles.module.css';
 // 📦 helpers for consumers (registerAbIcons, types)
 export * from './helpers';
 export { AB_ICON_BUILTINS } from './builtin';
-export { AbIconRegistrar, type AbIconRegistrarProps } from './registrar'; // 🗂️ server-safe registration (Joseph #11)
+export { AbIconRegistrar, type AbIconRegistrarProps } from './registrar'; // 🗂️ server-safe registration (#11)
 
 // 🗂️ register built-ins at module scope (same on server render + hydration → no mismatch)
 registerAbIcons(AB_ICON_BUILTINS);
@@ -79,7 +79,7 @@ export interface AbIconProps {
 const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg, className, style }: AbIconProps): ReactElement => {
   // 🔍 resolve markup without the full map
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), variant ?? (filled ? 'filled' : 'outlined'));
-  // 🆔 one id per rendered instance (Joseph: a hidden twin's mask broke the active Home)
+  // 🆔 one id per rendered instance (a hidden twin's mask broke the active Home)
   const uid = useId();
   // 🎚️ legacy `filled` → variant
   const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
@@ -106,7 +106,7 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
     );
   }
 
-  // 🕰️ 0.1.13 (James review): NON-breaking fallback for unregistered names. A patch must not blank icons,
+  // 🕰️ 0.1.13 (review): NON-breaking fallback for unregistered names. A patch must not blank icons,
   //    so an unknown name still renders the pre-G2 Material Symbols ligature (needs the app's font), and
   //    warns once in development so the missing registration gets fixed before the app drops the font.
   warnAbIconMissing(name);

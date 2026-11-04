@@ -49,7 +49,7 @@ const target = (v: string | Record<string, string>) => (typeof v === 'string' ? 
 const entries = pkg.files.filter((f) => !f.includes('/') && existsSync(join(root, f)) && statSync(join(root, f)).isDirectory())
   .filter((f) => ['index.ts', 'index.tsx'].some((i) => existsSync(join(root, f, i)))) // 📂
 
-// 🛡️ 0.2.3 (Joseph): ./ab-theme-mode shipped but had no exports entry → "Package subpath not defined"
+// 🛡️ 0.2.3: ./ab-theme-mode shipped but had no exports entry → "Package subpath not defined"
 describe('🧭 exports map covers every shipped component folder', () => {
   it('every shipped folder with an index has a ./<folder> exports entry pointing at it', () => {
     const missing = entries.filter((f) => f !== 'server' && f !== 'types' && !(`./${f}` in pkg.exports)) // 🔎

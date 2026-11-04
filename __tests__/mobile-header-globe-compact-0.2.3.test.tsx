@@ -49,7 +49,7 @@ import AbMobileHeader from '../ab-mobile-header'
 afterEach(() => cleanup())
 const globe = (c: ParentNode) => c.querySelector<HTMLElement>('[data-ab-part="mobile-header-language"]')!
 
-describe('🌍 AbMobileHeader globe wiring (Joseph, Welcome 0.2.21)', () => {
+describe('🌍 AbMobileHeader globe wiring (Welcome 0.2.21)', () => {
   it('languageControls sets aria-controls and an always-present aria-expanded', () => {
     const { container, rerender } = render(<AbMobileHeader logo="x" onLanguage={() => {}} languageControls="lang-sheet" />)
     expect(globe(container).getAttribute('aria-controls')).toBe('lang-sheet') // 🔗

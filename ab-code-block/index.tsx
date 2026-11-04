@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbCodeBlock (0.3.4, Joseph 0.2.24 MDX docs)
+* @name: AbCodeBlock (0.3.4, QA 0.2.24 MDX docs)
 * @file: ab-code-block/index.tsx
 * @type: Server component (no hooks; the copy button is a client island)
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -53,7 +53,7 @@ import styles from './styles.module.css';
 const escAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); // 🧹
 
 /**
- * ⌨️ 0.4.0 (God): a plain <pre> gets tabIndex 0 (keyboard users can scroll long lines with the arrow keys) and a name.
+ * ⌨️ 0.4.0: a plain <pre> gets tabIndex 0 (keyboard users can scroll long lines with the arrow keys) and a name.
  * Shiki's <pre tabindex="0"> keeps its own tabindex (never doubled); an existing aria-label is never replaced.
  */
 function withAbFocusablePre(children: ReactNode, name?: string): ReactNode {

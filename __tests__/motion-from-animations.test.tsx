@@ -84,7 +84,7 @@ describe('all component motion comes from ab-nextjs-animations 🎬', () => {
   })
 
   it('global chrome CSS + assets: no motion except the named exceptions', () => {
-    // 🏷️ named exceptions (James review): kept on purpose, documented in the plan
+    // 🏷️ named exceptions (review): kept on purpose, documented in the plan
     const EXCEPTIONS: Record<string, RegExp> = {
       // 📋 consumer-rendered markup (no component renders li.dialog-list-item), so no package class can be added without breaking apps
       'css/dialog.css': /^\s*transition: all 0\.2s ease-in-out;$/m,

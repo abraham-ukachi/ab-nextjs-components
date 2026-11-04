@@ -46,7 +46,7 @@ import AbPackageCard, { AbPackagePreviewCode, AbPackagePreviewComponents, AbPack
 const css = readFileSync(join(__dirname, '../ab-package-card/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🎨
 const rule = (sel: string) => (css.match(new RegExp(`\\.${sel} \\{([^}]*)\\}`)) ?? [])[1] ?? '' // 🔍 one rule body
 
-describe('🖼️ Home preview tiles (God 02:44, mock .pv-*)', () => {
+describe('🖼️ Home preview tiles (mock .pv-*)', () => {
   it('〰️ Animations: axes, the mock ease-out curve, end dots and the "ease-out" label', () => {
     const h = renderToStaticMarkup(<AbPackagePreviewCurve />)
     expect(h).toContain('d="M6 38 C 50 38, 58 6, 114 6"') // 〰️ the mock path

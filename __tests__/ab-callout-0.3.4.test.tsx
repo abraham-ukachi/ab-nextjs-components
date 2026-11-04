@@ -48,7 +48,7 @@ import * as pkg from '../index'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-// 💡 Joseph (0.2.24 MDX docs): note / tip / warning / danger admonitions
+// 💡 QA (0.2.24 MDX docs): note / tip / warning / danger admonitions
 describe('💡 AbCallout', () => {
   it('defaults to a note: role="note", data-variant, the info icon', () => {
     const h = renderToStaticMarkup(<AbCallout title="Note">Body</AbCallout>) // 🖨️
@@ -83,7 +83,7 @@ describe('💡 AbCallout', () => {
   })
 })
 
-// ⚠️🛑 0.4.0 (God): warning + danger use theme ≥ 0.3.8 status tokens, with the light values as fallbacks
+// ⚠️🛑 0.4.0: warning + danger use theme ≥ 0.3.8 status tokens, with the light values as fallbacks
 describe('⚠️🛑 AbCallout status tokens', () => {
   const css = readFileSync(join(__dirname, '..', 'ab-callout/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 📖
   const rule = (v: string) => { const i = css.indexOf(`.abCallout[data-variant='${v}'] {`); expect(i, v).toBeGreaterThanOrEqual(0); return css.slice(i, css.indexOf('}', i)) } // 🎯

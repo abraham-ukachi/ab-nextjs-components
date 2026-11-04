@@ -77,7 +77,7 @@ const AbBreadcrumbs = ({ items, label = 'Breadcrumb', className }: AbBreadcrumbs
         return (
           <li key={i} className={styles.abCrumb}>
             {i > 0 && <AbIcon name="chevron_right" size={16} className={styles.abCrumbSep} />}
-            {/* ✂️ 0.4.1 (Joseph 0.2.24, gap 4 v3): the label sits in its own text box, so a squeezed crumb ellipsizes on the
+            {/* ✂️ 0.4.1 (0.2.24, gap 4 v3): the label sits in its own text box, so a squeezed crumb ellipsizes on the
                 right ("Installa…") while the inline-flex target box (24px min) stays as it is */}
             {last ? <span className={styles.abCrumbCurrent} aria-current="page"><span className={styles.abCrumbText}>{it.label}</span></span>
               : it.href ? <Link href={it.href} className={styles.abCrumbLink}><span className={styles.abCrumbText}>{it.label}</span></Link>

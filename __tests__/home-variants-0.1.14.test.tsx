@@ -38,7 +38,7 @@
 
 
 // @vitest-environment happy-dom
-// 🏠 Joseph's P-items, one describe per item (values = the Home fidelity spec §4, measured in WebKit by
+// 🏠 the P-items, one describe per item (values = the Home fidelity spec §4, measured in WebKit by
 //    /workspace/home-shell/verify-fidelity/run-variants.cjs). Every block lands in the same commit as its change.
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
@@ -264,7 +264,7 @@ describe('existing components on the Home tokens 🎨', () => {
   }
 })
 
-// 🎯 John 20:57: the mobile (thumb icon) toggle shows the TARGET mode
+// 🎯 the mobile (thumb icon) toggle shows the TARGET mode
 describe('AbThemeToggle icon shows the target mode 🎯', () => {
   const L = { group: 'Theme', light: 'Light', dark: 'Dark', system: 'System', switchTo: { dark: 'Switch to dark theme', light: 'Switch to light theme' } }
   it('thumb: moon + "Switch to dark theme" in light, sun + "Switch to light theme" in dark', () => {
@@ -279,7 +279,7 @@ describe('AbThemeToggle icon shows the target mode 🎯', () => {
     expect(b2.getAttribute('aria-label')).toBe('Switch to light theme') // ♿
     expect(b2.innerHTML).toContain('light_mode') // 🌞
   })
-  it('0.3.2 (God): fill appearance also shows the target by default; iconShows="current" opts back out', () => {
+  it('0.3.2: fill appearance also shows the target by default; iconShows="current" opts back out', () => {
     const a = render(<AbThemeToggle labels={L} modes={['light', 'dark']} value="light" variant="icon" iconShows="current" />)
     expect(a.getByRole('button').getAttribute('aria-label')).toBe('Theme: Light') // ✅ explicit opt-out
     a.unmount()
@@ -288,7 +288,7 @@ describe('AbThemeToggle icon shows the target mode 🎯', () => {
   })
 })
 
-// 🌿 John 20:57: the sage chip fallback text is AA (≥ 4.5:1) on its own tint over the card
+// 🌿 the sage chip fallback text is AA (≥ 4.5:1) on its own tint over the card
 describe('AbChip sage fallback AA 🌿', () => {
   it('fallback colour ≥ 4.5:1 on rgb(119 141 121 / 12%) over #fff and #fff8f5', () => {
     const src = css('ab-chip/styles.module.css') // 🎨
@@ -305,7 +305,7 @@ describe('AbChip sage fallback AA 🌿', () => {
   })
 })
 
-// ♿ James: no component falls back to the pre-AA mock faint #9c8c80
+// ♿ no component falls back to the pre-AA mock faint #9c8c80
 describe('faint fallbacks are the AA value 🖋️', () => {
   it('breadcrumbs + list fall back to #807062, and no CSS module uses #9c8c80', () => {
     expect(css('ab-breadcrumbs/styles.module.css')).toContain('--ab-color-faint, #807062') // 🍞
@@ -316,7 +316,7 @@ describe('faint fallbacks are the AA value 🖋️', () => {
   })
 })
 
-// ♿ James: no faint small text on --tint; the active sidebar row's text badge inherits --accent-text
+// ♿ no faint small text on --tint; the active sidebar row's text badge inherits --accent-text
 describe('AbSidebar text badge on the active row 🧭', () => {
   it('inherits the active colour instead of --faint', () => {
     expect(css('ab-sidebar/styles.module.css')).toMatch(/\.abSidebar\[data-badge='text'\] \.abSidebarLink\[data-active='true'\] \.abSidebarBadge \{ color: inherit; \}/) // 🎯

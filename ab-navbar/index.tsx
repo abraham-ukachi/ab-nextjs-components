@@ -48,7 +48,7 @@
 import type { ReactElement } from 'react';
 // 🧭 route fallback
 import { usePathname } from 'next/navigation';
-// 🌍 0.1.13 (Joseph #10): locale-stripped pathname
+// 🌍 0.1.13 (#10): locale-stripped pathname
 import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
 // 🔣 client AbIcon
 import AbIcon from '../ab-icon';

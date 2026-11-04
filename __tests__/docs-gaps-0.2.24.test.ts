@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: Joseph 0.2.24 docs gaps (AbCodeBlock scheme, header crumbs + search)
+* @name: QA 0.2.24 docs gaps (AbCodeBlock scheme, header crumbs + search)
 * @file: __tests__/docs-gaps-0.2.24.test.ts
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -60,7 +60,7 @@ describe('🍞 gap 4: breadcrumbs + search share a row without overlap', () => {
   const search = read('ab-search-trigger/styles.module.css') // 🔎
   it('the trail takes the leftover space but never collapses to 0 (v2)', () => {
     const nav = ruleOf(crumbs, '.abCrumbs') // 🔍
-    expect(nav).not.toMatch(/min-width: 0;/) // 🚫 the 0px collapse Joseph rendered
+    expect(nav).not.toMatch(/min-width: 0;/) // 🚫 the 0px collapse QA rendered
     expect(nav).toMatch(/min-width: var\(--ab-crumbs-min-width, 96px\);/) // 📏
     expect(nav).toMatch(/flex: 1 1 auto;/) // ↔️
   })

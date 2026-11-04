@@ -59,7 +59,7 @@
 .abDrawerScrim {
   position: absolute; /* 📌 */
   inset: 0; /* 📐 */
-  background: var(--ab-scrim-color, rgb(25 18 12 / 0.4)); /* 🌫️ theme 0.3.5: 40% light / 60% dark (John) */
+  background: var(--ab-scrim-color, rgb(25 18 12 / 0.4)); /* 🌫️ theme 0.3.5: 40% light / 60% dark */
   opacity: 0; /* 🫥 */
   --ab-motion-duration: var(--ab-drawer-duration, 240ms); /* 🎞️ fade = .ab-motion-colors (ab-nextjs-animations) */
 }
@@ -114,7 +114,7 @@
 
 /* ♿ reduced motion: no slide, no fade (handled by ab-nextjs-animations .ab-motion-*) */
 
-/* ===== 🆕 0.2.0 drawers v2 (John's frames, God 01:22) ===== */
+/* ===== 🆕 0.2.0 drawers v2 (the frames) ===== */
 /* 🥞 stacking tiers (spec z-order): right drawer < left drawer < bottom sheet. The layers are siblings in the host,
    so the tier sits on the layer (z 60 / 61 / 62 keeps all three above the panes and bars, like before) */
 .abDrawerLayer:has(> .abDrawerFrame[data-tier='nav']) { z-index: 61; } /* ⬅️ the left drawer is in front of the right one */

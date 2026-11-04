@@ -64,7 +64,7 @@ export interface AbPackageCardProps {
   description?: ReactNode; // 📝
   version?: string; // 🏷️ e.g. "0.1.7"
   icon?: ReactNode; // 🔣 e.g. <AbIcon name="webhook" />
-  media?: ReactNode; // 🖼️ 0.1.13 (Joseph #14): any media (logo, image); wins over `icon`
+  media?: ReactNode; // 🖼️ 0.1.13 (#14): any media (logo, image); wins over `icon`
   id?: string; // 🆔 0.1.13: anchor target
   badge?: ReactNode; // 🔴 e.g. "New"
   tags?: string[]; // 🏷️ e.g. ['client', 'server']
@@ -78,7 +78,7 @@ export interface AbPackageCardProps {
 }
 
 /**
- * 🧩 0.1.13 (Joseph): `ab-nextjs-components` → `ab-` `nextjs-` `components` with a `<wbr>` after each
+ * 🧩 0.1.13: `ab-nextjs-components` → `ab-` `nextjs-` `components` with a `<wbr>` after each
  * hyphen, so a narrow card wraps at a hyphen (never mid-word) instead of cutting the name off.
  */
 export function toAbPackageNameParts(name: string): ReactNode[] {
@@ -139,5 +139,5 @@ const AbPackageCardLegacy = ({ name, href, description, version, icon, media, id
 // 📦 exports
 export default AbPackageCard;
 export { AbPackageCard };
-// 🖼️ 0.2.1 (God 02:44): the Home preview tiles (mock .pv-anim / .pv-code / .pv-comp)
+// 🖼️ 0.2.1: the Home preview tiles (mock .pv-anim / .pv-code / .pv-comp)
 export { AbPackagePreviewCurve, AbPackagePreviewCode, AbPackagePreviewComponents, type AbPackagePreviewComponentsLabels, type AbPackagePreviewComponentsProps } from './previews';

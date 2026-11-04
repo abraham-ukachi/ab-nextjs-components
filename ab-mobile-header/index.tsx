@@ -33,7 +33,7 @@
 *   1+|> <AbAppLayout variant="panes" mobileHeader="main" content={<AbMainLayout
 *    -|>   mainHeader={<AbMobileHeader logo={<a href="/" id="home-logo">…</a>} onLanguage={openLanguage}
 *    -|>     theme={mode} onThemeChange={setMode} />} … />} />
-*   0.2.3 (Joseph, Welcome 0.2.21): a counter row under the bar + the 3-state theme cycle
+*   0.2.3 (Welcome 0.2.21): a counter row under the bar + the 3-state theme cycle
 *   2+|> <AbMobileHeader logo={logo} themeMode={mode} onThemeModeChange={setMode}
 *    -|>   row={<AbCarouselCounter />} />
 *
@@ -86,8 +86,8 @@ export interface AbMobileHeaderProps {
   onLanguage?: () => void; // 🌍 the globe: open the Settings sheet with the language list in view
   theme?: 'light' | 'dark'; // 🌗 the resolved theme now
   onThemeChange?: (next: 'light' | 'dark') => void; // 🌗 the toggle (it shows the mode it switches TO: a moon in light)
-  actions?: ReactNode; // ➕ more 44px buttons after the two (none in John's frame)
-  // 🔎 0.3.2 (Joseph, 0.2.23 gaps): a search pill (e.g. <AbSearchTrigger size="sm" />) placed after the globe and
+  actions?: ReactNode; // ➕ more 44px buttons after the two (none in the frame)
+  // 🔎 0.3.2 (0.2.23 gaps): a search pill (e.g. <AbSearchTrigger size="sm" />) placed after the globe and
   //    BEFORE the theme button
   search?: ReactNode;
   labels?: { language?: string; toDark?: string; toLight?: string; toSystem?: string; header?: string }; // 🌍 "Change language", "Switch to dark theme", "Switch to light theme", (0.2.3) "Use the system theme", "Main header"
@@ -112,9 +112,9 @@ export interface AbMobileHeaderProps {
   //    is set, the summary opens the sheet instead (aria-controls / aria-expanded kept). Wins over `languageHref`
   languages?: readonly AbMobileHeaderLanguage[];
   // 📏 0.2.3: 'compact' = a 48px bar with 18px start inset (the Welcome v6 mock: 48 + the counter row = 96px).
-  //    Default 'default' (56px, John's drawers v2 frame)
+  //    Default 'default' (56px, the drawers v2 frame)
   size?: 'default' | 'compact';
-  // 📱 0.2.3 (Joseph, Welcome 0.2.21): where the bar (logo · globe · theme) shows, from CSS only (no JS, SSR-safe):
+  // 📱 0.2.3 (Welcome 0.2.21): where the bar (logo · globe · theme) shows, from CSS only (no JS, SSR-safe):
   //    'auto' (default) = hidden from 768px up ONLY inside a core mainHeaderAt="all" layout (there the app header
   //    already has the logo, so just the `row` stays), else everywhere; 'all' = always; 'mobile' = below 768px only
   barAt?: 'auto' | 'all' | 'mobile';
@@ -122,7 +122,7 @@ export interface AbMobileHeaderProps {
 }
 
 /**
- * 📱 AbMobileHeader — John's mobile main header (drawers v2): logo left; a globe ("Change language",
+ * 📱 AbMobileHeader — the mobile main header (drawers v2): logo left; a globe ("Change language",
  * `aria-haspopup="dialog"`) and a theme toggle right, each 44×44. No search (the bottom nav has a Search tab) and
  * no menu button (the left drawer opens with an edge swipe). Put it in AbMainLayout's `mainHeader` with core
  * ≥ 0.2.1 `mobileHeader="main"`: the 56px row, its divider and the hidden app header come from core.

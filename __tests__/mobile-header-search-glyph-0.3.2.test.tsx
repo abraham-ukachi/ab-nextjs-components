@@ -51,7 +51,7 @@ const labels = { group: 'Theme', light: 'Light', dark: 'Dark', system: 'System' 
 const icon = (el: Element | null) => el!.querySelector('[data-icon]')! // 🔣 the AbIcon span
 const parts = (c: HTMLElement) => Array.from(c.querySelectorAll('[data-ab-part^="mobile-header-"]')).map((e) => e.getAttribute('data-ab-part')) // 🗂️ order
 
-// 🔎 Joseph (0.2.23 gaps): a search pill between the globe and the theme button
+// 🔎 QA (0.2.23 gaps): a search pill between the globe and the theme button
 describe('🔎 AbMobileHeader `search` slot (0.3.2)', () => {
   it('renders the pill right BEFORE the theme button (after the globe)', () => {
     const { container } = render(<AbMobileHeader logo="x" onLanguage={() => {}} themeMode="light" onThemeModeChange={() => {}} search={<button type="button">Search</button>} />)
@@ -68,7 +68,7 @@ describe('🔎 AbMobileHeader `search` slot (0.3.2)', () => {
   })
 })
 
-// 🌗 Joseph (0.2.23 gaps): AbThemeToggle's icon button shows the same glyph as the header's theme button
+// 🌗 QA (0.2.23 gaps): AbThemeToggle's icon button shows the same glyph as the header's theme button
 describe('🌗 theme glyph parity (0.3.2)', () => {
   it('one shared map; exported', () => {
     expect(AB_THEME_MODE_ICONS).toEqual({ light: 'light_mode', dark: 'dark_mode', system: 'brightness_auto' }) // 🔣

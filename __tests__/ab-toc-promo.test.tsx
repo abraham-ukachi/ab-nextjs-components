@@ -47,7 +47,7 @@ import * as pkg from '../index'
 const css = readFileSync(join(__dirname, '../ab-toc/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🎨
 const rule = (sel: string) => (css.match(new RegExp(`\\.${sel} \\{([^}]*)\\}`)) ?? [])[1] ?? '' // 🔍
 
-describe('🆕 AbTocPromo, the aside "New" box (God 02:44, mock .toc-card)', () => {
+describe('🆕 AbTocPromo, the aside "New" box (mock .toc-card)', () => {
   it('renders the chip, the title and the subtitle; server-safe', () => {
     const h = renderToStaticMarkup(<AbTocPromo title="BottomNav & Sheet">Now in <code>ab-nextjs-components</code></AbTocPromo>)
     expect(h).toMatch(/>New<.*BottomNav &amp; Sheet.*<small[^>]*>Now in <code>ab-nextjs-components<\/code><\/small>/) // ✅
@@ -69,7 +69,7 @@ describe('🆕 AbTocPromo, the aside "New" box (God 02:44, mock .toc-card)', () 
   })
 })
 
-// ♿ 0.3.2 (God, 0.2.23 gaps): no unnamed nested <aside> inside the page aside
+// ♿ 0.3.2 (0.2.23 gaps): no unnamed nested <aside> inside the page aside
 describe('♿ AbTocPromo landmark (0.3.2)', () => {
   it('defaults to a plain <div>: no <aside>, no landmark role', () => {
     const h = renderToStaticMarkup(<AbTocPromo title="T" />) // 🖨️

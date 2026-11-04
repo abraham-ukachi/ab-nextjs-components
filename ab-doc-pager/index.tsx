@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbDocPager (0.3.4, Joseph 0.2.24 MDX docs)
+* @name: AbDocPager (0.3.4, QA 0.2.24 MDX docs)
 * @file: ab-doc-pager/index.tsx
 * @type: Server-safe component (links via AbLinkProvider)
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>

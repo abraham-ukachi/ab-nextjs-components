@@ -33,7 +33,7 @@
 *   1+|> const { switchLocale } = useAbLocaleSwitch() // 🌍 from ab-nextjs-i18n/navigation
 *    -|> <AbLocaleSwitcher label={t('language')} current={locale} locales={[{ code: 'en', label: 'English' }, { code: 'fr', label: 'Français' }]} onSelect={switchLocale} />
 *
-*   🧩 0.1.15 inline, inside the mobile app drawer (John):
+*   🧩 0.1.15 inline, inside the mobile app drawer:
 *   2+|> // a) mixed drawer: nav + theme first, LANGUAGE last under a 1px rule
 *    -|> <AbBottomDrawer open={open} onClose={close} title={t('menu')}>
 *    -|>   <AbDrawerList … />{themeRow}
@@ -94,15 +94,15 @@ export interface AbLocaleSwitcherProps {
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
   /** 🗄️ 0.1.14 (G56, D40): `menu` (default) = popover menu; `drawer` = AbDrawerList; `auto` = drawer below 768px, menu above.
-   *  🧩 0.1.15 (God 00:08): `inline` = no trigger; a labelled list of rows rendered in place, e.g. inside the app drawer on mobile */
+   *  🧩 0.1.15: `inline` = no trigger; a labelled list of rows rendered in place, e.g. inside the app drawer on mobile */
   presentation?: AbPresentation | 'inline';
-  /** 🏷️ 0.1.15 (John): inline only. Show the small uppercase group label (default true). Set false when the language
+  /** 🏷️ 0.1.15: inline only. Show the small uppercase group label (default true). Set false when the language
    *  list is the drawer's only content and the drawer title already says "Language" (the label stays the group's name) */
   showLabel?: boolean;
-  /** ♿ 0.1.15 (God 00:37): inline only. The group's accessible name. Default: `label` (e.g. "Language"), so a visible
+  /** ♿ 0.1.15: inline only. The group's accessible name. Default: `label` (e.g. "Language"), so a visible
    *  label and the name always agree; set it when the drawer needs a fuller name (e.g. "Choose a language") */
   ariaLabel?: string;
-  /** ➖ 0.1.15 (John): inline only. A 1px --div rule above the block, for when it follows nav / theme items (default false) */
+  /** ➖ 0.1.15: inline only. A 1px --div rule above the block, for when it follows nav / theme items (default false) */
   divider?: boolean;
   drawerScope?: AbDrawerScope; // 🗺️ default 'app'
   drawerSide?: 'top' | 'bottom' | 'start' | 'end'; // 🧭 default 'bottom'
@@ -123,7 +123,7 @@ export function getAbTypeaheadIndex(labels: readonly string[], from: number, cha
 
 /**
  * 🧩 0.1.15: the inline list (no trigger, no popover), e.g. inside the mobile app drawer.
- * Its own component (James): AbLocaleSwitcher picks this OR the popover by type, so switching `presentation`
+ * Its own component: AbLocaleSwitcher picks this OR the popover by type, so switching `presentation`
  * at runtime remounts instead of changing the hook order. Links mark the active row with aria-current, buttons aria-pressed.
  */
 export function AbLocaleSwitcherInline(props: AbLocaleSwitcherProps) {

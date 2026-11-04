@@ -52,7 +52,7 @@ const tick = () => act(() => new Promise((r) => setTimeout(r, 0))) // ⏱️ eff
 const checked = (c: HTMLElement) => c.querySelector('[role="radio"][aria-checked="true"]')?.getAttribute('aria-label') // 🎚️
 const Probe = () => <output id="mode">{useAbThemeModeContext()?.mode ?? 'none'}</output>
 
-// 🌗 laptop (segmented) + mobile header (3-state) on one page, like Joseph's Welcome across 768px
+// 🌗 laptop (segmented) + mobile header (3-state) on one page, like the Welcome across 768px
 const Page = () => (
   <AbThemeModeProvider>
     <div id="laptop"><AbThemeToggle labels={L} /></div>
@@ -62,7 +62,7 @@ const Page = () => (
 )
 const mobileBtn = () => document.querySelector<HTMLButtonElement>('[data-ab-part="mobile-header-theme"]')!
 
-describe('🌗 AbThemeModeProvider (Joseph, Welcome 0.2.21)', () => {
+describe('🌗 AbThemeModeProvider (Welcome 0.2.21)', () => {
   it('the mobile header picks up the shared 3-state cycle with no theme props', async () => {
     render(<Page />); await tick()
     expect(mobileBtn().getAttribute('data-theme-mode')).toBe('light') // 🧠 shared

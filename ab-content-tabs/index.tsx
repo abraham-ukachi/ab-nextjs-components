@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbContentTabs + AbContentTab (0.3.4, Joseph 0.2.24 MDX docs)
+* @name: AbContentTabs + AbContentTab (0.3.4, QA 0.2.24 MDX docs)
 * @file: ab-content-tabs/index.tsx
 * @type: Client component
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>

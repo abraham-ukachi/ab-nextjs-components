@@ -57,7 +57,7 @@ export type AbLinkProps = ComponentProps<typeof NextLink>;
 
 // 🧠 context: null = use next/link
 const AbLinkContext = createContext<AbLinkComponent | null>(null);
-// 🌍 0.1.13 (Joseph #10): the app's locale codes, so active states can ignore the `/fr` prefix
+// 🌍 0.1.13 (#10): the app's locale codes, so active states can ignore the `/fr` prefix
 const AbLocalesContext = createContext<readonly string[]>([]);
 
 
@@ -66,7 +66,7 @@ export function useAbLocales(): readonly string[] {
   return useContext(AbLocalesContext); // 🌍
 }
 
-/** 🧩 0.1.13 (Joseph #9): the STRUCTURAL shape a provided link needs: an `href` (any type, e.g. next-intl's
+/** 🧩 0.1.13 (#9): the STRUCTURAL shape a provided link needs: an `href` (any type, e.g. next-intl's
  *  `string | { pathname, query }`) and children. next/link, next-intl's Link, ab-nextjs-i18n's Link all fit. */
 export interface AbLinkLikeProps {
   href?: unknown; // 🔗
