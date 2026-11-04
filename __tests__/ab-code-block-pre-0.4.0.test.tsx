@@ -50,37 +50,51 @@ afterEach(cleanup) // 🧹
 const shiki = '<pre class="shiki" tabindex="0"><code>x</code></pre>' // 🖍️ Shiki already sets tabindex
 const count = (h: string, re: RegExp) => (h.match(/<pre\b[^>]*>/gi) ?? []).join("").match(re)?.length ?? 0 // 🔢 within the <pre> tags only (the copy button has its own)
 
-// ⌨️ 0.4.0: a plain <pre> is focusable + named; Shiki's tabindex is never doubled
-describe('⌨️ AbCodeBlock focusable <pre>', () => {
-  it('plain <pre> children: tabIndex 0, named by the title', () => {
+// ⌨️ 0.6.0: ONE tab stop per block: the scroller wrapper (named); a direct <pre> never adds a second
+const stops = (h: string) => (h.match(/<(div|pre)\b[^>]*>/gi) ?? []).filter((t) => /tabindex="0"/i.test(t)).length // 🔢 tab stops in the code (not the copy button)
+describe('⌨️ AbCodeBlock focusable scroller', () => {
+  it('plain <pre> children: the wrapper is the stop, named by the title', () => {
     const { container } = render(<AbCodeBlock title="Install"><pre><code>pnpm i</code></pre></AbCodeBlock>) // 🖍️
-    const pre = container.querySelector('pre')! // 🎯
-    expect(pre.getAttribute('tabindex')).toBe('0') // ⌨️
-    expect(pre.getAttribute('aria-label')).toBe('Install') // 🏷️
+    const w = container.querySelector('[data-ab-part="code-block-code"]')! // 🎯
+    expect(w.getAttribute('tabindex')).toBe('0') // ⌨️
+    expect(w.getAttribute('aria-label')).toBe('Install') // 🏷️
+    expect(container.querySelector('pre')!.hasAttribute('tabindex')).toBe(false) // 🙅 no second stop
   })
   it('the name falls back: filename, then "<language> code", else none', () => {
-    expect(renderToStaticMarkup(<AbCodeBlock filename="a.ts" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" aria-label="a.ts"><pre>x</pre>') // 📄 0.6.0: on the wrapper
-    expect(renderToStaticMarkup(<AbCodeBlock language="bash" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" aria-label="bash code"><pre>x</pre>') // 🔤
-    expect(renderToStaticMarkup(<AbCodeBlock trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0"><pre>x</pre>') // 🙅 no name to give
-    expect(renderToStaticMarkup(<AbCodeBlock language="ts"><pre>x</pre></AbCodeBlock>)).toContain('<pre tabindex="0" aria-label="ts code">') // 🧩 children path
+    expect(renderToStaticMarkup(<AbCodeBlock filename="a.ts" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" role="group" aria-label="a.ts"><pre>x</pre>') // 📄
+    expect(renderToStaticMarkup(<AbCodeBlock language="bash" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" role="group" aria-label="bash code"><pre>x</pre>') // 🔤
+    expect(renderToStaticMarkup(<AbCodeBlock trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" role="group"><pre>x</pre>') // 🙅 no name to give
+    expect(renderToStaticMarkup(<AbCodeBlock language="ts"><pre>x</pre></AbCodeBlock>)).toContain('tabindex="0" role="group" aria-label="ts code"><pre>x</pre>') // 🧩 children path
   })
-  it('Shiki trustedHtml: the string is untouched, the wrapper is named', () => {
+  it('Shiki trustedHtml: the string is untouched in the server HTML, the wrapper is named', () => {
     const h = renderToStaticMarkup(<AbCodeBlock title="Demo" trustedHtml={shiki} />) // 🧾
     expect(h).toContain(shiki) // ✅ injected as-is (no regex patching)
-    expect(count(h, /tabindex=/gi)).toBe(1) // ⌨️ the <pre> keeps Shiki's single tabindex
+    expect(count(h, /tabindex=/gi)).toBe(1) // 📜 Shiki's leftover (demoted after hydration, see below)
     expect(h).toContain('aria-label="Demo"') // 🏷️
   })
-  it('Shiki children (tabIndex prop): exactly one tabindex', () => {
-    const h = renderToStaticMarkup(<AbCodeBlock language="ts"><pre className="shiki" tabIndex={0}><code>x</code></pre></AbCodeBlock>) // 🖍️
-    expect(count(h, /tabindex=/gi)).toBe(1) // ⌨️
+  it('Shiki trustedHtml after hydration: exactly ONE tab stop (the pre is demoted in the DOM)', () => {
+    const { container } = render(<AbCodeBlock title="Demo" trustedHtml={shiki} copy={false} />) // 🖼️ effects ran
+    expect(stops(container.innerHTML)).toBe(1) // ⌨️ only the wrapper
+    expect(container.querySelector('pre')!.getAttribute('tabindex')).toBe('-1') // ✂️
   })
-  it('keeps an author tabIndex / aria-label', () => {
+  it('Shiki children (tabIndex prop): exactly one tab stop, on the wrapper', () => {
+    const h = renderToStaticMarkup(<AbCodeBlock language="ts" copy={false}><pre className="shiki" tabIndex={0}><code>x</code></pre></AbCodeBlock>) // 🖍️
+    expect(count(h, /tabindex=/gi)).toBe(0) // ✂️ dropped from the pre
+    expect(stops(h)).toBe(1) // ⌨️
+  })
+  it('keeps an author tabIndex -1 / aria-label on the pre', () => {
     const h = renderToStaticMarkup(<AbCodeBlock title="T"><pre tabIndex={-1} aria-label="Mine">x</pre></AbCodeBlock>) // ✋
     expect(h).toContain('<pre tabindex="-1" aria-label="Mine">') // ✅ untouched
   })
   it('trustedHtml is never patched; the wrapper name is escaped by React', () => {
     const h = renderToStaticMarkup(<AbCodeBlock title={'a "b" <c>'} trustedHtml="<pre>1</pre><pre>2</pre>" />) // 🧾
     expect(h).toContain('aria-label="a &quot;b&quot; &lt;c&gt;"><pre>1</pre><pre>2</pre>') // 🔐
+  })
+  it('the wrapper is the scroller: overflow-x auto on it, the pre is overflow visible', async () => {
+    const { readFileSync } = await import('node:fs'); const { join } = await import('node:path') // 📁
+    const css = readFileSync(join(__dirname, '..', 'ab-code-block/styles.module.css'), 'utf8') // 🎨
+    expect(css).toMatch(/\.abCodeBlockCode \{[^}]*overflow-x:\s*auto/) // ↔️
+    expect(css).toMatch(/\.abCodeBlockCode :where\(pre\) \{[^}]*overflow:\s*visible/) // 📜
   })
   it('the pre is keyboard-scrollable: overflow auto in the CSS', async () => {
     const { readFileSync } = await import('node:fs'); const { join } = await import('node:path') // 📁

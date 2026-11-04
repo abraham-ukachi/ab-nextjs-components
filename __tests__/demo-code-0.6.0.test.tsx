@@ -53,7 +53,7 @@ describe('💻 AbDemoCode is an AbCodeBlock', () => {
     const html = renderToStaticMarkup(<AbDemoCode code={'<AbButton label="Hi" />'} />)
     expect(html).toContain('data-ab-part="code-block"') // 💻 the shared block
     expect(html).toContain('&lt;AbButton label=&quot;Hi&quot; /&gt;') // 🧾 escaped, never evaluated
-    expect(html).toMatch(/<pre tabindex="0" aria-label="tsx code">/) // ⌨️ + 🏷️
+    expect(html).toMatch(/tabindex="0" role="group" aria-label="tsx code"><pre>/) // ⌨️ + 🏷️ on the scroller
     expect(html).not.toContain('material-symbols') // 🚫 no icon font
   })
   it('takes Shiki html or a highlighted child; hidden hides the wrapper', () => {

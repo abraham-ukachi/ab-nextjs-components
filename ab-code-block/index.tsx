@@ -46,6 +46,8 @@ import { Children, cloneElement, isValidElement, type ReactElement, type ReactNo
 import clsx from 'clsx';
 // 📋 the copy button (the only client part)
 import AbCodeBlockCopy from './copy';
+// ⌨️ 0.6.0: demotes Shiki's <pre tabindex="0"> inside a trustedHtml block after hydration (one tab stop)
+import AbCodeBlockFocus from './focus';
 // 🎨 styles
 import styles from './styles.module.css';
 
@@ -69,16 +71,16 @@ export function warnAbRiskyHtml(html: string, where = 'AbCodeBlock'): void {
 }
 
 /**
- * ⌨️ 0.4.0: a plain <pre> gets tabIndex 0 (keyboard users can scroll long lines with the arrow keys) and a name.
- * Shiki's <pre tabindex="0"> keeps its own tabindex (never doubled); an existing aria-label is never replaced.
+ * ⌨️ 0.6.0: ONE tab stop per block. The wrapper (`code-block-code`) is the horizontal scroller and the focus
+ * target (arrow keys scroll long lines), so a direct <pre> child loses an auto/Shiki `tabIndex={0}` (it would be
+ * a second stop). An author's explicit negative tabIndex and any aria-label on the <pre> are kept.
  */
-function withAbFocusablePre(children: ReactNode, name?: string): ReactNode {
+function withAbSingleStopPre(children: ReactNode): ReactNode {
   return Children.map(children, (c) => {
     if (!isValidElement<Record<string, unknown>>(c) || c.type !== 'pre') return c; // 🙅 only a direct <pre>
-    const extra: Record<string, unknown> = {}; // 🧩 what we add
-    if (c.props.tabIndex == null && c.props.tabindex == null) extra.tabIndex = 0; // ⌨️ focusable
-    if (name && c.props['aria-label'] == null && c.props['aria-labelledby'] == null) extra['aria-label'] = name; // 🏷️ named
-    return Object.keys(extra).length ? cloneElement(c, extra) : c; // ✅
+    const t = c.props.tabIndex ?? c.props.tabindex; // 🔎 Shiki sets 0
+    if (t == null || Number(t) < 0) return c; // ✅ nothing to drop (or an author's -1)
+    return cloneElement(c, { tabIndex: undefined, tabindex: undefined }); // ✂️ the wrapper is the stop now
   });
 }
 
@@ -104,7 +106,7 @@ export interface AbCodeBlockProps {
  * 💻 AbCodeBlock — a server-rendered code block for MDX docs: an optional header (title / filename · language),
  * the highlighted code (children or a `trustedHtml` string, both from Shiki), and a small client copy button. It is a
  * <figure> (with a <figcaption> when there is a header), so the caption names the code for assistive tech; the
- * <pre> is focusable (Shiki's tabindex kept, a plain one gets tabIndex 0) and named, so keyboard users can scroll it.
+ * scroller wrapper is the single focusable, named tab stop, so keyboard users can scroll long lines with the arrows.
  */
 const AbCodeBlock = ({ children, trustedHtml, code, title, filename, language, copyLabel = 'Copy code', copiedLabel = 'Copied', copy = true, className }: AbCodeBlockProps): ReactElement => {
   const hasHeader = title != null || !!filename || !!language; // 🏷️ a header bar?
@@ -129,13 +131,21 @@ const AbCodeBlock = ({ children, trustedHtml, code, title, filename, language, c
       <div className={styles.abCodeBlockBody}>
         {trustedHtml != null
           ? <div
-              className={styles.abCodeBlockCode}
+              className={styles.abCodeBlockCode} // ↔️ 0.6.0: the scroller (the inner <pre> is overflow: visible)
               data-ab-part="code-block-code"
-              tabIndex={0} // ⌨️ 0.6.0: the WRAPPER is focusable (no regex patching of the HTML string)
-              aria-label={preName} // 🏷️ and named
+              tabIndex={0} // ⌨️ the ONE tab stop: arrow keys scroll long lines (no regex patching of the HTML)
+              role="group" // ♿ a named, focusable group (aria-label needs a role)
+              aria-label={preName} // 🏷️
               dangerouslySetInnerHTML={{ __html: trustedHtml }} // 🧾 trusted Shiki string, injected as-is
             />
-          : <div className={styles.abCodeBlockCode} data-ab-part="code-block-code">{withAbFocusablePre(children, preName)}</div> /* 🖍️ Shiki children (+ a focusable, named <pre>) */}
+          : <div
+              className={styles.abCodeBlockCode} // ↔️ the scroller
+              data-ab-part="code-block-code"
+              tabIndex={0} // ⌨️ the ONE tab stop
+              role="group" // ♿
+              aria-label={preName} // 🏷️
+            >{withAbSingleStopPre(children) /* 🖍️ Shiki children, minus their own tab stop */}</div>}
+        {trustedHtml != null && <AbCodeBlockFocus /> /* ⌨️ client island: Shiki's leftover <pre tabindex> → -1 */}
         {copy && <AbCodeBlockCopy code={code} label={copyLabel} copiedLabel={copiedLabel} /> /* 📋 client island */}
       </div>
     </figure>

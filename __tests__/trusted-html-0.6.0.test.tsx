@@ -98,7 +98,7 @@ describe('⌨️ wrapper focus', () => {
     const p = wrap.querySelector('pre')! // 📜
     expect(p.getAttribute('data-x')).toBe('a>b') // ✅ untouched
     expect(p.getAttribute('style')).toBe('color:red') // ✅
-    expect(p.hasAttribute('tabindex')).toBe(false) // 🙅 nothing injected
+    expect(p.hasAttribute('tabindex')).toBe(false) // 🙅 nothing injected (no Shiki tabindex in this string)
     expect(p.hasAttribute('aria-label')).toBe(false) // 🙅
   })
 })

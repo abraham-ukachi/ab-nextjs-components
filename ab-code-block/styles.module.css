@@ -53,8 +53,9 @@
 .abCodeBlockLang { margin-inline-start: auto; padding: 2px 6px; border-radius: 4px; background: rgb(255 255 255 / 0.08); font: 600 11px/1 var(--ab-font-code, ui-monospace, monospace); text-transform: lowercase; } /* 🔤 badge */
 /* 🧱 body: the code + the copy button in its top-end corner */
 .abCodeBlockBody { position: relative; } /* 📌 */
-.abCodeBlockCode :where(pre) { margin: 0; padding: 14px 56px 14px 16px; overflow-x: auto; background: transparent !important; font: 13.5px/1.6 var(--ab-font-code, ui-monospace, monospace); } /* ↔️ scrolls; room for the button; Shiki's inline bg yields to ours */
-.abCodeBlockCode :where(pre):focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+.abCodeBlockCode { overflow-x: auto; } /* ↔️ 0.6.0: the WRAPPER is the scroller + the one tab stop (arrow keys scroll) */
+.abCodeBlockCode:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: -2px; } /* ♿ */
+.abCodeBlockCode :where(pre) { margin: 0; padding: 14px 56px 14px 16px; overflow: visible; inline-size: max-content; min-inline-size: 100%; box-sizing: border-box; background: transparent !important; font: 13.5px/1.6 var(--ab-font-code, ui-monospace, monospace); } /* 📜 grows with its longest line, the wrapper scrolls it; Shiki's inline bg yields to ours */
 .abCodeBlockCode :where(code) { font: inherit; } /* 🔤 */
 .abCodeBlockCopy { position: absolute; inset-block-start: 4px; inset-inline-end: 4px; color: inherit; } /* 📋 44px button (AbIconButton) */
 .srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 🕶️ */

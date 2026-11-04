@@ -64,11 +64,11 @@ describe('💻 AbCodeBlock', () => {
     expect(h).toMatch(/^<figure class="AbCodeBlock ab-prose-none/) // 🧱 opts out of .ab-prose
     expect(h).toContain('data-language="tsx"') // 🔤
     expect(h).toMatch(/<figcaption[^>]*>.*Example.*app\/page\.tsx.*tsx.*<\/figcaption>/) // 🏷️
-    expect(h).toContain('tabindex="0" aria-label="Example"><pre class="shiki" tabindex="0"><code><span class="line">const a = 1</span></code></pre>') // 🧾 0.6.0: the wrapper is named, Shiki's string untouched
+    expect(h).toContain('tabindex="0" role="group" aria-label="Example"><pre class="shiki" tabindex="0"><code><span class="line">const a = 1</span></code></pre>') // 🧾 0.6.0: the wrapper is named, Shiki's string untouched
   })
   it('renders Shiki children too', () => {
     const h = renderToStaticMarkup(<AbCodeBlock><pre><code>pnpm i</code></pre></AbCodeBlock>) // 🖍️
-    expect(h).toContain('<pre tabindex="0"><code>pnpm i</code></pre>') // ✅ 0.4.0: a plain <pre> is focusable
+    expect(h).toContain('tabindex="0" role="group"><pre><code>pnpm i</code></pre>') // ✅ 0.6.0: the scroller wrapper is the stop
     expect(h).not.toContain('<figcaption') // 🙅 no header without title/filename/language
   })
   it('a language-only block is named "<language> code"', () => {
