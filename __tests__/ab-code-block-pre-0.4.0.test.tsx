@@ -96,6 +96,13 @@ describe('⌨️ AbCodeBlock focusable scroller', () => {
     expect(css).toMatch(/\.abCodeBlockCode \{[^}]*overflow-x:\s*auto/) // ↔️
     expect(css).toMatch(/\.abCodeBlockCode :where\(pre\) \{[^}]*overflow:\s*visible/) // 📜
   })
+  it('📋 390px: the scroller reserves a gutter for the 44px copy button (lines never run under it)', async () => {
+    const { readFileSync } = await import('node:fs'); const { join } = await import('node:path') // 📁
+    const css = readFileSync(join(__dirname, '..', 'ab-code-block/styles.module.css'), 'utf8') // 🎨
+    const gutter = Number(/\.abCodeBlockCode \{[^}]*margin-inline-end:\s*(\d+)px/.exec(css)?.[1]) // 📏 not inside a media query: every width
+    expect(gutter).toBeGreaterThanOrEqual(44 + 4) // 🔘 button (44) + its 4px inset
+    expect(css).toMatch(/\.abCodeBlockCopy \{[^}]*position:\s*absolute[^}]*inset-inline-end:\s*4px/) // 📌 where the button sits
+  })
   it('the pre is keyboard-scrollable: overflow auto in the CSS', async () => {
     const { readFileSync } = await import('node:fs'); const { join } = await import('node:path') // 📁
     expect(readFileSync(join(__dirname, '..', 'ab-code-block/styles.module.css'), 'utf8')).toMatch(/overflow(-x)?:\s*auto/) // 📜
