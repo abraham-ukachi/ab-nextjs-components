@@ -82,6 +82,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbProductItem', file: 'ab-product-item/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'server', status: 'Done' },
   { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbPreviewCode', file: 'ab-preview-code/index.tsx', kind: 'server', status: 'Done' }, // 🧪💻 0.6.0 (G16): the docs Preview / Code pair
 
   // SERVER
   { name: 'AbIcon', file: 'server/ab-icon/index.tsx', kind: 'server', status: 'Done' },
@@ -253,6 +254,9 @@ export { default as AbDemoBox } from './ab-demo-box/index.tsx'
 export type { AbDemoBoxProps, AbDemoBoxScheme } from './ab-demo-box/index.tsx'
 export { default as AbDemoCode } from './ab-demo-code/index.tsx'
 export type { AbDemoCodeProps } from './ab-demo-code/index.tsx'
+// 🧪💻 0.6.0 (G16): the docs Preview / Code pair (AbContentTabs + AbDemoBox + AbDemoCode)
+export { default as AbPreviewCode } from './ab-preview-code/index.tsx'
+export type { AbPreviewCodeProps, AbPreviewCodeLabels } from './ab-preview-code/index.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'
 // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'

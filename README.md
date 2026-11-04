@@ -146,6 +146,18 @@ A drawer belongs to a **region**: the whole app, the main pane or the aside pane
 * **`<AbMobileHeader>`** (logo · globe · theme toggle) needs **ab-nextjs-core ≥ 0.2.1** with `<AbAppLayout variant="panes" mobileHeader="main">`. Pass it as `mainHeader`; core hides the app header below 768px and makes the main header the 56px mobile bar.
 * **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** a touch starting in the 24px edge zone is read from touch events. A non-passive `touchmove` listener exists only while that touch is down, and it calls `preventDefault` only once the move is sideways, so Android Chrome can't cancel it for a pan. Vertical scrolling from the edge, sideways code blocks and `[data-ab-no-edge-swipe]` keep working. Checked on WebKit and Chromium touch emulation.
 
+### Docs Preview / Code (0.6.0) 🧪💻
+
+* **`<AbPreviewCode>` (G16, server component)**: a tabbed **Preview / Code** pair for MDX docs. The preview is the real JSX you pass as `children` (package components only). Nothing is parsed or evaluated from `code`: no `eval`, `new Function`, react-live or sandpack. Props: `code` (raw source, always what Copy copies), `html` (Shiki `codeToHtml` output) or `highlighted` (an already highlighted `<pre>`), `language` (default `tsx`), `filename`, `label` (the tablist name, default "Example"), `labels` (`preview`, `code`, `copy`, `copied`), `defaultTab` (`'preview'` or `'code'`), `scheme` (`'inherit'`, `'light'` or `'dark'`), `align` and `className`. Both panels are in the server HTML. The tabs are AbContentTabs (arrows, Home/End, one tab stop).
+* **`<AbDemoBox>` is the preview scope** (now server-safe): `scheme` re-applies the theme's `[data-theme]` tokens with a matching `color-scheme`, `contain: layout paint` + `isolation: isolate` keep fixed and absolute children and z-indexes inside, and its own font, colour and surface stop page prose styles from leaking in (`ab-prose-none`). **AbDrawer layers inside a preview are hosted by the box** for every `scope` (`AB_PREVIEW_SCOPE_SELECTOR`), unless a layout scope sits inside the preview. `label` makes it a named region. No motion.
+* **`<AbDemoCode>`** is built on AbCodeBlock (escaped `<pre>`, focusable and named, SVG copy button, polite "Copied"). It also takes `html`, a highlighted child, `filename`, `copyLabel` and `copiedLabel`.
+
+```mdx
+<AbPreviewCode label="Button example" code={`<AbButton label="Save" />`}>
+  <AbButton label="Save" />
+</AbPreviewCode>
+```
+
 ## Getting Started
 
 ### Installation
@@ -211,6 +223,7 @@ A list of all the **client components** and their current status:
 | 29 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
 | 30 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
 | 31 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
+| 32 | *`AbPreviewCode`* | **ab-preview-code/index.tsx** | Done |
 
 ## Server Components
 
