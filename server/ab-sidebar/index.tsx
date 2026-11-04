@@ -41,7 +41,7 @@ import type { ReactElement } from 'react';
 // 🔣 server AbIcon (full AbIcons map; no JS shipped)
 import AbIcon from '../ab-icon';
 // 🖼️ shared view (same markup as the client twin)
-import { AbSidebarView, isAbSidebarActive, type AbSidebarBaseProps } from '../../ab-sidebar/view';
+import { AbSidebarView, createAbSidebarActive, toAbSidebarSections, type AbSidebarBaseProps } from '../../ab-sidebar/view';
 // 🌍 0.1.13: strip `/fr` from activeHref when `locales` is given (pure helper, server-safe)
 import { stripAbLocalePrefix } from '../../ab-link/locale';
 
@@ -54,7 +54,8 @@ export type AbSidebarProps = AbSidebarBaseProps;
 /** 🧭 AbSidebar (server, G40): same markup as the client twin; active state from `activeHref` / legacy `page`. */
 const AbSidebar = (props: AbSidebarProps): ReactElement => {
   const { page, activeHref } = props;
-  const active = (href: string, value?: string) => (page ? page === value : isAbSidebarActive(href, activeHref && stripAbLocalePrefix(activeHref, props.locales))); // 🎯
+  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref && stripAbLocalePrefix(activeHref, props.locales), props.activeMatch); // 🥇 0.4.3: deepest match by default
+  const active = (href: string, value?: string) => (page ? page === value : isOn(href)); // 🎯
   return <AbSidebarView props={props} Icon={AbIcon} active={active} />;
 };
 

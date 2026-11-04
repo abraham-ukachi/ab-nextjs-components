@@ -53,7 +53,7 @@ import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
 // 🔣 client AbIcon (built-in chevrons are always registered)
 import AbIcon from '../ab-icon';
 // 🖼️ shared view
-import { AbSidebarView, isAbSidebarActive, type AbSidebarBaseProps } from './view';
+import { AbSidebarView, createAbSidebarActive, toAbSidebarSections, type AbSidebarBaseProps } from './view';
 // 🎨 styles
 import styles from './styles.module.css';
 // 👤 0.2.1 (God 02:44): the bottom-left profile button (≥ 1180px, CSS)
@@ -61,7 +61,10 @@ import AbSidebarProfileButton, { type AbSidebarProfileButtonProps } from './prof
 
 // 📦 re-export the shared types
 export type { AbSidebarItem, AbSidebarSection, AbSidebarLink, AbSidebarLabels } from './view';
-export { isAbSidebarActive, toAbSidebarSections } from './view';
+export { isAbSidebarActive, toAbSidebarSections, createAbSidebarActive } from './view';
+// 🎯 0.4.3: the shared active-matching helpers + types (AbNavDrawer uses them too)
+export { getAbActiveHrefs, matchAbHref, normalizeAbHref, flattenAbNavItems } from './active';
+export type { AbActiveMatch, AbActiveMatchable, AbActiveMatchOptions } from './active';
 export { AbSidebarProfileButton, type AbSidebarProfileButtonProps } from './profile-button';
 
 /** ⚙️ Client props: the shared ones + collapse control. */
@@ -92,7 +95,8 @@ const AbSidebar = (props: AbSidebarProps): ReactElement => {
     onCollapsedChange?.(next); // 🔔
   };
   // 🎯 legacy `page` wins, then activeHref, then the pathname
-  const active = (href: string, value?: string) => (page ? page === value : isAbSidebarActive(href, activeHref ?? pathname));
+  const isOn = createAbSidebarActive(toAbSidebarSections(props.sections, props.links), activeHref ?? pathname, props.activeMatch); // 🥇 0.4.3: deepest match by default
+  const active = (href: string, value?: string) => (page ? page === value : isOn(href));
   // 🔘 the toggle
   const showToggle = collapsible ?? !!props.sections?.length;
   const toggleLabel = collapsed ? labels?.expand ?? 'Expand sidebar' : labels?.collapse ?? 'Collapse sidebar';
