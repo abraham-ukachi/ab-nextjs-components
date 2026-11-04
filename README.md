@@ -221,9 +221,6 @@ A list of all the **client components** and their current status:
 | 27 | *`AbText`* | **ab-text/index.tsx** | Done |
 | 28 | *`AbProduct`* | **ab-product/index.tsx** | Done |
 | 29 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
-| 30 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
-| 31 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
-| 32 | *`AbPreviewCode`* | **ab-preview-code/index.tsx** | Done |
 
 ## Server Components
 
@@ -243,6 +240,9 @@ A list of all the **server components** and their current status:
 | 10 | *`AbSidebar`* | **server/ab-sidebar/index.tsx** | Done |
 | 11 | *`AbNavLink`* | **server/ab-nav-link/index.tsx** | Done |
 | 12 | *`AbText`* | **server/ab-text/index.tsx** | Done |
+| 13 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done (server-safe since 0.6.0) |
+| 14 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done (server-safe since 0.6.0) |
+| 15 | *`AbPreviewCode`* | **ab-preview-code/index.tsx** | Done (0.6.0) |
 
 
 ## Learn More abElements
