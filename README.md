@@ -146,6 +146,18 @@ A drawer belongs to a **region**: the whole app, the main pane or the aside pane
 * **`<AbMobileHeader>`** (logo · globe · theme toggle) needs **ab-nextjs-core ≥ 0.2.1** with `<AbAppLayout variant="panes" mobileHeader="main">`. Pass it as `mainHeader`; core hides the app header below 768px and makes the main header the 56px mobile bar.
 * **Edge swipes (`useAbEdgeSwipe`, `AbNavDrawer`/`AbTocDrawer` `swipe`):** a touch starting in the 24px edge zone is read from touch events. A non-passive `touchmove` listener exists only while that touch is down, and it calls `preventDefault` only once the move is sideways, so Android Chrome can't cancel it for a pan. Vertical scrolling from the edge, sideways code blocks and `[data-ab-no-edge-swipe]` keep working. Checked on WebKit and Chromium touch emulation.
 
+### Docs Preview / Code (0.6.0) 🧪💻
+
+* **`<AbPreviewCode>` (G16, server component)**: a tabbed **Preview / Code** pair for MDX docs. The preview is the real JSX you pass as `children` (package components only). Nothing is parsed or evaluated from `code`: no `eval`, `new Function`, react-live or sandpack. Props: `code` (raw source, always what Copy copies), `trustedHtml` (Shiki `codeToHtml` output, injected **without sanitizing**: trusted HTML you render yourself only, never user input; dev builds warn on `<script`, `on…=`, `javascript:`, `<iframe`, `srcdoc`) or `highlighted` (an already highlighted `<pre>`, **the preferred route**), `language` (default `tsx`), `filename`, `label` (the tablist name, default "Example"), `labels` (`preview`, `code`, `copy`, `copied`), `defaultTab` (`'preview'` or `'code'`), `scheme` (`'inherit'`, `'light'` or `'dark'`), `align`, `toolbar` (default `true`), `href` and `className`. **0.6.0 preview toolbar** (`AbPreviewStage`, a small client island; AbPreviewCode stays a server component): a `role="toolbar"` with one tab stop (←/→/Home/End), a light/dark toggle (`aria-pressed` = dark) that changes only that preview's scheme, a reload button that remounts the preview, and, with `href`, an open-in-new-tab link (`target="_blank" rel="noopener noreferrer"`). Every tool is a 44px target; rename them with `labels.toolbar`, `labels.dark`, `labels.reload`, `labels.open`. Both panels are in the server HTML. The tabs are AbContentTabs (arrows, Home/End, one tab stop).
+* **`<AbDemoBox>` is the preview scope** (now server-safe): `scheme` re-applies the theme's `[data-theme]` tokens with a matching `color-scheme`, `contain: layout paint` + `isolation: isolate` keep fixed and absolute children and z-indexes inside, and its own font, colour and surface stop page prose styles from leaking in (`ab-prose-none`). **AbDrawer layers inside a preview are hosted by the box** for every `scope` (`AB_PREVIEW_SCOPE_SELECTOR`), unless a layout scope sits inside the preview. `label` makes it a named region. No motion.
+* **`<AbDemoCode>`** is built on AbCodeBlock (escaped `<pre>`, focusable and named, SVG copy button, polite "Copied"). **0.6.0:** one tab stop per block: the scroll wrapper is focusable and named, so arrow keys scroll long lines; a Shiki `<pre tabindex="0">` from children is dropped, and inside a `trustedHtml` string it is demoted to `-1` after hydration (the string is never edited, so before hydration it is still a second stop). The scroller ends 48px short of the copy button, so lines never run under it, even at 390px. It also takes `trustedHtml` (not sanitized: trusted HTML only, prefer a highlighted child), a highlighted child, `filename`, `copyLabel` and `copiedLabel`.
+
+```mdx
+<AbPreviewCode label="Button example" code={`<AbButton label="Save" />`}>
+  <AbButton label="Save" />
+</AbPreviewCode>
+```
+
 ## Getting Started
 
 ### Installation
@@ -209,8 +221,6 @@ A list of all the **client components** and their current status:
 | 27 | *`AbText`* | **ab-text/index.tsx** | Done |
 | 28 | *`AbProduct`* | **ab-product/index.tsx** | Done |
 | 29 | *`AbProductItem`* | **ab-product-item/index.tsx** | Done |
-| 30 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done |
-| 31 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done |
 
 ## Server Components
 
@@ -230,6 +240,9 @@ A list of all the **server components** and their current status:
 | 10 | *`AbSidebar`* | **server/ab-sidebar/index.tsx** | Done |
 | 11 | *`AbNavLink`* | **server/ab-nav-link/index.tsx** | Done |
 | 12 | *`AbText`* | **server/ab-text/index.tsx** | Done |
+| 13 | *`AbDemoBox`* | **ab-demo-box/index.tsx** | Done (server-safe since 0.6.0) |
+| 14 | *`AbDemoCode`* | **ab-demo-code/index.tsx** | Done (server-safe since 0.6.0) |
+| 15 | *`AbPreviewCode`* | **ab-preview-code/index.tsx** | Done (0.6.0) |
 
 
 ## Learn More abElements

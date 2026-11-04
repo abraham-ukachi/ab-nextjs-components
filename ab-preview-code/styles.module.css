@@ -1,0 +1,43 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: styles.module.css
+* @file: ab-preview-code/styles.module.css
+* @type: CSS Stylesheet
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+
+/* 🧪💻 the pair: one block in the prose rhythm; the tabs' own bottom margin is dropped inside it */
+.abPreviewCode { margin: 0 0 1.25em; min-inline-size: 0; } /* ↕️ + ↔️ never widens the page */
+.abPreviewCode > :global(.AbContentTabs) { margin: 0; } /* ↕️ */
+.abPreviewCodeBox { min-block-size: 180px; } /* 📏 room for a menu / drawer demo */
+
+/* 🧰 0.6.0: the preview toolbar (AbPreviewStage) — tools end-aligned above the box */
+.abPreviewStage { display: grid; min-inline-size: 0; } /* 📐 */
+.abPreviewToolbar { display: flex; justify-content: flex-end; gap: 4px; padding: 2px; } /* 🧰 */
+.abPreviewTool { display: inline-flex; align-items: center; justify-content: center; min-inline-size: 44px; min-block-size: 44px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: inherit; cursor: pointer; } /* 🔘 ≥44px targets */
+.abPreviewTool:hover { background: var(--ab-color-hover, rgb(92 64 48 / 0.08)); } /* 🖱️ */
+.abPreviewTool:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
+.abPreviewTool[aria-pressed='true'] { background: var(--ab-color-selected, rgb(92 64 48 / 0.14)); } /* 🌙 pressed */

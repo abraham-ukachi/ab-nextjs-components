@@ -80,8 +80,9 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbText', file: 'ab-text/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbProduct', file: 'ab-product/index.tsx', kind: 'client', status: 'Done' },
   { name: 'AbProductItem', file: 'ab-product-item/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'client', status: 'Done' },
-  { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'client', status: 'Done' },
+  { name: 'AbDemoBox', file: 'ab-demo-box/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbDemoCode', file: 'ab-demo-code/index.tsx', kind: 'server', status: 'Done' },
+  { name: 'AbPreviewCode', file: 'ab-preview-code/index.tsx', kind: 'server', status: 'Done' }, // 🧪💻 0.6.0 (G16): the docs Preview / Code pair
 
   // SERVER
   { name: 'AbIcon', file: 'server/ab-icon/index.tsx', kind: 'server', status: 'Done' },
@@ -200,7 +201,7 @@ export type { AbTocItem, AbTocProps } from './ab-toc/index.tsx'
 export { default as AbErrorHero } from './ab-error-hero/index.tsx'
 export type { AbErrorHeroProps } from './ab-error-hero/index.tsx'
 // 🗄️ 0.1.14 (G53): AbDrawer + useAbDrawer (also at `ab-nextjs-components/ab-drawer`)
-export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION, AB_DRAWER_RETURN_FOCUS } from './ab-drawer/index.tsx'
+export { default as AbDrawer, useAbDrawer, getAbDrawerHost, AB_DRAWER_DURATION, AB_DRAWER_RETURN_FOCUS, AB_PREVIEW_SCOPE_SELECTOR } from './ab-drawer/index.tsx'
 // 🤏 0.2.0 drawers v2: edge swipes + the swipe / snap rules
 export { useAbEdgeSwipe, AB_ASIDE_DRAWER_MAX_WIDTH, AB_SWIPE, resolveAbSheetRelease, resolveAbSideRelease } from './ab-drawer/index.tsx'
 export type { AbDrawerTier, AbSheetSnap, UseAbEdgeSwipeOptions } from './ab-drawer/index.tsx'
@@ -250,7 +251,14 @@ export { default as AbText } from './ab-text/index.tsx'
 export { default as AbProduct } from './ab-product/index.tsx'
 export { default as AbProductItem } from './ab-product-item/index.tsx'
 export { default as AbDemoBox } from './ab-demo-box/index.tsx'
+export type { AbDemoBoxProps, AbDemoBoxScheme } from './ab-demo-box/index.tsx'
 export { default as AbDemoCode } from './ab-demo-code/index.tsx'
+export type { AbDemoCodeProps } from './ab-demo-code/index.tsx'
+// 🧪💻 0.6.0 (G16): the docs Preview / Code pair (AbContentTabs + AbDemoBox + AbDemoCode)
+export { default as AbPreviewCode } from './ab-preview-code/index.tsx'
+export type { AbPreviewCodeProps, AbPreviewCodeLabels } from './ab-preview-code/index.tsx'
+export { default as AbPreviewStage } from './ab-preview-code/stage.tsx' // 🧰 0.6.0: the preview toolbar island
+export type { AbPreviewStageProps, AbPreviewStageLabels } from './ab-preview-code/stage.tsx'
 export { default as AbPolygon } from './server/ab-polygon/index.tsx'
 // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
 export { default as AbCallout, AB_CALLOUT_ICONS } from './ab-callout/index.tsx'
@@ -261,7 +269,7 @@ export { default as AbCodeBlockCopy } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockCopyProps } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockProps } from './ab-code-block/index.tsx'
 // 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
-export { default as AbContentTabs, AbContentTab } from './ab-content-tabs/index.tsx'
+export { default as AbContentTabs, AbContentTab, AB_FOCUSABLE_SELECTOR } from './ab-content-tabs/index.tsx' // ⌨️ 0.6.0: the panel tab-stop check
 export type { AbContentTabsProps, AbContentTabProps } from './ab-content-tabs/index.tsx'
 // ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
 export { default as AbDocPager } from './ab-doc-pager/index.tsx'

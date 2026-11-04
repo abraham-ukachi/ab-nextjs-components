@@ -43,11 +43,17 @@
 'use client';
 
 // ⚛️ React
-import { Children, isValidElement, useId, useRef, useState, type KeyboardEvent, type ReactElement, type ReactNode } from 'react';
+import { Children, isValidElement, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactElement, type ReactNode } from 'react';
 // 🧵 classes
 import clsx from 'clsx';
 // 🎨 styles
 import styles from './styles.module.css';
+
+/**
+ * ⌨️ 0.6.0: what counts as "already focusable" inside a panel. A panel that holds one of these is left OUT of
+ * the tab order (its content is the stop, e.g. a code block's scroller); an empty / text-only panel stays tabIndex 0.
+ */
+export const AB_FOCUSABLE_SELECTOR = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]), summary';
 
 /** ⚙️ one tab (a marker element: AbContentTabs reads its props, it renders only its children) */
 export interface AbContentTabProps {
@@ -85,6 +91,21 @@ const AbContentTabs = ({ children, label, defaultValue, onChange, className }: A
   const [selected, setSelected] = useState(() => (defaultValue && values.includes(defaultValue) ? defaultValue : values[0])); // 🎯
   const current = values.includes(selected) ? selected : values[0]; // 🛟 children changed
   const refs = useRef<Array<HTMLButtonElement | null>>([]); // 📍 to move focus
+  const panels = useRef<Array<HTMLDivElement | null>>([]); // 📍 the tabpanels (focusable-content check)
+  // ⌨️ 0.6.0: which panels already contain a focusable element. SSR + the first client render say "none"
+  // (every panel tabIndex 0, the APG-safe no-JS default), so hydration matches; the effect then refines it.
+  const [hasFocusable, setHasFocusable] = useState<boolean[]>([]);
+  useEffect(() => {
+    const check = () => {
+      const next = panels.current.slice(0, tabs.length).map((el) => !!el?.querySelector(AB_FOCUSABLE_SELECTOR)); // 🔎
+      setHasFocusable((prev) => (prev.length === next.length && prev.every((v, k) => v === next[k]) ? prev : next)); // 🧘 no-op when unchanged
+    };
+    check(); // 🚀 after mount
+    if (typeof MutationObserver === 'undefined') return; // 🛟 very old engines: the mount check only
+    const mo = new MutationObserver(check); // 👀 content changes (MDX, islands, hydration fixes)
+    panels.current.forEach((el) => el && mo.observe(el, { childList: true, subtree: true, attributes: true, attributeFilter: ['tabindex', 'href', 'contenteditable', 'disabled'] }));
+    return () => mo.disconnect(); // 🧹
+  }, [tabs.length]);
   const select = (v: string) => { setSelected(v); onChange?.(v); }; // ✅
   // ⌨️ roving keys on the tablist
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -128,7 +149,8 @@ const AbContentTabs = ({ children, label, defaultValue, onChange, className }: A
           id={`${id}-panel-${i}`} // 🆔
           aria-labelledby={`${id}-tab-${i}`} // 🔗
           hidden={values[i] !== current} // 🙈 inactive
-          tabIndex={0} // ⌨️ reachable even when it has no focusable content (APG)
+          ref={(el) => { panels.current[i] = el; }} // 📍
+          tabIndex={hasFocusable[i] ? undefined : 0} // ⌨️ 0.6.0 (APG): a stop ONLY when nothing inside is focusable
           className={styles.abContentTabsPanel} // 🎨
           data-ab-part="content-tab-panel" // 🗂️
         >

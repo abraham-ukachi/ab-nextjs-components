@@ -106,7 +106,7 @@ describe('🥇 getAbActiveHrefs', () => {
 
 // 🗂️ a sidebar with a nested child under /docs and a sibling /docs/x item
 const sections = [{ id: 'docs', label: 'Docs', items: [{ href: '/docs', label: 'Docs', items: [{ href: '/docs/x', label: 'X' }] }, { href: '/docs/api', label: 'API' }] }]
-const current = (html: string) => (html.match(/<a [^>]*>/g) ?? []).filter((a) => a.includes('aria-current="page"')).map((a) => /href="([^"]+)"/.exec(a)?.[1]) // ♿ which links are current
+const current = (html: string) => (html.match(/<a [^>]*>/g) ?? ([] as string[])).filter((a) => a.includes('aria-current="page"')).map((a) => /href="([^"]+)"/.exec(a)?.[1]) // ♿ which links are current
 
 describe('🧭 AbSidebar activeMatch', () => {
   it('default: one aria-current on /docs/x (nested child beats its parent)', () => {
