@@ -65,8 +65,8 @@ export interface AbPreviewCodeLabels {
 /** ⚙️ props */
 export interface AbPreviewCodeProps {
   children: ReactNode; // 🧪 the live preview: real JSX with package components (D-c: no eval, no live editor)
-  code: string; // 📋 the matching source: shown plain when there is no `html` / `highlighted`, always what Copy copies
-  html?: string; // 🧾 Shiki `codeToHtml(code)` output (trusted, YOU render it)
+  code: string; // 📋 the matching source: shown plain when there is no `trustedHtml` / `highlighted`, always what Copy copies
+  trustedHtml?: string; // 🧾 Shiki `codeToHtml(code)` output, ⚠️ NOT sanitized: trusted HTML only, never user input (prefer `highlighted`)
   highlighted?: ReactNode; // 🖍️ OR an already highlighted <pre> (e.g. an MDX fenced block)
   language?: string; // 🔤 default 'tsx'
   filename?: string; // 📄 shown in the code header
@@ -84,7 +84,7 @@ export interface AbPreviewCodeProps {
  * markup and the code are crawlable and work before hydration. The preview is the children you pass, rendered
  * as-is: nothing is parsed or evaluated from `code`, so keep the two in sync (a test can compare them).
  */
-const AbPreviewCode = ({ children, code, html, highlighted, language = 'tsx', filename, label = 'Example', labels = {}, defaultTab = 'preview', scheme, align, className }: AbPreviewCodeProps): ReactElement => {
+const AbPreviewCode = ({ children, code, trustedHtml, highlighted, language = 'tsx', filename, label = 'Example', labels = {}, defaultTab = 'preview', scheme, align, className }: AbPreviewCodeProps): ReactElement => {
   const L = { preview: 'Preview', code: 'Code', copy: 'Copy code', copied: 'Copied', ...labels }; // 🌍
   return (
     <div className={clsx('AbPreviewCode', styles.abPreviewCode, className)} data-ab-part="preview-code">
@@ -94,7 +94,7 @@ const AbPreviewCode = ({ children, code, html, highlighted, language = 'tsx', fi
           <AbDemoBox scheme={scheme} align={align} className={styles.abPreviewCodeBox}>{children}</AbDemoBox>
         </AbContentTab>
         <AbContentTab label={L.code} value="code">
-          <AbDemoCode code={code} html={html} language={language} filename={filename} copyLabel={L.copy} copiedLabel={L.copied}>{highlighted}</AbDemoCode>
+          <AbDemoCode code={code} trustedHtml={trustedHtml} language={language} filename={filename} copyLabel={L.copy} copiedLabel={L.copied}>{highlighted}</AbDemoCode>
         </AbContentTab>
       </AbContentTabs>
     </div>

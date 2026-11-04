@@ -30,7 +30,7 @@
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 *
 * Example usage:
-*   1+|> <AbCodeBlock filename="app/page.tsx" language="tsx" code={source} html={await codeToHtml(source, …)} />
+*   1+|> <AbCodeBlock filename="app/page.tsx" language="tsx" code={source} trustedHtml={await codeToHtml(source, …)} />
 *   2+|> <AbCodeBlock language="bash" copyLabel={t('copy')} copiedLabel={t('copied')}><pre><code>pnpm add ab-nextjs-components</code></pre></AbCodeBlock>
 */
 
@@ -49,8 +49,24 @@ import AbCodeBlockCopy from './copy';
 // 🎨 styles
 import styles from './styles.module.css';
 
-// 🔤 escape a name for an HTML attribute (the `html` path)
-const escAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); // 🧹
+/**
+ * 🚨 risky patterns in a `trustedHtml` string (dev warning only, NOT a sanitizer):
+ * <script, an on…= event handler, javascript:, <iframe, srcdoc
+ */
+const AB_RISKY_HTML: ReadonlyArray<[string, RegExp]> = [
+  ['<script', /<script\b/i], // 📜 inline script
+  ['on…= handler', /\son[a-z]+\s*=/i], // 🖱️ onclick=, onerror=, …
+  ['javascript:', /javascript\s*:/i], // 🔗 script URL
+  ['<iframe', /<iframe\b/i], // 🪟 embedded frame
+  ['srcdoc', /\bsrcdoc\b/i], // 📄 inline frame document
+];
+
+/** ⚠️ dev only: warn when `trustedHtml` looks like it carries script (silent in production) */
+export function warnAbRiskyHtml(html: string, where = 'AbCodeBlock'): void {
+  if (process.env.NODE_ENV === 'production') return; // 🤫 never in production
+  const hits = AB_RISKY_HTML.filter(([, re]) => re.test(html)).map(([n]) => n); // 🔎
+  if (hits.length) console.warn(`[${where}] trustedHtml contains ${hits.join(', ')}. It is injected without sanitizing: only pass HTML you render yourself (e.g. Shiki), never user input. Prefer \`highlighted\`/children.`); // ⚠️
+}
 
 /**
  * ⌨️ 0.4.0: a plain <pre> gets tabIndex 0 (keyboard users can scroll long lines with the arrow keys) and a name.
@@ -66,20 +82,14 @@ function withAbFocusablePre(children: ReactNode, name?: string): ReactNode {
   });
 }
 
-/** 🧾 the same for an `html` string: patch the FIRST <pre …> tag only */
-function withAbFocusablePreHtml(html: string, name?: string): string {
-  return html.replace(/<pre\b([^>]*)>/i, (tag, attrs: string) => {
-    let a = attrs; // 🧩
-    if (!/\stabindex\s*=/i.test(a)) a += ' tabindex="0"'; // ⌨️ Shiki already has one → untouched
-    if (name && !/\saria-label(ledby)?\s*=/i.test(a)) a += ` aria-label="${escAttr(name)}"`; // 🏷️
-    return `<pre${a}>`; // ✅
-  });
-}
-
 /** ⚙️ props */
 export interface AbCodeBlockProps {
   children?: ReactNode; // 🖍️ Shiki-rendered (or plain) <pre><code>…</code></pre>, e.g. from rehype-pretty-code in MDX
-  html?: string; // 🧾 OR a pre-rendered HTML string (Shiki `codeToHtml`), trusted: YOU render it, never user input
+  /**
+   * 🧾 OR a pre-rendered HTML string (Shiki `codeToHtml`). ⚠️ Injected via dangerouslySetInnerHTML WITHOUT
+   * sanitizing: it MUST be trusted (you render it at build/server time), never user input. Prefer children.
+   */
+  trustedHtml?: string;
   code?: string; // 📋 the raw source to copy (best). Without it the button copies the rendered <pre>'s text
   title?: ReactNode; // 🏷️ a caption in the header bar (e.g. "Install")
   filename?: string; // 📄 a file name in the header bar (mono), e.g. "app/page.tsx"
@@ -92,15 +102,16 @@ export interface AbCodeBlockProps {
 
 /**
  * 💻 AbCodeBlock — a server-rendered code block for MDX docs: an optional header (title / filename · language),
- * the highlighted code (children or an `html` string, both from Shiki), and a small client copy button. It is a
+ * the highlighted code (children or a `trustedHtml` string, both from Shiki), and a small client copy button. It is a
  * <figure> (with a <figcaption> when there is a header), so the caption names the code for assistive tech; the
  * <pre> is focusable (Shiki's tabindex kept, a plain one gets tabIndex 0) and named, so keyboard users can scroll it.
  */
-const AbCodeBlock = ({ children, html, code, title, filename, language, copyLabel = 'Copy code', copiedLabel = 'Copied', copy = true, className }: AbCodeBlockProps): ReactElement => {
+const AbCodeBlock = ({ children, trustedHtml, code, title, filename, language, copyLabel = 'Copy code', copiedLabel = 'Copied', copy = true, className }: AbCodeBlockProps): ReactElement => {
   const hasHeader = title != null || !!filename || !!language; // 🏷️ a header bar?
   const caption = (title ?? filename) != null; // 💬 a visible name for the figure
   // 🏷️ the scroller's name: the title (if text), else the filename, else "<language> code"
   const preName = typeof title === 'string' ? title : filename || (language ? `${language} code` : undefined);
+  if (trustedHtml != null) warnAbRiskyHtml(trustedHtml); // ⚠️ dev-only check
   return (
     <figure
       className={clsx('AbCodeBlock', 'ab-prose-none', styles.abCodeBlock, className)} // 🎨 (opts out of theme .ab-prose)
@@ -116,8 +127,14 @@ const AbCodeBlock = ({ children, html, code, title, filename, language, copyLabe
         </figcaption>
       )}
       <div className={styles.abCodeBlockBody}>
-        {html != null
-          ? <div className={styles.abCodeBlockCode} data-ab-part="code-block-code" dangerouslySetInnerHTML={{ __html: withAbFocusablePreHtml(html, preName) }} /> // 🧾 Shiki string (+ a focusable, named <pre>)
+        {trustedHtml != null
+          ? <div
+              className={styles.abCodeBlockCode}
+              data-ab-part="code-block-code"
+              tabIndex={0} // ⌨️ 0.6.0: the WRAPPER is focusable (no regex patching of the HTML string)
+              aria-label={preName} // 🏷️ and named
+              dangerouslySetInnerHTML={{ __html: trustedHtml }} // 🧾 trusted Shiki string, injected as-is
+            />
           : <div className={styles.abCodeBlockCode} data-ab-part="code-block-code">{withAbFocusablePre(children, preName)}</div> /* 🖍️ Shiki children (+ a focusable, named <pre>) */}
         {copy && <AbCodeBlockCopy code={code} label={copyLabel} copiedLabel={copiedLabel} /> /* 📋 client island */}
       </div>

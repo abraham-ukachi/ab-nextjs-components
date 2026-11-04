@@ -57,14 +57,14 @@ describe('💻 AbDemoCode is an AbCodeBlock', () => {
     expect(html).not.toContain('material-symbols') // 🚫 no icon font
   })
   it('takes Shiki html or a highlighted child; hidden hides the wrapper', () => {
-    expect(renderToStaticMarkup(<AbDemoCode code="x" html={'<pre class="shiki" tabindex="0"><code>x</code></pre>'} />)).toContain('class="shiki"') // 🖍️
+    expect(renderToStaticMarkup(<AbDemoCode code="x" trustedHtml={'<pre class="shiki" tabindex="0"><code>x</code></pre>'} />)).toContain('class="shiki"') // 🖍️
     expect(renderToStaticMarkup(<AbDemoCode code="x"><pre className="hl"><code>x</code></pre></AbDemoCode>)).toContain('class="hl"') // 🖍️
     expect(renderToStaticMarkup(<AbDemoCode code="x" hidden />)).toMatch(/^<div hidden=""/) // 🙈
   })
   it('Copy copies the raw source and announces "Copied" politely', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } })
-    const { getByRole, container } = render(<AbDemoCode code={'const a = 1\n'} html={'<pre><code><span>const</span> a = 1</code></pre>'} />)
+    const { getByRole, container } = render(<AbDemoCode code={'const a = 1\n'} trustedHtml={'<pre><code><span>const</span> a = 1</code></pre>'} />)
     await act(async () => { fireEvent.click(getByRole('button', { name: 'Copy code' })) })
     expect(writeText).toHaveBeenCalledWith('const a = 1') // 📋 the source, not the highlighted markup
     expect(container.querySelector('[role="status"]')?.textContent).toBe('Copied') // 📣

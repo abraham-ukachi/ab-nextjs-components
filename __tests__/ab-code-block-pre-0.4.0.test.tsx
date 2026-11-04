@@ -59,14 +59,15 @@ describe('⌨️ AbCodeBlock focusable <pre>', () => {
     expect(pre.getAttribute('aria-label')).toBe('Install') // 🏷️
   })
   it('the name falls back: filename, then "<language> code", else none', () => {
-    expect(renderToStaticMarkup(<AbCodeBlock filename="a.ts" html="<pre>x</pre>" />)).toContain('<pre tabindex="0" aria-label="a.ts">') // 📄
-    expect(renderToStaticMarkup(<AbCodeBlock language="bash" html="<pre>x</pre>" />)).toContain('<pre tabindex="0" aria-label="bash code">') // 🔤
-    expect(renderToStaticMarkup(<AbCodeBlock html="<pre>x</pre>" />)).toContain('<pre tabindex="0">x</pre>') // 🙅 no name to give
+    expect(renderToStaticMarkup(<AbCodeBlock filename="a.ts" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" aria-label="a.ts"><pre>x</pre>') // 📄 0.6.0: on the wrapper
+    expect(renderToStaticMarkup(<AbCodeBlock language="bash" trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0" aria-label="bash code"><pre>x</pre>') // 🔤
+    expect(renderToStaticMarkup(<AbCodeBlock trustedHtml="<pre>x</pre>" />)).toContain('tabindex="0"><pre>x</pre>') // 🙅 no name to give
     expect(renderToStaticMarkup(<AbCodeBlock language="ts"><pre>x</pre></AbCodeBlock>)).toContain('<pre tabindex="0" aria-label="ts code">') // 🧩 children path
   })
-  it('Shiki html: exactly one tabindex, still named', () => {
-    const h = renderToStaticMarkup(<AbCodeBlock title="Demo" html={shiki} />) // 🧾
-    expect(count(h, /tabindex=/gi)).toBe(1) // ⌨️ never doubled
+  it('Shiki trustedHtml: the string is untouched, the wrapper is named', () => {
+    const h = renderToStaticMarkup(<AbCodeBlock title="Demo" trustedHtml={shiki} />) // 🧾
+    expect(h).toContain(shiki) // ✅ injected as-is (no regex patching)
+    expect(count(h, /tabindex=/gi)).toBe(1) // ⌨️ the <pre> keeps Shiki's single tabindex
     expect(h).toContain('aria-label="Demo"') // 🏷️
   })
   it('Shiki children (tabIndex prop): exactly one tabindex', () => {
@@ -77,9 +78,9 @@ describe('⌨️ AbCodeBlock focusable <pre>', () => {
     const h = renderToStaticMarkup(<AbCodeBlock title="T"><pre tabIndex={-1} aria-label="Mine">x</pre></AbCodeBlock>) // ✋
     expect(h).toContain('<pre tabindex="-1" aria-label="Mine">') // ✅ untouched
   })
-  it('only the first <pre> of an html string is patched; names are escaped', () => {
-    const h = renderToStaticMarkup(<AbCodeBlock title={'a "b" <c>'} html="<pre>1</pre><pre>2</pre>" />) // 🧾
-    expect(h).toContain('<pre tabindex="0" aria-label="a &quot;b&quot; &lt;c>">1</pre><pre>2</pre>') // 🔐
+  it('trustedHtml is never patched; the wrapper name is escaped by React', () => {
+    const h = renderToStaticMarkup(<AbCodeBlock title={'a "b" <c>'} trustedHtml="<pre>1</pre><pre>2</pre>" />) // 🧾
+    expect(h).toContain('aria-label="a &quot;b&quot; &lt;c&gt;"><pre>1</pre><pre>2</pre>') // 🔐
   })
   it('the pre is keyboard-scrollable: overflow auto in the CSS', async () => {
     const { readFileSync } = await import('node:fs'); const { join } = await import('node:path') // 📁

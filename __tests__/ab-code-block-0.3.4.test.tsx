@@ -59,12 +59,12 @@ describe('💻 AbCodeBlock', () => {
     expect(src('index.tsx')).not.toMatch(/^'use client'/m) // 🖥️
     expect(src('copy.tsx')).toMatch(/^'use client';/m) // 🏝️ the island
   })
-  it('renders an `html` string inside a <figure> with a header (title · filename · language)', () => {
-    const h = renderToStaticMarkup(<AbCodeBlock html={shiki} title="Example" filename="app/page.tsx" language="tsx" />) // 🖨️
+  it('renders a `trustedHtml` string inside a <figure> with a header (title · filename · language)', () => {
+    const h = renderToStaticMarkup(<AbCodeBlock trustedHtml={shiki} title="Example" filename="app/page.tsx" language="tsx" />) // 🖨️
     expect(h).toMatch(/^<figure class="AbCodeBlock ab-prose-none/) // 🧱 opts out of .ab-prose
     expect(h).toContain('data-language="tsx"') // 🔤
     expect(h).toMatch(/<figcaption[^>]*>.*Example.*app\/page\.tsx.*tsx.*<\/figcaption>/) // 🏷️
-    expect(h).toContain('<pre class="shiki" tabindex="0" aria-label="Example"><code><span class="line">const a = 1</span></code></pre>') // 🧾 0.4.0: Shiki's tabindex kept, a name added
+    expect(h).toContain('tabindex="0" aria-label="Example"><pre class="shiki" tabindex="0"><code><span class="line">const a = 1</span></code></pre>') // 🧾 0.6.0: the wrapper is named, Shiki's string untouched
   })
   it('renders Shiki children too', () => {
     const h = renderToStaticMarkup(<AbCodeBlock><pre><code>pnpm i</code></pre></AbCodeBlock>) // 🖍️
@@ -72,21 +72,21 @@ describe('💻 AbCodeBlock', () => {
     expect(h).not.toContain('<figcaption') // 🙅 no header without title/filename/language
   })
   it('a language-only block is named "<language> code"', () => {
-    expect(renderToStaticMarkup(<AbCodeBlock language="bash" html="<pre>x</pre>" />)).toContain('aria-label="bash code"') // ♿
+    expect(renderToStaticMarkup(<AbCodeBlock language="bash" trustedHtml="<pre>x</pre>" />)).toContain('aria-label="bash code"') // ♿
   })
   it('copy button: labelled, can be hidden, labels are props', () => {
-    expect(renderToStaticMarkup(<AbCodeBlock html="<pre>x</pre>" copyLabel="Copier" />)).toContain('aria-label="Copier"') // 🌍
-    expect(renderToStaticMarkup(<AbCodeBlock html="<pre>x</pre>" copy={false} />)).not.toContain('code-block-copy') // 🙅
+    expect(renderToStaticMarkup(<AbCodeBlock trustedHtml="<pre>x</pre>" copyLabel="Copier" />)).toContain('aria-label="Copier"') // 🌍
+    expect(renderToStaticMarkup(<AbCodeBlock trustedHtml="<pre>x</pre>" copy={false} />)).not.toContain('code-block-copy') // 🙅
   })
   it('copies `code` when given, else the rendered text, and announces copiedLabel', async () => {
     const writeText = vi.fn(() => Promise.resolve()) // 📋 a fake clipboard
     vi.stubGlobal('navigator', { ...navigator, clipboard: { writeText } }) // 🔌
-    const { container, unmount } = render(<AbCodeBlock html={shiki} copiedLabel="Copié" />) // 🖼️ no `code`
+    const { container, unmount } = render(<AbCodeBlock trustedHtml={shiki} copiedLabel="Copié" />) // 🖼️ no `code`
     await act(async () => { fireEvent.click(container.querySelector('[data-ab-part="code-block-copy"] button')!) }) // 🖱️
     expect(writeText).toHaveBeenCalledWith('const a = 1') // 📝 the <pre> text
     expect(container.querySelector('[role="status"]')!.textContent).toBe('Copié') // 📣
     unmount()
-    const r = render(<AbCodeBlock html={shiki} code={'raw\nsource'} />) // 🧾 with `code`
+    const r = render(<AbCodeBlock trustedHtml={shiki} code={'raw\nsource'} />) // 🧾 with `code`
     await act(async () => { fireEvent.click(r.container.querySelector('[data-ab-part="code-block-copy"] button')!) }) // 🖱️
     expect(writeText).toHaveBeenLastCalledWith('raw\nsource') // ✅ the raw source wins
   })
