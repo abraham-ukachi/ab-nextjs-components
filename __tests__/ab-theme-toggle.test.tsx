@@ -108,7 +108,7 @@ describe('AbThemeToggle (icon)', () => {
   })
 })
 
-// 🎯 0.3.2 (God): the icon button shows (and names) the mode a tap switches TO by default, like AbMobileHeader
+// 🎯 0.3.2: the icon button shows (and names) the mode a tap switches TO by default, like AbMobileHeader
 describe('AbThemeToggle (icon) target default 0.3.2', () => {
   it('fill appearance: light shows dark_mode, then dark shows brightness_auto', () => {
     const { getByRole } = render(<AbThemeToggle labels={labels} variant="icon" />) // 🖼️ no iconShows

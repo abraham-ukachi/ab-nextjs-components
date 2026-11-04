@@ -45,7 +45,7 @@ import { join } from 'node:path'
 const css = readFileSync(join(__dirname, '..', 'ab-breadcrumbs/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 📖 no comments
 const rule = css.slice(css.indexOf('.abCrumbLink,\n.abCrumbCurrent {'), css.indexOf('}', css.indexOf('.abCrumbLink,\n.abCrumbCurrent {'))) // 🎯 the shared rule
 
-// 👆 Joseph (0.2.24 docs): WCAG 2.5.8 target size (minimum) = 24×24 CSS px
+// 👆 QA (0.2.24 docs): WCAG 2.5.8 target size (minimum) = 24×24 CSS px
 describe('👆 AbBreadcrumbs crumbs are ≥ 24×24', () => {
   it('links and the current crumb share one sizing rule', () => expect(rule.length).toBeGreaterThan(0)) // ✅
   it('min-width + min-height 24px', () => {

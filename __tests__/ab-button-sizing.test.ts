@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbButton self-sizing tokens (Joseph 03:37)
+* @name: AbButton self-sizing tokens
 * @file: __tests__/ab-button-sizing.test.ts
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -39,7 +39,7 @@
 // @vitest-environment happy-dom
 
 // 🧪 vitest
-// 🧪 0.2.3 (Joseph 03:37): AbButton owns its box per type now that the theme skips `.AbButton`.
+// 🧪 0.2.3: AbButton owns its box per type now that the theme skips `.AbButton`.
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'

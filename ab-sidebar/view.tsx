@@ -51,10 +51,10 @@ import { flattenAbNavItems, getAbActiveHrefs, matchAbHref, normalizeAbHref, type
 
 /** 🔗 One sidebar destination (G40). `items` = one level of children, shown under the parent. */
 export interface AbSidebarItem {
-  id?: string; // 🆔 0.1.13 (James nit): stable React key when two items share an href (default: `href`)
+  id?: string; // 🆔 0.1.13 (nit): stable React key when two items share an href (default: `href`)
   href: string; // 🔗
   icon?: string; // 🔣 AbIcons name: outlined, filled when active
-  label: ReactNode; // 🏷️ 0.1.13: any node (Joseph #15), e.g. a mono package name
+  label: ReactNode; // 🏷️ 0.1.13: any node (#15), e.g. a mono package name
   labelText?: string; // ♿ plain-text name for the rail tooltip/aria-label when `label` isn't a string
   badge?: ReactNode; // 🔴 e.g. "New" or a count
   items?: AbSidebarItem[]; // 🌳 children
@@ -103,7 +103,7 @@ export interface AbSidebarBaseProps {
   density?: 'comfortable' | 'compact'; // 📏 'compact' = 32px rows, 13.5/500, 18px icons, 11px group labels
   activeShape?: 'pill' | 'rounded'; // 🔷 'rounded' = 8px-radius --tint row (default 'pill')
   badgeVariant?: 'chip' | 'text'; // 🏷️ 'text' = plain mono 10.5 --faint meta (e.g. a version), no chip
-  // 🏷️ 0.1.15 (God 00:08): a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
+  // 🏷️ 0.1.15: a 60px logo row above `header` (mock 06 `.sb-logo`). With core ≥ 0.2.1 panes it only shows
   //    where the app header is hidden (tabletHeader="main" at 768–1179); elsewhere it always shows
   logo?: ReactNode;
   footer?: ReactNode; // 🦶 0.2.1: a bottom slot pinned to the bottom left (e.g. AbSidebarProfileButton)

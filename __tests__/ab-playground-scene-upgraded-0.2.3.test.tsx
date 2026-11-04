@@ -36,7 +36,7 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-// 🧪 God 03:02: John's Welcome v6 UPGRADED scenes (upgraded/_src/build_upgraded.py + playground-spec.md rev 2)
+// 🧪 The Welcome v6 UPGRADED scenes (upgraded/_src/build_upgraded.py + playground-spec.md rev 2)
 import { describe, expect, it } from 'vitest'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -103,7 +103,7 @@ describe('🔁 4 states × 0.6s from ab-nextjs-animations (no keyframes in compo
   })
 })
 
-describe('🎨 colours (spec rev 2 §0 + God 03:05)', () => {
+describe('🎨 colours (spec rev 2 §0 + approved)', () => {
   const flow = readFileSync(join(root, 'ab-flow-diagram/styles.module.css'), 'utf8') // 🎨
   it('nodes read --ab-color-welcome-node (theme 0.3.7: #fff / #2a1f17); captions sit on a card chip', () => {
     expect(flow).toContain('--ab-flow-node: var(--ab-color-welcome-node, var(--ab-flow-card') // 🌞

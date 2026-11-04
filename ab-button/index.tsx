@@ -95,7 +95,7 @@ export interface AbButtonProps {
   badgeTone?: AbButtonBadgeTone; // 🎨 NEW: 'neutral' (default) | 'accent'
   disabledReason?: string; // 💬 NEW: SR-only reason, appended to the name while blocked
   focusableWhenDisabled?: boolean; // ⌨️ NEW: force aria-disabled (true) or native disabled (false)
-  // ===== 0.1.13 (Joseph #7) =====
+  // ===== 0.1.13 (#7) =====
   // ♿ any aria-* / data-* attribute is passed to the <button>/<a>, e.g. useAbAsideToggle().props
   //    (`aria-expanded`, `aria-controls`) or `data-testid`. Our own data-* (type, color, …) still win.
   [aria: `aria-${string}`]: string | number | boolean | undefined;

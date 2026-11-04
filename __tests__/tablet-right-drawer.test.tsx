@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: Tablet + mobile: the aside opens as the right drawer (God 02:47)
+* @name: Tablet + mobile: the aside opens as the right drawer
 * @file: __tests__/tablet-right-drawer.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -61,7 +61,7 @@ const at = (w: number, maxWidth?: number) => { // 📐 a viewport + app box of w
   swipeIn(w); return onOpen
 }
 
-describe('📟 the aside is the right drawer on mobile AND tablet (God 02:47)', () => {
+describe('📟 the aside is the right drawer on mobile AND tablet', () => {
   it('the column starts at 1180, so the drawer tier ends at 1179', () => expect(AB_ASIDE_DRAWER_MAX_WIDTH).toBe(1179)) // 🔢
   for (const w of [390, 768, 1024, 1179]) it(`${w}px: a right-to-left edge swipe opens it`, () => expect(at(w, AB_ASIDE_DRAWER_MAX_WIDTH)).toHaveBeenCalledTimes(1)) // ✅
   for (const w of [1180, 1920]) it(`${w}px: no swipe (the aside is a column there)`, () => expect(at(w, AB_ASIDE_DRAWER_MAX_WIDTH)).not.toHaveBeenCalled()) // 🚫

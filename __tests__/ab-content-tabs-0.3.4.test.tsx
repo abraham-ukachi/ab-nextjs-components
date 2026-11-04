@@ -58,7 +58,7 @@ const Tabs = (p: { defaultValue?: string; onChange?: (v: string) => void }) => (
 const tabs = (c: HTMLElement) => Array.from(c.querySelectorAll<HTMLButtonElement>('[role="tab"]')) // 🔘
 const panels = (c: HTMLElement) => Array.from(c.querySelectorAll<HTMLElement>('[role="tabpanel"]')) // 📄
 
-// 🗂️ Joseph (0.2.24 MDX docs): WAI-ARIA tabs for MDX
+// 🗂️ QA (0.2.24 MDX docs): WAI-ARIA tabs for MDX
 describe('🗂️ AbContentTabs', () => {
   it('a named tablist; tabs ↔ panels linked both ways; the first is selected', () => {
     const { container } = render(<Tabs />) // 🖼️

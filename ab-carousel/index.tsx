@@ -139,7 +139,7 @@ export interface AbCarouselProps {
   slideLabel?: (n: number, total: number) => string;
   // 📣 live-region text factory, or false to disable announcements (default "Slide 3 of 9: Title")
   announce?: ((n: number, total: number, title?: string) => string) | false;
-  // 📏 0.2.3 (Joseph, Welcome 0.2.21): size the track to the ACTIVE slide (animated, reduced-motion aware)
+  // 📏 0.2.3 (Welcome 0.2.21): size the track to the ACTIVE slide (animated, reduced-motion aware)
   //    instead of the tallest one (default false: one grid cell, height = tallest, CLS 0)
   autoHeight?: boolean;
   // 🧱 element for the region (default 'section')
@@ -451,7 +451,7 @@ export function AbCarousel(props: AbCarouselProps) {
 // ===== 0.2.3 HEADLESS MODE: <AbCarouselProvider /> + useAbCarouselRegion() + <AbCarouselStatus /> ===== //
 
 /**
- * 🧠 AbCarouselProvider — 0.2.3 (Joseph, Welcome 0.2.21): the carousel state WITHOUT an element, so it no longer
+ * 🧠 AbCarouselProvider — 0.2.3 (Welcome 0.2.21): the carousel state WITHOUT an element, so it no longer
  * has to wrap <main>. Put it high enough for every control (header counter, aside dots, main track), then mark
  * ONE element as the region with `useAbCarouselRegion()` and drop <AbCarouselStatus /> inside it:
  *
@@ -500,14 +500,14 @@ export interface UseAbCarouselKeysOptions {
 const AB_CAROUSEL_KEYS_SKIP = '[role="dialog"], [aria-modal="true"], [contenteditable=""], [contenteditable="true"]';
 
 /**
- * ⌨️ useAbCarouselKeys — 0.2.3 (Joseph, Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on a SCOPE element, not
+ * ⌨️ useAbCarouselKeys — 0.2.3 (Welcome 0.2.21): the carousel's ←/→ (RTL-aware) on a SCOPE element, not
  * just inside the region. The listener sits on that element only, so keys act only while focus is within it.
  * Call it under <AbCarouselProvider> (or <AbCarousel>):
  *
  *   useAbCarouselKeys('main')                // ✅ RECOMMENDED: the layout's <main> (core's [data-ab-part="main"], else <main>)
  *   useAbCarouselKeys(slidesRef)             // 📌 any element you hold a ref to
  *   useAbCarouselKeys('document')            // ⚠️ OPT-IN only: every key on the page (header, aside…) — a global
- *                                            //    hijack; Joseph's e2e "no global hijack" forbids it on Welcome
+ *                                            //    hijack; the e2e "no global hijack" forbids it on Welcome
  *
  * There is no default: the scope is always explicit.
  *

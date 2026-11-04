@@ -59,7 +59,7 @@ export interface AbFlowNode {
   captionAt?: 'start' | 'beside-centre';
 }
 
-// 🖼️ 0.2.3: a fixed design frame (John's v6 scene = 760×600 with a 56px header); scales to the card width
+// 🖼️ 0.2.3: a fixed design frame (the v6 scene = 760×600 with a 56px header); scales to the card width
 export interface AbFlowFrame {
   w: number; // ↔️ px
   h: number; // ↕️ px
@@ -103,7 +103,7 @@ const H = (n: Rect): number => n.h ?? 0; // ↕️
 
 /**
  * @name routeAbFlowWires
- * @description 〰️ 0.2.3: John's v6 `route(nodes, hub)` (scenes.py), ported 1:1. Nodes above the hub wire down into
+ * @description 〰️ 0.2.3: the v6 `route(nodes, hub)` (scenes.py), ported 1:1. Nodes above the hub wire down into
  * its top edge, nodes below wire up into its bottom edge (anchors spread evenly along the edge, sorted by x), side
  * nodes wire into the left / right edge. Orthogonal elbows (one horizontal run at mid-height / mid-width).
  * Every wire starts at the node and ends at the hub, so pulses travel node → hub.

@@ -181,7 +181,7 @@ describe('AbSplash timing & inert', () => {
   })
 })
 
-describe('AbSplash — James review (P1 compiled CSP, unmount, failsafe, colours)', () => {
+describe('AbSplash — review (P1 compiled CSP, unmount, failsafe, colours)', () => {
   // 📁 helpers
   const root = join(import.meta.dirname, '..') // 📁
   const read = (rel: string) => readFileSync(join(root, rel), 'utf8') // 📖

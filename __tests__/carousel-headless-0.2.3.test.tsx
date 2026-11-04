@@ -54,7 +54,7 @@ import {
 
 afterEach(() => cleanup())
 
-// 🧱 Joseph's Welcome shape: the counter lives in the header, the track in <main>, the provider above both
+// 🧱 the Welcome shape: the counter lives in the header, the track in <main>, the provider above both
 function Slides() {
   const region = useAbCarouselRegion() // 🧷
   return (
@@ -71,7 +71,7 @@ const App = () => (
   </AbCarouselProvider>
 )
 
-describe('🧠 AbCarouselProvider: headless mode (Joseph, Welcome 0.2.21)', () => {
+describe('🧠 AbCarouselProvider: headless mode (Welcome 0.2.21)', () => {
   it('renders no wrapper: <main> is not inside a carousel element', () => {
     const { container } = render(<App />)
     expect(container.firstElementChild?.id).toBe('hdr') // 🫥 no <section> around everything

@@ -46,7 +46,7 @@ import type { AbPlaygroundSceneLabels, AbPlaygroundSceneName } from './labels';
 import { buildI18nCompact, buildI18nFull } from './i18n';
 // 🎠 0.2.3: v6 s01 (welcome) + s09 (all)
 import { buildAllCompact, buildAllFull, buildWelcomeCompact, buildWelcomeFull } from './welcome';
-// 🎨 0.2.3 (God 03:02): John's upgraded package scenes
+// 🎨 0.2.3: the upgraded package scenes
 import { buildAnimationsUp, buildComponentsUp, buildCoreUp, buildFontsUp, buildHooksUp, buildIconsUp, buildThemeUp } from './upgraded';
 
 // 📦 v6 PKG
@@ -68,7 +68,7 @@ const N = (x: number, y: number, w: number, h: number, content: ReactNode, capti
 export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPlaygroundSceneLabels, logo: ReactNode, still = 0): AbPlaygroundSceneData {
   seq = 0;
   switch (name) {
-    // 🎨 0.2.3 (God 03:02): John's Welcome v6 UPGRADED scenes (playground-spec.md rev 2): real export captions,
+    // 🎨 0.2.3: the Welcome v6 UPGRADED scenes (playground-spec.md rev 2): real export captions,
     //    4 states × 0.6s, reduced-motion still = state 0. Motion = ab-nextjs-animations' state cycle (upgraded.tsx)
     case 'core': return { nodes: buildCoreUp(N, false) };
     case 'components': return { nodes: buildComponentsUp(N, false, logo) };
@@ -79,7 +79,7 @@ export function buildAbPlaygroundFullScene(name: AbPlaygroundSceneName, L: AbPla
     case 'hooks': return { nodes: buildHooksUp(N, false, logo) };
     case 'welcome': return buildWelcomeFull(N, L, logo); // 🎠 v6 s01
     case 'all': return buildAllFull(N, L, logo); // 🎠 v6 s09
-    default: return { nodes: buildI18nFull(N, L, still) }; // 🌍 John's illustration 8 (`still` = the reduced-motion locale)
+    default: return { nodes: buildI18nFull(N, L, still) }; // 🌍 the illustration 8 (`still` = the reduced-motion locale)
   }
 }
 
@@ -88,7 +88,7 @@ export function buildAbPlaygroundCompactScene(name: AbPlaygroundSceneName, L: Ab
   seq = 0;
   const sc = (...n: AbFlowNode[]): AbPlaygroundSceneData => ({ nodes: n });
   switch (name) {
-    // 🎨 0.2.3 (God 03:02): upgraded mobile scenes (3 nodes + hub at y 122 / h 58; bottom caption right of the wire)
+    // 🎨 0.2.3: upgraded mobile scenes (3 nodes + hub at y 122 / h 58; bottom caption right of the wire)
     case 'core': return sc(...buildCoreUp(N, true));
     case 'components': return sc(...buildComponentsUp(N, true, logo));
     case 'theme': return sc(...buildThemeUp(N, true));

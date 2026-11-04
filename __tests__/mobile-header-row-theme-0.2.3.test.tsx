@@ -47,7 +47,7 @@ import AbMobileHeader, { AB_MOBILE_HEADER_THEME_CYCLE } from '../ab-mobile-heade
 afterEach(() => cleanup())
 const theme = (c: HTMLElement) => c.querySelector<HTMLButtonElement>('[data-ab-part="mobile-header-theme"]')!
 
-describe('🌗 AbMobileHeader: 3-state theme (Joseph, Welcome 0.2.21)', () => {
+describe('🌗 AbMobileHeader: 3-state theme (Welcome 0.2.21)', () => {
   it('cycles light → dark → system → light, showing and naming the target', () => {
     expect(AB_MOBILE_HEADER_THEME_CYCLE).toEqual(['light', 'dark', 'system']) // 🔁
     const cases: Array<[ 'light' | 'dark' | 'system', 'light' | 'dark' | 'system', string, string ]> = [
@@ -75,7 +75,7 @@ describe('🌗 AbMobileHeader: 3-state theme (Joseph, Welcome 0.2.21)', () => {
   })
 })
 
-describe('➕ AbMobileHeader: an extra row shared with the main header (Joseph)', () => {
+describe('➕ AbMobileHeader: an extra row shared with the main header', () => {
   it('row renders a second row under the 56px bar, marked for core to let the slot grow', () => {
     const { container } = render(<AbMobileHeader logo={<a href="/">logo</a>} onLanguage={() => {}} row={<span id="counter">02 / 09</span>} />)
     const root = container.querySelector('[data-ab-part="mobile-header"]')!

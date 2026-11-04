@@ -77,7 +77,7 @@ describe('AbIcon client (G2)', () => {
     registerAbIcons({ reg_dot: dot }) // 🗂️
     expect(renderToStaticMarkup(<AbIcon name="reg_dot" filled />)).toContain('fill="currentColor"') // ⬛ legacy filled
     const fb = renderToStaticMarkup(<AbIcon name="not_an_icon" title="Old" />) // 🕰️
-    expect(fb).toContain('data-ab-icon-fallback="font"') // 🔎 0.1.13 (James review): not breaking in a patch
+    expect(fb).toContain('data-ab-icon-fallback="font"') // 🔎 0.1.13 (review): not breaking in a patch
     expect(fb).toContain('material-symbols-rounded') // 🕰️ legacy font class
     expect(fb).toContain('>not_an_icon<') // 🕰️ ligature text (shows as text once the app drops the font)
     expect(fb).toContain('aria-label="Old"') // ♿ legacy title still names it
@@ -114,7 +114,7 @@ describe('AbIcon server (G2)', () => {
   })
 })
 
-// 🌗🅰️ 0.3.2 (God): brightness_auto is a builtin, so AbSettingsDrawer's system option (and the toggles) render it
+// 🌗🅰️ 0.3.2: brightness_auto is a builtin, so AbSettingsDrawer's system option (and the toggles) render it
 describe('AbIcon builtin brightness_auto 0.3.2', () => {
   it('is registered and renders an svg; computer stays for older apps', () => {
     expect(AB_ICON_BUILTINS.brightness_auto).toBeDefined() // 🗂️

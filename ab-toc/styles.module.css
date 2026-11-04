@@ -65,7 +65,7 @@
 .abTocFooter a svg { flex: none; width: 15px; height: 15px; color: var(--ab-color-faint, inherit); } /* 🔣 GitHub · north_east */
 .abTocFooter > ul { list-style: none; margin: 0; padding: 0; }
 
-/* 🆕 0.2.1 (God 02:44): AbTocPromo, the aside "New" card (mock .toc-card), theme tokens only */
+/* 🆕 0.2.1: AbTocPromo, the aside "New" card (mock .toc-card), theme tokens only */
 .abTocPromo {
   position: relative; /* 📌 the stretched link */
   display: flex; flex-direction: column; align-items: flex-start; gap: 6px; /* 📐 */

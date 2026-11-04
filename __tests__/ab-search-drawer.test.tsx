@@ -45,7 +45,7 @@ import AbSearchDrawer, { AB_SEARCH_RECENT_KEY, addAbSearchRecent, highlightAbSea
 import { AB_DRAWER_DURATION } from '../ab-drawer'
 import * as pkg from '../index'
 
-// 📦 John's frame data
+// 📦 the frame data
 const RES: AbSearchDrawerGroup[] = [
   { id: 'c', label: 'Components', meta: 'ab-nextjs-components', items: [{ id: 'b', href: '/c/button', title: 'AbButton', description: 'Primary, secondary and ghost buttons.', meta: 'v0.2.x', icon: 'widgets' }, { id: 'ib', href: '/c/icon-button', title: 'AbIconButton', description: '44px icon-only button with aria-label.', meta: 'v0.2.x', icon: 'widgets' }] },
   { id: 'h', label: 'Hooks', meta: 'ab-nextjs-hooks', items: [{ id: 'ub', href: '/h/use-button', title: 'useButton', description: 'Press, focus and loading state for buttons.', meta: 'v0.2.x', icon: 'webhook' }] },
@@ -131,7 +131,7 @@ describe('AbSearchDrawer (drawers v2 §4) 🔎', () => {
     expect(renderToStaticMarkup(<>{highlightAbSearch('Button buttons', 'button')}</>)).toBe('<mark class="mark">Button</mark> <mark class="mark">button</mark>s')
   })
   it('is exported from the package root', () => { expect(pkg.AbSearchDrawer).toBe(AbSearchDrawer) })
-  it('a rejected (or throwing) search clears to a safe empty state: no stale results, no unhandled rejection (James P2)', async () => {
+  it('a rejected (or throwing) search clears to a safe empty state: no stale results, no unhandled rejection (P2)', async () => {
     let fail = false
     const flaky = vi.fn((q: string) => { if (fail) return q === 'buttons' ? Promise.reject(new Error('net')) : (() => { throw new Error('sync') })(); return RES })
     const { input } = await mount({ search: flaky })
@@ -145,7 +145,7 @@ describe('AbSearchDrawer (drawers v2 §4) 🔎', () => {
     fail = false; await type(input, 'button'); await flush()
     expect(document.querySelectorAll('[role="option"]').length).toBe(3) // 🔁 recovers
   })
-  it('group heading ids are sanitised and unique, and each group stays labelled (James P2)', async () => {
+  it('group heading ids are sanitised and unique, and each group stays labelled (P2)', async () => {
     const odd: AbSearchDrawerGroup[] = [{ ...RES[0], id: '@ab/components x' }, { ...RES[1], id: '@ab/components.x' }]
     const { input } = await mount({ search: () => odd })
     await type(input, 'button'); await flush()

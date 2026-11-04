@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: Layout rule + Joseph steering (0.1.13)
+* @name: Layout rule + QA steering (0.1.13)
 * @file: __tests__/layout-rule-0.1.13.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -63,7 +63,7 @@ afterEach(cleanup) // 🧹
 // ⬛ a filled icon with a mask (same shape as ab-nextjs-icons `homeFilledMask`)
 const HOME = { outlined: '<svg><path d="M0 0"/></svg>', filled: '<svg><defs><mask id="homeFilledMask"><rect/></mask></defs><path mask="url(#homeFilledMask)"/></svg>' }
 
-describe('AbIcon per-instance mask ids (Joseph) 🆔', () => {
+describe('AbIcon per-instance mask ids 🆔', () => {
   it('two filled Homes on one page never share a mask id (client + server)', () => {
     for (const Icon of [AbIcon, ServerAbIcon]) {
       const html = renderToStaticMarkup(<><Icon name="home" svg={HOME} filled /><Icon name="home" svg={HOME} filled /></>)
@@ -80,7 +80,7 @@ describe('AbIcon per-instance mask ids (Joseph) 🆔', () => {
   })
 })
 
-describe('AbAppBar active link from the AbLinkProvider locales (Joseph) 🌍', () => {
+describe('AbAppBar active link from the AbLinkProvider locales 🌍', () => {
   const nav = [{ href: '/docs', label: 'Docs' }, { href: '/blog', label: 'Blog' }]
   it('/fr/docs/hooks marks Docs when the provider knows `fr`', () => {
     const { container } = render(<AbLinkProvider component={(p: { href: string; children?: React.ReactNode }) => <a {...p} />} locales={['en', 'fr']}><AbAppBar nav={nav} /></AbLinkProvider>)
@@ -95,7 +95,7 @@ describe('AbAppBar active link from the AbLinkProvider locales (Joseph) 🌍', (
   })
 })
 
-describe('AbPackageCard names wrap at hyphens (Joseph) 🧩', () => {
+describe('AbPackageCard names wrap at hyphens 🧩', () => {
   it('puts a <wbr> after each hyphen, keeps the full name in title', () => {
     const html = renderToStaticMarkup(<AbPackageCard name="ab-nextjs-components" href="/docs/components" description="x" />)
     expect(html).toContain('ab-<wbr/>nextjs-<wbr/>components') // ✂️ break points
@@ -103,7 +103,7 @@ describe('AbPackageCard names wrap at hyphens (Joseph) 🧩', () => {
   })
 })
 
-describe('AbSidebar item keys (James nit) 🔑', () => {
+describe('AbSidebar item keys (nit) 🔑', () => {
   it('keys items by `id`, falling back to `href`, and still renders both same-href items', () => {
     const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../ab-sidebar/view.tsx'), 'utf8')
     expect(src).toMatch(/<li key=\{item\.id \?\? item\.href\}>/) // 🔑
@@ -113,7 +113,7 @@ describe('AbSidebar item keys (James nit) 🔑', () => {
 })
 
 describe('AbToc follows the main scroller (D35/G55) 📜', () => {
-  it('getAbMainScroller ships: `ab-nextjs-components/ab-toc` export + files, and the root barrel (Joseph)', async () => {
+  it('getAbMainScroller ships: `ab-nextjs-components/ab-toc` export + files, and the root barrel', async () => {
     const pkg = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../package.json'), 'utf8'))
     expect(pkg.exports['./ab-toc']).toBe('./ab-toc/index.tsx') // 🚪 subpath
     expect(pkg.files).toContain('ab-toc') // 📦 packed
@@ -121,7 +121,7 @@ describe('AbToc follows the main scroller (D35/G55) 📜', () => {
     expect(typeof root.getAbMainScroller).toBe('function')
     expect(root.AB_MAIN_SCROLLER_SELECTOR).toBe('[data-ab-part="main-content"]')
   })
-  it('no component calls getAbMainScroller during render (James nit: effects / handlers only)', () => {
+  it('no component calls getAbMainScroller during render (nit: effects / handlers only)', () => {
     const base = join(dirname(fileURLToPath(import.meta.url)), '..')
     const walk = (d: string): string[] => readdirSync(d).flatMap((f) => { const p = join(d, f); return f === 'node_modules' || f === '__tests__' ? [] : statSync(p).isDirectory() ? walk(p) : /\.tsx?$/.test(f) ? [p] : [] })
     for (const f of walk(base)) {

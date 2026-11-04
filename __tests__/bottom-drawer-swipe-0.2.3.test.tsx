@@ -68,7 +68,7 @@ function Sheet({ onClose, swipeToClose, scroller }: { onClose: () => void; swipe
   )
 }
 
-describe('👇 AbBottomDrawer: swipe down to close (Joseph, Welcome 0.2.21)', () => {
+describe('👇 AbBottomDrawer: swipe down to close (Welcome 0.2.21)', () => {
   it('a long slow drag down (> 30% of the height) closes, and the moves are prevented', () => {
     const onClose = vi.fn(); render(<Sheet onClose={onClose} />); sized()
     const prevented = touch(document.getElementById('row')!, line(100, 260), 900) // 160 > 120, 0.18px/ms
@@ -112,7 +112,7 @@ describe('👇 AbBottomDrawer: swipe down to close (Joseph, Welcome 0.2.21)', ()
   })
 })
 
-describe('↩️ AbBottomDrawer: focus returns to the trigger on close (Joseph)', () => {
+describe('↩️ AbBottomDrawer: focus returns to the trigger on close', () => {
   function Host({ withRef }: { withRef?: boolean }) {
     const [open, setOpen] = useState(false); const ref = useRef<HTMLButtonElement>(null)
     return (

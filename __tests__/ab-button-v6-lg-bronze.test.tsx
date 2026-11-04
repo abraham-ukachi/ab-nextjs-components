@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbButton v6 lg + bronze (God 04:12)
+* @name: AbButton v6 lg + bronze
 * @file: __tests__/ab-button-v6-lg-bronze.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -39,7 +39,7 @@
 // @vitest-environment happy-dom
 
 // 🧪 vitest
-// 🧪 0.2.3 (God 04:12): size="lg" + color="bronze" (v6 Welcome CTA), client AND server.
+// 🧪 0.2.3: size="lg" + color="bronze" (v6 Welcome CTA), client AND server.
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'

@@ -48,7 +48,7 @@
 import { useState, type ReactElement } from 'react';
 // 🧭 current route (fallback when `activeHref` is omitted)
 import { usePathname } from 'next/navigation';
-// 🌍 0.1.13 (Joseph #10): locale-stripped pathname
+// 🌍 0.1.13 (#10): locale-stripped pathname
 import { stripAbLocalePrefix, useAbLocales } from '../ab-link';
 // 🔣 client AbIcon (built-in chevrons are always registered)
 import AbIcon from '../ab-icon';
@@ -56,7 +56,7 @@ import AbIcon from '../ab-icon';
 import { AbSidebarView, createAbSidebarActive, toAbSidebarSections, type AbSidebarBaseProps } from './view';
 // 🎨 styles
 import styles from './styles.module.css';
-// 👤 0.2.1 (God 02:44): the bottom-left profile button (≥ 1180px, CSS)
+// 👤 0.2.1: the bottom-left profile button (≥ 1180px, CSS)
 import AbSidebarProfileButton, { type AbSidebarProfileButtonProps } from './profile-button';
 
 // 📦 re-export the shared types
@@ -72,7 +72,7 @@ export interface AbSidebarProps extends AbSidebarBaseProps {
   defaultCollapsed?: boolean; // 🚪 uncontrolled start
   onCollapsedChange?: (collapsed: boolean) => void; // 🔔
   collapsible?: boolean; // 🔘 show the collapse button (default true when sections are given)
-  // 👤 0.2.1 (God 02:44): opt-in; pass `user` + the AbSettingsDrawer props for a profile button at the bottom left
+  // 👤 0.2.1: opt-in; pass `user` + the AbSettingsDrawer props for a profile button at the bottom left
   profile?: Omit<AbSidebarProfileButtonProps, 'collapsed'>;
   collapseButtonVariant?: 'plain' | 'outlined'; // ⏪ 0.1.14 (P9): 'outlined' = 32×32 bordered `<<` / `>>` (default 'plain' chevron)
 }

@@ -92,7 +92,7 @@ export interface AbNavDrawerProps {
 }
 
 /**
- * ⬅️ AbNavDrawer — John's left drawer (drawers v2 §2): the mobile sidebar.
+ * ⬅️ AbNavDrawer — the left drawer (drawers v2 §2): the mobile sidebar.
  *
  * - 📐 320px, full height, 0 16 16 0 radius; header = logo + 44px ✕; the version chip; a scrolling nav
  *   (44px rows, uppercase group headings, a 72px fade); a pinned footer of 48px rows

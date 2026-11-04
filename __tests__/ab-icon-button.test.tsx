@@ -69,7 +69,7 @@ describe('AbIconButton (G6)', () => {
     expect(attrsOf(html, 'button')).toContain('aria-label="Clear"') // ♿
   })
 
-  it('renders the glyph with AbIcon (SVG, decorative), not the font (Joseph #6)', () => {
+  it('renders the glyph with AbIcon (SVG, decorative), not the font (#6)', () => {
     const html = renderToStaticMarkup(<AbIconButton icon="arrow_back" label="Back" />) // 🖨️
     expect(html).toContain('<svg') // 🔣 AbIcons SVG
     expect(html).toMatch(/class="AbIcon [^"]*icon"[^>]*aria-hidden="true"/) // 🙈 decorative
@@ -92,7 +92,7 @@ describe('AbIconButton (G6)', () => {
     expect(button).toContain('aria-busy="true"') // ⏳
     expect(button).toContain('disabled=""') // 🚦
   })
-  // ♿ 0.1.14 (Joseph): disclosure buttons (menu, drawer, TOC) need the ARIA state on the <button>
+  // ♿ 0.1.14: disclosure buttons (menu, drawer, TOC) need the ARIA state on the <button>
   it('passes aria-expanded / aria-controls through to the button', () => {
     const open = attrsOf(renderToStaticMarkup(<AbIconButton icon="menu" label="Menu" aria-expanded aria-controls="nav-drawer" />), 'button') // 🖨️
     expect(open).toContain('aria-expanded="true"') // 📂

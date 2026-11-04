@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbTocPromo (0.2.1, God 02:44, mock .toc-card)
+* @name: AbTocPromo (0.2.1, approved, mock .toc-card)
 * @file: ab-toc/promo.tsx
 * @type: React Component (no hooks: client + server)
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -54,7 +54,7 @@ export interface AbTocPromoProps {
   children?: ReactNode; // 📝 the 11.5px muted subtitle (a `<code>` inside is 10.5px)
   badge?: ReactNode; // 🆕 the small chip (default "New"; `null` = none)
   href?: string; // 🔗 makes the title a link (the whole card clicks)
-  // ♿ 0.3.2 (God, 0.2.23 gaps): the card sits INSIDE the page aside, so by default its root is a plain <div> (no
+  // ♿ 0.3.2 (0.2.23 gaps): the card sits INSIDE the page aside, so by default its root is a plain <div> (no
   //    unnamed nested <aside> landmark). With `label` it becomes a NAMED <aside aria-label={label}> instead
   label?: string;
   className?: string; // 🏷️

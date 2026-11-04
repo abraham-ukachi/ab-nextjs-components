@@ -55,7 +55,7 @@ const $ = (s: string) => document.querySelector<HTMLElement>(s) // 🔍
 
 describe('👤 AbProfileAvatar (0.2.1)', () => {
   it('🔤 initials: first + last word', () => {
-    expect(getAbInitials('Abraham Ukachi')).toBe('AU') // ✅ God's example
+    expect(getAbInitials('Abraham Ukachi')).toBe('AU') // ✅ the example
     expect(getAbInitials('  cher ')).toBe('C') // 1️⃣
     expect(getAbInitials('Jean Paul Sartre')).toBe('JS') // 🅰️🅱️
     expect(getAbInitials('')).toBe('') // 🚫
@@ -69,7 +69,7 @@ describe('👤 AbProfileAvatar (0.2.1)', () => {
   })
 })
 
-describe('⚙️ AbSettingsDrawer account, Help and About (God 02:44)', () => {
+describe('⚙️ AbSettingsDrawer account, Help and About', () => {
   it('👤 signed in: an Account section on top with the avatar, name and email', () => {
     const onAccount = vi.fn(); mount({ account: { name: 'Abraham Ukachi', email: 'a@b.c' }, onAccount })
     const sec = $('[data-ab-part="settings-account"]')!

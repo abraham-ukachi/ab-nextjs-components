@@ -55,7 +55,7 @@ const SPEC = /(?:from\s+|import\s*\(?\s*|@import\s+(?:url\()?)['"](\.{1,2}\/[^'"
 const EXT = ['', '.ts', '.tsx', '.d.ts', '.css', '/index.ts', '/index.tsx', '/index.d.ts']
 const target = (from: string, spec: string) => EXT.map((e) => resolve(dirname(from), spec) + e).find((p) => existsSync(p) && statSync(p).isFile()) // 📍
 
-// 🛡️ 0.2.3 (Joseph): ab-theme-mode/ was imported by shipped files but missing from `files` → TS2307 / Module not found
+// 🛡️ 0.2.3: ab-theme-mode/ was imported by shipped files but missing from `files` → TS2307 / Module not found
 describe('📦 pack integrity: every relative import in a shipped file resolves to a shipped file', () => {
   it('scans a real set of shipped sources', () => { expect(sources.length).toBeGreaterThan(10) }) // 🧮
   it('no import points outside `files` (or nowhere)', () => {

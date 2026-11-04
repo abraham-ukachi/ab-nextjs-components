@@ -62,7 +62,7 @@ export interface AbNavbarButtonItem {
   onSelect?: () => void; // 🔔
   expanded?: boolean; // ♿ aria-expanded for sheet toggles
   controls?: string; // ♿ aria-controls
-  disabled?: boolean; // 🚫 0.1.13 (Joseph #8, D24/D25): focusable, announced, inert (aria-disabled)
+  disabled?: boolean; // 🚫 0.1.13 (#8, D24/D25): focusable, announced, inert (aria-disabled)
   comingSoon?: boolean | string; // 🚧 0.1.13: inert + a "Coming soon" tag (string = your translated label)
 }
 

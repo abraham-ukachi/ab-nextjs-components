@@ -53,7 +53,7 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals() }) // 🧹
 const src = (f: string) => readFileSync(join(__dirname, '..', 'ab-code-block', f), 'utf8') // 📖
 const shiki = '<pre class="shiki" tabindex="0"><code><span class="line">const a = 1</span></code></pre>' // 🖍️ a Shiki-like string
 
-// 💻 Joseph (0.2.24 MDX docs): server code block + client copy island
+// 💻 QA (0.2.24 MDX docs): server code block + client copy island
 describe('💻 AbCodeBlock', () => {
   it('is server-safe: no "use client" in index.tsx, only in copy.tsx', () => {
     expect(src('index.tsx')).not.toMatch(/^'use client'/m) // 🖥️

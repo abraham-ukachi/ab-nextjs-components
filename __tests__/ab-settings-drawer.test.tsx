@@ -67,7 +67,7 @@ describe('AbSettingsDrawer (drawers v2 §1) ⚙️', () => {
     expect(document.querySelector('[data-tier="sheet"]')).not.toBeNull() // 🥞
     const groups = Array.from(document.querySelectorAll('[role="radiogroup"]')).map((g) => document.getElementById(g.getAttribute('aria-labelledby')!)!.textContent)
     expect(groups).toEqual(['Theme', 'Language']) // 🎚️ 🌍
-    expect(dlg.textContent).not.toMatch(/Reduce animations|Text size|About/) // 🚫 God 01:22: dropped
+    expect(dlg.textContent).not.toMatch(/Reduce animations|Text size|About/) // 🚫 dropped
   })
   it('theme: Light / Dark / System radios with aria-checked; click + arrows pick', () => {
     stubMedia(true); const p = mount()

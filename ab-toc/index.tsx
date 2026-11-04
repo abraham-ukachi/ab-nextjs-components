@@ -62,7 +62,7 @@ export const AB_MAIN_SCROLLER_SELECTOR = '[data-ab-part="main-content"]';
  * Use it as `useAbScrollSpy({ root })` / `scrollToAbSection(id, { container })`.
  *
  * ⚠️ Call it only in an effect or an event handler, **never during render**: it reads the DOM, so a render
- *    call returns `null` on the server and the element on the client (hydration mismatch). (James nit)
+ *    call returns `null` on the server and the element on the client (hydration mismatch). (nit)
  */
 export function getAbMainScroller(from?: Element | null): HTMLElement | null {
   if (typeof document === 'undefined') return null; // 🖥️ SSR
@@ -86,7 +86,7 @@ export interface AbTocProps {
   items: AbTocItem[]; // 📑
   activeId?: string | null; // 🎯 e.g. from useAbScrollSpy (hooks 0.1.7)
   title?: string; // 🏷️ default "On this page"
-  label?: string; // 🏷️ 0.1.13 (Joseph #16): alias of `title`; `title` wins when both are set
+  label?: string; // 🏷️ 0.1.13 (#16): alias of `title`; `title` wins when both are set
   onNavigate?: (id: string) => void; // 🔔 e.g. scrollToAbSection(id, { container }) (hooks 0.1.7); without it a plain #id jump, which scrolls the nearest scroller (the main pane in core 0.1.6 panes)
   id?: string; // 🆔 root id (default "ab-toc"); the title gets `${id}-title`
   className?: string; // 🏷️
@@ -158,5 +158,5 @@ const AbToc = ({ items, activeId, label, title = label ?? 'On this page', onNavi
 export default AbToc;
 export { AbToc };
 
-// 🆕 0.2.1 (God 02:44): the aside "New" card
+// 🆕 0.2.1: the aside "New" card
 export { AbTocPromo, type AbTocPromoProps } from './promo';

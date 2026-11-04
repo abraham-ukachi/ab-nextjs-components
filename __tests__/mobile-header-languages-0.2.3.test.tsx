@@ -50,7 +50,7 @@ const LANGS: AbMobileHeaderLanguage[] = [
   { locale: 'fr', label: 'Français', href: '/fr/welcome' },
 ] // 🌍
 
-describe('🧩 AbMobileHeader `languages`: no-JS <details> fallback (Joseph, Welcome 0.2.21)', () => {
+describe('🧩 AbMobileHeader `languages`: no-JS <details> fallback (Welcome 0.2.21)', () => {
   it('server HTML: a <details>/<summary> globe with real links, no popup ARIA (works without JS)', () => {
     const html = renderToStaticMarkup(<AbMobileHeader logo="x" languages={LANGS} onLanguage={() => {}} languageControls="lang" />)
     expect(html).toMatch(/<details[^>]*data-ab-part="mobile-header-languages"><summary/) // 🧩

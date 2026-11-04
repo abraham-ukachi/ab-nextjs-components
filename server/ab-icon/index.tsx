@@ -67,7 +67,7 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
   const want: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
   // 🔍 explicit → registered → whole map (weight is applied by CSS, so ask for the raw markup)
   const markup = pickAbIconMarkup(svg ?? getRegisteredAbIcon(name), want) ?? getAbIconSvg(name, want);
-  // 🆔 one id per rendered instance (Joseph: a hidden twin's mask broke the active Home)
+  // 🆔 one id per rendered instance (a hidden twin's mask broke the active Home)
   const uid = useId();
   // 🎚️ legacy `filled` → variant
   const v: AbIconVariant = variant ?? (filled ? 'filled' : 'outlined');
@@ -94,7 +94,7 @@ const AbIcon = ({ name, variant, filled = false, weight, size, label, title, svg
     );
   }
 
-  // 🕰️ 0.1.13 (James review): NON-breaking fallback for unregistered names. A patch must not blank icons,
+  // 🕰️ 0.1.13 (review): NON-breaking fallback for unregistered names. A patch must not blank icons,
   //    so an unknown name still renders the pre-G2 Material Symbols ligature (needs the app's font), and
   //    warns once in development so the missing registration gets fixed before the app drops the font.
   warnAbIconMissing(name);

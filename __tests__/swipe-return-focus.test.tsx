@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: Swipe-open → Esc → focus back on the logo (Joseph, 0.2.1)
+* @name: Swipe-open → Esc → focus back on the logo (0.2.1)
 * @file: __tests__/swipe-return-focus.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -68,7 +68,7 @@ function App({ returnFocus }: { returnFocus?: string }) {
 }
 const box = () => { document.getElementById('app')!.getBoundingClientRect = () => ({ left: 0, right: 390, top: 0, bottom: 844, width: 390, height: 844, x: 0, y: 0, toJSON: () => ({}) }) } // 📐
 
-describe('↩️ swipe-opened nav drawer returns focus to the logo (Joseph)', () => {
+describe('↩️ swipe-opened nav drawer returns focus to the logo', () => {
   it('no returnFocus prop: Esc lands on the mobile header logo, not a stale element', async () => {
     render(<App />); box()
     document.getElementById('stale')!.focus() // 🫥 an old focus

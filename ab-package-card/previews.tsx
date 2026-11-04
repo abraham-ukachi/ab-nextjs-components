@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbPackageCard Home previews (0.2.1, God 02:44, mock .pv-*)
+* @name: AbPackageCard Home previews (0.2.1, approved, mock .pv-*)
 * @file: ab-package-card/previews.tsx
 * @type: React Component (no hooks: client + server)
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>

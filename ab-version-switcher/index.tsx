@@ -62,7 +62,7 @@ export interface AbVersionOption {
 
 /** ⚙️ props */
 export interface AbVersionSwitcherProps {
-  label?: string; // 🏷️ text before the version; default none (0.2.0, God 01:27: the app IS the docs, so no "Docs" prefix)
+  label?: string; // 🏷️ text before the version; default none (0.2.0, the app IS the docs, so no "Docs" prefix)
   version: string; // ✅ current version (shown bold), e.g. 'v0.2.x'
   versions?: readonly AbVersionOption[]; // 📋 the choices (none / one = a static label, no menu)
   onSelect?: (value: string) => void; // 📣 button items
@@ -80,7 +80,7 @@ const AbVersionSwitcher = ({ label = '', version, versions = [], onSelect, menuL
   const menuId = `ab-version-menu-${useId().replace(/:/g, '')}`; // 🆔
   const wrap = useRef<HTMLDivElement>(null); // 📍
   const btn = useRef<HTMLButtonElement>(null); // 📍
-  const name = menuLabel ?? (label ? `${label} ${version}` : `Version ${version}`); // ♿ WCAG 2.5.3 label-in-name (James); no label → "Version v0.2.x" (James P2, still contains the visible text)
+  const name = menuLabel ?? (label ? `${label} ${version}` : `Version ${version}`); // ♿ WCAG 2.5.3 label-in-name; no label → "Version v0.2.x" (P2, still contains the visible text)
   const hasMenu = versions.length > 1; // 📋
 
   // ⎋ Escape + outside click close it

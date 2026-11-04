@@ -65,7 +65,7 @@ function MainKeys() { useAbCarouselKeys('main'); return <main><button id="cta2">
 const App = (p: Parameters<typeof Keys>[0]) => <AbCarouselProvider label="W" count={3}><Keys {...p} /></AbCarouselProvider>
 const key = (id: string, k: string, extra: Record<string, unknown> = {}) => act(() => { fireEvent.keyDown(document.getElementById(id)!, { key: k, ...extra }) })
 
-describe('⌨️ useAbCarouselKeys (Joseph, Welcome 0.2.21)', () => {
+describe('⌨️ useAbCarouselKeys (Welcome 0.2.21)', () => {
   it('"document": arrows from the header move the slides', () => {
     render(<App on="document" />)
     key('hdr', 'ArrowRight'); expect(active()).toBe('B') // ⏭️

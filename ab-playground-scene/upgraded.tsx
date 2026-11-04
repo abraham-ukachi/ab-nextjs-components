@@ -36,7 +36,7 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-// 🎨 0.2.3 (God 03:02, John's Welcome v6 "upgraded" designs): the 7 package scenes, 1:1 with
+// 🎨 0.2.3 (the Welcome v6 "upgraded" designs): the 7 package scenes, 1:1 with
 //    ai-mocks/welcome-v6/upgraded/_src/build_upgraded.py + playground-spec.md rev 2 (real export names as captions,
 //    4 states × 0.6s = one 2.4s loop, reduced-motion still = state 0). ALL motion = ab-nextjs-animations' state cycle.
 
@@ -65,7 +65,7 @@ import article from 'ab-nextjs-icons/ab-icons/icons/article';
 // 🎨 mock content classes
 import s from './styles.module.css';
 
-// 🥉 John's bronze
+// 🥉 the bronze
 const BRONZE = '#A67C52';
 // 🌍 the 4 locale chips
 const LOC = ['EN', 'FR', 'ES', 'RU'];
@@ -236,7 +236,7 @@ export function buildIconsUp(N: AbPgMk, compact: boolean): AbFlowNode[] {
   const wts: Array<[number, number]> = [[100, 0.7], [200, 1.25], [400, 1.9], [700, 2.8]];
   return [
     N(220, 262, 320, 124, <span className={s.icGrid}>{names.map((n, i) => cell(n, i, 22, 38))}</span>, 'abIconNames', true),
-    // ⭐ John's weight picker steps with a soft highlight (his `[data-on]` has no chip fill here), same as the grid
+    // ⭐ the weight picker steps with a soft highlight (his `[data-on]` has no chip fill here), same as the grid
     N(40, 100, 210, 96, <span className={s.wts}>{wts.map(([w, sw], i) => <span key={w} {...hl(i, s.wt, 'transparent')}><Ic n="star" sz={22} sw={sw} /><span className={s.m} style={{ fontSize: 9.5 }}>{w}</span></span>)}</span>, 'abIconWeights'),
     N(290, 112, 180, 64, <M><Br>200</Br></M>, 'abIconDefaultWeight'),
     N(510, 104, 210, 84, <M><Br>getAbIconSvg</Br>(<Sg>&quot;anchor&quot;</Sg>)</M>, 'getAbIconSvg()'),

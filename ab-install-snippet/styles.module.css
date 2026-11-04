@@ -94,7 +94,7 @@
   align-items: center; /* ↕️ */
   gap: 0.5rem; /* 🧱 */
   min-width: 0; /* 🚫 overflow */
-  /* 💻 0.1.13 (Joseph #13): the command sits on the theme 0.3.4 code surface (dark in both themes) */
+  /* 💻 0.1.13 (#13): the command sits on the theme 0.3.4 code surface (dark in both themes) */
   padding: 0.375rem 0.375rem 0.375rem 0.75rem; /* 🧱 */
   border-radius: 0.625rem; /* 🔲 */
   background: var(--ab-color-code-surface, rgb(35 28 23)); /* 💻 */

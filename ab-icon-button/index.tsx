@@ -49,7 +49,7 @@ import { forwardRef } from 'react';
 import clsx from 'clsx';
 // 🎨 package-shipped CSS module
 import styles from './styles.module.css';
-// 🔣 0.1.13 (G2, Joseph #6): the glyph is an AbIcon SVG, not the Material Symbols font
+// 🔣 0.1.13 (G2, QA #6): the glyph is an AbIcon SVG, not the Material Symbols font
 import AbIcon from '../ab-icon';
 import { AB_MOTION } from 'ab-nextjs-animations/motion'; // 🎬 transition class names (ab-nextjs-animations >= 0.2.4)
 import 'ab-nextjs-animations/motion/styles.css'; // 🎨 .ab-motion-*

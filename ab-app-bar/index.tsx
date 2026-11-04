@@ -78,9 +78,9 @@ export interface AbAppBarProps {
   search?: ReactNode; // 🔎 e.g. <AbSearchTrigger />
   nav?: AbAppBarNavItem[]; // 🧭 inline from 1180px, in the "More" menu below
   activeHref?: string; // 🎯 default: the pathname without its locale prefix
-  locales?: readonly string[]; // 🌍 0.1.13 (Joseph): stripped from the pathname (default: AbLinkProvider's), so `/fr/docs` marks `/docs`
+  locales?: readonly string[]; // 🌍 0.1.13: stripped from the pathname (default: AbLinkProvider's), so `/fr/docs` marks `/docs`
   actions?: ReactNode; // 🔘 right side (theme toggle, locale switcher, GitHub…)
-  compactActions?: ReactNode; // 📱 0.1.13 (Joseph #3): shown INSTEAD of `actions` below 768px (e.g. only the theme toggle); the rest can live in the More menu or the nav sheet
+  compactActions?: ReactNode; // 📱 0.1.13 (#3): shown INSTEAD of `actions` below 768px (e.g. only the theme toggle); the rest can live in the More menu or the nav sheet
   leading?: ReactNode; // ☰ optional slot before the brand (e.g. a rail toggle)
   sticky?: boolean; // 📌 default true (hairline under it)
   labels?: { nav?: string; more?: string }; // 🌍
@@ -94,12 +94,12 @@ export interface AbAppBarProps {
   divider?: boolean;
   /** ⋮ 0.1.14 (P19): `false` = no "More" button/menu; below 1180px the nav is simply hidden (default `true`) */
   moreMenu?: boolean;
-  /** 🔎 0.1.15 (God 00:08): below 768px the search shows as a `'pill'` ("Search ⌘K", the Home mock) or an `'icon'`
+  /** 🔎 0.1.15: below 768px the search shows as a `'pill'` ("Search ⌘K", the Home mock) or an `'icon'`
    *  (40px circle, label for screen readers only). Default `'pill'` with `density="compact"`, else `'icon'` (unchanged). */
   compactSearch?: 'pill' | 'icon';
-  /** 🔗 0.1.15 (God 00:37): shown INSTEAD of `search` below 768px (both rendered, CSS picks: no hydration flip), e.g.
+  /** 🔗 0.1.15: shown INSTEAD of `search` below 768px (both rendered, CSS picks: no hydration flip), e.g.
    *  `<AbSearchTrigger size="sm" label="Search" onOpen={openSearchDrawer} hotkey={false} />`: a button that opens
-   *  AbSearchDrawer, with no ⌘K cap and no hotkey (God 01:27: there is no /docs page; `href` still makes a plain link).
+   *  AbSearchDrawer, with no ⌘K cap and no hotkey (there is no /docs page; `href` still makes a plain link).
    *  In a compact bar it is the mock's 114px pill (`--ab-app-bar-compact-search-width`).
    *  ⚠️ Both slots are rendered: a hotkey trigger (with `onOpen`) passed to BOTH `search` and `searchCompact` registers ⌘K
    *  twice (one press opens twice). Give only one of them `onOpen`, or pass `hotkey={false}` to the other. */

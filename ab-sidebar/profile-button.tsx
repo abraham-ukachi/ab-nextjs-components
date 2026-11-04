@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbSidebarProfileButton - Client (0.2.1, God 02:44)
+* @name: AbSidebarProfileButton - Client (0.2.1)
 * @file: ab-sidebar/profile-button.tsx
 * @type: Client Component
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -71,7 +71,7 @@ export interface AbSidebarProfileButtonProps extends Omit<AbSettingsDrawerProps,
 }
 
 /**
- * 👤 AbSidebarProfileButton — the bottom-left sidebar control (God 02:44, replaces the 0.2.1-draft settings icon
+ * 👤 AbSidebarProfileButton — the bottom-left sidebar control (replaces the 0.2.1-draft settings icon
  * button): a 40px profile circle (signed out: the profile glyph; signed in: the initials on the container colour, or
  * the photo masked to a circle) + the name when the sidebar is expanded. Tapping it opens AbSettingsDrawer.
  *

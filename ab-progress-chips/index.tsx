@@ -68,7 +68,7 @@ export interface AbProgressChipsProps {
 
 const DEFAULT_CHIPS: AbProgressChip[] = [
   { id: 1, code: 'A', name: 'Prep', duration: 20 },
-  { id: 2, code: 'B', name: 'Cook', duration: 40 },
+  { id: 2, code: 'B', name: 'Simmer', duration: 40 },
   { id: 3, code: 'C', name: 'Plate', duration: 15 },
 ];
 

@@ -60,7 +60,7 @@ export function isAbScrolledInside(el: Element | null, sheet: Element): boolean 
 }
 
 /**
- * 👇 useAbSwipeDown — close a bottom sheet with a swipe down (Joseph, Welcome 0.2.21):
+ * 👇 useAbSwipeDown — close a bottom sheet with a swipe down (Welcome 0.2.21):
  * - 👆 touch events, like useAbEdgeSwipe (Android Chrome fires pointercancel on a native pan, so pointer events
  *   would lose the gesture); the passive touchstart only arms it, a NON-passive touchmove is attached just for
  *   that press, and preventDefault runs only once the move is ours (down, and mostly vertical)

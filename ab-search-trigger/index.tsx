@@ -59,12 +59,12 @@ export interface AbSearchTriggerProps {
   onOpen?: () => void; // 🔔 opens your search dialog (button mode)
   href?: string; // 🔗 no onOpen → a link to a search page (also the JS-off path)
   hotkey?: boolean; // ⌨️ listen for ⌘K / Ctrl+K (default true when onOpen is set)
-  shortcut?: boolean; // ⌨️ alias of `hotkey` (Joseph's spec name); `hotkey` wins when both are set
+  shortcut?: boolean; // ⌨️ alias of `hotkey` (the spec name); `hotkey` wins when both are set
   compact?: boolean; // 📱 icon-only pill (the label stays for screen readers), e.g. the mobile app bar
   comingSoon?: boolean; // 🚧 visible but inert: aria-disabled, no hotkey
   comingSoonLabel?: string; // 🏷️ default "Coming soon"
   variant?: 'pill' | 'field'; // 🔎 0.1.14 (P6): 'field' = the Home 300×36 bordered field (default 'pill', the legacy look)
-  /** 📱 0.1.15 (God 00:08): a shorter label (e.g. "Search") that a compact AbAppBar shows below 768px instead of `label`
+  /** 📱 0.1.15: a shorter label (e.g. "Search") that a compact AbAppBar shows below 768px instead of `label`
    *  (CSS picks; only one is ever displayed, so the accessible name stays single). Home field only. */
   compactLabel?: string;
   size?: 'md' | 'sm' | 'lg'; // 📱 0.1.14 (P6): 'sm' = the mobile 34px "Search ⌘K" pill (label + key cap stay visible)
@@ -124,7 +124,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
     <>
       <AbIcon name="search" size={20} className={styles.abSearchTriggerIcon} />
       <span className={clsx(styles.abSearchTriggerLabel, compact && styles.abSearchTriggerSrOnly)}>{label}</span>
-      {/* 🚧 coming soon tag, or ⌨️ the key hint ONLY while a hotkey is really listening (James #3, D24a) */}
+      {/* 🚧 coming soon tag, or ⌨️ the key hint ONLY while a hotkey is really listening (#3, D24a) */}
       {comingSoon
         ? !compact && <span className={styles.abSearchTriggerSoon}>{comingSoonLabel}</span>
         : listen && !compact && <AbKbd keys={[apple ? '⌘' : 'Ctrl', 'K']} className={styles.abSearchTriggerKbd} />}
@@ -133,7 +133,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
   const common = {
     className: clsx('AbSearchTrigger', styles.abSearchTrigger, !comingSoon && 'ab-motion-interactive', className), // 🏷️
     'data-ab-part': 'search-trigger', // 🧩
-    'aria-keyshortcuts': listen ? 'Meta+K Control+K' : undefined, // ♿ only announced when bound (James #3)
+    'aria-keyshortcuts': listen ? 'Meta+K Control+K' : undefined, // ♿ only announced when bound (#3)
     'data-compact': compact ? 'true' : undefined, // 📱
     'data-variant': variant === 'field' ? 'field' : undefined, // 🔎 P6
     'data-size': size === 'sm' || size === 'lg' ? size : undefined, // 📱 P6 · 🔍 404 gaps: lg
@@ -143,7 +143,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
   // 🚧 coming soon: focusable, announced, inert
   if (comingSoon) return <button type="button" {...common} aria-disabled="true" data-coming-soon="true">{inner}</button>;
   // 🔗 href → ALWAYS a real link, so it works with JS off (D24a: /docs). With onOpen too, JS intercepts
-  //    the click and opens the dialog instead (James #4); modified clicks (new tab, …) keep the link.
+  //    the click and opens the dialog instead (#4); modified clicks (new tab, …) keep the link.
   if (href) {
     const onClick = onOpen
       ? (e: MouseEvent<HTMLAnchorElement>) => {

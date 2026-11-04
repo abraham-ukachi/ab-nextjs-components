@@ -94,7 +94,7 @@ export interface AbSearchDrawerProps {
   defaultQuery?: string; // 🌱 the query on open (default '')
   recentKey?: string | null; // 🕘 localStorage key (default `ab:search:recent`; null = no recents)
   recentLimit?: number; // 🕘 default 4
-  recentWhen?: 'always' | 'empty'; // 🕘 'always' = above the results (John's frames, default); 'empty' = only with no query
+  recentWhen?: 'always' | 'empty'; // 🕘 'always' = above the results (the frames, default); 'empty' = only with no query
   labels?: AbSearchDrawerLabels; // 🌍
   returnFocus?: string; // ↩️
   id?: string; // 🆔
@@ -128,7 +128,7 @@ export function highlightAbSearch(text: string, q: string): ReactNode {
 }
 
 /**
- * 🔎 AbSearchDrawer — John's search drawer (drawers v2 §4), a bottom-drawer variant.
+ * 🔎 AbSearchDrawer — the search drawer (drawers v2 §4), a bottom-drawer variant.
  *
  * - 📱 below 768px: straight to full height (no 70% stop: the keyboard is up); a hard swipe down closes
  * - 💻 768px and up: centred in the main pane, min(640px, main width), 70% tall; results scroll inside with a 48px fade
@@ -149,7 +149,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
   }; // 🌍
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔
   const base = id ?? `ab-search-${auto}`;
-  // 🆔 James P2: group ids come from app data ("@scope/pkg", "a b"); keep only id-safe characters, and the index keeps them unique
+  // 🆔 review P2: group ids come from app data ("@scope/pkg", "a b"); keep only id-safe characters, and the index keeps them unique
   const groupId = (g: AbSearchDrawerGroup, i: number) => `${base}-g-${i}-${String(g.id).replace(/[^A-Za-z0-9_-]/g, '_')}`;
   const input = useRef<HTMLInputElement>(null); // 🔤
   const list = useRef<HTMLDivElement>(null); // 📜
@@ -172,7 +172,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     const t = setTimeout(() => {
       Promise.resolve().then(() => latest.current(q)) // 🧯 a sync throw becomes a rejection too
         .then((g) => { if (live) { setGroups(g); setActive(g.some((x) => x.items.length) ? 0 : -1); } })
-        .catch(() => { if (live) { setGroups([]); setActive(-1); } }); // 🧯 James P2: a failed search shows "no results", never the previous query's results
+        .catch(() => { if (live) { setGroups([]); setActive(-1); } }); // 🧯 review P2: a failed search shows "no results", never the previous query's results
     }, 150);
     return () => { live = false; clearTimeout(t); };
   }, [query, open]);

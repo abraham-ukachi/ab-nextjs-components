@@ -46,7 +46,7 @@ import AbFlowDiagram, { getAbFlowRoundedPath, routeAbFlowWires, type AbFlowNode 
 
 const css = readFileSync(join(__dirname, '..', 'ab-flow-diagram/styles.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🧹
 
-// 🎯 John's v6 Core scene rects (scenes.py k=1)
+// 🎯 the v6 Core scene rects (scenes.py k=1)
 const hub: AbFlowNode = { id: 'hub', x: 250, y: 282, w: 260, h: 76, tone: 'hub', caption: 'provider hub', content: createElement('b', null, '<AbProvider>') }
 const nodes: AbFlowNode[] = [
   { id: 'cfg', x: 40, y: 104, w: 190, h: 92, caption: 'ab.config.ts', content: 'config' },

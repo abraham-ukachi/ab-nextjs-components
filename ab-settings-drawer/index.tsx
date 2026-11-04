@@ -86,7 +86,7 @@ export interface AbSettingsDrawerProps {
   onLocaleChange: (code: string) => void; // 📣
   labels?: AbSettingsDrawerLabels; // 🏷️
   themes?: readonly AbSettingsTheme[]; // 🎚️ default light, dark, system
-  // 👤 0.2.1 (God 02:44): the account section is back, on top. `account` = signed in (avatar, name, email);
+  // 👤 0.2.1: the account section is back, on top. `account` = signed in (avatar, name, email);
   //    signed out, pass `onSignIn` for a "Sign in" row. Neither = no section.
   account?: AbProfileUser | null;
   onAccount?: () => void; // 👤 tap the signed-in row (e.g. open the profile page)
@@ -117,7 +117,7 @@ function radioKeys<T>(e: KeyboardEvent, items: readonly T[], current: T, pick: (
 }
 
 /**
- * ⚙️ AbSettingsDrawer — John's Settings bottom drawer (drawers v2, spec §1): the default bottom sheet, holding
+ * ⚙️ AbSettingsDrawer — the Settings bottom drawer (drawers v2, spec §1): the default bottom sheet, holding
  * ACCOUNT (0.2.1, optional), THEME (a Light / Dark / System segmented radiogroup, 48px) and LANGUAGE (48px radio rows, each label in its
  * own `lang`, the checked one tinted with a check), then optional Help / About rows (0.2.1).
  *

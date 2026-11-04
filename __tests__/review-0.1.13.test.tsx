@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: 0.1.13 review + integration fixes (James, Joseph)
+* @name: 0.1.13 review + integration fixes (QA)
 * @file: __tests__/review-0.1.13.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -47,7 +47,7 @@ import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { ComponentType, ReactNode } from 'react'
-// 🧭 a French route (Joseph #10)
+// 🧭 a French route (#10)
 vi.mock('next/navigation', () => ({ usePathname: () => '/fr/docs/hooks' }))
 // 🧩 under test
 import AbSearchTrigger from '../ab-search-trigger'
@@ -66,7 +66,7 @@ afterEach(cleanup) // 🧹
 const root = join(dirname(fileURLToPath(import.meta.url)), '..') // 📁
 const read = (rel: string) => readFileSync(join(root, rel), 'utf8') // 📄
 
-describe('AbSearchTrigger (James #3, #4, D24a, Joseph #16) 🔎', () => {
+describe('AbSearchTrigger (#3, #4, D24a, QA #16) 🔎', () => {
   it('a plain /docs link shows no ⌘K and no aria-keyshortcuts', () => {
     const html = renderToStaticMarkup(<AbSearchTrigger href="/docs" />) // 🖨️
     expect(html).toMatch(/^<a /) // 🔗
@@ -101,7 +101,7 @@ describe('AbSearchTrigger (James #3, #4, D24a, Joseph #16) 🔎', () => {
   })
 })
 
-describe('AbButton pass-through + link padding (Joseph #7) 🔘', () => {
+describe('AbButton pass-through + link padding (#7) 🔘', () => {
   it('forwards aria-* and data-* (useAbAsideToggle().props)', () => {
     const html = renderToStaticMarkup(<AbButton label="On this page" aria-expanded={false} aria-controls="ab-aside" data-testid="toc" />)
     expect(html).toContain('aria-expanded="false"') // ♿
@@ -113,7 +113,7 @@ describe('AbButton pass-through + link padding (Joseph #7) 🔘', () => {
   })
 })
 
-describe('AbNavbar disabled + coming soon (Joseph #8) 🚧', () => {
+describe('AbNavbar disabled + coming soon (#8) 🚧', () => {
   it('inert button items are aria-disabled, tagged, and never fire', () => {
     const onSelect = vi.fn()
     const { container } = render(<AbNavbar items={[{ kind: 'button', id: 'ai', icon: 'menu', label: 'Ask', onSelect, comingSoon: true }, { kind: 'button', id: 'x', icon: 'menu', label: 'X', onSelect, disabled: true }]} />)
@@ -126,7 +126,7 @@ describe('AbNavbar disabled + coming soon (Joseph #8) 🚧', () => {
   })
 })
 
-describe('locale-stripped active state (Joseph #10) 🌍', () => {
+describe('locale-stripped active state (#10) 🌍', () => {
   it('stripAbLocalePrefix only removes exact locale segments', () => {
     expect(stripAbLocalePrefix('/fr/docs/hooks', ['en', 'fr'])).toBe('/docs/hooks') // ✂️
     expect(stripAbLocalePrefix('/fr', ['fr'])).toBe('/') // 🏠
@@ -149,7 +149,7 @@ describe('locale-stripped active state (Joseph #10) 🌍', () => {
   })
 })
 
-describe('AbLinkProvider structural generic (Joseph #9) 🔗', () => {
+describe('AbLinkProvider structural generic (#9) 🔗', () => {
   it('accepts a link whose href is not a string, without a cast', () => {
     type IntlHref = string | { pathname: string; query?: Record<string, string> } // 🌍 next-intl style
     const IntlLink: ComponentType<{ href: IntlHref; locale?: string; children?: ReactNode }> = ({ children }) => <a>{children}</a>
@@ -157,7 +157,7 @@ describe('AbLinkProvider structural generic (Joseph #9) 🔗', () => {
   })
 })
 
-describe('server-safe icon registration (Joseph #11) 🗂️', () => {
+describe('server-safe icon registration (#11) 🗂️', () => {
   it('AbIconRegistrar registers during render and renders nothing', () => {
     const data = { outlined: '<svg viewBox="0 0 24 24"><path d="M0 0h1"/></svg>' }
     expect(renderToStaticMarkup(<AbIconRegistrar icons={{ reg_test_icon: data }} />)).toBe('') // 🫥
@@ -166,7 +166,7 @@ describe('server-safe icon registration (Joseph #11) 🗂️', () => {
   })
 })
 
-describe('cards, toc, sidebar labels, snippet tokens, app bar (Joseph #3, #13–16) 🧩', () => {
+describe('cards, toc, sidebar labels, snippet tokens, app bar (#3, #13–16) 🧩', () => {
   it('AbToc accepts `label` as an alias of `title`', () => {
     expect(renderToStaticMarkup(<AbToc label="Sur cette page" items={[{ id: 'a', label: 'A' }]} />)).toContain('Sur cette page') // 🏷️
   })
@@ -174,7 +174,7 @@ describe('cards, toc, sidebar labels, snippet tokens, app bar (Joseph #3, #13–
     const html = renderToStaticMarkup(<AbPackageCard id="core" name="ab-nextjs-core" href="/docs/core" media={<span data-src="/x.png" />} />)
     expect(html).toContain('id="core"') // 🆔
     expect(html).toContain('data-src="/x.png"') // 🖼️
-    expect(read('ab-package-card/styles.module.css')).toMatch(/\.abPackageCardName \{[^}]*overflow-wrap: anywhere; word-break: normal/) // ✂️ hyphens first, `anywhere` as the last resort (Joseph: never overflows the card)
+    expect(read('ab-package-card/styles.module.css')).toMatch(/\.abPackageCardName \{[^}]*overflow-wrap: anywhere; word-break: normal/) // ✂️ hyphens first, `anywhere` as the last resort (never overflows the card)
     expect(read('ab-package-card/styles.module.css')).not.toMatch(/\.abPackageCardName \{[^}]*text-overflow: ellipsis/) // ✂️ never cut off
   })
   it('sidebar labels accept ReactNode and use label-large', () => {
@@ -197,7 +197,7 @@ describe('cards, toc, sidebar labels, snippet tokens, app bar (Joseph #3, #13–
   })
 })
 
-describe("God's header on every code file 📝", () => {
+describe("The header on every code file 📝", () => {
   const walk = (dir: string): string[] => readdirSync(dir).flatMap((n) => {
     if (['node_modules', '.git', '__snapshots__', 'demo'].includes(n)) return [] // 🙅
     const p = join(dir, n)

@@ -43,7 +43,7 @@ import clsx from 'clsx';
 // 🔗 404 gaps: the provider-aware link (client component, fine to render from a server twin)
 import AbLink from '../../ab-link';
 // 🎨 styles (server copy)
-// 🧬 0.2.3 (Joseph 03:41): ONE source for the button box — the client module's CSS (no server copy to drift)
+// 🧬 0.2.3: ONE source for the button box — the client module's CSS (no server copy to drift)
 import styles from '../../ab-button/styles.module.css';
 // 🧮 the SAME rules as the client twin
 import {

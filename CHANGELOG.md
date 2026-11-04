@@ -49,16 +49,16 @@
 
 ## [0.2.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.0...v0.2.1) (2026-10-21)
 
-### Sidebar profile (God 02:44)
+### Sidebar profile
 - ✨ AbSidebar `profile` prop (opt-in): a 40px profile button at the bottom left opens AbSettingsDrawer. Signed out it shows the profile glyph; signed in the initials ("AU") on the container colour, or the photo masked to a circle, plus the name when expanded. Rendered on the server and hidden by CSS below 1180px (no flash); the collapsed rail names it with an AbBalloon tooltip. Label via `labels.profile` (default "Profile and settings")
 - ✨ New `AbSidebarProfileButton` (standalone) and `AbProfileAvatar` + `getAbInitials` (client + server)
 - ✨ AbSidebar `footer` slot (bottom left, sticky)
 - ✨ AbBalloon `strategy="fixed"`: the tip is placed in the viewport, so the collapsed sidebar rail (a scroller) can't clip it; rail items + the profile button use it
 - ✨ AbTocPromo: the aside "New" card (mock .toc-card: 12px radius + padding, card colour, 13px title, 11.5px subtitle)
 - ✨ Home preview tiles for AbPackageCard `preview`: `AbPackagePreviewCurve` (ease-out), `AbPackagePreviewCode` (`*kw*` / `~dim` lines), `AbPackagePreviewComponents` (button · switch · pill chip); preview children no longer stretch
-- ✨ `useAbEdgeSwipe({ maxWidth })` + `AB_ASIDE_DRAWER_MAX_WIDTH` (1179): the right drawer swipes on mobile and tablet only (God 02:47)
-- 🐛 Drawers: a swipe-opened drawer returns focus to the header / brand logo by default (`AB_DRAWER_RETURN_FOCUS`; AbAppBar's brand gets `data-ab-part="app-bar-brand"`) (Joseph)
-- 🐛 Drawer rows: hover tints only on hover-capable pointers, so the nav drawer opens with no highlighted row (Joseph)
+- ✨ `useAbEdgeSwipe({ maxWidth })` + `AB_ASIDE_DRAWER_MAX_WIDTH` (1179): the right drawer swipes on mobile and tablet only
+- 🐛 Drawers: a swipe-opened drawer returns focus to the header / brand logo by default (`AB_DRAWER_RETURN_FOCUS`; AbAppBar's brand gets `data-ab-part="app-bar-brand"`)
+- 🐛 Drawer rows: hover tints only on hover-capable pointers, so the nav drawer opens with no highlighted row
 - ✨ AbSettingsDrawer: the Account section is back on top (`account`, `onAccount`, `onSignIn`), plus `onHelp` / `onAbout` rows after Language (labels `account`, `signIn`, `help`, `about`)
 
 ## [0.2.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.1.14...v0.2.0) (2026-10-21)
@@ -100,16 +100,16 @@ Includes everything planned for 0.1.15, which is not released separately.
 
 * ⬆️ **Peer + dev range:** `ab-nextjs-theme` **^0.3.5** (was ^0.3.4), for the Home tokens. It has a D33 release-age pin that expires 2026-10-21T20:40:07Z. Components doesn't depend on `ab-nextjs-core`, so no core range changed.
 
-* 🎯 **AbThemeToggle icon shows the target (John, 20:57):** `variant="icon"` + `appearance="thumb"` now shows the mode a click switches to (moon in light, sun in dark). New `iconShows?: 'current' | 'target'` (default `target` for thumb, `current` otherwise, so fill is unchanged) and `labels.switchTo` for names like "Switch to dark theme". Segmented toggles are unchanged.
-* 🌿 **Sage chip AA (John):** the `tone="sage"` fallback text is now #566a58 (theme 0.3.5 value), ≥ 4.5:1 on the unchanged tint. Tested.
-* ♿ **AA fallbacks and the sidebar badge (James):** `AbBreadcrumbs` and `AbList` now fall back to the AA faint #807062 (was the mock's #9c8c80). On the active `--tint` row, the `badgeVariant="text"` sidebar badge inherits `--accent-text`, because faint on tint is only 3.9:1. Tested.
-* 🏠 **Home fidelity components (spec §5, approved by God 2026-10-20):**
+* 🎯 **AbThemeToggle icon shows the target (20:57):** `variant="icon"` + `appearance="thumb"` now shows the mode a click switches to (moon in light, sun in dark). New `iconShows?: 'current' | 'target'` (default `target` for thumb, `current` otherwise, so fill is unchanged) and `labels.switchTo` for names like "Switch to dark theme". Segmented toggles are unchanged.
+* 🌿 **Sage chip AA:** the `tone="sage"` fallback text is now #566a58 (theme 0.3.5 value), ≥ 4.5:1 on the unchanged tint. Tested.
+* ♿ **AA fallbacks and the sidebar badge:** `AbBreadcrumbs` and `AbList` now fall back to the AA faint #807062 (was the mock's #9c8c80). On the active `--tint` row, the `badgeVariant="text"` sidebar badge inherits `--accent-text`, because faint on tint is only 3.9:1. Tested.
+* 🏠 **Home fidelity components (spec §5, approved):**
   * `AbList` + `AbListItem` (P13): bordered row lists with a media tile or badge, title, meta and chevron. A row with `href` is a single link.
   * `AbBreadcrumbs` (P2): the tablet main bar crumb.
   * `AbVersionSwitcher` (P9): the sidebar "Docs **v0.2.x** ▾", which opens an AbMenu, with a no-JS `<details>` fallback.
   * `AbBottomDrawer`: the mobile bottom drawer (D40), which `AbLocaleSwitcher` / `AbAppBar` now use for `side="bottom"`. `AbDrawerList` gains `as`.
   * They read the `ab-nextjs-theme` 0.3.5 Home tokens (`--ab-color-card`, `--ab-color-faint`, …), with the light mock values as fallbacks.
-* 🏠 **Home variants on existing components (Joseph's P4–P19; everything is opt-in, defaults unchanged):**
+* 🏠 **Home variants on existing components (the P4–P19 items; everything is opt-in, defaults unchanged):**
   * `AbAppBar`: `density="compact"` (height from core's `--ab-header-height`, 13.5px links, brand column `--ab-app-bar-brand-width` 236/270), `divider`, `moreMenu={false}` (P4/P5/P19).
   * `AbSearchTrigger`: `variant="field"` (300×36, one `⌘ K` cap, "coming soon" only in the tooltip and SR text) and `size="sm"` (the 34px mobile pill) (P6).
   * `AbThemeToggle`: `appearance="thumb"` (28px segments, raised thumb, filled active glyph) (P7).
@@ -122,7 +122,7 @@ Includes everything planned for 0.1.15, which is not released separately.
   * `AbIconButton`: `aria-expanded` / `aria-controls` pass through, and a new `iconSize`.
   * `AbVersionSwitcher`: the accessible name is `"{label} {version}"`, so it contains the visible text (WCAG 2.5.3).
   * AbList rows are 59/60px, like the mock.
-  * `AbBottomDrawer` (John): the sheet takes focus on open, the ✕ is 44px with an 8px hover tint and a `:focus-visible`-only ring, plus 16px + safe-area bottom padding and the 36×4 handle. It reads the theme 0.3.5 scrim, handle and sheet-edge tokens. `AbDrawer` gains `initialFocus`.
+  * `AbBottomDrawer`: the sheet takes focus on open, the ✕ is 44px with an 8px hover tint and a `:focus-visible`-only ring, plus 16px + safe-area bottom padding and the 36×4 handle. It reads the theme 0.3.5 scrim, handle and sheet-edge tokens. `AbDrawer` gains `initialFocus`.
 * 🎨 **Home tokens first:** borders, hovers, active rows and focus rings read `--ab-color-border` / `-hover` / `-tint` / `-accent-text` / `-accent` (theme 0.3.5) before the M3 tokens. On theme 0.3.5 the rings turn bronze and active rows turn `--tint`.
 * 🗄️ **AbDrawer + `useAbDrawer` (new, G53, D38).** The drawer is scoped to `app`, `main` or `aside`. It renders into a layer inside that layout box and never scrolls the document. Sides are `top`, `bottom`, `left` and `right`, plus logical `start` and `end`.
   * Accessibility: `role="dialog"`, `aria-modal`, a labelled panel, a focus trap that restores focus to the opener, Escape and scrim close, and the rest of the scope is `inert`.
@@ -142,10 +142,10 @@ Includes everything planned for 0.1.15, which is not released separately.
 * 🃏 **AbCard + AbPackageCard (new, G45)**: one link per card, `ab-motion-interactive` timing, a 2px hover lift on laptop and up with a real pointer, and no lift under reduced motion
 * 📑 **AbToc (new, G46)**: plain `#id` anchors, `aria-current="location"`, and an optional `onNavigate` (for `scrollToAbSection`)
 * 📜 **Panes scrolling (D35/G55):** with core 0.1.6 the page never scrolls, the main pane does. `getAbMainScroller()` / `AB_MAIN_SCROLLER_SELECTOR` (`[data-ab-part="main-content"]`) from `ab-nextjs-components/ab-toc` give the `root` for `useAbScrollSpy` (call it in an effect or handler, never during render; `import { getAbMainScroller } from 'ab-nextjs-components/ab-toc'`, also on the root barrel with `AbToc`) and the `container` for `scrollToAbSection`; a plain `#id` jump scrolls the pane on its own. In panes the AbAppBar is the header row outside the scroller, so it stays put without the document scrolling
-* 🌍 **AbAppBar active link (Joseph):** without `activeHref` it uses the pathname minus the AbLinkProvider `locales` (or its own `locales` prop), like AbSidebar / AbNavbar, so `/fr/docs` marks Docs
-* 🧩 **AbPackageCard names wrap at hyphens (Joseph):** a `<wbr>` after each `-` (`toAbPackageNameParts`), so narrow cards show `ab-nextjs-` / `components` on two lines instead of an ellipsis; `overflow-wrap: anywhere` splits a part only when it alone is wider than the card. Checked in WebKit at 1280 (no clipping, no overflow)
+* 🌍 **AbAppBar active link:** without `activeHref` it uses the pathname minus the AbLinkProvider `locales` (or its own `locales` prop), like AbSidebar / AbNavbar, so `/fr/docs` marks Docs
+* 🧩 **AbPackageCard names wrap at hyphens:** a `<wbr>` after each `-` (`toAbPackageNameParts`), so narrow cards show `ab-nextjs-` / `components` on two lines instead of an ellipsis; `overflow-wrap: anywhere` splits a part only when it alone is wider than the card. Checked in WebKit at 1280 (no clipping, no overflow)
 * 🔑 **AbSidebar item `id`:** optional, used as the React key (`id ?? href`) so two items may share an href
-* 🆔 **AbIcon per-instance ids (Joseph):** every render suffixes the SVG ids and `url(#…)` refs with `useId()` (`scopeAbIconIds`), so two filled Homes never share a mask and a hidden twin can't turn the active Home into a solid square
+* 🆔 **AbIcon per-instance ids:** every render suffixes the SVG ids and `url(#…)` refs with `useId()` (`scopeAbIconIds`), so two filled Homes never share a mask and a hidden twin can't turn the active Home into a solid square
 * 🎈 **AbBalloon a11y**: `role="tooltip"`, `aria-describedby` on the trigger, shows on focus, a 300ms hover delay (`AB_BALLOON_HOVER_DELAY`), Escape dismisses, `popIn` skipped under reduced motion. Without JS, CSS shows it on focus or hover. New `placement` and `delay` props
 * 🚫 **JS-off fallbacks**: AbInstallSnippet hides copy (the command shows the pnpm default). AbLocaleSwitcher with `getHref` renders a `<details>` list of `hreflang` links
 * 📱 **AbAppBar compact phone layout (< 768px):** tighter gaps, a shrinkable brand, an icon-only search pill and `compactActions` (shown instead of `actions`), so nothing overflows at 390px
@@ -171,7 +171,7 @@ Includes everything planned for 0.1.15, which is not released separately.
 
 * 🐛 **AbFlowDiagram: nodes no longer cover the header in small boxes.** At 390px wide the Live Playground's top node ("core") sat under the "Live Playground" header. With a header (title, live dot or caption) the root now gets `data-ab-header="true"`, and nodes + wires live in a stage that starts below the header band: `--ab-flow-diagram-inset-top` (default `2.75rem`, tunable). Node `x` / `y` stay 0–100 but now map onto that stage, and the wires share the same box so they still meet the nodes. Without a header the stage is the full card (unchanged)
 * 📏 **AbFlowDiagram nodes scale with the card:** `container-type: inline-size` on the root; node text, padding, radius and the hub glow use clamped `cqi` sizes (13px on a 760px card, 11px at 390px)
-* 🪐 **AbFlowDiagram: side nodes are never clipped** (Joseph: s04's `--ab-color-bronze` and s07's `reduced motion` were cut off at the card edge in a 390px box). The orbit now scales with the box. Each node is anchored at the same fraction of its own box as its position (`translate(-x%, -y%)` via `--ab-flow-node-x` / `-y`; `x = y = 50` is the old centring), so the outer ring pulls in by exactly the node's width, and the wire end stays inside the pill. Nodes + wires also sit inside a side margin, `--ab-flow-diagram-inset-x` (default `0.5rem`), and an over-long label ellipsises (`max-width: 100%`). Positions are clamped to 0–100 like the wires
+* 🪐 **AbFlowDiagram: side nodes are never clipped** (s04's `--ab-color-bronze` and s07's `reduced motion` were cut off at the card edge in a 390px box). The orbit now scales with the box. Each node is anchored at the same fraction of its own box as its position (`translate(-x%, -y%)` via `--ab-flow-node-x` / `-y`; `x = y = 50` is the old centring), so the outer ring pulls in by exactly the node's width, and the wire end stays inside the pill. Nodes + wires also sit inside a side margin, `--ab-flow-diagram-inset-x` (default `0.5rem`), and an over-long label ellipsises (`max-width: 100%`). Positions are clamped to 0–100 like the wires
 * Tests: header flag, stage insets shared by nodes + wires, 390px geometry, clamped scaling, proportional anchoring + side margin, s04 / s07 orbit geometry at 390 / 760px × 276 / 380px. Checked in WebKit at 390px: "core" top 9px → 53px (header ends at 33px); no node overlaps the header or is clipped at 390 / 760px. After the orbit fix: s04 + s07 have no node clipped (x or y) or over the header at 390 / 760px wide × 276px / 380px / default-ratio heights (before: 5 nodes clipped at 390px, 2 at 760px)
 
 ## 0.1.10 — 2026-10-14

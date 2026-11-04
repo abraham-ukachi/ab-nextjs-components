@@ -61,7 +61,7 @@
   cursor: pointer; /* 👆 */
   --ab-motion-duration: var(--ab-motion-duration-short, 160ms); /* 🎞️ colour fade = .ab-motion-colors (ab-nextjs-animations) */
 }
-/* 👆 0.3.2 (God, 0.2.23 gaps): the single icon button is a 44px tap target (was 40px), the same 44×44 as
+/* 👆 0.3.2 (0.2.23 gaps): the single icon button is a 44px tap target (was 40px), the same 44×44 as
    AbMobileHeader's theme button; the segments keep 40/32px (radios inside one pill) */
 .icon {
   width: 44px; /* 📏 */
@@ -73,7 +73,7 @@
   height: 32px; /* 📏 */
 }
 
-/* 👆 0.3.2 (God): every radio segment and the sm icon button get an invisible 44×44 hit area centred on them, so
+/* 👆 0.3.2: every radio segment and the sm icon button get an invisible 44×44 hit area centred on them, so
    the 40/32/28px visuals stay while the tap target is ≥ 44px (WCAG 2.5.5). Neighbouring areas overlap by a few px;
    the later segment wins there, which is fine for adjacent radios */
 .segment,

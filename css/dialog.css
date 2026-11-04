@@ -138,7 +138,7 @@ li.dialog-list-item {
   transform-origin: left;
   opacity: var(--opacity-dialog-list-item, 0.68);
   user-select: none;
-  /* ⚠️ named motion exception (James review): consumer-rendered markup, no component can add an ab-motion-* class; pinned in __tests__/motion-from-animations.test.tsx */
+  /* ⚠️ named motion exception (review): consumer-rendered markup, no component can add an ab-motion-* class; pinned in __tests__/motion-from-animations.test.tsx */
   transition: all 0.2s ease-in-out;
 }
 

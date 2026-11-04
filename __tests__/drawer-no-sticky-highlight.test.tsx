@@ -24,7 +24,7 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: Nav drawer: no highlight on open (Joseph, 0.2.1)
+* @name: Nav drawer: no highlight on open (0.2.1)
 * @file: __tests__/drawer-no-sticky-highlight.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
@@ -49,7 +49,7 @@ beforeEach(() => { vi.useFakeTimers(); vi.stubGlobal('requestAnimationFrame', (c
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); document.body.innerHTML = '' })
 const kit = readFileSync(join(__dirname, '../ab-drawer/kit.module.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '') // 🎨 no comments
 
-describe('🧹 nav drawer opens with no highlighted row (Joseph fidelity-7)', () => {
+describe('🧹 nav drawer opens with no highlighted row (fidelity-7)', () => {
   it('🎯 focus lands on the drawer panel, not the Settings row', () => {
     render(<div className="AbAppLayout"><AbNavDrawer open onClose={vi.fn()} onSettings={vi.fn()} logo={<a href="/">Ab</a>} sections={[{ id: 't', items: [{ href: '/', label: 'Home' }] }]} activeHref="/" /></div>)
     act(() => { vi.advanceTimersByTime(AB_DRAWER_DURATION + 50) }) // ⏱️

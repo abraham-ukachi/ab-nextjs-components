@@ -36,7 +36,7 @@
 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 */
 
-// 🤏 drawers v2 (John, God 01:22): the thresholds and decisions behind every drawer swipe, as pure functions,
+// 🤏 drawers v2 (01:22): the thresholds and decisions behind every drawer swipe, as pure functions,
 //    so the rules are unit-tested without a DOM and the components only feed them numbers.
 
 /** 🎚️ the spec numbers (drawer-spec.md "Gestures" + "Edge zones") */

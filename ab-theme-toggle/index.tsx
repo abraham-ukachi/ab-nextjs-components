@@ -66,7 +66,7 @@ export interface AbThemeToggleLabels {
   light: string; // 🌞 "Light"
   dark: string; // 🌙 "Dark"
   system: string; // 🖥️ "System"
-  // 🎯 0.1.14 (John): action names for the icon button when it shows the target mode,
+  // 🎯 0.1.14: action names for the icon button when it shows the target mode,
   //    e.g. { dark: 'Switch to dark theme', light: 'Switch to light theme' }. Falls back to "Theme: Dark"
   switchTo?: Partial<Record<AbThemeMode, string>>;
 }
@@ -82,15 +82,15 @@ export interface AbThemeToggleProps {
   icons?: Partial<Record<AbThemeMode, ReactNode>>; // 🖼️ override glyphs
   size?: 'sm' | 'md'; // 📏 sm = 32px, md = 40px segments (hit area ≥ 24px either way)
   appearance?: 'fill' | 'thumb'; // 🌗 0.1.14 (P7): 'thumb' = the Home pill (28px segments, raised card thumb, filled active glyph). Default 'fill'
-  // 🎯 0.1.14 (John): icon variant only. 'target' = glyph + name of the mode a click switches TO
-  //    (moon in light, sun in dark, like the Home mock). 0.3.2 (God): default 'target' for every appearance (was 'current' for fill)
+  // 🎯 0.1.14: icon variant only. 'target' = glyph + name of the mode a click switches TO
+  //    (moon in light, sun in dark, like the Home mock). 0.3.2: default 'target' for every appearance (was 'current' for fill)
   iconShows?: 'current' | 'target';
   className?: string; // 🏷️
   style?: CSSProperties; // 🎨
 }
 
 // 🔣 default glyphs (AbIcons names)
-// 🔗 0.3.2 (Joseph): the shared map, so the glyphs match AbMobileHeader's theme button
+// 🔗 0.3.2: the shared map, so the glyphs match AbMobileHeader's theme button
 const DEFAULT_ICON_NAMES: Readonly<Record<AbThemeMode, string>> = AB_THEME_MODE_ICONS;
 
 /**
@@ -144,7 +144,7 @@ function AbThemeToggleView(props: AbThemeToggleProps & { engine: Pick<AbThemeMod
 
   // 🖼️ glyph for a mode (decorative: the label names it)
   //    P7 thumb: 17px segments, filled while active (spec §2 icons)
-  //    0.3.2 (Joseph): variant="icon" uses the header's 24px glyph (was 22 thumb / 20), so it matches AbMobileHeader
+  //    0.3.2: variant="icon" uses the header's 24px glyph (was 22 thumb / 20), so it matches AbMobileHeader
   const glyphSize = variant === 'icon' ? AB_THEME_ICON_BUTTON_GLYPH : thumb ? 17 : 20; // 📏
   const glyph = (mode: AbThemeMode, active = false) =>
     icons?.[mode] ?? <AbIcon name={DEFAULT_ICON_NAMES[mode]} size={glyphSize} variant={thumb && active ? 'filled' : undefined} />;
@@ -152,7 +152,7 @@ function AbThemeToggleView(props: AbThemeToggleProps & { engine: Pick<AbThemeMod
   // 🔘 single cycling button variant
   if (variant === 'icon') {
     const next = modes[(Math.max(0, modes.indexOf(current)) + 1) % modes.length]; // ⏭️
-    const target = (iconShows ?? 'target') === 'target'; // 🎯 0.3.2 (God): always the target by default, like AbMobileHeader (was 'current' for fill)
+    const target = (iconShows ?? 'target') === 'target'; // 🎯 0.3.2: always the target by default, like AbMobileHeader (was 'current' for fill)
     const name = target ? (labels.switchTo?.[next] ?? `${labels.group}: ${labels[next]}`) : `${labels.group}: ${labels[current]}`; // ♿
     return (
       <button

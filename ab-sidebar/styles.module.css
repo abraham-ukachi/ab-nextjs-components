@@ -117,7 +117,7 @@
   text-decoration: none; /* 🚫 */
   color: inherit; /* 🖋️ */
   font-weight: 500; /* 🔤 */
-  /* 🔤 0.1.13 (Joseph #15): M3 label-large, so names stop inheriting the big body size and wrapping at 280px */
+  /* 🔤 0.1.13 (#15): M3 label-large, so names stop inheriting the big body size and wrapping at 280px */
   font-family: var(--md-sys-typescale-label-large-font, inherit);
   font-size: var(--md-sys-typescale-label-large-size, 14px);
   line-height: var(--md-sys-typescale-label-large-line-height, 20px);
@@ -175,7 +175,7 @@
   padding: 0; border-radius: 0; background: none; line-height: 1; /* 🧹 no chip */
   font: 500 10.5px var(--ab-font-code, 'Roboto Mono', ui-monospace, monospace); color: var(--ab-color-faint, #807062); /* ⌨️ */
 }
-/* ♿ James: faint on --tint is 3.9:1, so on the active row the text badge takes the row's --accent-text (≥ 4.5:1 on tint) */
+/* ♿ faint on --tint is 3.9:1, so on the active row the text badge takes the row's --accent-text (≥ 4.5:1 on tint) */
 .abSidebar[data-badge='text'] .abSidebarLink[data-active='true'] .abSidebarBadge { color: inherit; }
 /* ⏪ P9: outlined collapse, 32×32, radius 8, 1px --border, --card, --muted */
 .abSidebarToggle[data-variant='outlined'] {
@@ -188,7 +188,7 @@
 .abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarSections { padding-inline: 8px; }
 .abSidebar[data-density='compact'][data-collapsed='true'] .abSidebarLink { width: 40px; height: 40px; } /* 👆 */
 
-/* 🏷️ 0.1.15 (God 00:08): the tablet logo row, mock 06 `.sb-logo` = 60px, 0 20px, centred, never shrinks.
+/* 🏷️ 0.1.15: the tablet logo row, mock 06 `.sb-logo` = 60px, 0 20px, centred, never shrinks.
  *    Height follows core's --ab-header-height (60px at tablet) so it lines up with the main bar. */
 .abSidebarLogo { flex: none; display: flex; align-items: center; box-sizing: border-box; height: var(--ab-header-height, 60px); padding: 0 20px; }
 .abSidebar[data-collapsed='true'] .abSidebarLogo { justify-content: center; padding: 0; } /* 🚪 rail: centred */
@@ -207,7 +207,7 @@
 .abSidebar[data-collapsed='true'] .abSidebarFooter { justify-content: center; } /* 🚪 rail: centred */
 .abSidebar { min-height: 100%; } /* 📏 fill the pane so the footer can reach the bottom */
 .abSidebar[data-density='compact'] .abSidebarFooter { padding: 8px 10px 12px; box-sizing: border-box; width: 100%; } /* 📦 compact: line up with the rows (sections pad 10px) */
-/* 👤 0.2.1 (God 02:44): the profile button: avatar (+ the name when expanded), theme tokens only */
+/* 👤 0.2.1: the profile button: avatar (+ the name when expanded), theme tokens only */
 .abSidebarProfile {
   display: inline-flex; /* 📐 */
   align-items: center; /* ↕️ */

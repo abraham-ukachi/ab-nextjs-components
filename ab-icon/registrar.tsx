@@ -51,7 +51,7 @@ export interface AbIconRegistrarProps {
 }
 
 /**
- * 🗂️ AbIconRegistrar (0.1.13, Joseph #11): the SERVER-SAFE way to register icons.
+ * 🗂️ AbIconRegistrar (0.1.13, QA #11): the SERVER-SAFE way to register icons.
  * `registerAbIcons` is client-only state, so a Server Component (e.g. app/[locale]/layout.tsx) can't call it.
  * Render this once, ABOVE the icons, and pass the svg data as a prop (it is serializable):
  *   import home from 'ab-nextjs-icons/ab-icons/icons/home';

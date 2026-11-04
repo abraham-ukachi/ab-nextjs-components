@@ -66,7 +66,7 @@ const Demo = ({ autoHeight, reducedMotion }: { autoHeight?: boolean; reducedMoti
 )
 const track = () => document.querySelector<HTMLElement>('[data-ab-part="track"]')!
 
-describe('📏 AbCarousel autoHeight (Joseph, Welcome 0.2.21)', () => {
+describe('📏 AbCarousel autoHeight (Welcome 0.2.21)', () => {
   it('off by default: no inline height, no data-auto-height (tallest-slide grid, CLS 0)', () => {
     render(<Demo />)
     expect(track().style.height).toBe('') // 🧱

@@ -60,7 +60,7 @@ export interface AbThemeModeProviderProps {
 }
 
 /**
- * 🌗 AbThemeModeProvider — 0.2.3 (Joseph, Welcome 0.2.21): ONE theme state for the whole app. Each AbThemeToggle
+ * 🌗 AbThemeModeProvider — 0.2.3 (Welcome 0.2.21): ONE theme state for the whole app. Each AbThemeToggle
  * (laptop sidebar, Settings sheet) and AbMobileHeader's 3-state button used to run its own engine, so they drifted
  * across 768px. Under this provider they all read and write this one engine (still persisted under the `theme`
  * key, still following the OS in 'system'). Put it once, high in the tree (e.g. around AbAppLayout).
@@ -80,10 +80,10 @@ export function useAbThemeModeContext(): AbThemeModeContextValue | null {
 
 // 📦 exports
 /**
- * 🔣 0.3.2 (Joseph, 0.2.23 gaps): the ONE glyph per theme mode, shared by AbMobileHeader's theme button and
+ * 🔣 0.3.2 (0.2.23 gaps): the ONE glyph per theme mode, shared by AbMobileHeader's theme button and
  * AbThemeToggle, so the two never drift apart (AbIcons names)
  */
-export const AB_THEME_MODE_ICONS: Readonly<Record<AbThemeMode, string>> = { light: 'light_mode', dark: 'dark_mode', system: 'brightness_auto' }; // 🌞 🌙 🌗🅰️ (0.3.2, God: brightness_auto everywhere, was 'computer')
+export const AB_THEME_MODE_ICONS: Readonly<Record<AbThemeMode, string>> = { light: 'light_mode', dark: 'dark_mode', system: 'brightness_auto' }; // 🌞 🌙 🌗🅰️ (0.3.2, brightness_auto everywhere, was 'computer')
 /** 📏 0.3.2: the glyph size of a single theme icon button (AbMobileHeader + AbThemeToggle variant="icon") */
 export const AB_THEME_ICON_BUTTON_GLYPH = 24; // 📐 px
 

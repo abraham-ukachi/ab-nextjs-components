@@ -51,7 +51,7 @@ describe('resolveAbSheetRelease (spec §1 gestures) 🧲', () => {
     expect(resolveAbSheetRelease({ from: 'partial', dy: -40, velocity: -0.2, ...S })).toBe('partial') // 🧲
   })
   it('S2 ⬇️ gentle → partial; fast or past 30% of the sheet → closed', () => {
-    expect(resolveAbSheetRelease({ from: 'full', dy: 120, velocity: 0.2, ...S })).toBe('partial') // 🫳 God: a gentle swipe returns to 70%
+    expect(resolveAbSheetRelease({ from: 'full', dy: 120, velocity: 0.2, ...S })).toBe('partial') // 🫳 a gentle swipe returns to 70%
     expect(resolveAbSheetRelease({ from: 'full', dy: 60, velocity: 0.9, ...S })).toBe('closed') // 💨 hard swipe
     expect(resolveAbSheetRelease({ from: 'full', dy: 260, velocity: 0.2, ...S })).toBe('closed') // 📏 260 > 239
     expect(resolveAbSheetRelease({ from: 'full', dy: 3, velocity: 0, ...S })).toBe('full') // 🫥 jitter

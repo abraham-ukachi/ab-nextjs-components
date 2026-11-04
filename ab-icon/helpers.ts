@@ -118,7 +118,7 @@ export function warnAbIconMissing(name: string): void {
 }
 
 /**
- * 🆔 0.1.13 (Joseph): scopeAbIconIds — suffix every `id` in the markup, plus the `url(#…)` / `href="#…"`
+ * 🆔 0.1.13: scopeAbIconIds — suffix every `id` in the markup, plus the `url(#…)` / `href="#…"`
  * refs that point at it, so two filled Homes on one page (bottom bar + sidebar) never share a mask.
  * Same rules as ab-nextjs-icons 0.2.4 `scopeAbIconSvgIds` (copied: importing it is fine, but the client
  * bundle rule above says no icon-package imports here). `AbIcon` calls it with React `useId()`.

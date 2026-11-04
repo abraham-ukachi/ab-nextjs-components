@@ -50,7 +50,7 @@ import clsx from 'clsx';
 import AbDrawer, { type AbDrawerProps } from '../ab-drawer';
 // 🎨 styles
 import styles from './styles.module.css';
-// 👇 0.2.3 (Joseph, Welcome 0.2.21): swipe down to close
+// 👇 0.2.3 (Welcome 0.2.21): swipe down to close
 import { useAbSwipeDown } from './use-ab-swipe-down';
 
 /** ⚙️ props: AbDrawer's, minus `side` (always bottom); scope defaults to the whole app */
@@ -62,7 +62,7 @@ export interface AbBottomDrawerProps extends Omit<AbDrawerProps, 'side'> {
 }
 
 /**
- * 📱 AbBottomDrawer: the mobile bottom sheet (God's plan: the language picker on mobile, D40). AbDrawer
+ * 📱 AbBottomDrawer: the mobile bottom sheet (the plan: the language picker on mobile, D40). AbDrawer
  * with `side="bottom"`, `scope="app"`, the Home tokens (card surface, hairline top edge, 20px top radius,
  * grab handle, safe-area padding) and at most 560px wide, centred, above 768px.
  */
@@ -72,7 +72,7 @@ const AbBottomDrawer = ({ handle = true, scope = 'app', initialFocus = 'panel', 
   const id = rest.id ?? `ab-bottom-drawer-${auto}`;
   // 👇 0.2.3: swipe down to close (AbDrawer's own snap drag owns the gesture when `snapPoints` is on)
   useAbSwipeDown({ id, onClose: rest.onClose, enabled: rest.open && swipeToClose && !rest.snapPoints });
-  // ↩️ 0.2.3 (Joseph): focus goes back to the trigger. AbDrawer already returns it to the focused opener; Safari
+  // ↩️ 0.2.3: focus goes back to the trigger. AbDrawer already returns it to the focused opener; Safari
   //    (and taps on iOS) never focus a clicked <button>, so the opener is <body> and AbDrawer fell back to the logo.
   //    The fallback selector is now the button that controls this sheet, and an explicit `trigger` ref wins.
   const wasOpen = useRef(rest.open); // 🧠 the previous `open`
