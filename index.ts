@@ -269,7 +269,7 @@ export { default as AbCodeBlockCopy } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockCopyProps } from './ab-code-block/copy.tsx'
 export type { AbCodeBlockProps } from './ab-code-block/index.tsx'
 // 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
-export { default as AbContentTabs, AbContentTab } from './ab-content-tabs/index.tsx'
+export { default as AbContentTabs, AbContentTab, AB_FOCUSABLE_SELECTOR } from './ab-content-tabs/index.tsx' // ⌨️ 0.6.0: the panel tab-stop check
 export type { AbContentTabsProps, AbContentTabProps } from './ab-content-tabs/index.tsx'
 // ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
 export { default as AbDocPager } from './ab-doc-pager/index.tsx'
