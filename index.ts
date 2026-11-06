@@ -148,6 +148,7 @@ const supportedComponents: Array<ComponentCatalogEntry> = [
   { name: 'AbContentTab', file: 'ab-content-tabs/index.tsx', kind: 'client', status: 'Done' }, // 🗂️ 0.3.4 (0.2.24 MDX docs): AbContentTabs + AbContentTab (MDX <Tabs>/<Tab>)
   { name: 'AbCodeBlock', file: 'ab-code-block/index.tsx', kind: 'server', status: 'Done' }, // 💻 0.3.4 (0.2.24 MDX docs): AbCodeBlock (+ its copy island)
   { name: 'AbCallout', file: 'ab-callout/index.tsx', kind: 'server', status: 'Done' }, // 💡 0.3.4 (0.2.24 MDX docs): AbCallout
+  { name: 'AbPropsTable', file: 'ab-props-table/index.tsx', kind: 'server', status: 'Done' }, // 📋 unreleased: build-time docs prop data
   { name: 'AbList', file: 'ab-list/index.tsx', kind: 'server', status: 'Done' },
 ]
 
@@ -274,3 +275,7 @@ export type { AbContentTabsProps, AbContentTabProps } from './ab-content-tabs/in
 // ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
 export { default as AbDocPager } from './ab-doc-pager/index.tsx'
 export type { AbDocPagerProps, AbDocPagerLink } from './ab-doc-pager/index.tsx'
+
+// 📋 AbPropsTable: a server-safe docs prop table built from structured extraction data.
+export { default as AbPropsTable, AB_PROPS_TABLE_DEFAULT_LABELS } from './ab-props-table/index.tsx'
+export type { AbPropsTableDefault, AbPropsTableDefaultNone, AbPropsTableDefaultUnknown, AbPropsTableDefaultValue, AbPropsTableLabels, AbPropsTableColumn, AbPropsTableProps, AbPropsTableRow } from './ab-props-table/index.tsx'

@@ -146,7 +146,8 @@
     "ab-callout",
     "ab-code-block",
     "ab-content-tabs",
-    "ab-doc-pager"
+    "ab-doc-pager",
+    "ab-props-table"
   ],
   "exports": {
     ".": {
@@ -252,7 +253,8 @@
     "./ab-code-block": "./ab-code-block/index.tsx",
     "./ab-code-block/copy": "./ab-code-block/copy.tsx",
     "./ab-content-tabs": "./ab-content-tabs/index.tsx",
-    "./ab-doc-pager": "./ab-doc-pager/index.tsx"
+    "./ab-doc-pager": "./ab-doc-pager/index.tsx",
+    "./ab-props-table": "./ab-props-table/index.tsx"
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {

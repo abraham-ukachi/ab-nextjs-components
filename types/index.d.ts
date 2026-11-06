@@ -154,3 +154,7 @@ export type { AbContentTabsProps, AbContentTabProps } from '../ab-content-tabs/i
 // ⏮️⏭️ 0.3.4 (0.2.24 MDX docs): AbDocPager
 export { default as AbDocPager } from '../ab-doc-pager/index.tsx';
 export type { AbDocPagerProps, AbDocPagerLink } from '../ab-doc-pager/index.tsx';
+
+// 📋 AbPropsTable: available from both the root and `ab-nextjs-components/ab-props-table`.
+export { default as AbPropsTable, AB_PROPS_TABLE_DEFAULT_LABELS } from '../ab-props-table/index.tsx';
+export type { AbPropsTableDefault, AbPropsTableDefaultNone, AbPropsTableDefaultUnknown, AbPropsTableDefaultValue, AbPropsTableLabels, AbPropsTableColumn, AbPropsTableProps, AbPropsTableRow } from '../ab-props-table/index.tsx';
