@@ -55,6 +55,7 @@ const componentFiles = [
   'ab-package-card/index.tsx',
   'ab-toc/index.tsx',
   'ab-error-hero/index.tsx', // 🚧 404 gaps
+  'ab-props-table/index.tsx', // 📋 docs prop tables
   'ab-drawer/index.tsx',
   'ab-drawer/use-ab-drawer.ts',
   'ab-drawer-list/index.tsx',
@@ -121,12 +122,12 @@ describe('ab-nextjs-components package smoke', () => {
     expect(pkg.exports['./server/ab-logo']).toBe('./server/ab-logo/index.tsx')
   })
 
-  it('exports supportedComponents catalog (83 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene, 404 gaps add AbErrorHero)', async () => {
+  it('exports supportedComponents catalog (84 Done: 0.1.13 adds 7, 0.1.14 adds 7, 0.2.0 adds 5, 0.2.1 adds 3, 0.2.3 adds AbThemeModeProvider + AbPlaygroundScene, 404 gaps add AbErrorHero)', async () => {
     const mod = await import('../index')
-    expect(mod.supportedComponents).toHaveLength(83) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4 MDX docs: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager · 🧪 0.6.0: + AbPreviewCode
+    expect(mod.supportedComponents).toHaveLength(84) // 🌗 0.2.3: + AbThemeModeProvider, + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4 MDX docs: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager · 🧪 0.6.0: + AbPreviewCode
     expect(mod.supportedComponents.every((item) => item.status === 'Done')).toBe(true)
     expect(mod.supportedComponents.filter((item) => item.kind === 'client')).toHaveLength(52) // 🌗 0.2.3: + AbThemeModeProvider (client) · 🧪 0.6.0: AbDemoBox + AbDemoCode move to server-safe
-    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(31) // 🧪 0.6.0: + AbDemoBox, AbDemoCode, AbPreviewCode · 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager (server-safe ones)
+    expect(mod.supportedComponents.filter((item) => item.kind === 'server')).toHaveLength(32) // 🧪 0.6.0: + AbDemoBox, AbDemoCode, AbPreviewCode · 🎨 0.2.3: + AbPlaygroundScene · 🚧 404 gaps: + AbErrorHero · 📄 0.3.4: + AbCallout, AbCodeBlock, AbContentTabs + Tab, AbDocPager (server-safe ones)
   })
 
   it('ships component entry files', () => {
@@ -153,6 +154,7 @@ describe('ab-nextjs-components package smoke', () => {
       'ab-package-card/styles.module.css',
       'ab-toc/styles.module.css',
       'ab-error-hero/styles.module.css', // 🚧 404 gaps
+      'ab-props-table/styles.module.css', // 📋 docs prop tables
       'ab-drawer/styles.module.css',
       'ab-drawer-list/styles.module.css',
       'ab-confirm-drawer/styles.module.css',

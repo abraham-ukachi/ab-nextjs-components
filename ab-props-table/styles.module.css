@@ -1,0 +1,96 @@
+/*
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbPropsTable styles (unreleased)
+* @file: ab-props-table/styles.module.css
+* @type: CSS module
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+/* 📋 The border and surface follow the docs tokens. The local wrapper, never the page, scrolls. */
+.abPropsTable {
+  --ab-props-table-surface: var(--ab-color-card, #fffdf9);
+  --ab-props-table-text: var(--ab-color-text, #211a16);
+  --ab-props-table-muted: var(--ab-color-muted, #6f635b);
+  --ab-props-table-border: var(--ab-color-border, rgb(92 64 48 / 0.18));
+  --ab-props-table-code: var(--ab-color-accent-text, #875d37);
+  max-inline-size: 100%; /* 📐 never widen the document or its prose parent. */
+  min-inline-size: 0;
+  margin: 0 0 1.25em; /* ↕️ docs prose rhythm, consistent with AbCodeBlock. */
+  overflow-x: auto; /* ↔️ narrow panes scroll here, so the keyboard has one useful stop. */
+  border: 1px solid var(--ab-props-table-border);
+  border-radius: var(--ab-radius-row, 8px);
+  background: var(--ab-props-table-surface);
+  color: var(--ab-props-table-text);
+  color-scheme: light dark; /* 🌗 native focus/scrollbar colors track the active scheme. */
+  font: 14px/1.55 var(--ab-font-body, system-ui, sans-serif);
+}
+.abPropsTable:focus-visible { outline: 2px solid var(--ab-color-accent, #a67c52); outline-offset: 2px; } /* ♿ */
+/* 🧱 A fixed layout shares space fairly; 640px is the local horizontal scroll threshold, not a page minimum. */
+.abPropsTableGrid { inline-size: 100%; min-inline-size: 640px; border-collapse: collapse; table-layout: fixed; }
+.abPropsTableCaption { padding: 12px 16px; border-block-end: 1px solid var(--ab-props-table-border); font-weight: 650; text-align: start; }
+.abPropsTableGrid th,
+.abPropsTableGrid td { padding: 12px 16px; border-block-end: 1px solid var(--ab-props-table-border); text-align: start; vertical-align: top; overflow-wrap: anywhere; }
+.abPropsTableGrid thead th { background: color-mix(in srgb, var(--ab-props-table-text) 4%, transparent); color: var(--ab-props-table-muted); font-size: 12px; font-weight: 650; letter-spacing: 0.025em; }
+.abPropsTableGrid tbody tr:last-child > * { border-block-end: 0; }
+.abPropsTableName code,
+.abPropsTableCode code { font: 13px/1.55 var(--ab-font-code, ui-monospace, monospace); overflow-wrap: anywhere; word-break: normal; }
+.abPropsTableName code { color: var(--ab-props-table-text); font-weight: 650; }
+.abPropsTableCode code { color: var(--ab-props-table-code); }
+.abPropsTableRequired,
+.abPropsTableDeprecated { display: block; margin-block-start: 4px; font-size: 11px; font-weight: 500; }
+.abPropsTableRequired { color: var(--ab-color-danger, #904a43); }
+.abPropsTableDeprecated,
+.abPropsTableUnknown,
+.abPropsTableNone { color: var(--ab-props-table-muted); }
+.abPropsTableDeprecated { font-style: italic; }
+.abPropsTableDescription { min-inline-size: 0; }
+/* 🌙 Explicit dark containers (theme selectors are intentionally accepted at any ancestor). */
+:where([data-theme='dark'], [data-color-scheme='dark'], [data-ab-theme='dark']) .abPropsTable {
+  --ab-props-table-surface: var(--ab-color-card, #211a16);
+  --ab-props-table-text: var(--ab-color-text, #f4ece5);
+  --ab-props-table-muted: var(--ab-color-muted, #c4b6ab);
+  --ab-props-table-border: var(--ab-color-border, rgb(244 236 229 / 0.18));
+  --ab-props-table-code: var(--ab-color-accent-text, #e5bc92);
+}
+/* 🌙 No theme provider is required: fallbacks also honor the operating system's dark preference. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-color-scheme='light']):not([data-ab-theme='light']) .abPropsTable {
+    --ab-props-table-surface: var(--ab-color-card, #211a16);
+    --ab-props-table-text: var(--ab-color-text, #f4ece5);
+    --ab-props-table-muted: var(--ab-color-muted, #c4b6ab);
+    --ab-props-table-border: var(--ab-color-border, rgb(244 236 229 / 0.18));
+    --ab-props-table-code: var(--ab-color-accent-text, #e5bc92);
+  }
+}
+/* 🕶️ Keep status captions in the accessibility tree while removing them from the visual layout. */
+.srOnly { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }

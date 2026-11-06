@@ -1,3 +1,7 @@
+## [0.7.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.6.0...v0.7.0) (2026-11-06)
+
+* 📋 **AbPropsTable (server component):** accessible, responsive docs prop tables from build-time structured data. Export it from the package root or `ab-nextjs-components/ab-props-table`; row/default/column/label types are exported too. An omitted default (or `{ kind: 'none' }`) means "No default", `{ kind: 'unknown' }` is explicitly unknown, and `{ kind: 'value', value }` renders a code value. All input is escaped text: no introspection, evaluation or raw HTML. Configurable captions/labels/column order, required/deprecated annotations, one keyboard-scrollable region, wrapping long types and light/dark token fallbacks are included.
+
 ## [0.6.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.5.0...v0.6.0) (2026-11-04)
 
 * ⚠️ **Breaking: `html` is now `trustedHtml`** on AbCodeBlock, AbDemoCode and AbPreviewCode. The string goes into `dangerouslySetInnerHTML` **without sanitizing**, so pass only HTML you render yourself (e.g. Shiki `codeToHtml`), never user input. Prefer `highlighted` / children. Rename the prop to upgrade.
