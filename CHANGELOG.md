@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.7.0...v0.7.1) (2026-11-12)
+
+* Normalize the changelog format and backfill missing entries.
+
 ## [0.7.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.6.0...v0.7.0) (2026-11-06)
 
 * 📋 **AbPropsTable (server component):** accessible, responsive docs prop tables from build-time structured data. Export it from the package root or `ab-nextjs-components/ab-props-table`; row/default/column/label types are exported too. An omitted default (or `{ kind: 'none' }`) means "No default", `{ kind: 'unknown' }` is explicitly unknown, and `{ kind: 'value', value }` renders a code value. All input is escaped text: no introspection, evaluation or raw HTML. Configurable captions/labels/column order, required/deprecated annotations, one keyboard-scrollable region, wrapping long types and light/dark token fallbacks are included.
