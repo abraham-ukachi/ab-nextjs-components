@@ -1,3 +1,7 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
 ## [0.7.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.6.0...v0.7.0) (2026-11-06)
 
 * 📋 **AbPropsTable (server component):** accessible, responsive docs prop tables from build-time structured data. Export it from the package root or `ab-nextjs-components/ab-props-table`; row/default/column/label types are exported too. An omitted default (or `{ kind: 'none' }`) means "No default", `{ kind: 'unknown' }` is explicitly unknown, and `{ kind: 'value', value }` renders a code value. All input is escaped text: no introspection, evaluation or raw HTML. Configurable captions/labels/column order, required/deprecated annotations, one keyboard-scrollable region, wrapping long types and light/dark token fallbacks are included.
@@ -44,7 +48,7 @@
 * ♿ **Code blocks:** the `pre` is focusable, so keyboard users can scroll it.
 * ⬆️ **Theme:** `ab-nextjs-theme` **^0.3.8**.
 
-## [0.3.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.2...v0.3.3) (2026-11-03)
+## [0.3.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.3.2...v0.3.3) (2026-11-02)
 
 * 📌 **Icons pin dropped ([#20](https://github.com/abraham-ukachi/ab-nextjs-components/pull/20)):** the release-age pin for `ab-nextjs-icons` is removed.
 * 🎯 **AbSearchTrigger:** the small size is 46px.
@@ -65,6 +69,17 @@
 ## [0.3.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.3...v0.3.0) (2026-10-30)
 
 * 🔥 **Prune ([#17](https://github.com/abraham-ukachi/ab-nextjs-components/pull/17)):** 5 unused components are removed: `AbKeyFeature`, `AbMainHeadline`, `AbPreview`, `AbSwitchBack` and `AbTestHello` (and their server twins). ⚠️ Breaking if you imported them.
+
+## [0.2.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.2...v0.2.3) (2026-10-29)
+
+* 🎪 **AbPlaygroundScene:** v6 scenes (welcome, all, `variant="auto"`), real export names in captions, a CSS locale cycle with stills, frame-card ratio, and the v6 card token
+* 🔶 **AbButton:** owns per-type padding/size via `--ab-button-*` tokens; `size="lg"`, `color="bronze"` and opt-in `color="card"`; the server twin uses the client CSS (single source, twin guard)
+* 🎠 **AbCarousel:** `autoHeight`, headless `AbCarouselProvider` with a region hook, `useAbCarouselKeys` (default scope `'main'`, `'document'` opt-in); each part resolves its own accent
+* 📱 **AbMobileHeader:** extra row and 3-state theme, globe wiring, link fallback, compact mode, no-JS `<details>` language list, `barAt` to hide the bar from 768px
+* 🧩 **AbThemeModeProvider** (`./ab-theme-mode`) so every theme toggle shares one mode; export map guarded
+* 🔀 **AbFlowDiagram:** frame mode, rich nodes and dots
+* 📥 **AbBottomDrawer:** close on swipe down and refocus its trigger
+* ⬆️ `ab-nextjs-animations` `^0.2.5` and `ab-nextjs-theme` `^0.3.7` (with D33 pins at release time)
 
 ## [0.2.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.2.1...v0.2.2) (2026-10-21)
 
@@ -154,7 +169,7 @@ Includes everything planned for 0.1.15, which is not released separately.
 * 📋 **`AbDrawerList` + `AbConfirmDrawer` presets (new, D38/D40).**
 * 🌍 **`presentation="menu" | "drawer" | "auto"` (G56)** on `AbLocaleSwitcher` and on the `AbAppBar` More menu. The drawer is an app-scope bottom sheet, and `auto` uses it below 768px. The default stays `menu`.
 
-## 0.1.13 — 2026-10-16
+## [0.1.13](https://github.com/abraham-ukachi/ab-nextjs-components/compare/eba68a9f33aae456803645b145ed26a6a230ef92...v0.1.13) (2026-10-20)
 
 * 🔗 **`AbLinkProvider` (new, `ab-nextjs-components/ab-link`)**: every component link now renders through `AbLink`, so an app can inject a locale-aware `Link` once. `useAbLink`, `AbLink`, `AbLinkComponent` and `AbLinkProps` are exported. It's the only `next/link` import (test-guarded)
 * 🔣 **AbIcon (G2): SVG first, non-breaking fallback.** Registered / explicit / built-in names render AbIcons SVGs. An unregistered name still renders the Material Symbols ligature (`data-ab-icon-fallback="font"`, as before) and warns once in development, so nothing goes blank in a patch; register every name before the app drops the font. **`AbIconRegistrar`** (`ab-nextjs-components/ab-icon/registrar`) is the server-safe way to register icons from a Server Component layout. 7 more built-ins: `chevron_left`, `chevron_right`, `menu`, `more_vert`, `search`, `close`, `expand_more`. AbMenu icons are AbIcons now (filled when selected)
@@ -183,21 +198,21 @@ Includes everything planned for 0.1.15, which is not released separately.
 * ⬆️ Peers + dev: `ab-nextjs-theme ^0.3.4`, `ab-nextjs-icons ^0.2.4` (the filled `search` tab icon), `ab-nextjs-hooks ^0.1.7`
 * ⏳ **D33:** exact `minimumReleaseAgeExclude` pins for the three siblings in the lockfile that are < 24h old: `ab-nextjs-icons@0.2.4`, `ab-nextjs-theme@0.3.4`, `ab-nextjs-hooks@0.1.7`, each until publish + 24h (2026-10-21 17:15 / 17:25 / 17:28 UTC). `release-age.test.ts` fails after that and rejects pins that aren't in the lockfile
 
-## 0.1.12 — 2026-10-16
+## [0.1.12](https://github.com/abraham-ukachi/ab-nextjs-components/compare/5ba7d20bf57a602b68cd323c66ebe432424025b8...eba68a9f33aae456803645b145ed26a6a230ef92) (2026-10-16)
 
 * ♿ **AbInstallSnippet tabs pass AA in every state.** Each state now paints an explicit text/background pair from the live palette instead of a transparent tab and a 12% bronze tint: inactive `on-surface-variant` on `surface-container` (8.04:1 light / 9.67:1 dark), hover `on-surface` on an 8% `on-surface` state layer (12.63:1 / 10.39:1), active and active + hover `on-primary-container` on `primary-container` (13.28:1 / 7.22:1). Fallbacks are the light bronze palette, so it also passes without the theme
 * 🥉 **New `AbButton type="filled"`** (client + server): solid bronze `--md-sys-color-primary` with `on-primary` label and icon. Sets `data-type="filled"`, styled with hover / focus / disabled by `ab-nextjs-theme@^0.3.3`; a `.isFilled` fallback paints the rest state on older themes. `AbButtonType` gains `'filled'`
 * ⬆️ **`ab-nextjs-theme ^0.3.3`** (peer + dev, was `^0.3.1`) for the filled hover / focus / disabled states and the button icon-colour fix. The `.isFilled` fallback stays for apps still on an older theme
 * Tests: contrast computed from the theme palette (light + dark, every state, plus the no-theme fallbacks); filled type on client + server twins. Checked in WebKit (ratios above; filled 6.47:1 light / 7.74:1 dark)
 
-## 0.1.11 — 2026-10-15
+## [0.1.11](https://github.com/abraham-ukachi/ab-nextjs-components/compare/f6fd1fa600e9c52d469bee9dfb5f042636d3aae3...5ba7d20bf57a602b68cd323c66ebe432424025b8) (2026-10-15)
 
 * 🐛 **AbFlowDiagram: nodes no longer cover the header in small boxes.** At 390px wide the Live Playground's top node ("core") sat under the "Live Playground" header. With a header (title, live dot or caption) the root now gets `data-ab-header="true"`, and nodes + wires live in a stage that starts below the header band: `--ab-flow-diagram-inset-top` (default `2.75rem`, tunable). Node `x` / `y` stay 0–100 but now map onto that stage, and the wires share the same box so they still meet the nodes. Without a header the stage is the full card (unchanged)
 * 📏 **AbFlowDiagram nodes scale with the card:** `container-type: inline-size` on the root; node text, padding, radius and the hub glow use clamped `cqi` sizes (13px on a 760px card, 11px at 390px)
 * 🪐 **AbFlowDiagram: side nodes are never clipped** (s04's `--ab-color-bronze` and s07's `reduced motion` were cut off at the card edge in a 390px box). The orbit now scales with the box. Each node is anchored at the same fraction of its own box as its position (`translate(-x%, -y%)` via `--ab-flow-node-x` / `-y`; `x = y = 50` is the old centring), so the outer ring pulls in by exactly the node's width, and the wire end stays inside the pill. Nodes + wires also sit inside a side margin, `--ab-flow-diagram-inset-x` (default `0.5rem`), and an over-long label ellipsises (`max-width: 100%`). Positions are clamped to 0–100 like the wires
 * Tests: header flag, stage insets shared by nodes + wires, 390px geometry, clamped scaling, proportional anchoring + side margin, s04 / s07 orbit geometry at 390 / 760px × 276 / 380px. Checked in WebKit at 390px: "core" top 9px → 53px (header ends at 33px); no node overlaps the header or is clipped at 390 / 760px. After the orbit fix: s04 + s07 have no node clipped (x or y) or over the header at 390 / 760px wide × 276px / 380px / default-ratio heights (before: 5 nodes clipped at 390px, 2 at 760px)
 
-## 0.1.10 — 2026-10-14
+## [0.1.10](https://github.com/abraham-ukachi/ab-nextjs-components/compare/5e8d9e84398714e47ac947cc405009850eef2398...f6fd1fa600e9c52d469bee9dfb5f042636d3aae3) (2026-10-15)
 
 * **Motion comes from ab-nextjs-animations (>= 0.2.4, now a required peer):** no component CSS declares its own `transition`, `animation` or `@keyframes` any more. Each component imports the package stylesheet it needs:
   * AbCarousel: `slide-step` (direction-aware enter / leave via `data-ab-direction`) + `motion` (buttons, dots)
@@ -222,11 +237,11 @@ Includes everything planned for 0.1.15, which is not released separately.
 * **AbInstallSnippet (G35, new):** pnpm / npm / yarn / bun tabs (APG tablist), choice shared via `useAbLocalStorage`, copy button with polite status, `data-ab-swipe-ignore`; `getAbInstallCommand` helper
 * **AbLocaleSwitcher (G7, new):** menu button + `menuitemradio`, typeahead, `onSelect` or `getHref` (+ `hrefLang`)
 * **AbIcon (G2, new, `ab-nextjs-components/ab-icon`):** AbIcons as inline SVG; client twin resolves `svg` prop → `registerAbIcons` registry → Material Symbols font (never imports the full map); server twin renders any icon; weights 100–700 map to the icons package stroke table; 8 built-ins (arrows, theme, language, copy / check) imported per icon from `ab-nextjs-icons/ab-icons/icons/*` (needs icons >= 0.2.3)
-* **AbCarousel:** prev / next arrows now render through AbIcon (weight 300); `--ab-carousel-icon-stroke` removed (unreleased)
+* **AbCarousel:** prev / next arrows now render through AbIcon (weight 300); `--ab-carousel-icon-stroke` removed
 * **AbFlowDiagram (G38, new, server component):** `figure role="img"` scenes, CSS-only draw + pulse, paused while inactive, 3 loops on mobile, reduced motion shows the poster frame; `getAbFlowEdgePath` helper
 * Dev: `happy-dom` + `@testing-library/react` for DOM tests
 
-## 0.1.9 — 2026-10-14
+## [0.1.9](https://github.com/abraham-ukachi/ab-nextjs-components/compare/9d443f2ac9944d16951eb613f7a4bd1feab82712...5e8d9e84398714e47ac947cc405009850eef2398) (2026-10-14)
 
 - **AbLogo:** `wordmark` prop (`true` → "Elements", or any string) renders a mark + Quicksand Bold lockup (`font-quicksand-bold` from ab-nextjs-fonts); `color` prop (`--ab-logo-color`); light / dark (`html.dark`)
 - **AbLogo fix:** `naked` with no `src` now masks with the shipped Ab mark (via `--app-logo-url` fallback) instead of a bronze square when the chrome CSS isn't loaded
@@ -239,55 +254,50 @@ Includes everything planned for 0.1.15, which is not released separately.
 - **AbSplash:** StrictMode-safe teardown (`scheduleAbSplashFinish` / `cancelAbSplashFinish`); overflow failsafe verified in Chromium + WebKit
 - **Tooling:** `typecheck` script, `types/css.d.ts`, vitest automatic JSX, `scripts/build-demo.mjs`
 
-## 0.1.8 — 2026-10-05
+## [0.1.8](https://github.com/abraham-ukachi/ab-nextjs-components/compare/bb3a452d8cd89d57d6a3951b2f640a58ecdeb775...9d443f2ac9944d16951eb613f7a4bd1feab82712) (2026-10-05)
 
 - **Chrome styles:** dialog, toast, logo (`span.app-logo`), spinner, and empty-state doodle CSS + SVG assets now ship here via `@import "ab-nextjs-components/styles.css"` (import after `ab-nextjs-theme/styles.css`)
 - **AbLogo:** comments corrected — mask fallback `--app-logo-url` is owned by this package’s chrome CSS, not the theme
 
-## 0.1.7 — 2026-10-05
+## [0.1.7](https://github.com/abraham-ukachi/ab-nextjs-components/compare/e67e89dbeba6055e608d3fb1aa6aa2fb511ab6fc...bb3a452d8cd89d57d6a3951b2f640a58ecdeb775) (2026-10-05)
 
 - **AbNavbar:** root `<nav>` sets `data-ab-part="bottomBar"` (client + server)
 
-## 0.1.6 — 2026-10-05
+## [0.1.6](https://github.com/abraham-ukachi/ab-nextjs-components/compare/1ede72f33ca1e6910c793454098ad9889a303bb2...e67e89dbeba6055e608d3fb1aa6aa2fb511ab6fc) (2026-10-05)
 
 - **AbSidebar:** renders `<nav data-ab-part="sidebar">` (was `<aside>`) so aside dialogs/menus never hit the sidebar
 - **AbMenu:** sets `data-id={id}` (keeps `id`) and `data-id` / `menu-item` on items so `useAbMenu` can open it; cancel is `li[role=close-menu]`
 - **AbLogo:** ships `ab-logo/ab-logo.svg` and defaults `src` to an inlined data URI of that asset; mask types without `src`/`mask` defer to `ab-nextjs-theme` `--app-logo-url`
 
-## 0.1.5 — 2026-10-03
+## [0.1.5](https://github.com/abraham-ukachi/ab-nextjs-components/compare/fd3e776be781ea8ad0d7aa4d6ca56b31c0ae1a4a...1ede72f33ca1e6910c793454098ad9889a303bb2) (2026-10-03)
 
 - Publish to npm automatically from GitHub Actions with Trusted Publishing (OIDC + provenance, no NPM_TOKEN)
 - `next` peer is now `^16.3.4`; dev dependency on ab-nextjs-hooks comes from the registry
 
-### Unreleased (chore/upgrade-next-16 — Skip-override / Phase 5 components)
-
-## 0.1.4 — 2026-09-23
+## [0.1.4](https://github.com/abraham-ukachi/ab-nextjs-components/compare/8fcbcaa9e4d5dd35e63d6c9b84cb682f5f04d1c8...fd3e776be781ea8ad0d7aa4d6ca56b31c0ae1a4a) (2026-09-23)
 
 - Release from `main` after merge of PR #1 (Next 16.3.4 + Phase 1–5 ports).
-
 
 * **Port (client):** AbBrand, AbName, AbNavbar, AbSidebar, AbText, AbTestHello, AbKeyFeature, AbMainHeadline, AbPreview, AbProduct, AbProductItem, AbSwitchBack, AbDemoBox, AbDemoCode
 * **Port (server):** AbBrand, AbName, AbNavbar, AbSidebar, AbNavLink, AbText, AbTestHello, AbKeyFeature, AbSwitchBack
 * Select/MenuItem skipped — empty on Projects (GitHub-only historically)
 * Product/Preview adapted (Dexie/providers/i18n stripped); usable props API kept
-* Catalog **51 Done** (36 client / 15 server). Local only — no push.
+* Catalog **51 Done** (36 client / 15 server).
 
-# Changelog
-
-### Unreleased (chore/upgrade-next-16 — Phase 4 Port)
+### Phase 4 Port
 
 * **Port:** AbSearchbar, AbSearchResult, AbPagePaginator, AbPageSwitcher, AbProgressChips, AbPrice, AbPriceTag
 * **Adapt:** AbImage (Dexie / offline / background-removal stripped; next/image + optional fallback)
 * **Port (server):** AbPolygon
-* Catalog 28 Done (22 client / 6 server). Plain CSS modules. Local only — no push.
+* Catalog 28 Done (22 client / 6 server). Plain CSS modules.
 
-### Unreleased (chore/upgrade-next-16 — Phase 2 Adapt + Phase 3 Port)
+### Phase 2 Adapt + Phase 3 Port
 
 * **Adapt:** **AbBalloon** (`title=` locked) — Input now uses real AbBalloon
 * **Port:** AbAvatar (client + server), AbBadge (server), AbTab, AbTabs, AbMenu, AbCollapsible, AbColor, AbInfo, AbLikeButton
 * Plain CSS modules; LYD brand/nav/i18n stripped; Select/MenuItem skipped (not on Projects)
 
-### Unreleased (chore/upgrade-next-16 — Phase 2)
+### Phase 2
 
 * Ported **AbIcon** (client + server) — Material Symbols ligatures
 * Ported **AbLogo** (client + server) — contained | outlined | hollow | naked; defaults from `ab-nextjs-icons` logos (`#a67c52`), optional `src` / `mask`
@@ -297,10 +307,22 @@ Includes everything planned for 0.1.15, which is not released separately.
 * Hard peers: next 16.3.4, react^19, clsx; soft optional peers: theme / icons / hooks / animations
 * Plain CSS modules (no `@apply`); theme `data-*` attrs preserved on buttons
 
-### Unreleased (Phase 1)
+### Phase 1
 
 * Next.js **16.3.4** / React 19 tooling scaffold + Pending catalog
 
-### 0.1.2
+## [0.1.3](https://github.com/abraham-ukachi/ab-nextjs-components/compare/9169fe98d2519db14aa68e2b00ebab83e5d88b59...8fcbcaa9e4d5dd35e63d6c9b84cb682f5f04d1c8) (2026-09-23)
+
+* Staged Phase 5 publish ahead of the 0.1.4 release from main
+
+## [0.1.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/7131423436c545ae706725da0801decdb12ef055...9169fe98d2519db14aa68e2b00ebab83e5d88b59) (2024-06-01)
 
 * Stub package version bump
+
+## [0.1.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/6d7c433915135e537aebcf1fea69b2d932bef075...7131423436c545ae706725da0801decdb12ef055) (2024-06-01)
+
+* Version bump to 0.1.1
+
+## 0.1.0 (2024-06-01)
+
+* Initial release
