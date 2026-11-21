@@ -31,7 +31,8 @@
 *
 * Example usage:
 *   1+|> const [open, setOpen] = useState(false)
-*    -|> <AbSearchTrigger variant="field" label="Search…" onOpen={() => setOpen(true)} hotkey={false} />
+*    -|> useAbHotkey('mod+k', () => setOpen(true)) // ⌨️ 0.7.2: ONE listener (ab-nextjs-hooks/useAbHotkey); fires in inputs by default
+*    -|> <AbSearchTrigger variant="field" label="Search…" onOpen={() => setOpen(true)} shortcut hotkey={false} />
 *    -|> <AbSearchDrawer open={open} onClose={() => setOpen(false)} search={(q) => index.query(q)} />
 */
 
@@ -168,7 +169,8 @@ export function highlightAbSearch(text: string, q: string): ReactNode {
  *
  * - 📱 below 768px: straight to full height (no 70% stop: the keyboard is up); a hard swipe down closes
  * - 💻 768px and up: centred in the main pane, min(640px, main width), 70% tall; results scroll inside with a 48px fade
- * - ⌨️ no shortcut key: open it from the Search tab / the search field (AbSearchTrigger `onOpen` + `hotkey={false}`)
+ * - ⌨️ no listener of its own: the app shell owns ONE `useAbHotkey('mod+k')` (hooks 0.1.9, D49) and every
+ *   AbSearchTrigger shows the cap with `shortcut hotkey={false}` (0.7.2); the Search tab / field open it too
  * - 🔤 48px input (2px bronze border), autofocused; a 40px clear button keeps focus in the input
  * - 🕘 up to 4 recent searches (localStorage `ab:search:recent`), saved on Enter or when a result opens; each removable
  * - 📦 results after a 150ms debounce from 2 characters, grouped by package; matches in a bronze `<mark>`
