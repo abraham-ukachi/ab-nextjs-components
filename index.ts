@@ -225,8 +225,8 @@ export { AB_MOBILE_HEADER_THEME_CYCLE } from './ab-mobile-header/index.tsx' // �
 export { AbThemeModeProvider, useAbThemeModeContext, AB_THEME_MODE_ICONS, AB_THEME_ICON_BUTTON_GLYPH } from './ab-theme-mode/index.tsx' // 🔣 0.3.2: + the shared theme glyphs
 export type { AbThemeModeProviderProps, AbThemeModeContextValue } from './ab-theme-mode/index.tsx'
 // 🆕 0.2.0 drawers v2: AbSearchDrawer
-export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY } from './ab-search-drawer/index.tsx'
-export type { AbSearchDrawerProps, AbSearchDrawerItem, AbSearchDrawerGroup, AbSearchDrawerLabels } from './ab-search-drawer/index.tsx'
+export { default as AbSearchDrawer, addAbSearchRecent, highlightAbSearch, AB_SEARCH_RECENT_KEY, AbSearchOfflineError, isAbSearchOffline } from './ab-search-drawer/index.tsx' // 📴 0.7.2: offline helpers
+export type { AbSearchDrawerProps, AbSearchDrawerItem, AbSearchDrawerGroup, AbSearchDrawerLabels, AbSearchDrawerStatus } from './ab-search-drawer/index.tsx'
 // 🆕 0.2.0 drawers v2: AbTocDrawer
 export { default as AbTocDrawer } from './ab-toc-drawer/index.tsx'
 export type { AbTocDrawerProps, AbTocDrawerLink } from './ab-toc-drawer/index.tsx'
