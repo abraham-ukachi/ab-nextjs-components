@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.2](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.7.1...v0.7.2) (2026-11-22)
+
+* ⬆️ **Requires `ab-nextjs-hooks@^0.1.9`** (peer and dev) for `useAbHotkey` (G10).
+* ⚠️ **Behaviour: `AbSearchTrigger` splits `shortcut` from `hotkey` (D49).** `hotkey` registers the ⌘K / Ctrl+K listener (now hooks' `useAbHotkey`, default on with `onOpen`), and `shortcut` only shows the key cap and `aria-keyshortcuts` (default: whatever `hotkey` does). `shortcut` is **no longer an alias of `hotkey`**, so `shortcut={false}` alone hides the cap but keeps listening. An app shell with one `useAbHotkey('mod+k')` renders its triggers with `shortcut hotkey={false}`. The combo is now platform-strict (⌘K on Apple, Ctrl+K elsewhere), `aria-keyshortcuts` names that platform's pair (SSR: `Control+K`), and two listening triggers open once per press. `isAbApplePlatform` is re-exported from hooks.
+* ⏳ **AbSearchDrawer async states:** an async `search()` sets `aria-busy` on the results and listbox and shows "Searching…" (`labels.loading`); a sync one never flashes it. A failure is no longer shown as "No results": an offline panel (`offlineTitle` / `offlineHint`) when the search throws or rejects with the new `AbSearchOfflineError` (or `{ offline: true }`) or `navigator.onLine` is false, else an error panel (`errorTitle` / `errorHint`), both with a `retry` button. Offline retries by itself on `online`. New exports: `AbSearchOfflineError`, `isAbSearchOffline`, `AbSearchDrawerStatus`.
+* 🏷️ **Result badge:** `AbSearchDrawerItem.badge` (for example `"EN"` on an English-fallback page) with an optional `badgeLabel` that screen readers hear instead.
+* 🐛 **Unique search ids (G60, part 1):** groups and options are keyed and numbered by position, not by raw `g.id` / `item.id`, so repeated ids no longer duplicate option ids or break ↑/↓.
+* 🐛 **Hash returnFocus guard:** choosing a `#hash` result closes the drawer without refocusing the opener, so `#main-content` keeps the section that was just scrolled to (`hashReturnFocus` opts back in; Escape and ✕ still return focus). `AbDrawer` takes `restoreFocus` (`false` or a function read at close time). New export: `hasAbHashTarget`.
+* ♿ **AbSearchTrigger touch audit:** under `pointer: coarse`, every trigger except `size="sm"` gets an invisible, centred hit area of at least 44×44px (the 40px pill, the 36px tablet field, AbAppBar's compact icon and pill). `size="sm"` keeps its 46px band and is now at least 44px wide for short labels. Nothing changes visually.
+
 ## [0.7.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.7.0...v0.7.1) (2026-11-12)
 
 * Normalize the changelog format and backfill missing entries.
