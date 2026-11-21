@@ -41,7 +41,7 @@
   "license": "MIT",
   "peerDependencies": {
     "ab-nextjs-animations": "^0.2.5",
-    "ab-nextjs-hooks": "^0.1.7",
+    "ab-nextjs-hooks": "^0.1.9",
     "ab-nextjs-icons": "^0.2.7",
     "ab-nextjs-theme": "^0.3.9",
     "clsx": "^2",
@@ -54,7 +54,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "ab-nextjs-animations": "^0.2.5",
-    "ab-nextjs-hooks": "^0.1.7",
+    "ab-nextjs-hooks": "^0.1.9",
     "ab-nextjs-icons": "^0.2.7",
     "ab-nextjs-theme": "^0.3.9",
     "clsx": "^2.1.1",
@@ -258,9 +258,6 @@
   },
   "peerDependenciesMeta": {
     "ab-nextjs-theme": {
-      "optional": true
-    },
-    "ab-nextjs-hooks": {
       "optional": true
     }
   }
