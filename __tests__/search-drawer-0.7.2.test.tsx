@@ -42,14 +42,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 // 🧱 DOM renderer
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 // 🔎 under test
-import AbSearchDrawer, { AbSearchOfflineError, isAbSearchOffline, type AbSearchDrawerGroup, type AbSearchDrawerProps } from '../ab-search-drawer'
+import AbSearchDrawer, { AbSearchOfflineError, hasAbHashTarget, isAbSearchOffline, type AbSearchDrawerGroup, type AbSearchDrawerProps } from '../ab-search-drawer'
 // 📄 fs + path (CSS checks)
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 // 📦 the root barrel (exports check)
 import * as pkg from '../index'
 // ⏱️ the slide duration (to flush open / close)
-import { AB_DRAWER_DURATION } from '../ab-drawer'
+import AbDrawer, { AB_DRAWER_DURATION } from '../ab-drawer'
 
 // ⏱️ fake timers + rAF on timers, clean storage (same harness as ab-search-drawer.test.tsx)
 beforeEach(() => { vi.useFakeTimers(); vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0)); vi.stubGlobal('cancelAnimationFrame', (id: number) => clearTimeout(id)); localStorage.clear() })
@@ -193,5 +193,58 @@ describe('🏷️ 0.7.2: the optional per-result badge (EN fallback)', () => {
     expect(rule).toContain('flex: none') // 📏 never squeezed by a long title
     expect(rule).toContain('var(--ab-color-muted') // 🎨 AA token (theme 0.3.9 name)
     expect(rule).not.toMatch(/transition|animation/) // 🚫 no CSS transitions
+  })
+})
+
+describe('↩️ 0.7.2: the #hash returnFocus guard', () => {
+  // 📦 a same-page section + a plain page
+  const HITS: AbSearchDrawerGroup[] = [{ id: 'c', label: 'C', items: [
+    { id: 'h', href: '/docs/installation#pnpm', title: 'Install with pnpm' },
+    { id: 'p', href: '/docs/installation', title: 'Installation' },
+  ] }]
+  // 🧱 an opener button + the drawer, toggled by re-rendering (onClose is a spy)
+  const harness = (extra: Partial<AbSearchDrawerProps> = {}) => {
+    const ui = (open: boolean) => <div className="AbAppLayout"><header><button type="button" id="opener">Search</button></header><main data-ab-part="main"><AbSearchDrawer open={open} onClose={() => {}} search={() => HITS} {...extra} /></main></div> // 🧱
+    const r = render(ui(false)) // 🚪 closed
+    const opener = document.getElementById('opener')!; opener.focus() // 🎯 the trigger has focus
+    return { opener, open: async () => { r.rerender(ui(true)); await flush() }, close: async () => { r.rerender(ui(false)); await flush(); await act(async () => { await Promise.resolve() }) } } // 🔁
+  }
+  // 🔎 type + pick an option by index
+  const pick = async (i: number) => { const input = document.querySelector<HTMLInputElement>('input[role="combobox"]')!; await type(input, 'install'); fireEvent.click(document.querySelectorAll('[role="option"]')[i]) }
+
+  it('hasAbHashTarget: only a non-empty fragment counts', () => {
+    expect(hasAbHashTarget('/docs/x#install')).toBe(true) // #️⃣
+    expect(hasAbHashTarget('#top')).toBe(true) // #️⃣ same page
+    expect(hasAbHashTarget('/docs/x')).toBe(false) // 🙅
+    expect(hasAbHashTarget('/docs/x#')).toBe(false) // 🙅 empty
+  })
+  it('a #hash result closes WITHOUT pulling focus back to the opener', async () => {
+    const h = harness() // 🧱
+    await h.open(); expect(document.activeElement).not.toBe(h.opener) // 🎯 in the drawer
+    await pick(0); await h.close() // #️⃣ chosen → closed
+    expect(document.activeElement).not.toBe(h.opener) // ✅ the guard
+  })
+  it('a plain result (and Escape-style closes) still return focus; the next open resets the guard', async () => {
+    const h = harness() // 🧱
+    await h.open(); await pick(0); await h.close() // #️⃣ guard on
+    h.opener.focus(); await h.open(); await pick(1); await h.close() // 📄 plain page
+    expect(document.activeElement).toBe(h.opener) // ✅ returned
+    h.opener.focus(); await h.open(); await h.close() // ⎋ closed without a result
+    expect(document.activeElement).toBe(h.opener) // ✅ returned
+  })
+  it('hashReturnFocus opts back in', async () => {
+    const h = harness({ hashReturnFocus: true }) // 🧱
+    await h.open(); await pick(0); await h.close() // #️⃣
+    expect(document.activeElement).toBe(h.opener) // ✅ returned anyway
+  })
+  it('AbDrawer restoreFocus={false} never returns focus; a function is read at close time', async () => {
+    let allow = false // 🎛️
+    const ui = (open: boolean, rf: boolean | (() => boolean)) => <div className="AbAppLayout"><button type="button" id="o">o</button><AbDrawer open={open} onClose={() => {}} title="T" restoreFocus={rf}><button type="button">in</button></AbDrawer></div> // 🧱
+    const r = render(ui(false, false)); const o = document.getElementById('o')!; o.focus() // 🎯
+    r.rerender(ui(true, false)); await flush(); r.rerender(ui(false, false)); await flush(); await act(async () => { await Promise.resolve() }) // 🔁
+    expect(document.activeElement).not.toBe(o) // 🙅 false
+    o.focus(); r.rerender(ui(true, () => allow)); await flush(); allow = true // 🎛️ flipped AFTER open
+    r.rerender(ui(false, () => allow)); await flush(); await act(async () => { await Promise.resolve() }) // 🔁
+    expect(document.activeElement).toBe(o) // ✅ read at close
   })
 })

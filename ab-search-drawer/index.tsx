@@ -124,6 +124,9 @@ export interface AbSearchDrawerProps {
   recentWhen?: 'always' | 'empty'; // 🕘 'always' = above the results (the frames, default); 'empty' = only with no query
   labels?: AbSearchDrawerLabels; // 🌍
   returnFocus?: string; // ↩️
+  /** ↩️ 0.7.2: after a `#hash` result, still send focus back to the opener (default false: the guard skips it, so the
+   *  opener never snaps `#main-content` away from the section that was just scrolled to). Escape / ✕ always return focus. */
+  hashReturnFocus?: boolean;
   id?: string; // 🆔
   className?: string; // 🏷️
 }
@@ -139,6 +142,12 @@ const writeRecent = (key: string | null, list: string[]) => { if (key && typeof 
 export function addAbSearchRecent(list: readonly string[], term: string, limit = 4): string[] {
   const t = term.trim(); if (!t) return [...list];
   return [t, ...list.filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, limit);
+}
+
+/** #️⃣ 0.7.2: hasAbHashTarget — does this href jump to a section (`/docs/x#install`, `#top`)? An empty `#` does not. */
+export function hasAbHashTarget(href: string): boolean {
+  const i = href.indexOf('#'); // 🔍 the fragment start
+  return i >= 0 && i < href.length - 1; // ✅ a non-empty fragment
 }
 
 /** 🖍️ highlightAbSearch — wrap every case-insensitive match of `q` in `<mark>` (bronze 700 via the kit) */
@@ -166,10 +175,12 @@ export function highlightAbSearch(text: string, q: string): ReactNode {
  * - ♿ combobox (aria-expanded / -controls / -autocomplete="list" / -activedescendant) + listbox with labelled groups
  *   and options; ↑/↓ wrap across groups, Enter opens the active (else the first) result, Esc clears then closes;
  *   a polite live region says "4 results" / "No results"
+ * - ↩️ 0.7.2: choosing a `#hash` result closes WITHOUT refocusing the opener (`hashReturnFocus` to opt back in), so the
+ *   scroll to the section inside `#main-content` stays put; the app moves focus to the section if it wants
  * - ⏳ 0.7.2: an async `search()` sets `aria-busy` + "Searching…"; a failure shows an offline (AbSearchOfflineError /
  *   `navigator.onLine === false`) or error panel with "Try again" — never "No results"; offline retries on `online`
  */
-const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQuery = '', recentKey = AB_SEARCH_RECENT_KEY, recentLimit = 4, recentWhen = 'always', labels = {}, returnFocus, id, className }: AbSearchDrawerProps): ReactElement => {
+const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQuery = '', recentKey = AB_SEARCH_RECENT_KEY, recentLimit = 4, recentWhen = 'always', labels = {}, returnFocus, hashReturnFocus = false, id, className }: AbSearchDrawerProps): ReactElement => {
   const L = {
     title: 'Search', close: 'Close search', placeholder: 'Search packages, components, hooks…', clear: 'Clear search', recent: 'Recent',
     remove: (t: string) => `Remove ${t}`, results: (n: number) => `${n} result${n === 1 ? '' : 's'}`, noResults: 'No results',
@@ -196,6 +207,9 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
 
   // 🌱 each open: the default query, fresh recents
   const [wasOpen, setWasOpen] = useState(false);
+  // ↩️ 0.7.2 hash guard: set when a #hash result is chosen, read by AbDrawer when it closes, cleared on every open
+  const hashNav = useRef(false);
+  useEffect(() => { if (open) hashNav.current = false; }, [open]); // 🌱 a fresh open returns focus again
   if (open !== wasOpen) { setWasOpen(open); if (open) { setQuery(defaultQuery); setRecent(readRecent(recentKey)); } }
 
   // ⏱️ 150ms debounce, from 2 characters; stale answers are dropped
@@ -235,7 +249,10 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
   const expanded = flat.length > 0; // ♿ the listbox has options
   const saveRecent = (term: string) => { const next = addAbSearchRecent(recent, term, recentLimit); setRecent(next); writeRecent(recentKey, next); }; // 🕘
   const removeRecent = (term: string) => { const next = recent.filter((x) => x !== term); setRecent(next); writeRecent(recentKey, next); input.current?.focus(); };
-  const choose = (item: AbSearchDrawerItem) => { saveRecent(query); onOpenResult?.(item); onClose(); }; // 🔗
+  const choose = (item: AbSearchDrawerItem) => {
+    hashNav.current = !hashReturnFocus && hasAbHashTarget(item.href); // ↩️ 0.7.2: a #section → don't refocus the opener
+    saveRecent(query); onOpenResult?.(item); onClose(); // 🔗
+  };
 
   // ⌨️ the combobox keys (focus stays in the input)
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -262,7 +279,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     <AbDrawer
       open={open} onClose={onClose} id={id} side="bottom" scope="app" tier="sheet"
       snapPoints fullOnly centerIn="main" title={L.title} closeLabel={L.close} closeIcon={<AbIcon name="close" size={24} />}
-      initialFocus="input" returnFocus={returnFocus}
+      initialFocus="input" returnFocus={returnFocus} restoreFocus={() => !hashNav.current /* ↩️ 0.7.2 hash guard */}
       className={clsx('AbSearchDrawer', kit.sheet, kit.searchSheet, className)}
     >
       <div className={kit.searchBody}>
