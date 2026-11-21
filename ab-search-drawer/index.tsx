@@ -65,6 +65,10 @@ export interface AbSearchDrawerItem {
   description?: string; // 📝 one line (ellipsis)
   meta?: string; // 🏷️ mono, e.g. "v0.2.x"
   icon?: string; // 🔣 the 32px tile's AbIcons name
+  /** 🏷️ 0.7.2: a short visible badge after the text, e.g. "EN" on a page that falls back to English */
+  badge?: string;
+  /** ♿ 0.7.2: what the badge means for screen readers (e.g. "English only"); without it the badge text is read */
+  badgeLabel?: string;
 }
 /** 📦 results grouped by package */
 export interface AbSearchDrawerGroup { id: string; label: string; meta?: string; items: readonly AbSearchDrawerItem[] } // 🏷️ "Components" + "ab-nextjs-components"
@@ -301,6 +305,8 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
                       <Link key={`${i}-${it.id}`} /* 🧹 G60: item ids may repeat across groups too */ id={optId(i)} href={it.href} role="option" aria-selected={on} tabIndex={-1} className={kit.sr} onClick={() => choose(it)} onMouseMove={() => { if (!on) setActive(i); }}>
                         <span className={kit.pkgIc} aria-hidden="true">{it.icon && <AbIcon name={it.icon} size={20} />}</span>
                         <span className={kit.srText}><b>{highlightAbSearch(it.title, query)}</b>{it.description && <small>{highlightAbSearch(it.description, query)}</small>}</span>
+                        {it.badge && <span className={kit.srBadge} data-ab-part="search-badge" title={it.badgeLabel} aria-hidden={it.badgeLabel ? true : undefined}>{it.badge}</span> /* 🏷️ 0.7.2: e.g. EN */}
+                        {it.badge && it.badgeLabel && <span className={kit.srOnly}>, {it.badgeLabel}</span> /* ♿ 0.7.2: the meaning, not "E N" */}
                         {it.meta && <code className={kit.srMeta}>{it.meta}</code>}
                       </Link>
                     );

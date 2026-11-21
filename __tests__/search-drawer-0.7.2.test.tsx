@@ -43,6 +43,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render } from '@testing-library/react'
 // 🔎 under test
 import AbSearchDrawer, { AbSearchOfflineError, isAbSearchOffline, type AbSearchDrawerGroup, type AbSearchDrawerProps } from '../ab-search-drawer'
+// 📄 fs + path (CSS checks)
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 // 📦 the root barrel (exports check)
 import * as pkg from '../index'
 // ⏱️ the slide duration (to flush open / close)
@@ -159,5 +162,36 @@ describe('⏳ 0.7.2: loading (aria-busy), offline and error states', () => {
     vi.stubGlobal('navigator', { onLine: false }) // 🌐 offline browser
     expect(isAbSearchOffline(new Error('fetch'))).toBe(true) // 📴
     expect(typeof pkg.isAbSearchOffline).toBe('function'); expect(typeof pkg.AbSearchOfflineError).toBe('function') // 📦
+  })
+})
+
+describe('🏷️ 0.7.2: the optional per-result badge (EN fallback)', () => {
+  // 📦 one fallback page, one translated page
+  const MIX: AbSearchDrawerGroup[] = [{ id: 'c', label: 'Composants', items: [
+    { id: 'p', href: '/fr/docs/packages/core', title: 'ab-nextjs-core', badge: 'EN', badgeLabel: 'English only' },
+    { id: 'q', href: '/fr/docs/quick-start', title: 'Démarrage rapide' },
+  ] }]
+  it('renders the badge only where set; its meaning is read instead of the letters', async () => {
+    const { input } = await mount({ search: () => MIX }) // 🗄️
+    await type(input, 'co') // ⌨️
+    const [fallback, translated] = Array.from(document.querySelectorAll('[role="option"]')) // 📋
+    const badge = fallback.querySelector('[data-ab-part="search-badge"]')! // 🏷️
+    expect(badge.textContent).toBe('EN') // 👀
+    expect(badge.getAttribute('aria-hidden')).toBe('true') // 🙈 the letters are hidden…
+    expect(badge.getAttribute('title')).toBe('English only') // 💬
+    expect(fallback.textContent).toContain(', English only') // ♿ …and the meaning is read
+    expect(translated.querySelector('[data-ab-part="search-badge"]')).toBeNull() // 🫥 translated: no badge
+  })
+  it('without badgeLabel the badge text itself is read', async () => {
+    const { input } = await mount({ search: () => [{ id: 'c', label: 'C', items: [{ id: 'x', href: '/x', title: 'Thing', badge: 'EN' }] }] }) // 🗄️
+    await type(input, 'th') // ⌨️
+    expect(document.querySelector('[data-ab-part="search-badge"]')!.hasAttribute('aria-hidden')).toBe(false) // 👂 read
+  })
+  it('CSS: the badge is a fixed-size pill with the muted AA token', () => {
+    const css = readFileSync(join(__dirname, '..', 'ab-drawer', 'kit.module.css'), 'utf8') // 📖
+    const rule = css.slice(css.indexOf('.srBadge {'), css.indexOf('}', css.indexOf('.srBadge {'))) // ✂️
+    expect(rule).toContain('flex: none') // 📏 never squeezed by a long title
+    expect(rule).toContain('var(--ab-color-muted') // 🎨 AA token (theme 0.3.9 name)
+    expect(rule).not.toMatch(/transition|animation/) // 🚫 no CSS transitions
   })
 })
