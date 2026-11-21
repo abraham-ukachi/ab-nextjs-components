@@ -177,8 +177,11 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     return () => { live = false; clearTimeout(t); };
   }, [query, open]);
 
-  const flat = useMemo(() => (groups ?? []).flatMap((g) => g.items), [groups]); // 📋 the option order
-  const starts = useMemo(() => { const m: Record<string, number> = {}; let n = 0; for (const g of groups ?? []) { m[g.id] = n; n += g.items.length; } return m; }, [groups]); // 🔢 each group's first option index
+  // 🧹 G60 (0.7.2): only groups with items are rendered, so the option order, the start offsets and the ids all
+  //    come from THIS list, by position — never from the raw `g.id`, which apps may repeat (two "components" groups)
+  const shown = useMemo(() => (groups ?? []).filter((g) => g.items.length), [groups]); // 📦 rendered groups
+  const flat = useMemo(() => shown.flatMap((g) => g.items), [shown]); // 📋 the option order
+  const starts = useMemo(() => { const m: number[] = []; let n = 0; for (const g of shown) { m.push(n); n += g.items.length; } return m; }, [shown]); // 🔢 G60: each group's first option index, BY GROUP INDEX
   const optId = (i: number) => `${base}-opt-${i}`; // 🆔
   const showRecent = recentKey !== null && recent.length > 0 && (recentWhen === 'always' ? !(groups && flat.length === 0) : query.trim() === ''); // 🕘
   const expanded = flat.length > 0; // ♿ the listbox has options
@@ -241,13 +244,13 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
               </>
             )}
             <div id={`${base}-list`} role="listbox" aria-label={L.title} hidden={!expanded}>
-              {(groups ?? []).filter((g) => g.items.length).map((g, gi) => (
-                <div key={g.id} role="group" aria-labelledby={groupId(g, gi)}>
+              {shown.map((g, gi) => (
+                <div key={`${gi}-${g.id}`} role="group" aria-labelledby={groupId(g, gi)} /* 🧹 G60: keyed by index too, so a repeated id never collides */>
                   <p className={kit.grp2} id={groupId(g, gi)}><span>{g.label}</span>{g.meta && <code>{g.meta}</code>}</p>
                   {g.items.map((it, j) => {
-                    const i = starts[g.id] + j; const on = i === active; // 🎯
+                    const i = starts[gi] + j; const on = i === active; // 🎯 G60: the start of THIS group (by index)
                     return (
-                      <Link key={it.id} id={optId(i)} href={it.href} role="option" aria-selected={on} tabIndex={-1} className={kit.sr} onClick={() => choose(it)} onMouseMove={() => { if (!on) setActive(i); }}>
+                      <Link key={`${i}-${it.id}`} /* 🧹 G60: item ids may repeat across groups too */ id={optId(i)} href={it.href} role="option" aria-selected={on} tabIndex={-1} className={kit.sr} onClick={() => choose(it)} onMouseMove={() => { if (!on) setActive(i); }}>
                         <span className={kit.pkgIc} aria-hidden="true">{it.icon && <AbIcon name={it.icon} size={20} />}</span>
                         <span className={kit.srText}><b>{highlightAbSearch(it.title, query)}</b>{it.description && <small>{highlightAbSearch(it.description, query)}</small>}</span>
                         {it.meta && <code className={kit.srMeta}>{it.meta}</code>}
