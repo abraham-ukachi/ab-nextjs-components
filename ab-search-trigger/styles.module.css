@@ -80,6 +80,7 @@
 }
 .abSearchTrigger[data-size='sm'] {
   flex: none; width: auto; max-width: none; height: 34px; /* 📏 the pill still LOOKS 34px (mock) */
+  min-width: 44px; /* 👆 0.7.2 touch audit: never narrower than a tap target, even with a very short (or no) label */
   position: relative; /* 📌 0.3.2: anchors the invisible hit area below */
   gap: 6px; padding: 0 6px 0 10px; /* 📦 */
   border: 1px solid var(--ab-color-border, rgb(92 64 48 / 0.13)); border-radius: var(--ab-radius-pill, 999px); /* 💊 */
@@ -117,3 +118,17 @@
 .abSearchTrigger[data-size='lg'] .abSearchTriggerCap { margin-left: auto; } /* ⌨️ key cap pinned right */
 .abSearchTrigger[data-size='lg'][aria-disabled='true'] { opacity: 1; } /* 🚧 same look while coming soon */
 
+
+/* ===== 👆 0.7.2 touch audit (pointer: coarse): every other trigger gets an invisible ≥ 44×44 hit area =====
+ * sm already has its 46px band above (and now a 44px min width). The rest stay as drawn but can be SMALLER than 44 on
+ * touch: the md pill (40px tall), the tablet `variant="field"` (36px), AbAppBar's compact 40px icon button and its
+ * 34px compact pill. A centred ::after of max(100%, 44px) each way covers them all without growing a target that is
+ * already big enough (lg = 44px, a 300px field keeps its own width). No transitions, nothing painted. */
+@media (pointer: coarse) {
+  .abSearchTrigger:not([data-size='sm']) { position: relative; } /* 📌 anchors the hit area */
+  .abSearchTrigger:not([data-size='sm'])::after {
+    content: ''; position: absolute; left: 50%; top: 50%; /* 🫥 an empty, centred box */
+    inline-size: max(100%, 44px); block-size: max(100%, 44px); /* 📏 ≥ 44×44, never smaller than the trigger */
+    transform: translate(-50%, -50%); /* 🎯 centred on the trigger */
+  }
+}
