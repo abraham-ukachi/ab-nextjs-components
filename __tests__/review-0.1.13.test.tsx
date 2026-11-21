@@ -76,10 +76,10 @@ describe('AbSearchTrigger (#3, #4, D24a, QA #16) 🔎', () => {
   })
   it('with a bound hotkey it shows the hint and announces it', () => {
     const html = renderToStaticMarkup(<AbSearchTrigger onOpen={() => {}} />) // 🔘
-    expect(html).toContain('aria-keyshortcuts="Meta+K Control+K"') // ♿
+    expect(html).toContain('aria-keyshortcuts="Control+K"') // ♿ 0.7.2: SSR announces the platform pair it renders (Ctrl); Apple switches to Meta+K after hydration
     expect(html).toContain('Ctrl') // ⌨️
   })
-  it('shortcut={false} (alias of hotkey) hides it again', () => {
+  it('shortcut={false} hides the cap + announcement again (0.7.2: display only, no longer the hotkey alias)', () => {
     expect(renderToStaticMarkup(<AbSearchTrigger onOpen={() => {}} shortcut={false} />)).not.toContain('aria-keyshortcuts') // 🔕
   })
   it('onOpen + href renders an <a>; JS intercepts a plain click and opens the dialog', () => {
