@@ -21,8 +21,8 @@ importers:
         specifier: ^0.2.5
         version: 0.2.5(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       ab-nextjs-hooks:
-        specifier: ^0.1.7
-        version: 0.1.7(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        specifier: ^0.1.9
+        version: 0.1.9(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       ab-nextjs-icons:
         specifier: ^0.2.7
         version: 0.2.7(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1049,8 +1049,8 @@ packages:
       react-dom:
         optional: true
 
-  ab-nextjs-hooks@0.1.7:
-    resolution: {integrity: sha512-z1C9hhPy0iqt5sX8ppc2Zqh4tQmOTp7Xcw3m9gCEiKX0ozHOhV294hKFzTlc7MMo0aRzBuvGlZ4laPi9jbkNGg==}
+  ab-nextjs-hooks@0.1.9:
+    resolution: {integrity: sha512-yT1VJP5DWaExh3CDpKfbt0AotwThEsTzgntuBh+0dItkDKITAE1Xz4NboWIDqfK0yqO9X6xPZmzRiTxhOaVVPg==}
     peerDependencies:
       next: ^16.3.4
       react: ^19
@@ -3283,7 +3283,7 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
 
-  ab-nextjs-hooks@0.1.7(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+  ab-nextjs-hooks@0.1.9(next@16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       next: 16.3.4(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react: 19.3.0

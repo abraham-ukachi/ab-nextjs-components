@@ -51,9 +51,10 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
  * 🎯 the sibling ranges this release builds on (carets, peer == dev).
  * ✅ 0.1.13: theme ^0.3.4, icons ^0.2.4 and hooks ^0.1.7 are on npm (2026-10-20).
  * ✅ 0.1.14: theme ^0.3.5 is on npm (2026-10-20T20:40:07Z, provenance).
+ * ✅ 0.8.0: hooks ^0.1.9 is on npm (2026-11-22T00:30:22.769Z, provenance).
  */
 const WANT: Record<string, string> = {
-  'ab-nextjs-hooks': '^0.1.7',
+  'ab-nextjs-hooks': '^0.1.9', // ⌨️ 0.8.0: useAbHotkey (G10, D49)
   'ab-nextjs-theme': '^0.3.9',
   'ab-nextjs-animations': '^0.2.5',
   'ab-nextjs-icons': '^0.2.7', // 🌗🅰️ 0.3.2: brightness_auto
@@ -68,6 +69,7 @@ const ALLOWED_EXCLUDES: Record<string, string> = {
   // 🧹 0.3.2 (Nov 1 2026): theme@0.3.7, animations@0.2.5 and icons@0.2.6 expired and were removed (empty again)
   // 🧹 0.3.3 (Nov 3 2026): icons@0.2.7 expired (2026-11-02T03:43Z) and was removed (empty again)
   // 🧹 0.4.2 (Nov 4 2026): theme@0.3.9 expired (2026-11-04T03:14Z) and was removed (empty again)
+  'ab-nextjs-hooks@0.1.9': '2026-11-23T00:30:22.769Z', // ⏰ TODO(remove after expiry): published 2026-11-22T00:30:22.769Z
 }
 
 // 📋 the list under `minimumReleaseAgeExclude:` (stops at the next top-level key)
@@ -86,6 +88,7 @@ describe('release age + sibling ranges 📦', () => {
     }
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-animations']).toBeUndefined() // 🚫 optional
     expect(pkg.peerDependenciesMeta?.['ab-nextjs-icons']).toBeUndefined() // 🚫 optional
+    expect(pkg.peerDependenciesMeta?.['ab-nextjs-hooks']).toBeUndefined() // 🚫 optional: AbSearchTrigger imports it unconditionally (0.8.0)
   })
 
   it('never commits local links (file:, link:, workspace:, portal:)', () => {

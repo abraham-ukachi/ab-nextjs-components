@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.7.1...v0.8.0) (2026-11-22)
+
+### ⚠ BREAKING CHANGES
+
+* **`shortcut={false}` no longer silences the hotkey listener.** `shortcut` is now display-only (the ⌘K / Ctrl+K cap and `aria-keyshortcuts`). To stop this trigger from registering a listener, pass `hotkey={false}`.
+  **Migration:** replace `shortcut={false}` with `hotkey={false}` when the intent is "do not listen". To show the cap while the app shell owns the single `useAbHotkey('mod+k')`, use `shortcut hotkey={false}`.
+* **`mod+k` and `aria-keyshortcuts` are platform-strict.** The listener matches Meta+K on Apple and Control+K elsewhere (no longer both on every platform). `aria-keyshortcuts` names only that platform's pair; SSR announces `Control+K`, and Apple clients switch to `Meta+K` after hydration.
+  **Migration:** if a test or custom listener expected both Meta and Control to open the drawer on every platform, switch it to the platform modifier (`Meta+K` on Apple, `Control+K` elsewhere). Prefer hooks' `useAbHotkey('mod+k')` and `useAbHotkeyLabel`, which already do this.
+
+### Features
+
+* ⬆️ **Requires `ab-nextjs-hooks@^0.1.9`** (peer and dev) for `useAbHotkey` (G10). `ab-nextjs-hooks` is no longer an optional peer (`peerDependenciesMeta`), because `AbSearchTrigger` imports it unconditionally.
+* ⌨️ **`AbSearchTrigger` splits `shortcut` from `hotkey` (D49).** `hotkey` registers the ⌘K / Ctrl+K listener (hooks' `useAbHotkey`, default on with `onOpen`); `shortcut` only shows the key cap and `aria-keyshortcuts` (default: whatever `hotkey` does). An app shell with one `useAbHotkey('mod+k')` renders its triggers with `shortcut hotkey={false}`. Two listening triggers open once per press. `isAbApplePlatform` is re-exported from hooks.
+* ⏳ **AbSearchDrawer async states:** an async `search()` sets `aria-busy` on the results and listbox and shows "Searching…" (`labels.loading`); a sync one never flashes it. A failure is no longer shown as "No results": an offline panel (`offlineTitle` / `offlineHint`) when the search throws or rejects with the new `AbSearchOfflineError` (or `{ offline: true }`) or `navigator.onLine` is false, else an error panel (`errorTitle` / `errorHint`), both with a `retry` button. Offline retries by itself on `online`. New exports: `AbSearchOfflineError`, `isAbSearchOffline`, `AbSearchDrawerStatus`.
+* 🏷️ **Result badge:** `AbSearchDrawerItem.badge` (for example `"EN"` on an English-fallback page) with an optional `badgeLabel` that screen readers hear instead.
+
+### Bug Fixes
+
+* 🐛 **Unique search ids (G60, part 1):** groups and options are keyed and numbered by position, not by raw `g.id` / `item.id`, so repeated ids no longer duplicate option ids or break ↑/↓.
+* 🐛 **Hash returnFocus guard:** choosing a `#hash` result closes the drawer without refocusing the opener, so `#main-content` keeps the section that was just scrolled to (`hashReturnFocus` opts back in; Escape and ✕ still return focus). `AbDrawer` takes `restoreFocus` (`false` or a function read at close time). New export: `hasAbHashTarget`.
+* ♿ **AbSearchTrigger touch audit:** under `pointer: coarse`, every trigger except `size="sm"` gets an invisible, centred hit area of at least 44×44px (the 40px pill, the 36px tablet field, AbAppBar's compact icon and pill). `size="sm"` keeps its 46px band and is now at least 44px wide for short labels. Nothing changes visually.
+
 ## [0.7.1](https://github.com/abraham-ukachi/ab-nextjs-components/compare/v0.7.0...v0.7.1) (2026-11-12)
 
 * Normalize the changelog format and backfill missing entries.

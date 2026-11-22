@@ -1,0 +1,250 @@
+/* 
+* @license MIT
+* ~~~~~~~~~~~~
+* ab-nextjs-components
+* ~~~~~~~~~~~~ 
+* Copyright (c) 2026 Abraham Ukachi. The abElements Project.
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the 'Software'), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions: 
+*  
+* The above copyright notice and this permission notice shall be included in all 
+* copies or substantial portions of the Software. 
+*
+* THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+* @project: ab-nextjs-components
+* @name: AbSearchDrawer 0.8.0 tests (G60 ids, loading / offline / error, badge, hash returnFocus)
+* @file: __tests__/search-drawer-0.8.0.test.tsx
+* @type: Vitest
+* @authors: Abraham Ukachi <abrahamukachi@gmail.com>
+*/
+
+/*
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+* MOTTO: We'll always do more 😜!!!
+* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
+// @vitest-environment happy-dom
+// 🧪 vitest
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+// 🧱 DOM renderer
+import { act, cleanup, fireEvent, render } from '@testing-library/react'
+// 🔎 under test
+import AbSearchDrawer, { AbSearchOfflineError, hasAbHashTarget, isAbSearchOffline, type AbSearchDrawerGroup, type AbSearchDrawerProps } from '../ab-search-drawer'
+// 📄 fs + path (CSS checks)
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+// 📦 the root barrel (exports check)
+import * as pkg from '../index'
+// ⏱️ the slide duration (to flush open / close)
+import AbDrawer, { AB_DRAWER_DURATION } from '../ab-drawer'
+
+// ⏱️ fake timers + rAF on timers, clean storage (same harness as ab-search-drawer.test.tsx)
+beforeEach(() => { vi.useFakeTimers(); vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => setTimeout(() => cb(0), 0)); vi.stubGlobal('cancelAnimationFrame', (id: number) => clearTimeout(id)); localStorage.clear() })
+// 🧹 unmount, real timers, globals back
+afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); document.body.innerHTML = '' })
+// ⏩ run the debounce / slide + settle promises
+const flush = async () => { await act(async () => { vi.advanceTimersByTime(AB_DRAWER_DURATION + 200) }); await act(async () => { await Promise.resolve() }) }
+// 🧱 mount an open drawer inside a core-like layout
+const mount = async (props: Partial<AbSearchDrawerProps> & Pick<AbSearchDrawerProps, 'search'>) => {
+  const onClose = vi.fn() // ⎋
+  const utils = render(<div className="AbAppLayout"><main data-ab-part="main"><AbSearchDrawer open onClose={onClose} {...props} /></main></div>) // 🗄️
+  await flush() // ⏩
+  return { onClose, utils, input: document.querySelector<HTMLInputElement>('input[role="combobox"]')! }
+}
+// ⌨️ type a query and let the debounce run
+const type = async (el: HTMLInputElement, v: string) => { fireEvent.change(el, { target: { value: v } }); await flush() }
+
+describe('G60: group / option ids are unique even when the app repeats group ids 🧹', () => {
+  // 📦 two groups with the SAME id (and an empty one in between), items with repeated ids
+  const DUP: AbSearchDrawerGroup[] = [
+    { id: 'pkg', label: 'Components', items: [{ id: 'x', href: '/a', title: 'AbButton' }, { id: 'y', href: '/b', title: 'AbBadge' }] },
+    { id: 'pkg', label: 'Empty', items: [] },
+    { id: 'pkg', label: 'Hooks', items: [{ id: 'x', href: '/c', title: 'useAbButton' }] },
+  ]
+  it('every option + group label has its own id; ↓ walks all three options in order', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {}) // 👀 React key warnings
+    const { input } = await mount({ search: () => DUP }) // 🗄️
+    await type(input, 'ab') // ⌨️
+    const opts = Array.from(document.querySelectorAll('[role="option"]')) // 📋
+    expect(opts.map((o) => o.textContent)).toEqual(['AbButton', 'AbBadge', 'useAbButton']) // ✅ order, empty group skipped
+    expect(new Set(opts.map((o) => o.id)).size).toBe(3) // 🆔 unique option ids (0.7.1 repeated the first group's)
+    const labels = Array.from(document.querySelectorAll('[role="group"]')).map((g) => g.getAttribute('aria-labelledby')) // 🏷️
+    expect(new Set(labels).size).toBe(2) // 🆔 unique group labels
+    for (const id of labels) expect(document.getElementById(id!)).not.toBeNull() // 🔗 they resolve
+    fireEvent.keyDown(input, { key: 'ArrowDown' }); fireEvent.keyDown(input, { key: 'ArrowDown' }) // ⬇️⬇️
+    expect(input.getAttribute('aria-activedescendant')).toBe(opts[2].id) // 🎯 the Hooks option
+    expect(err.mock.calls.flat().join(' ')).not.toMatch(/same key/) // ✅ no duplicate React keys
+    err.mockRestore() // 🧹
+  })
+})
+
+describe('⏳ 0.8.0: loading (aria-busy), offline and error states', () => {
+  // 📦 one tiny result set
+  const ONE: AbSearchDrawerGroup[] = [{ id: 'c', label: 'Components', items: [{ id: 'b', href: '/c/button', title: 'AbButton' }] }]
+  // 🔎 the results box + live region
+  const box = () => document.querySelector<HTMLElement>('[data-ab-part="search-results"]')! // 📜
+  const live = () => document.querySelector('[role="status"]')!.textContent // 📣
+  // 🎛️ a search we resolve / reject by hand
+  const deferred = () => { let res!: (g: readonly AbSearchDrawerGroup[]) => void, rej!: (e: unknown) => void; const p = new Promise<readonly AbSearchDrawerGroup[]>((a, b) => { res = a; rej = b }); return { p, res, rej } }
+
+  it('an async search shows "Searching…" with aria-busy, then the results (busy cleared)', async () => {
+    const d = deferred() // 🎛️
+    const { input } = await mount({ search: () => d.p }) // 🗄️
+    await type(input, 'button') // ⌨️
+    expect(box().getAttribute('aria-busy')).toBe('true') // ⏳ busy
+    expect(document.querySelector('[role="listbox"]')!.getAttribute('aria-busy')).toBe('true') // ⏳ the listbox too
+    expect(document.querySelector('[data-ab-part="search-loading"]')!.textContent).toBe('Searching…') // 👀
+    expect(live()).toBe('Searching…') // 📣
+    expect(document.querySelector('[data-ab-part="search-empty"]')).toBeNull() // 🙅 not "No results" while waiting
+    await act(async () => { d.res(ONE); await Promise.resolve() }) // ✅ answer
+    expect(box().hasAttribute('aria-busy')).toBe(false) // ⏳ done
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(1) // 📦
+    expect(live()).toBe('1 result') // 📣
+  })
+  it('a sync search never flashes the loading state', async () => {
+    const { input } = await mount({ search: () => ONE }) // 🗄️
+    await type(input, 'button') // ⌨️
+    expect(document.querySelector('[data-ab-part="search-loading"]')).toBeNull() // 🙅
+    expect(box().getAttribute('data-status')).toBe('done') // ✅
+  })
+  it('offline (AbSearchOfflineError): the offline panel + Try again, never "No results"; retry re-runs the search', async () => {
+    let offline = true // 📴
+    const search = vi.fn(() => (offline ? Promise.reject(new AbSearchOfflineError()) : Promise.resolve(ONE))) // 🔎
+    const { input } = await mount({ search, labels: { offlineTitle: 'Hors ligne', retry: 'Réessayer' } }) // 🌍 labels override
+    await type(input, 'button'); await flush() // ⌨️
+    const panel = document.querySelector('[data-ab-part="search-offline"]')! // 📴
+    expect(panel.querySelector('b')!.textContent).toBe('Hors ligne') // 🏷️
+    expect(document.querySelector('[data-ab-part="search-empty"]')).toBeNull() // 🙅 not "No results"
+    expect(live()).toBe('Hors ligne') // 📣
+    expect(box().hasAttribute('aria-busy')).toBe(false) // ⏳ not busy
+    offline = false // 🌐 back
+    fireEvent.click(panel.querySelector('button')!) // 🔁 Réessayer
+    expect(panel.querySelector('button')!.textContent).toContain('Réessayer') // 🏷️
+    await flush(); await flush() // ⏩
+    expect(search).toHaveBeenCalledTimes(2) // 🔁 re-ran
+    expect(document.activeElement).toBe(input) // 🎯 focus stays in the input
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(1) // ✅ results
+  })
+  it('offline retries by itself when the browser comes back online', async () => {
+    let offline = true // 📴
+    const search = vi.fn(() => (offline ? Promise.reject(Object.assign(new Error('x'), { offline: true })) : Promise.resolve(ONE))) // 🔎 `offline: true` flag
+    const { input } = await mount({ search }) // 🗄️
+    await type(input, 'button'); await flush() // ⌨️
+    expect(document.querySelector('[data-ab-part="search-offline"]')).not.toBeNull() // 📴
+    offline = false; await act(async () => { window.dispatchEvent(new Event('online')) }); await flush(); await flush() // 🌐
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(1) // ✅
+  })
+  it('any other failure (reject or sync throw) shows the error panel, not "No results"', async () => {
+    const { input } = await mount({ search: () => { throw new Error('boom') } }) // 🛑 sync throw
+    await type(input, 'button'); await flush() // ⌨️
+    expect(document.querySelector('[data-ab-part="search-error"] b')!.textContent).toBe('Search isn’t available right now') // 🛑
+    expect(document.querySelector('[data-ab-part="search-empty"]')).toBeNull() // 🙅
+    expect(document.querySelectorAll('[role="option"]')).toHaveLength(0) // 🧯
+  })
+  it('isAbSearchOffline: by name, by flag, or by navigator.onLine; exported from the root', () => {
+    expect(isAbSearchOffline(new AbSearchOfflineError())).toBe(true) // 📴
+    expect(isAbSearchOffline({ name: 'AbSearchOfflineError' })).toBe(true) // 📴 duck-typed
+    expect(isAbSearchOffline({ offline: true })).toBe(true) // 📴 flag
+    expect(isAbSearchOffline(new Error('500'))).toBe(false) // 🛑
+    vi.stubGlobal('navigator', { onLine: false }) // 🌐 offline browser
+    expect(isAbSearchOffline(new Error('fetch'))).toBe(true) // 📴
+    expect(typeof pkg.isAbSearchOffline).toBe('function'); expect(typeof pkg.AbSearchOfflineError).toBe('function') // 📦
+  })
+})
+
+describe('🏷️ 0.8.0: the optional per-result badge (EN fallback)', () => {
+  // 📦 one fallback page, one translated page
+  const MIX: AbSearchDrawerGroup[] = [{ id: 'c', label: 'Composants', items: [
+    { id: 'p', href: '/fr/docs/packages/core', title: 'ab-nextjs-core', badge: 'EN', badgeLabel: 'English only' },
+    { id: 'q', href: '/fr/docs/quick-start', title: 'Démarrage rapide' },
+  ] }]
+  it('renders the badge only where set; its meaning is read instead of the letters', async () => {
+    const { input } = await mount({ search: () => MIX }) // 🗄️
+    await type(input, 'co') // ⌨️
+    const [fallback, translated] = Array.from(document.querySelectorAll('[role="option"]')) // 📋
+    const badge = fallback.querySelector('[data-ab-part="search-badge"]')! // 🏷️
+    expect(badge.textContent).toBe('EN') // 👀
+    expect(badge.getAttribute('aria-hidden')).toBe('true') // 🙈 the letters are hidden…
+    expect(badge.getAttribute('title')).toBe('English only') // 💬
+    expect(fallback.textContent).toContain(', English only') // ♿ …and the meaning is read
+    expect(translated.querySelector('[data-ab-part="search-badge"]')).toBeNull() // 🫥 translated: no badge
+  })
+  it('without badgeLabel the badge text itself is read', async () => {
+    const { input } = await mount({ search: () => [{ id: 'c', label: 'C', items: [{ id: 'x', href: '/x', title: 'Thing', badge: 'EN' }] }] }) // 🗄️
+    await type(input, 'th') // ⌨️
+    expect(document.querySelector('[data-ab-part="search-badge"]')!.hasAttribute('aria-hidden')).toBe(false) // 👂 read
+  })
+  it('CSS: the badge is a fixed-size pill with the muted AA token', () => {
+    const css = readFileSync(join(__dirname, '..', 'ab-drawer', 'kit.module.css'), 'utf8') // 📖
+    const rule = css.slice(css.indexOf('.srBadge {'), css.indexOf('}', css.indexOf('.srBadge {'))) // ✂️
+    expect(rule).toContain('flex: none') // 📏 never squeezed by a long title
+    expect(rule).toContain('var(--ab-color-muted') // 🎨 AA token (theme 0.3.9 name)
+    expect(rule).not.toMatch(/transition|animation/) // 🚫 no CSS transitions
+  })
+})
+
+describe('↩️ 0.8.0: the #hash returnFocus guard', () => {
+  // 📦 a same-page section + a plain page
+  const HITS: AbSearchDrawerGroup[] = [{ id: 'c', label: 'C', items: [
+    { id: 'h', href: '/docs/installation#pnpm', title: 'Install with pnpm' },
+    { id: 'p', href: '/docs/installation', title: 'Installation' },
+  ] }]
+  // 🧱 an opener button + the drawer, toggled by re-rendering (onClose is a spy)
+  const harness = (extra: Partial<AbSearchDrawerProps> = {}) => {
+    const ui = (open: boolean) => <div className="AbAppLayout"><header><button type="button" id="opener">Search</button></header><main data-ab-part="main"><AbSearchDrawer open={open} onClose={() => {}} search={() => HITS} {...extra} /></main></div> // 🧱
+    const r = render(ui(false)) // 🚪 closed
+    const opener = document.getElementById('opener')!; opener.focus() // 🎯 the trigger has focus
+    return { opener, open: async () => { r.rerender(ui(true)); await flush() }, close: async () => { r.rerender(ui(false)); await flush(); await act(async () => { await Promise.resolve() }) } } // 🔁
+  }
+  // 🔎 type + pick an option by index
+  const pick = async (i: number) => { const input = document.querySelector<HTMLInputElement>('input[role="combobox"]')!; await type(input, 'install'); fireEvent.click(document.querySelectorAll('[role="option"]')[i]) }
+
+  it('hasAbHashTarget: only a non-empty fragment counts', () => {
+    expect(hasAbHashTarget('/docs/x#install')).toBe(true) // #️⃣
+    expect(hasAbHashTarget('#top')).toBe(true) // #️⃣ same page
+    expect(hasAbHashTarget('/docs/x')).toBe(false) // 🙅
+    expect(hasAbHashTarget('/docs/x#')).toBe(false) // 🙅 empty
+  })
+  it('a #hash result closes WITHOUT pulling focus back to the opener', async () => {
+    const h = harness() // 🧱
+    await h.open(); expect(document.activeElement).not.toBe(h.opener) // 🎯 in the drawer
+    await pick(0); await h.close() // #️⃣ chosen → closed
+    expect(document.activeElement).not.toBe(h.opener) // ✅ the guard
+  })
+  it('a plain result (and Escape-style closes) still return focus; the next open resets the guard', async () => {
+    const h = harness() // 🧱
+    await h.open(); await pick(0); await h.close() // #️⃣ guard on
+    h.opener.focus(); await h.open(); await pick(1); await h.close() // 📄 plain page
+    expect(document.activeElement).toBe(h.opener) // ✅ returned
+    h.opener.focus(); await h.open(); await h.close() // ⎋ closed without a result
+    expect(document.activeElement).toBe(h.opener) // ✅ returned
+  })
+  it('hashReturnFocus opts back in', async () => {
+    const h = harness({ hashReturnFocus: true }) // 🧱
+    await h.open(); await pick(0); await h.close() // #️⃣
+    expect(document.activeElement).toBe(h.opener) // ✅ returned anyway
+  })
+  it('AbDrawer restoreFocus={false} never returns focus; a function is read at close time', async () => {
+    let allow = false // 🎛️
+    const ui = (open: boolean, rf: boolean | (() => boolean)) => <div className="AbAppLayout"><button type="button" id="o">o</button><AbDrawer open={open} onClose={() => {}} title="T" restoreFocus={rf}><button type="button">in</button></AbDrawer></div> // 🧱
+    const r = render(ui(false, false)); const o = document.getElementById('o')!; o.focus() // 🎯
+    r.rerender(ui(true, false)); await flush(); r.rerender(ui(false, false)); await flush(); await act(async () => { await Promise.resolve() }) // 🔁
+    expect(document.activeElement).not.toBe(o) // 🙅 false
+    o.focus(); r.rerender(ui(true, () => allow)); await flush(); allow = true // 🎛️ flipped AFTER open
+    r.rerender(ui(false, () => allow)); await flush(); await act(async () => { await Promise.resolve() }) // 🔁
+    expect(document.activeElement).toBe(o) // ✅ read at close
+  })
+})

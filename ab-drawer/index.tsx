@@ -100,6 +100,9 @@ export interface AbDrawerProps {
   handleLabels?: { expand: string; collapse: string }; // ♿ the handle button (default "Expand" / "Collapse")
   centerIn?: 'main'; // 💻 bottom only, 768px and up: centred in the main pane, min(640px, main width) wide, ≤ 70% tall
   returnFocus?: string; // ↩️ selector focused on close when there was no focusable opener (an edge swipe); default AB_DRAWER_RETURN_FOCUS (the header / brand logo)
+  /** ↩️ 0.8.0: send focus back on close at all (default true). A function is read AT close time, e.g. AbSearchDrawer
+   *  skips it after a `#hash` result so the opener doesn't pull `#main-content` away from the new section. */
+  restoreFocus?: boolean | (() => boolean);
   closeIcon?: ReactNode; // ✕ the close glyph (default a text ✕)
   headerStart?: ReactNode; // 🏷️ header content that does NOT label the dialog (e.g. a logo; then use `aria-label`). `title` wins
   className?: string; // 🏷️
@@ -175,6 +178,8 @@ const reducedMotion = (): boolean => typeof window !== 'undefined' && typeof win
 const AbDrawer = (props: AbDrawerProps): ReactElement => {
   const { open, onClose, scope = 'app', side = 'bottom', title, id, children, footer, size, modal = true, closeLabel = 'Close', noJsFallback = true, initialFocus = 'first', className } = props;
   const { tier, swipe = false, snapPoints = false, defaultSnap = 'partial', onSnapChange, handleLabels, centerIn, returnFocus, closeIcon, headerStart, fullOnly = false } = props; // 🆕 0.2.0
+  const restore = useRef(props.restoreFocus); // ↩️ 0.8.0: the latest restoreFocus, read by the close cleanup (not a dep)
+  useEffect(() => { restore.current = props.restoreFocus; }, [props.restoreFocus]); // 🔁 synced after render
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔 SSR-stable
   const dialogId = id ?? `ab-drawer-${auto}`; // 🆔
   const titleId = `${dialogId}-title`; // 🏷️
@@ -242,6 +247,9 @@ const AbDrawer = (props: AbDrawerProps): ReactElement => {
     (first ?? panel.current).focus({ preventScroll: true });
     const node = panel.current; // 📌 this open's panel (for the cleanup)
     return () => {
+      // ↩️ 0.8.0: the owner may say "not this time" (a #hash result): leave focus where navigation puts it
+      const want = restore.current; // 📖 latest value
+      if (want === false || (typeof want === 'function' && !want())) return; // 🙅 no focus return
       const had = opener.current as HTMLElement | null; // ↩️
       const usable = had && had !== document.body && had.isConnected ? had : null; // 🤏 a swipe has no opener
       // ↩️ 0.2.0 fallback: the first VISIBLE match (an app often renders the logo twice, one hidden per breakpoint)
