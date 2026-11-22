@@ -24,8 +24,8 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbSearchDrawer 0.7.2 tests (G60 ids, loading / offline / error, badge, hash returnFocus)
-* @file: __tests__/search-drawer-0.7.2.test.tsx
+* @name: AbSearchDrawer 0.8.0 tests (G60 ids, loading / offline / error, badge, hash returnFocus)
+* @file: __tests__/search-drawer-0.8.0.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
@@ -91,7 +91,7 @@ describe('G60: group / option ids are unique even when the app repeats group ids
   })
 })
 
-describe('⏳ 0.7.2: loading (aria-busy), offline and error states', () => {
+describe('⏳ 0.8.0: loading (aria-busy), offline and error states', () => {
   // 📦 one tiny result set
   const ONE: AbSearchDrawerGroup[] = [{ id: 'c', label: 'Components', items: [{ id: 'b', href: '/c/button', title: 'AbButton' }] }]
   // 🔎 the results box + live region
@@ -165,7 +165,7 @@ describe('⏳ 0.7.2: loading (aria-busy), offline and error states', () => {
   })
 })
 
-describe('🏷️ 0.7.2: the optional per-result badge (EN fallback)', () => {
+describe('🏷️ 0.8.0: the optional per-result badge (EN fallback)', () => {
   // 📦 one fallback page, one translated page
   const MIX: AbSearchDrawerGroup[] = [{ id: 'c', label: 'Composants', items: [
     { id: 'p', href: '/fr/docs/packages/core', title: 'ab-nextjs-core', badge: 'EN', badgeLabel: 'English only' },
@@ -196,7 +196,7 @@ describe('🏷️ 0.7.2: the optional per-result badge (EN fallback)', () => {
   })
 })
 
-describe('↩️ 0.7.2: the #hash returnFocus guard', () => {
+describe('↩️ 0.8.0: the #hash returnFocus guard', () => {
   // 📦 a same-page section + a plain page
   const HITS: AbSearchDrawerGroup[] = [{ id: 'c', label: 'C', items: [
     { id: 'h', href: '/docs/installation#pnpm', title: 'Install with pnpm' },

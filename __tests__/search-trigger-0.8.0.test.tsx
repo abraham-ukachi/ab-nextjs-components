@@ -24,8 +24,8 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbSearchTrigger shortcut / hotkey split tests (0.7.2, D49)
-* @file: __tests__/search-trigger-0.7.2.test.tsx
+* @name: AbSearchTrigger shortcut / hotkey split tests (0.8.0, D49)
+* @file: __tests__/search-trigger-0.8.0.test.tsx
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
@@ -53,7 +53,7 @@ const asMac = () => Object.defineProperty(navigator, 'platform', { value: 'MacIn
 // 🧹 unmount (= drop listeners) + restore the platform
 afterEach(() => { cleanup(); Reflect.deleteProperty(navigator, 'platform'); document.body.innerHTML = '' })
 
-describe('AbSearchTrigger shortcut / hotkey split (0.7.2, D49) ⌨️', () => {
+describe('AbSearchTrigger shortcut / hotkey split (0.8.0, D49) ⌨️', () => {
   it('shortcut + hotkey={false}: shows the cap and announces it, but registers NO listener (the shell owns it)', () => {
     const onOpen = vi.fn() // 🔔
     const { container } = render(<AbSearchTrigger variant="field" onOpen={onOpen} shortcut hotkey={false} />) // 🔎

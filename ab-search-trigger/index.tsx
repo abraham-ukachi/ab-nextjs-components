@@ -40,7 +40,7 @@
 
 // ⚛️ React
 import { type MouseEvent, type ReactElement } from 'react';
-// ⌨️ 0.7.2 (G10, D49): the ONE shared hotkey hook + the platform-aware key cap / aria-keyshortcuts
+// ⌨️ 0.8.0 (G10, D49): the ONE shared hotkey hook + the platform-aware key cap / aria-keyshortcuts
 import { useAbHotkey, useAbHotkeyLabel, AB_HOTKEY_SEARCH } from 'ab-nextjs-hooks/useAbHotkey';
 // 🧵 classes
 import clsx from 'clsx';
@@ -61,10 +61,10 @@ export interface AbSearchTriggerProps {
   onOpen?: () => void; // 🔔 opens your search dialog (button mode)
   href?: string; // 🔗 no onOpen → a link to a search page (also the JS-off path)
   /** ⌨️ REGISTER a ⌘K / Ctrl+K listener (via `useAbHotkey`) that calls `onOpen` (default true when `onOpen` is set).
-   *  0.7.2 (D49): pass `hotkey={false}` when the app shell owns the single `useAbHotkey('mod+k')`. */
+   *  0.8.0 (D49): pass `hotkey={false}` when the app shell owns the single `useAbHotkey('mod+k')`. */
   hotkey?: boolean;
   /** 👀 SHOW the ⌘K / Ctrl+K key cap and announce `aria-keyshortcuts` (default: whatever `hotkey` does).
-   *  0.7.2 (D49): no longer an alias of `hotkey` — `shortcut` + `hotkey={false}` = "the shell listens, I just show the cap". */
+   *  0.8.0 (D49): no longer an alias of `hotkey` — `shortcut` + `hotkey={false}` = "the shell listens, I just show the cap". */
   shortcut?: boolean;
   compact?: boolean; // 📱 icon-only pill (the label stays for screen readers), e.g. the mobile app bar
   comingSoon?: boolean; // 🚧 visible but inert: aria-disabled, no hotkey
@@ -78,23 +78,23 @@ export interface AbSearchTriggerProps {
   className?: string; // 🏷️
 }
 
-/** 🍎 Apple platforms show ⌘, everyone else Ctrl. 0.7.2: the one implementation now lives in hooks 0.1.9 (re-exported here). */
+/** 🍎 Apple platforms show ⌘, everyone else Ctrl. 0.8.0: the one implementation now lives in hooks 0.1.9 (re-exported here). */
 export { isAbApplePlatform } from 'ab-nextjs-hooks/useAbHotkey';
 
 /**
  * 🔎 AbSearchTrigger (G44): a search "field" that opens your dialog. Shows ⌘K on Apple, Ctrl K elsewhere,
  * announces `aria-keyshortcuts` ("Meta+K" on Apple, "Control+K" elsewhere; SSR renders the Ctrl / Control pair),
  * and falls back to a link when there's no `onOpen`.
- * - ⌨️ 0.7.2 (D49) **shortcut / hotkey split**: `hotkey` registers the listener (hooks 0.1.9 `useAbHotkey`),
+ * - ⌨️ 0.8.0 (D49) **shortcut / hotkey split**: `hotkey` registers the listener (hooks 0.1.9 `useAbHotkey`),
  *   `shortcut` only shows the cap. An app with one shell-level `useAbHotkey('mod+k')` renders every trigger with
  *   `shortcut hotkey={false}`: the cap everywhere, ONE listener, no double-open.
  */
 const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, compact = false, comingSoon = false, comingSoonLabel = 'Coming soon', compactLabel, variant = 'pill', size = 'md', className }: AbSearchTriggerProps): ReactElement => {
   // 🍎 SSR renders "Ctrl" / "Control+K"; hydration then reads the platform (useSyncExternalStore inside: no mismatch)
   const { apple, ariaKeyShortcuts } = useAbHotkeyLabel(AB_HOTKEY_SEARCH);
-  // ⌨️ 0.7.2 (D49): does THIS trigger register the listener? (needs something to open; never while coming soon)
+  // ⌨️ 0.8.0 (D49): does THIS trigger register the listener? (needs something to open; never while coming soon)
   const listen = !comingSoon && !!onOpen && (hotkey ?? true);
-  // 👀 0.7.2 (D49): does it SHOW the cap? Defaults to "only while I listen" (#3, D24a); `shortcut` forces it either way
+  // 👀 0.8.0 (D49): does it SHOW the cap? Defaults to "only while I listen" (#3, D24a); `shortcut` forces it either way
   const showCap = !comingSoon && (shortcut ?? listen);
   // 👂 the listener itself: hooks' useAbHotkey ('mod+k' = ⌘K on Apple, Ctrl+K elsewhere). `mod+k` fires in
   //    inputs by default (hooks 0.1.9: a combo with a modifier does; a bare key does not), so this keeps the
@@ -112,13 +112,13 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
       <span className={styles.abSearchTriggerLabel} data-ab-part="search-label">{label}</span>
       {compactLabel != null && <span className={clsx(styles.abSearchTriggerLabel, styles.abSearchTriggerShort)} data-ab-part="search-label-compact">{compactLabel}</span> /* 📱 0.1.15 */}
       {/* 🚧 coming soon: tooltip + announced, never painted inside the field (spec §4) */}
-      {comingSoon ? <span className={styles.abSearchTriggerSrOnly}>, {comingSoonLabel}</span> : showCap && <AbKbd className={styles.abSearchTriggerCap}>{keyCap}</AbKbd> /* 👀 0.7.2: shortcut, not hotkey */}
+      {comingSoon ? <span className={styles.abSearchTriggerSrOnly}>, {comingSoonLabel}</span> : showCap && <AbKbd className={styles.abSearchTriggerCap}>{keyCap}</AbKbd> /* 👀 0.8.0: shortcut, not hotkey */}
     </>
   ) : (
     <>
       <AbIcon name="search" size={20} className={styles.abSearchTriggerIcon} />
       <span className={clsx(styles.abSearchTriggerLabel, compact && styles.abSearchTriggerSrOnly)}>{label}</span>
-      {/* 🚧 coming soon tag, or ⌨️ the key hint while the shortcut is real (#3, D24a; 0.7.2: `shortcut` / a listening `hotkey`) */}
+      {/* 🚧 coming soon tag, or ⌨️ the key hint while the shortcut is real (#3, D24a; 0.8.0: `shortcut` / a listening `hotkey`) */}
       {comingSoon
         ? !compact && <span className={styles.abSearchTriggerSoon}>{comingSoonLabel}</span>
         : showCap && !compact && <AbKbd keys={[apple ? '⌘' : 'Ctrl', 'K']} className={styles.abSearchTriggerKbd} />}
@@ -127,7 +127,7 @@ const AbSearchTrigger = ({ label = 'Search', onOpen, href, hotkey, shortcut, com
   const common = {
     className: clsx('AbSearchTrigger', styles.abSearchTrigger, !comingSoon && 'ab-motion-interactive', className), // 🏷️
     'data-ab-part': 'search-trigger', // 🧩
-    'aria-keyshortcuts': showCap ? ariaKeyShortcuts : undefined, // ♿ only announced when real (#3); 0.7.2: the platform's own pair
+    'aria-keyshortcuts': showCap ? ariaKeyShortcuts : undefined, // ♿ only announced when real (#3); 0.8.0: the platform's own pair
     'data-compact': compact ? 'true' : undefined, // 📱
     'data-variant': variant === 'field' ? 'field' : undefined, // 🔎 P6
     'data-size': size === 'sm' || size === 'lg' ? size : undefined, // 📱 P6 · 🔍 404 gaps: lg

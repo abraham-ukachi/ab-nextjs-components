@@ -31,7 +31,7 @@
 *
 * Example usage:
 *   1+|> const [open, setOpen] = useState(false)
-*    -|> useAbHotkey('mod+k', () => setOpen(true)) // ⌨️ 0.7.2: ONE listener (ab-nextjs-hooks/useAbHotkey); fires in inputs by default
+*    -|> useAbHotkey('mod+k', () => setOpen(true)) // ⌨️ 0.8.0: ONE listener (ab-nextjs-hooks/useAbHotkey); fires in inputs by default
 *    -|> <AbSearchTrigger variant="field" label="Search…" onOpen={() => setOpen(true)} shortcut hotkey={false} />
 *    -|> <AbSearchDrawer open={open} onClose={() => setOpen(false)} search={(q) => index.query(q)} />
 */
@@ -66,9 +66,9 @@ export interface AbSearchDrawerItem {
   description?: string; // 📝 one line (ellipsis)
   meta?: string; // 🏷️ mono, e.g. "v0.2.x"
   icon?: string; // 🔣 the 32px tile's AbIcons name
-  /** 🏷️ 0.7.2: a short visible badge after the text, e.g. "EN" on a page that falls back to English */
+  /** 🏷️ 0.8.0: a short visible badge after the text, e.g. "EN" on a page that falls back to English */
   badge?: string;
-  /** ♿ 0.7.2: what the badge means for screen readers (e.g. "English only"); without it the badge text is read */
+  /** ♿ 0.8.0: what the badge means for screen readers (e.g. "English only"); without it the badge text is read */
   badgeLabel?: string;
 }
 /** 📦 results grouped by package */
@@ -87,7 +87,7 @@ export interface AbSearchDrawerLabels {
   noResultsFor?: (q: string) => ReactNode; // No results for “q”
   hint?: ReactNode; // the line under it
   didYouMean?: string; // "Did you mean"
-  // ⏳ 0.7.2: async states (a failed search() is no longer shown as "No results")
+  // ⏳ 0.8.0: async states (a failed search() is no longer shown as "No results")
   loading?: string; // "Searching…" (shown + announced while an async search() is pending)
   offlineTitle?: string; // "You're offline"
   offlineHint?: ReactNode; // "Search needs a connection the first time. Reconnect and try again."
@@ -96,15 +96,15 @@ export interface AbSearchDrawerLabels {
   retry?: string; // "Try again"
 }
 
-/** ⏳ 0.7.2: where a search stands — 'idle' (under 2 characters), 'loading', 'done', 'offline' or 'error' */
+/** ⏳ 0.8.0: where a search stands — 'idle' (under 2 characters), 'loading', 'done', 'offline' or 'error' */
 export type AbSearchDrawerStatus = 'idle' | 'loading' | 'done' | 'offline' | 'error';
 
-/** 📴 0.7.2: throw (or reject with) this from `search()` when the index can't be fetched offline */
+/** 📴 0.8.0: throw (or reject with) this from `search()` when the index can't be fetched offline */
 export class AbSearchOfflineError extends Error {
   constructor(message = 'Search is offline') { super(message); this.name = 'AbSearchOfflineError'; } // 🏷️ the name is what we check
 }
 
-/** 📴 0.7.2: isAbSearchOffline — is this search failure "offline"? An AbSearchOfflineError (by name, so it survives
+/** 📴 0.8.0: isAbSearchOffline — is this search failure "offline"? An AbSearchOfflineError (by name, so it survives
  *  bundling twice), an error with `offline: true`, or any failure while `navigator.onLine` is false. */
 export function isAbSearchOffline(error: unknown): boolean {
   const e = error as { name?: unknown; offline?: unknown } | null | undefined; // 🔍 duck-typed
@@ -125,7 +125,7 @@ export interface AbSearchDrawerProps {
   recentWhen?: 'always' | 'empty'; // 🕘 'always' = above the results (the frames, default); 'empty' = only with no query
   labels?: AbSearchDrawerLabels; // 🌍
   returnFocus?: string; // ↩️
-  /** ↩️ 0.7.2: after a `#hash` result, still send focus back to the opener (default false: the guard skips it, so the
+  /** ↩️ 0.8.0: after a `#hash` result, still send focus back to the opener (default false: the guard skips it, so the
    *  opener never snaps `#main-content` away from the section that was just scrolled to). Escape / ✕ always return focus. */
   hashReturnFocus?: boolean;
   id?: string; // 🆔
@@ -145,7 +145,7 @@ export function addAbSearchRecent(list: readonly string[], term: string, limit =
   return [t, ...list.filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, limit);
 }
 
-/** #️⃣ 0.7.2: hasAbHashTarget — does this href jump to a section (`/docs/x#install`, `#top`)? An empty `#` does not. */
+/** #️⃣ 0.8.0: hasAbHashTarget — does this href jump to a section (`/docs/x#install`, `#top`)? An empty `#` does not. */
 export function hasAbHashTarget(href: string): boolean {
   const i = href.indexOf('#'); // 🔍 the fragment start
   return i >= 0 && i < href.length - 1; // ✅ a non-empty fragment
@@ -170,16 +170,16 @@ export function highlightAbSearch(text: string, q: string): ReactNode {
  * - 📱 below 768px: straight to full height (no 70% stop: the keyboard is up); a hard swipe down closes
  * - 💻 768px and up: centred in the main pane, min(640px, main width), 70% tall; results scroll inside with a 48px fade
  * - ⌨️ no listener of its own: the app shell owns ONE `useAbHotkey('mod+k')` (hooks 0.1.9, D49) and every
- *   AbSearchTrigger shows the cap with `shortcut hotkey={false}` (0.7.2); the Search tab / field open it too
+ *   AbSearchTrigger shows the cap with `shortcut hotkey={false}` (0.8.0); the Search tab / field open it too
  * - 🔤 48px input (2px bronze border), autofocused; a 40px clear button keeps focus in the input
  * - 🕘 up to 4 recent searches (localStorage `ab:search:recent`), saved on Enter or when a result opens; each removable
  * - 📦 results after a 150ms debounce from 2 characters, grouped by package; matches in a bronze `<mark>`
  * - ♿ combobox (aria-expanded / -controls / -autocomplete="list" / -activedescendant) + listbox with labelled groups
  *   and options; ↑/↓ wrap across groups, Enter opens the active (else the first) result, Esc clears then closes;
  *   a polite live region says "4 results" / "No results"
- * - ↩️ 0.7.2: choosing a `#hash` result closes WITHOUT refocusing the opener (`hashReturnFocus` to opt back in), so the
+ * - ↩️ 0.8.0: choosing a `#hash` result closes WITHOUT refocusing the opener (`hashReturnFocus` to opt back in), so the
  *   scroll to the section inside `#main-content` stays put; the app moves focus to the section if it wants
- * - ⏳ 0.7.2: an async `search()` sets `aria-busy` + "Searching…"; a failure shows an offline (AbSearchOfflineError /
+ * - ⏳ 0.8.0: an async `search()` sets `aria-busy` + "Searching…"; a failure shows an offline (AbSearchOfflineError /
  *   `navigator.onLine === false`) or error panel with "Try again" — never "No results"; offline retries on `online`
  */
 const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQuery = '', recentKey = AB_SEARCH_RECENT_KEY, recentLimit = 4, recentWhen = 'always', labels = {}, returnFocus, hashReturnFocus = false, id, className }: AbSearchDrawerProps): ReactElement => {
@@ -188,8 +188,8 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     remove: (t: string) => `Remove ${t}`, results: (n: number) => `${n} result${n === 1 ? '' : 's'}`, noResults: 'No results',
     noResultsFor: (q: string) => <>No results for “{q}”</>, didYouMean: 'Did you mean',
     hint: <>Check the spelling or try a package name like <code>components</code> or <code>hooks</code>.</>,
-    loading: 'Searching…', offlineTitle: 'You’re offline', offlineHint: 'Search needs a connection the first time. Reconnect and try again.', // ⏳ 📴 0.7.2
-    errorTitle: 'Search isn’t available right now', errorHint: 'Something went wrong while searching. Try again in a moment.', retry: 'Try again', // 🛑 0.7.2
+    loading: 'Searching…', offlineTitle: 'You’re offline', offlineHint: 'Search needs a connection the first time. Reconnect and try again.', // ⏳ 📴 0.8.0
+    errorTitle: 'Search isn’t available right now', errorHint: 'Something went wrong while searching. Try again in a moment.', retry: 'Try again', // 🛑 0.8.0
     ...labels,
   }; // 🌍
   const auto = useId().replace(/[^A-Za-z0-9_-]/g, ''); // 🆔
@@ -202,14 +202,14 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
   const [groups, setGroups] = useState<readonly AbSearchDrawerGroup[] | null>(null); // 📦 null = not searched (or < 2 chars)
   const [active, setActive] = useState(0); // 🎯 index in the flat option list (-1 = none)
   const [recent, setRecent] = useState<string[]>([]); // 🕘
-  const [status, setStatus] = useState<AbSearchDrawerStatus>('idle'); // ⏳ 0.7.2: loading / offline / error
-  const [attempt, setAttempt] = useState(0); // 🔁 0.7.2: bumped by "Try again" (and on reconnect) to re-run the search
+  const [status, setStatus] = useState<AbSearchDrawerStatus>('idle'); // ⏳ 0.8.0: loading / offline / error
+  const [attempt, setAttempt] = useState(0); // 🔁 0.8.0: bumped by "Try again" (and on reconnect) to re-run the search
   const latest = useRef(search); // 🔁
   useEffect(() => { latest.current = search; }, [search]);
 
   // 🌱 each open: the default query, fresh recents
   const [wasOpen, setWasOpen] = useState(false);
-  // ↩️ 0.7.2 hash guard: set when a #hash result is chosen, read by AbDrawer when it closes, cleared on every open
+  // ↩️ 0.8.0 hash guard: set when a #hash result is chosen, read by AbDrawer when it closes, cleared on every open
   const hashNav = useRef(false);
   useEffect(() => { if (open) hashNav.current = false; }, [open]); // 🌱 a fresh open returns focus again
   if (open !== wasOpen) { setWasOpen(open); if (open) { setQuery(defaultQuery); setRecent(readRecent(recentKey)); } }
@@ -219,12 +219,12 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     const q = query.trim();
     if (!open || q.length < 2) { const t = setTimeout(() => { setGroups(null); setStatus('idle'); }, 0); return () => clearTimeout(t); } // 🫥
     let live = true;
-    // 🧯 0.7.2: a failure is "offline" or "error" (never "No results", and never the previous query's results)
+    // 🧯 0.8.0: a failure is "offline" or "error" (never "No results", and never the previous query's results)
     const fail = (err: unknown) => { if (live) { setGroups(null); setActive(-1); setStatus(isAbSearchOffline(err) ? 'offline' : 'error'); } };
     const t = setTimeout(() => {
       let out: ReturnType<AbSearchDrawerProps['search']>; // 📦 sync groups or a promise
       try { out = latest.current(q); } catch (err) { fail(err); return; } // 🧯 a sync throw fails the same way
-      // ⏳ 0.7.2: only an async search() shows "Searching…" (aria-busy); a sync one never flashes it
+      // ⏳ 0.8.0: only an async search() shows "Searching…" (aria-busy); a sync one never flashes it
       if (out && typeof (out as PromiseLike<unknown>).then === 'function') setStatus('loading');
       Promise.resolve(out)
         .then((g) => { if (live) { setGroups(g); setActive(g.some((x) => x.items.length) ? 0 : -1); setStatus('done'); } }) // ✅
@@ -233,7 +233,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     return () => { live = false; clearTimeout(t); };
   }, [query, open, attempt]);
 
-  // 🌐 0.7.2: offline → back online: retry by itself (the visitor already typed the query)
+  // 🌐 0.8.0: offline → back online: retry by itself (the visitor already typed the query)
   useEffect(() => {
     if (status !== 'offline' || typeof window === 'undefined') return; // 🙅 only while offline
     const back = () => setAttempt((n) => n + 1); // 🔁
@@ -241,7 +241,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     return () => window.removeEventListener('online', back); // 🧹
   }, [status]);
 
-  // 🧹 G60 (0.7.2): only groups with items are rendered, so the option order, the start offsets and the ids all
+  // 🧹 G60 (0.8.0): only groups with items are rendered, so the option order, the start offsets and the ids all
   //    come from THIS list, by position — never from the raw `g.id`, which apps may repeat (two "components" groups)
   const shown = useMemo(() => (groups ?? []).filter((g) => g.items.length), [groups]); // 📦 rendered groups
   const flat = useMemo(() => shown.flatMap((g) => g.items), [shown]); // 📋 the option order
@@ -252,7 +252,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
   const saveRecent = (term: string) => { const next = addAbSearchRecent(recent, term, recentLimit); setRecent(next); writeRecent(recentKey, next); }; // 🕘
   const removeRecent = (term: string) => { const next = recent.filter((x) => x !== term); setRecent(next); writeRecent(recentKey, next); input.current?.focus(); };
   const choose = (item: AbSearchDrawerItem) => {
-    hashNav.current = !hashReturnFocus && hasAbHashTarget(item.href); // ↩️ 0.7.2: a #section → don't refocus the opener
+    hashNav.current = !hashReturnFocus && hasAbHashTarget(item.href); // ↩️ 0.8.0: a #section → don't refocus the opener
     saveRecent(query); onOpenResult?.(item); onClose(); // 🔗
   };
 
@@ -272,16 +272,16 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
     }
   };
 
-  const busy = status === 'loading'; // ⏳ 0.7.2
-  const failed = status === 'offline' || status === 'error'; // 📴 🛑 0.7.2
-  const none = !busy && !failed && groups !== null && flat.length === 0; // 🫥 0.7.2: never while loading / failed
-  const retry = () => { setAttempt((n) => n + 1); input.current?.focus(); }; // 🔁 0.7.2: re-run, focus stays in the input
+  const busy = status === 'loading'; // ⏳ 0.8.0
+  const failed = status === 'offline' || status === 'error'; // 📴 🛑 0.8.0
+  const none = !busy && !failed && groups !== null && flat.length === 0; // 🫥 0.8.0: never while loading / failed
+  const retry = () => { setAttempt((n) => n + 1); input.current?.focus(); }; // 🔁 0.8.0: re-run, focus stays in the input
   const tip = suggest && none ? suggest(query.trim()) : null; // 💡
   return (
     <AbDrawer
       open={open} onClose={onClose} id={id} side="bottom" scope="app" tier="sheet"
       snapPoints fullOnly centerIn="main" title={L.title} closeLabel={L.close} closeIcon={<AbIcon name="close" size={24} />}
-      initialFocus="input" returnFocus={returnFocus} restoreFocus={() => !hashNav.current /* ↩️ 0.7.2 hash guard */}
+      initialFocus="input" returnFocus={returnFocus} restoreFocus={() => !hashNav.current /* ↩️ 0.8.0 hash guard */}
       className={clsx('AbSearchDrawer', kit.sheet, kit.searchSheet, className)}
     >
       <div className={kit.searchBody}>
@@ -297,7 +297,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
           {query && <button type="button" className={kit.iconSm} aria-label={L.clear} onClick={() => { setQuery(''); input.current?.focus(); }}><AbIcon name="close" size={20} /></button>}
         </div>
         <div className={kit.resWrap}>
-          <div ref={list} className={kit.results} data-ab-part="search-results" aria-busy={busy || undefined} data-status={status} /* ⏳ 0.7.2 */>
+          <div ref={list} className={kit.results} data-ab-part="search-results" aria-busy={busy || undefined} data-status={status} /* ⏳ 0.8.0 */>
             {showRecent && (
               <>
                 <p className={kit.lbl} id={`${base}-recent`}>{L.recent}</p>
@@ -313,7 +313,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
                 {flat.length > 0 && <hr className={kit.hr} />}
               </>
             )}
-            {busy && !expanded && <p className={kit.lbl} data-ab-part="search-loading">{L.loading}</p> /* ⏳ 0.7.2: first answer still on its way */}
+            {busy && !expanded && <p className={kit.lbl} data-ab-part="search-loading">{L.loading}</p> /* ⏳ 0.8.0: first answer still on its way */}
             <div id={`${base}-list`} role="listbox" aria-label={L.title} aria-busy={busy || undefined} hidden={!expanded}>
               {shown.map((g, gi) => (
                 <div key={`${gi}-${g.id}`} role="group" aria-labelledby={groupId(g, gi)} /* 🧹 G60: keyed by index too, so a repeated id never collides */>
@@ -324,8 +324,8 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
                       <Link key={`${i}-${it.id}`} /* 🧹 G60: item ids may repeat across groups too */ id={optId(i)} href={it.href} role="option" aria-selected={on} tabIndex={-1} className={kit.sr} onClick={() => choose(it)} onMouseMove={() => { if (!on) setActive(i); }}>
                         <span className={kit.pkgIc} aria-hidden="true">{it.icon && <AbIcon name={it.icon} size={20} />}</span>
                         <span className={kit.srText}><b>{highlightAbSearch(it.title, query)}</b>{it.description && <small>{highlightAbSearch(it.description, query)}</small>}</span>
-                        {it.badge && <span className={kit.srBadge} data-ab-part="search-badge" title={it.badgeLabel} aria-hidden={it.badgeLabel ? true : undefined}>{it.badge}</span> /* 🏷️ 0.7.2: e.g. EN */}
-                        {it.badge && it.badgeLabel && <span className={kit.srOnly}>, {it.badgeLabel}</span> /* ♿ 0.7.2: the meaning, not "E N" */}
+                        {it.badge && <span className={kit.srBadge} data-ab-part="search-badge" title={it.badgeLabel} aria-hidden={it.badgeLabel ? true : undefined}>{it.badge}</span> /* 🏷️ 0.8.0: e.g. EN */}
+                        {it.badge && it.badgeLabel && <span className={kit.srOnly}>, {it.badgeLabel}</span> /* ♿ 0.8.0: the meaning, not "E N" */}
                         {it.meta && <code className={kit.srMeta}>{it.meta}</code>}
                       </Link>
                     );
@@ -334,7 +334,7 @@ const AbSearchDrawer = ({ open, onClose, search, suggest, onOpenResult, defaultQ
               ))}
             </div>
             {failed && (
-              <div className={kit.nores} data-ab-part={status === 'offline' ? 'search-offline' : 'search-error'} /* 📴 🛑 0.7.2 */>
+              <div className={kit.nores} data-ab-part={status === 'offline' ? 'search-offline' : 'search-error'} /* 📴 🛑 0.8.0 */>
                 <span className={kit.pkgIc} aria-hidden="true"><AbIcon name="error" size={28} /></span>
                 <b>{status === 'offline' ? L.offlineTitle : L.errorTitle}</b>
                 <p>{status === 'offline' ? L.offlineHint : L.errorHint}</p>

@@ -91,12 +91,12 @@ describe('AbSearchTrigger + AbKbd (G44)', () => {
   })
   it('SSR: Ctrl hint, aria-keyshortcuts, dialog button', () => {
     const html = renderToStaticMarkup(<AbSearchTrigger onOpen={() => {}} />)
-    expect(html).toContain('aria-keyshortcuts="Control+K"') // ♿ 0.7.2: the SSR (Ctrl) platform's pair
+    expect(html).toContain('aria-keyshortcuts="Control+K"') // ♿ 0.8.0: the SSR (Ctrl) platform's pair
     expect(html).toContain('aria-haspopup="dialog"') // 🔘
     expect(html).toContain('>Ctrl</kbd>') // ⌨️ server default
     expect(html).toContain('ab-motion-interactive') // 🎬
   })
-  it('⌘K / Ctrl+K calls onOpen (0.7.2: the platform modifier only, via useAbHotkey)', () => {
+  it('⌘K / Ctrl+K calls onOpen (0.8.0: the platform modifier only, via useAbHotkey)', () => {
     const onOpen = vi.fn()
     render(<AbSearchTrigger onOpen={onOpen} />)
     fireEvent.keyDown(window, { key: 'k', ctrlKey: true }) // ⌨️ Ctrl+K on a non-Apple platform (happy-dom = Linux)

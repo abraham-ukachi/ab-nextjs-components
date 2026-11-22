@@ -54,7 +54,7 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
  * ✅ 0.8.0: hooks ^0.1.9 is on npm (2026-11-22T00:30:22.769Z, provenance).
  */
 const WANT: Record<string, string> = {
-  'ab-nextjs-hooks': '^0.1.9', // ⌨️ 0.7.2: useAbHotkey (G10, D49)
+  'ab-nextjs-hooks': '^0.1.9', // ⌨️ 0.8.0: useAbHotkey (G10, D49)
   'ab-nextjs-theme': '^0.3.9',
   'ab-nextjs-animations': '^0.2.5',
   'ab-nextjs-icons': '^0.2.7', // 🌗🅰️ 0.3.2: brightness_auto

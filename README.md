@@ -86,7 +86,7 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   * 🎯 **Active item (0.5.0):** `activeMatch` picks the rule: `'best'` (default) lights only the deepest matching item, so `/docs` and `/docs/x` never both light on `/docs/x`; `'prefix'` lights every parent too (the pre-0.5.0 look); `'exact'` lights only an equal href. An item's `exact: true` (never a parent) or `exact: false` (parent allowed) overrides it. Query strings, hashes and trailing slashes are ignored. AbNavDrawer takes the same `activeMatch` and `locales`. The helpers `getAbActiveHrefs`, `matchAbHref` and `normalizeAbHref` and the `AbActiveMatch` type are exported.
 * **`<AbNavbar>` v2 (G41)**: `items` of `{ kind: 'link', href, icon, label }` or `{ kind: 'button', id, icon, label, onSelect, expanded?, controls? }`, filled active icon, `aria-current`, safe-area padding.
 * **`<AbAppBar>` (G43)**: `brand`, `search`, `nav=[{ href, label }]`, `activeHref`, `actions`, `leading`, sticky with the theme hairline. Below **1180px** the nav moves into a "More" `AbMenu` (G26). It closes on Escape and outside click. With JS off the nav stays inline.
-* **`<AbSearchTrigger>` + `<AbKbd>` (G44)**: shows ⌘K on Apple and Ctrl K elsewhere, sets `aria-keyshortcuts` (`Meta+K` on Apple, `Control+K` elsewhere since 0.7.2), calls `onOpen` (button) or falls back to `href` (link). `comingSoon` makes it `aria-disabled`.
+* **`<AbSearchTrigger>` + `<AbKbd>` (G44)**: shows ⌘K on Apple and Ctrl K elsewhere, sets `aria-keyshortcuts` (`Meta+K` on Apple, `Control+K` elsewhere since 0.8.0), calls `onOpen` (button) or falls back to `href` (link). `comingSoon` makes it `aria-disabled`.
 * **`<AbCard>` / `<AbPackageCard>` (G45)**: one link per card (the title, stretched over the card). Hover lifts 2px on laptop and up only, never under `prefers-reduced-motion`.
 * **`<AbToc>` (G46)**: plain `#id` links, `aria-current="location"`. Pair with `useAbScrollSpy` / `scrollToAbSection` from `ab-nextjs-hooks@0.1.7`.
 * **`<AbBalloon>`** is now a real tooltip: `role="tooltip"`, `aria-describedby` on the trigger, shows on focus, after 300ms on hover, and hides on Escape.
@@ -97,7 +97,7 @@ New subpaths for the docs / PWA shell. All links go through **`AbLinkProvider`**
   registerAbIcons({ code })
   ```
 
-### Search drawer & trigger (0.7.2) 🔎
+### Search drawer & trigger (0.8.0) 🔎
 
 Needs **`ab-nextjs-hooks@^0.1.9`** (`useAbHotkey`).
 

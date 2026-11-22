@@ -24,8 +24,8 @@
 * SOFTWARE.
 *
 * @project: ab-nextjs-components
-* @name: AbSearchTrigger touch audit tests (0.7.2)
-* @file: __tests__/search-trigger-touch-0.7.2.test.ts
+* @name: AbSearchTrigger touch audit tests (0.8.0)
+* @file: __tests__/search-trigger-touch-0.8.0.test.ts
 * @type: Vitest
 * @authors: Abraham Ukachi <abrahamukachi@gmail.com>
 */
@@ -51,7 +51,7 @@ const px = (decls: string, prop: string) => Number(decls.match(new RegExp(`(?:^|
 // 📱 the coarse-pointer block
 const coarse = src.indexOf('@media (pointer: coarse)')
 
-describe('👆 AbSearchTrigger touch audit (0.7.2)', () => {
+describe('👆 AbSearchTrigger touch audit (0.8.0)', () => {
   it('size="sm" keeps its 46px band AND is never narrower than 44px (short locales / no label)', () => {
     const sm = rule(".abSearchTrigger[data-size='sm']") // 🎯
     expect(px(sm, 'height')).toBe(34) // 👀 the look is unchanged
